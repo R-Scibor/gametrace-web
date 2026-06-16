@@ -1,0 +1,84 @@
+// Auth
+export interface LoginRequest { username: string; timezone?: string; }
+export interface LoginResponse { token: string; discord_id: string; username: string; timezone: string; }
+
+// Games
+export interface GameBrief { id: number; primary_name: string; cover_image_url: string | null; }
+export type EnrichmentStatus = 'PENDING' | 'ENRICHED' | 'NEEDS_REVIEW';
+export type CoverSource = 'EXTERNAL' | 'CUSTOM';
+export interface Game {
+  id: number; primary_name: string; cover_image_url: string | null; cover_source: CoverSource; enrichment_status: EnrichmentStatus;
+}
+export interface GamePreferenceUpdate { is_ignored?: boolean; custom_tag?: string | null; }
+
+// Sessions
+export type SessionStatus = 'ONGOING' | 'COMPLETED' | 'ERROR';
+export type SessionSource = 'BOT' | 'MANUAL';
+export interface Session {
+  id: number; game_id: number; game: GameBrief; start_time: string; end_time: string | null;
+  duration_seconds: number | null; status: SessionStatus; source: SessionSource;
+  notes: string | null; created_at: string; deleted_at?: string | null;
+}
+export interface TrashSession extends Session { purges_at: string; }
+export interface SessionCreate { game_id: number; start_time: string; end_time: string; notes?: string; }
+export interface SessionPatch { end_time?: string; notes?: string; discard?: boolean; }
+export interface ConflictResponse { detail: string; conflicting_session: Session; }
+
+// Profile
+export interface ProfileMe {
+  discord_id: string; username: string; timezone: string;
+  weekly_report_enabled: boolean; push_enabled: boolean;
+}
+export interface ProfileSettingsUpdate {
+  timezone?: string; weekly_report_enabled?: boolean; push_enabled?: boolean;
+}
+
+// Stats
+export interface GameStatEntry { game_id: number; game_name: string; cover_image_url: string | null; total_seconds: number; }
+export interface PendingErrorEntry { id: number; game_id: number; game_name: string; start_time: string; notes: string | null; }
+export interface StatsSummary {
+  days: number; window_start: string; window_end: string; total_seconds: number;
+  per_game: GameStatEntry[]; pending_errors: PendingErrorEntry[];
+}
+export interface ActiveSessionBrief { id: number; game_id: number; game_name: string; cover_image_url: string | null; start_time: string; }
+export interface DashboardSummary {
+  total_seconds_today: number; total_seconds_7d: number; total_seconds_30d: number;
+  active_session: ActiveSessionBrief | null; pending_errors: PendingErrorEntry[];
+}
+
+export interface HeatmapCell { dow: number; hour: number; seconds: number; }
+export interface HeatmapResponse { days: number; cells: HeatmapCell[]; }
+
+export interface StreakResponse { current_streak: number; longest_streak: number; }
+
+export interface WeeklyTrendEntry { week_start: string; total_seconds: number; }
+export interface WeeklyTrendResponse { weeks: WeeklyTrendEntry[]; }
+
+export interface GenreEntry { genre: string; total_seconds: number; }
+export interface GenresResponse { items: GenreEntry[]; }
+
+export interface ThemeEntry { theme: string; total_seconds: number; }
+export interface ThemesResponse { items: ThemeEntry[]; }
+
+export interface CompanyEntry { name: string; total_seconds: number; game_count: number; }
+export interface CompaniesResponse { items: CompanyEntry[]; }
+
+export interface ReleaseYearEntry { decade: string; total_seconds: number; }
+export interface ReleaseYearsResponse { items: ReleaseYearEntry[]; }
+
+export type BotStatus = 'online' | 'offline' | 'unknown';
+export interface HealthResponse {
+  status: string; version: string; commit_sha: string; build_time: string;
+  api: { uptime_seconds: number };
+  bot: { status: BotStatus; uptime_seconds: number | null; last_heartbeat_seconds_ago: number | null; };
+}
+
+// Voice
+export interface TranscribeResponse {
+  game: string | null; date: string | null; start_time: string | null; end_time: string | null;
+  duration_minutes: number | null; raw_transcript: string;
+}
+export interface GameResolveResponse { game_id: number; name: string; }
+export interface AddSessionPrefill {
+  gameId?: number; date?: string | null; startTime?: string | null; endTime?: string | null; note?: string;
+}
