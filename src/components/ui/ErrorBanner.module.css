@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--warn-tint);
+  border: 1px solid var(--warn-border);
+}
+.bar {
+  width: 2px;
+  background-color: var(--warn);
+  flex-shrink: 0;
+}
+.body {
+  flex: 1;
+  padding: 10px 14px;
+}
+.label {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  color: var(--warn);
+  margin: 0 0 4px 0;
+  text-transform: uppercase;
+}
+.message {
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.4;
+  margin: 0;
+}
