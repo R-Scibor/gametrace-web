@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0 16px 0;
+}
+.label {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rule {
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
