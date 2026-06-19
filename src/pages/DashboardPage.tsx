@@ -1,6 +1,9 @@
 import { useDashboard } from '../hooks/useDashboard';
-import { StatTile, ErrorBanner, Skeleton } from '../components/ui';
+import { useRecentSessions } from '../hooks/useSessions';
+import { StatTile, SectionHeader, ErrorBanner, Skeleton } from '../components/ui';
 import { ActiveSessionCard } from '../components/dashboard/ActiveSessionCard';
+import { PendingErrorsBanner } from '../components/dashboard/PendingErrorsBanner';
+import { RecentSessionsList } from '../components/dashboard/RecentSessionsList';
 import { useFormat } from '../hooks/useFormat';
 import styles from './DashboardPage.module.css';
 
@@ -22,6 +25,9 @@ function DashboardSkeleton() {
           <Skeleton height={90} />
         </div>
       </div>
+      <Skeleton height={16} width={180} />
+      <Skeleton height={60} />
+      <Skeleton height={60} />
     </div>
   );
 }
@@ -29,6 +35,8 @@ function DashboardSkeleton() {
 export function DashboardPage() {
   const { formatHours, formatHeaderDate } = useFormat();
   const { data, isLoading, isError, refetch } = useDashboard();
+  const activeId = data?.active_session?.id ?? null;
+  const { data: recents, isLoading: recentsLoading } = useRecentSessions(activeId);
 
   if (isLoading) return <DashboardSkeleton />;
 
@@ -53,6 +61,10 @@ export function DashboardPage() {
         <span className={styles.headerDate}>{formatHeaderDate()}</span>
       </header>
 
+      {data.pending_errors.length > 0 && (
+        <PendingErrorsBanner errors={data.pending_errors} />
+      )}
+
       <div className={styles.topRow}>
         {data.active_session ? (
           <ActiveSessionCard session={data.active_session} />
@@ -71,6 +83,9 @@ export function DashboardPage() {
           </div>
         )}
       </div>
+
+      <SectionHeader title="Ostatnie sesje" />
+      <RecentSessionsList sessions={recents ?? []} loading={recentsLoading} />
     </div>
   );
 }
