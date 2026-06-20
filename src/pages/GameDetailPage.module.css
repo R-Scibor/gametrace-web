@@ -1,0 +1,124 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.hero {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  padding: 32px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.coverWrapper {
+  width: 200px;
+  aspect-ratio: 3/4;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+.title {
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+.backLink {
+  font-size: 13px;
+  color: var(--text2);
+  text-decoration: none;
+  align-self: flex-start;
+}
+.backLink:hover {
+  color: var(--orange);
+}
+.reviewBadge,
+.ignoredBadge {
+  align-self: flex-start;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  padding: 4px 8px;
+}
+.reviewBadge {
+  color: var(--warn);
+  border: 1px solid var(--warn-border);
+  background-color: var(--warn-tint);
+}
+.ignoredBadge {
+  color: var(--text3);
+  border: 1px solid var(--border);
+  background-color: var(--bg3);
+}
+.actionsPanel {
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px 24px;
+}
+.actionsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.stats {
+  display: flex;
+  gap: 32px;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.statValue {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+.statLabel {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+@media (max-width: 640px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+  }
+  .coverWrapper {
+    width: 160px;
+  }
+  .info {
+    align-items: center;
+  }
+  .stats {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
