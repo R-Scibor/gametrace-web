@@ -5,6 +5,7 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LibraryPage } from './pages/LibraryPage';
 import { GameDetailPage } from './pages/GameDetailPage';
+import { SessionFormPage } from './pages/SessionFormPage';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/library/:gameId" element={<GameDetailPage />} />
+          <Route path="/sessions/new" element={<SessionFormPage />} />
+          <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />
