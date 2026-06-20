@@ -3,6 +3,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { LibraryPage } from './pages/LibraryPage';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/library" element={<LibraryPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />

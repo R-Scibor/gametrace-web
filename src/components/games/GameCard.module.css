@@ -1,0 +1,47 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.card:hover {
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+.coverWrapper {
+  position: relative;
+  aspect-ratio: 3/4;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.badge {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-align: center;
+  color: var(--warn);
+  background-color: rgba(20, 17, 15, 0.85);
+  border: 1px solid var(--warn-border);
+  border-radius: 2px;
+  padding: 4px 6px;
+}
+.title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.tabs {
+  display: flex;
+  gap: 4px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px;
+}
+.tab {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: none;
+  border: none;
+  border-radius: 2px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+}
+.tab:hover {
+  color: var(--text2);
+}
+.tabActive {
+  color: var(--orange);
+  background-color: var(--bg3);
+}
+.searchWrap {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  max-width: 420px;
+}
+.searchBar {
+  width: 3px;
+  flex-shrink: 0;
+  background-color: var(--orange);
+  border-radius: 2px 0 0 2px;
+}
+.search {
+  flex: 1;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: none;
+  border-radius: 0 2px 2px 0;
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+}
+.search::placeholder {
+  color: var(--text3);
+}
+.search:focus {
+  outline: none;
+  border-color: var(--border-bright);
+}
+.count {
+  font-size: 13px;
+  color: var(--text3);
+  margin: 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 24px;
+}
+.loadMore {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
