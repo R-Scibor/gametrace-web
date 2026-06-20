@@ -6,6 +6,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { LibraryPage } from './pages/LibraryPage';
 import { GameDetailPage } from './pages/GameDetailPage';
 import { SessionFormPage } from './pages/SessionFormPage';
+import { VoicePage } from './pages/VoicePage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/library/:gameId" element={<GameDetailPage />} />
           <Route path="/sessions/new" element={<SessionFormPage />} />
           <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+          <Route path="/voice" element={<VoicePage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />
