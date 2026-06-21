@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-x: auto;
+}
+.hourLabels {
+  display: grid;
+  grid-template-columns: 32px repeat(24, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+.hourLabel {
+  font-size: 9px;
+  color: var(--text3);
+  text-align: center;
+}
+.row {
+  display: grid;
+  grid-template-columns: 32px repeat(24, 1fr);
+  gap: 2px;
+}
+.dayLabel {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+}
+.cell {
+  aspect-ratio: 1;
+  min-width: 10px;
+  border-radius: 2px;
+  background-color: var(--bg3);
+  cursor: default;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.cell:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px var(--orange-glow);
+  z-index: 1;
+}
