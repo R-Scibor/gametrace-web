@@ -7,6 +7,7 @@ import { LibraryPage } from './pages/LibraryPage';
 import { GameDetailPage } from './pages/GameDetailPage';
 import { SessionFormPage } from './pages/SessionFormPage';
 import { VoicePage } from './pages/VoicePage';
+import { TrashPage } from './pages/TrashPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/sessions/new" element={<SessionFormPage />} />
           <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
           <Route path="/voice" element={<VoicePage />} />
+          <Route path="/trash" element={<TrashPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />
