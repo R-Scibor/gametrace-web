@@ -8,6 +8,7 @@ import { GameDetailPage } from './pages/GameDetailPage';
 import { SessionFormPage } from './pages/SessionFormPage';
 import { VoicePage } from './pages/VoicePage';
 import { TrashPage } from './pages/TrashPage';
+import { AnalyticsPage } from './pages/AnalyticsPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/library/:gameId" element={<GameDetailPage />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/sessions/new" element={<SessionFormPage />} />
           <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
           <Route path="/voice" element={<VoicePage />} />
