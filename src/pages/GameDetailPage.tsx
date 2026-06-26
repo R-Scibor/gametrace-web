@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { useGamesAll } from '../hooks/useGames';
+import { useGamesAll, useGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
 import { Cover } from '../components/Cover';
-import { SectionHeader, Skeleton } from '../components/ui';
+import { CoverUpload } from '../components/library/CoverUpload';
+import { MergeDialog } from '../components/library/MergeDialog';
+import { SectionHeader, Skeleton, Button } from '../components/ui';
 import { SessionList } from '../components/games/SessionList';
 import { formatDuration } from '../lib/format';
 import type { Game } from '../types/api';
@@ -31,13 +34,17 @@ function GameDetailSkeleton() {
 export function GameDetailPage() {
   const { gameId } = useParams();
   const id = Number(gameId);
+  const [mergeOpen, setMergeOpen] = useState(false);
+  const [ignored, setIgnored] = useState(false);
 
   const { data: games, isLoading: gamesLoading } = useGamesAll();
   const { data: sessions, isLoading: sessionsLoading } = useGameSessions(id);
+  const prefMut = useGamePreference(id);
 
   if (gamesLoading || sessionsLoading) return <GameDetailSkeleton />;
 
   const gameFromList = games?.find((g) => g.id === id);
+  const likelyIgnored = !gameFromList && (sessions?.length ?? 0) > 0;
 
   const game: Game | null = gameFromList ?? (sessions?.[0]?.game
     ? {
@@ -54,6 +61,12 @@ export function GameDetailPage() {
   const completed = sessions?.filter((s) => s.duration_seconds) || [];
   const totalSeconds = completed.reduce((sum, s) => sum + (s.duration_seconds || 0), 0);
   const avgSeconds = completed.length ? Math.round(totalSeconds / completed.length) : 0;
+  const isIgnored = ignored || likelyIgnored;
+
+  const toggleIgnore = () => {
+    const next = !isIgnored;
+    prefMut.mutate(next, { onSuccess: () => setIgnored(next) });
+  };
 
   return (
     <div className={styles.container}>
@@ -70,6 +83,7 @@ export function GameDetailPage() {
           {game.enrichment_status === 'NEEDS_REVIEW' && (
             <span className={styles.reviewBadge}>DO SPRAWDZENIA</span>
           )}
+          {isIgnored && <span className={styles.ignoredBadge}>IGNOROWANA</span>}
           <div className={styles.stats}>
             <div className={styles.stat}>
               <span className={styles.statValue}>{sessions?.length || 0}</span>
@@ -87,10 +101,38 @@ export function GameDetailPage() {
         </div>
       </div>
 
+      <div className={styles.actionsPanel}>
+        <SectionHeader title="Akcje" />
+        <div className={styles.actionsGrid}>
+          <CoverUpload gameId={id} coverUrl={game.cover_image_url} gameName={game.primary_name} />
+          <div className={styles.actionButtons}>
+            <Button type="button" variant="secondary" onClick={() => setMergeOpen(true)}>
+              POŁĄCZ Z GRĄ
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={prefMut.isPending}
+              onClick={toggleIgnore}
+            >
+              {isIgnored ? 'PRZYWRÓĆ DO BIBLIOTEKI' : 'IGNORUJ GRĘ'}
+            </Button>
+          </div>
+        </div>
+      </div>
+
       <div>
         <SectionHeader title="Historia sesji" />
         <SessionList sessions={sessions || []} />
       </div>
+
+      {mergeOpen && (
+        <MergeDialog
+          sourceId={id}
+          sourceName={game.primary_name}
+          onClose={() => setMergeOpen(false)}
+        />
+      )}
     </div>
   );
 }
