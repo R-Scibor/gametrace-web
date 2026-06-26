@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
+import { useProfile } from './useProfile';
 import * as format from '../lib/format';
 
 export function useFormat() {
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const { data: profile } = useProfile();
+  const timeZone = profile?.timezone;
 
   return useMemo(
     () => ({

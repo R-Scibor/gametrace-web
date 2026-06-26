@@ -9,6 +9,7 @@ import { SessionFormPage } from './pages/SessionFormPage';
 import { VoicePage } from './pages/VoicePage';
 import { TrashPage } from './pages/TrashPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
           <Route path="/voice" element={<VoicePage />} />
           <Route path="/trash" element={<TrashPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />
