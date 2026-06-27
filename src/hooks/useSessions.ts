@@ -8,6 +8,7 @@ import {
   restoreSession,
 } from '../api/sessions';
 import { qk } from '../lib/queryKeys';
+import { useToastStore } from '../store/toastStore';
 import type { SessionCreate, SessionPatch } from '../types/api';
 
 const RECENT_LIMIT = 5;
@@ -31,43 +32,57 @@ export function useRecentSessions(activeSessionId?: number | null) {
 
 export function useCreateSession() {
   const queryClient = useQueryClient();
+  const pushToast = useToastStore((s) => s.pushToast);
 
   return useMutation({
     mutationFn: createSession,
     onSuccess: (_data, vars: SessionCreate) => {
       invalidateAfterSessionChange(queryClient, vars.game_id);
+      pushToast({ type: 'success', message: 'Sesja zapisana.' });
     },
     onError: (err) => {
       if (axios.isAxiosError(err) && err.response?.status === 409) return;
+      pushToast({ type: 'error', message: 'Nie udało się zapisać sesji.' });
     },
   });
 }
 
 export function usePatchSession(sessionId: number, gameId?: number) {
   const queryClient = useQueryClient();
+  const pushToast = useToastStore((s) => s.pushToast);
 
   return useMutation({
     mutationFn: (payload: SessionPatch) => patchSession(sessionId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: qk.session(sessionId) });
       invalidateAfterSessionChange(queryClient, gameId);
+      pushToast({ type: 'success', message: 'Zmiany zapisane.' });
+    },
+    onError: () => {
+      pushToast({ type: 'error', message: 'Nie udało się zapisać zmian.' });
     },
   });
 }
 
 export function useDiscardSession(sessionId: number, gameId?: number) {
   const queryClient = useQueryClient();
+  const pushToast = useToastStore((s) => s.pushToast);
 
   return useMutation({
     mutationFn: () => patchSession(sessionId, { discard: true }),
     onSuccess: () => {
       invalidateAfterSessionChange(queryClient, gameId);
+      pushToast({ type: 'success', message: 'Sesja odrzucona.' });
+    },
+    onError: () => {
+      pushToast({ type: 'error', message: 'Nie udało się odrzucić sesji.' });
     },
   });
 }
 
 export function useRestoreSession() {
   const queryClient = useQueryClient();
+  const pushToast = useToastStore((s) => s.pushToast);
 
   return useMutation({
     mutationFn: restoreSession,
@@ -75,21 +90,28 @@ export function useRestoreSession() {
       queryClient.invalidateQueries({ queryKey: qk.trash });
       queryClient.invalidateQueries({ queryKey: qk.sessions() });
       queryClient.invalidateQueries({ queryKey: qk.dashboard });
+      pushToast({ type: 'success', message: 'Sesja przywrócona.' });
     },
     onError: (err) => {
       if (axios.isAxiosError(err) && err.response?.status === 409) return;
+      pushToast({ type: 'error', message: 'Nie udało się przywrócić sesji.' });
     },
   });
 }
 
 export function useDeleteSession(gameId?: number) {
   const queryClient = useQueryClient();
+  const pushToast = useToastStore((s) => s.pushToast);
 
   return useMutation({
     mutationFn: deleteSession,
     onSuccess: () => {
       invalidateAfterSessionChange(queryClient, gameId);
       queryClient.invalidateQueries({ queryKey: qk.trash });
+      pushToast({ type: 'success', message: 'Sesja przeniesiona do kosza.' });
+    },
+    onError: () => {
+      pushToast({ type: 'error', message: 'Nie udało się usunąć sesji.' });
     },
   });
 }

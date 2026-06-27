@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
+import { ToastViewport } from '../ui/Toast';
 import styles from './AppLayout.module.css';
 
 export function AppLayout() {
@@ -13,6 +14,7 @@ export function AppLayout() {
           <Outlet />
         </main>
       </div>
+      <ToastViewport />
     </div>
   );
 }

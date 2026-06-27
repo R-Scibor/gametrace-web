@@ -7,6 +7,7 @@ import { useRestoreSession } from '../hooks/useSessions';
 import { ConflictNotice } from '../components/ConflictNotice';
 import { Cover } from '../components/Cover';
 import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
+import { useToastStore } from '../store/toastStore';
 import { parseConflict } from '../lib/conflict';
 import { qk } from '../lib/queryKeys';
 import { useFormat } from '../hooks/useFormat';
@@ -26,6 +27,7 @@ export function TrashPage() {
   const { formatDate, formatDaysUntil } = useFormat();
   const { data: trash, isLoading } = useTrash();
   const queryClient = useQueryClient();
+  const pushToast = useToastStore((s) => s.pushToast);
   const [restoreConflict, setRestoreConflict] = useState<ConflictResponse | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
 
@@ -35,7 +37,11 @@ export function TrashPage() {
     mutationFn: hardDeleteSession,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: qk.trash });
+      pushToast({ type: 'success', message: 'Sesja trwale usunięta.' });
       setDeleteTarget(null);
+    },
+    onError: () => {
+      pushToast({ type: 'error', message: 'Nie udało się usunąć sesji.' });
     },
   });
 

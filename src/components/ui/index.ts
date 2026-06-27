@@ -6,3 +6,4 @@ export * from './Skeleton';
 export * from './EmptyState';
 export * from './ConfirmDialog';
 export * from './Panel';
+export * from './Toast';
