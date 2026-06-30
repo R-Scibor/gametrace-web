@@ -1,0 +1,13 @@
+services:
+  gametrace-web:
+    build: .
+    container_name: gametrace-web
+    restart: unless-stopped
+    ports:
+      - "8020:80"
+    networks:
+      - gametrace-backend_default
+
+networks:
+  gametrace-backend_default:
+    external: true
