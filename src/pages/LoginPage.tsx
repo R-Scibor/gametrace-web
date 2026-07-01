@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
@@ -65,6 +65,9 @@ export function LoginPage() {
         <div className={styles.helper}>
           <p>Uwierzytelnianie przez bota Discord</p>
           <p className={styles.helperAccent}>Brak hasła — tylko token sesji</p>
+          <Link to="/welcome" className={styles.backLink}>
+            ← CO TO JEST GAMETRACE?
+          </Link>
         </div>
       </div>
 

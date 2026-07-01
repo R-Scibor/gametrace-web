@@ -5,7 +5,7 @@ export function ProtectedRoute() {
   const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/welcome" replace />;
   }
   return <Outlet />;
 }

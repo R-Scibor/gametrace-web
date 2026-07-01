@@ -4,7 +4,7 @@ import { test, expect } from 'vitest';
 import { useAuthStore } from '../store/authStore';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
-test('ProtectedRoute redirects to /login when unauthenticated', () => {
+test('ProtectedRoute redirects to /welcome when unauthenticated', () => {
   useAuthStore.getState().logout();
 
   render(
@@ -13,12 +13,12 @@ test('ProtectedRoute redirects to /login when unauthenticated', () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/protected" element={<div>Protected Content</div>} />
         </Route>
-        <Route path="/login" element={<div>Login Page</div>} />
+        <Route path="/welcome" element={<div>Welcome Page</div>} />
       </Routes>
     </MemoryRouter>
   );
 
-  expect(screen.getByText('Login Page')).toBeInTheDocument();
+  expect(screen.getByText('Welcome Page')).toBeInTheDocument();
   expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
 });
 

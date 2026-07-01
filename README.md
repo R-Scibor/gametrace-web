@@ -8,13 +8,14 @@ See `docs/DESIGN.md` for the product spec.
 
 React 19, TypeScript, Vite, React Router v7, TanStack Query, Zustand, axios, Recharts, CSS Modules.
 
-## Routes
+## Routes (public)
 
 | Path | Purpose |
 |------|---------|
+| `/welcome` | Landing — what GameTrace is, onboarding, how to use |
 | `/login` | Sign in with Discord username (requires prior `/login` on the bot) |
 
-Unauthenticated users are redirected to `/login`.
+Unauthenticated users hitting any app route are redirected to `/welcome`.
 
 ## Development
 
