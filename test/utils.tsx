@@ -17,9 +17,11 @@ export function createTestQueryClient() {
 
 export function resetStores() {
   useAuthStore.getState().logout();
+  useAuthStore.setState({ hasHydrated: true });
   useToastStore.setState({ toasts: [] });
   useLocalCoversStore.setState({ covers: {} });
   localStorage.removeItem('local-covers-storage');
+  localStorage.removeItem('auth-storage');
 }
 
 export function seedAuth() {

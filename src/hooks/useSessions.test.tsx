@@ -4,7 +4,7 @@ import { test, expect, beforeEach, vi } from 'vitest';
 import { server } from '../../test/server';
 import { createTestQueryClient, renderHookWithProviders, resetStores } from '../../test/utils';
 import { fixtures } from '../../test/fixtures';
-import { useCreateSession, useRestoreSession } from './useSessions';
+import { useCreateSession, useRecentSessions, useRestoreSession } from './useSessions';
 import { useToastStore } from '../store/toastStore';
 import { qk } from '../lib/queryKeys';
 
@@ -50,6 +50,27 @@ test('useCreateSession does not toast on 409 conflict', async () => {
 
   await waitFor(() => expect(result.current.isError).toBe(true));
   expect(useToastStore.getState().toasts).toHaveLength(0);
+});
+
+test('useRecentSessions fetches COMPLETED and ERROR sessions', async () => {
+  let capturedUrl = '';
+  server.use(
+    http.get('/api/v1/sessions', ({ request }) => {
+      capturedUrl = request.url;
+      const url = new URL(request.url);
+      const statuses = url.searchParams.getAll('status');
+      if (statuses.includes('COMPLETED') && statuses.includes('ERROR')) {
+        return HttpResponse.json(fixtures.recentSessions);
+      }
+      return HttpResponse.json([]);
+    }),
+  );
+
+  const { result } = renderHookWithProviders(() => useRecentSessions());
+
+  await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  expect(result.current.data).toHaveLength(2);
+  expect(new URL(capturedUrl).searchParams.getAll('status')).toEqual(['COMPLETED', 'ERROR']);
 });
 
 test('useRestoreSession invalidates trash on success', async () => {

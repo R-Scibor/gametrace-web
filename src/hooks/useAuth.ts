@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { login as loginApi, logout as logoutApi } from '../api/auth';
+import { teardownAuth } from '../lib/authTeardown';
 
 export function useAuth() {
   const authState = useAuthStore();
@@ -35,7 +36,7 @@ export function useAuth() {
     } catch {
       // best effort
     } finally {
-      authState.logout();
+      teardownAuth();
     }
   };
 

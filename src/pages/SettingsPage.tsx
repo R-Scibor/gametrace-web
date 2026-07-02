@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../hooks/useAuth';
 import { useProfile, useUpdateSettings } from '../hooks/useProfile';
 import { useHealth } from '../hooks/useHealth';
@@ -33,7 +32,6 @@ export function SettingsPage() {
   const { user, logout } = useAuth();
   const [logoutLoading, setLogoutLoading] = useState(false);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { data: health } = useHealth();
   const updateSettings = useUpdateSettings();
@@ -42,7 +40,6 @@ export function SettingsPage() {
     setLogoutLoading(true);
     try {
       await logout();
-      queryClient.clear();
       navigate('/login', { replace: true });
     } finally {
       setLogoutLoading(false);
