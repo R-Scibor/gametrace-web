@@ -7,9 +7,23 @@ export interface GameBrief { id: number; primary_name: string; cover_image_url: 
 export type EnrichmentStatus = 'PENDING' | 'ENRICHED' | 'NEEDS_REVIEW';
 export type CoverSource = 'EXTERNAL' | 'CUSTOM';
 export interface Game {
-  id: number; primary_name: string; cover_image_url: string | null; cover_source: CoverSource; enrichment_status: EnrichmentStatus;
+  id: number;
+  primary_name: string;
+  cover_image_url: string | null;
+  cover_source: CoverSource;
+  enrichment_status: EnrichmentStatus;
+  is_ignored: boolean;
+  is_accepted: boolean | null;
 }
-export interface GamePreferenceUpdate { is_ignored?: boolean; custom_tag?: string | null; }
+export interface GameListResponse {
+  total: number;
+  items: Game[];
+}
+export interface GamePreferenceUpdate {
+  is_ignored?: boolean;
+  is_accepted?: boolean;
+  custom_tag?: string | null;
+}
 
 // Sessions
 export type SessionStatus = 'ONGOING' | 'COMPLETED' | 'ERROR';
@@ -51,8 +65,9 @@ export interface HeatmapResponse { days: number; cells: HeatmapCell[]; }
 
 export interface StreakResponse { current_streak: number; longest_streak: number; }
 
-export interface WeeklyTrendEntry { week_start: string; total_seconds: number; }
-export interface WeeklyTrendResponse { weeks: WeeklyTrendEntry[]; }
+export type TrendGranularity = 'day' | 'week' | 'month';
+export interface TrendBucket { bucket_start: string; total_seconds: number; }
+export interface TrendResponse { granularity: TrendGranularity; buckets: TrendBucket[]; }
 
 export interface GenreEntry { genre: string; total_seconds: number; }
 export interface GenresResponse { items: GenreEntry[]; }

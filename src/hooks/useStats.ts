@@ -1,7 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { 
-  getStatsSummary, getHeatmap, getStreak, getWeeklyTrend, 
-  getGenres, getThemes, getCompanies, getReleaseYears 
+import {
+  getStatsSummary,
+  getHeatmap,
+  getStreak,
+  getTrend,
+  getGenres,
+  getThemes,
+  getCompanies,
+  getReleaseYears,
 } from '../api/stats';
 import { qk } from '../lib/queryKeys';
 
@@ -26,37 +32,37 @@ export function useStreak() {
   });
 }
 
-export function useWeeklyTrend(weeks?: number) {
+export function useTrend(days?: number) {
   return useQuery({
-    queryKey: qk.stats('weekly-trend', { weeks }),
-    queryFn: () => getWeeklyTrend(weeks),
+    queryKey: qk.stats('trend', { days }),
+    queryFn: () => getTrend(days),
   });
 }
 
-export function useGenres() {
+export function useGenres(days?: number) {
   return useQuery({
-    queryKey: qk.stats('genres'),
-    queryFn: getGenres,
+    queryKey: qk.stats('genres', { days }),
+    queryFn: () => getGenres(days),
   });
 }
 
-export function useThemes() {
+export function useThemes(days?: number) {
   return useQuery({
-    queryKey: qk.stats('themes'),
-    queryFn: getThemes,
+    queryKey: qk.stats('themes', { days }),
+    queryFn: () => getThemes(days),
   });
 }
 
-export function useCompanies(role: 'developer' | 'publisher', limit?: number) {
+export function useCompanies(role: 'developer' | 'publisher', limit?: number, days?: number) {
   return useQuery({
-    queryKey: qk.stats('companies', { role, limit }),
-    queryFn: () => getCompanies(role, limit),
+    queryKey: qk.stats('companies', { role, limit, days }),
+    queryFn: () => getCompanies(role, limit, days),
   });
 }
 
-export function useReleaseYears() {
+export function useReleaseYears(days?: number) {
   return useQuery({
-    queryKey: qk.stats('release-years'),
-    queryFn: getReleaseYears,
+    queryKey: qk.stats('release-years', { days }),
+    queryFn: () => getReleaseYears(days),
   });
 }

@@ -17,6 +17,7 @@ export function ActiveSessionCard({ session }: ActiveSessionCardProps) {
       <div className={styles.row}>
         <div className={styles.coverWrap}>
           <Cover
+            gameId={session.game_id}
             coverImageUrl={session.cover_image_url}
             placeholderChar={session.game_name}
             className={styles.cover}

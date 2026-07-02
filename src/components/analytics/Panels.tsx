@@ -3,12 +3,13 @@ import {
   useStatsSummary,
   useHeatmap,
   useStreak,
-  useWeeklyTrend,
+  useTrend,
   useGenres,
   useThemes,
   useCompanies,
   useReleaseYears,
 } from '../../hooks/useStats';
+import type { TrendGranularity } from '../../types/api';
 import { Heatmap } from './Heatmap';
 import { BarList } from '../charts/BarList';
 import { GameRankingTable } from '../charts/GameRankingTable';
@@ -72,25 +73,35 @@ export function StreakPanel({ className }: { className?: string }) {
   );
 }
 
-export function WeeklyTrendPanel({ weeks, className }: { weeks?: number; className?: string }) {
-  const { data, isLoading, isError } = useWeeklyTrend(weeks);
-  if (isLoading) return <Panel title="Trend tygodniowy" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Trend tygodniowy" className={className}><ErrorBanner /></Panel>;
-  const chartData = data.weeks
-    .map((w) => ({
-      label: w.week_start.slice(5, 10),
-      value: Math.round((w.total_seconds / 3600) * 10) / 10,
-    }))
-    .reverse();
+function trendPanelTitle(granularity?: TrendGranularity): string {
+  if (granularity === 'day') return 'Trend dzienny';
+  if (granularity === 'month') return 'Trend miesięczny';
+  return 'Trend tygodniowy';
+}
+
+function formatTrendLabel(bucketStart: string, granularity: TrendGranularity): string {
+  if (granularity === 'month') return bucketStart.slice(0, 7);
+  return bucketStart.slice(5, 10);
+}
+
+export function TrendPanel({ days, className }: { days: number; className?: string }) {
+  const { data, isLoading, isError } = useTrend(days);
+  const title = trendPanelTitle(data?.granularity);
+  if (isLoading) return <Panel title="Trend" className={className}><Skeleton height={200} /></Panel>;
+  if (isError || !data) return <Panel title="Trend" className={className}><ErrorBanner /></Panel>;
+  const chartData = data.buckets.map((b) => ({
+    label: formatTrendLabel(b.bucket_start, data.granularity),
+    value: Math.round((b.total_seconds / 3600) * 10) / 10,
+  }));
   return (
-    <Panel title="Trend tygodniowy" className={className}>
+    <Panel title={title} className={className}>
       <TrendChart data={chartData} />
     </Panel>
   );
 }
 
-export function GenresPanel({ className }: { className?: string }) {
-  const { data, isLoading, isError } = useGenres();
+export function GenresPanel({ days, className }: { days: number; className?: string }) {
+  const { data, isLoading, isError } = useGenres(days);
   if (isLoading) return <Panel title="Gatunki" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Gatunki" className={className}><ErrorBanner /></Panel>;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
@@ -107,8 +118,8 @@ export function GenresPanel({ className }: { className?: string }) {
   );
 }
 
-export function ThemesPanel({ className }: { className?: string }) {
-  const { data, isLoading, isError } = useThemes();
+export function ThemesPanel({ days, className }: { days: number; className?: string }) {
+  const { data, isLoading, isError } = useThemes(days);
   if (isLoading) return <Panel title="Motywy" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Motywy" className={className}><ErrorBanner /></Panel>;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
@@ -125,9 +136,9 @@ export function ThemesPanel({ className }: { className?: string }) {
   );
 }
 
-export function CompaniesPanel({ className }: { className?: string }) {
+export function CompaniesPanel({ days, className }: { days: number; className?: string }) {
   const [role, setRole] = useState<'developer' | 'publisher'>('developer');
-  const { data, isLoading, isError } = useCompanies(role, 10);
+  const { data, isLoading, isError } = useCompanies(role, 10, days);
 
   const roleToggle = (
     <div className={panelStyles.roleToggle}>
@@ -183,8 +194,8 @@ export function CompaniesPanel({ className }: { className?: string }) {
   );
 }
 
-export function ReleaseYearsPanel({ className }: { className?: string }) {
-  const { data, isLoading, isError } = useReleaseYears();
+export function ReleaseYearsPanel({ days, className }: { days: number; className?: string }) {
+  const { data, isLoading, isError } = useReleaseYears(days);
   if (isLoading) return <Panel title="Dekady premier" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Dekady premier" className={className}><ErrorBanner /></Panel>;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);

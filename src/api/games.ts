@@ -1,8 +1,19 @@
 import client from './client';
-import type { EnrichmentStatus, Game, GameResolveResponse, Session } from '../types/api';
+import type { EnrichmentStatus, GameListResponse, GameResolveResponse, Session } from '../types/api';
 
-export const getGames = async (skip = 0, limit = 20, status?: EnrichmentStatus): Promise<Game[]> => {
-  const response = await client.get<Game[]>('/games', { params: { skip, limit, status } });
+export interface GetGamesOptions {
+  skip?: number;
+  limit?: number;
+  status?: EnrichmentStatus;
+  q?: string;
+  inLibrary?: boolean;
+}
+
+export const getGames = async (opts: GetGamesOptions = {}): Promise<GameListResponse> => {
+  const { skip = 0, limit = 20, status, q, inLibrary } = opts;
+  const response = await client.get<GameListResponse>('/games', {
+    params: { skip, limit, status, q, in_library: inLibrary },
+  });
   return response.data;
 };
 
@@ -13,11 +24,6 @@ export const getGameSessions = async (gameId: number, skip = 0, limit = 20): Pro
 
 export const mergeGame = async (gameId: number, targetId: number): Promise<void> => {
   await client.post(`/games/${gameId}/merge/${targetId}`);
-};
-
-export const uploadCover = async (gameId: number, imageBase64: string, extension = 'jpg'): Promise<Game> => {
-  const response = await client.put<Game>(`/games/${gameId}/cover`, { image_base64: imageBase64, extension });
-  return response.data;
 };
 
 export const resolveGame = async (name: string): Promise<GameResolveResponse | null> => {

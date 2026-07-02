@@ -24,7 +24,8 @@ export function LibraryPage() {
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGamesPaginated(status);
 
-  const games = useMemo(() => data?.pages.flat() ?? [], [data]);
+  const games = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data]);
+  const totalCount = data?.pages[0]?.total;
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return games;
@@ -90,8 +91,12 @@ export function LibraryPage() {
       {!isLoading && filtered.length > 0 && (
         <>
           <p className={styles.count}>
-            {filtered.length}
-            {query.trim() ? '' : hasNextPage ? '+' : ''} {filtered.length === 1 ? 'gra' : 'gier'}
+            {query.trim()
+              ? filtered.length
+              : totalCount != null
+                ? totalCount
+                : filtered.length}
+            {!query.trim() && hasNextPage ? '+' : ''} {(query.trim() ? filtered.length : (totalCount ?? filtered.length)) === 1 ? 'gra' : 'gier'}
           </p>
           <div className={styles.grid}>
             {filtered.map((game) => (

@@ -35,7 +35,7 @@ export function GameDetailPage() {
   const { gameId } = useParams();
   const id = Number(gameId);
   const [mergeOpen, setMergeOpen] = useState(false);
-  const [ignored, setIgnored] = useState(false);
+  const [ignored, setIgnored] = useState<boolean | null>(null);
 
   const { data: games, isLoading: gamesLoading } = useGamesAll();
   const { data: sessions, isLoading: sessionsLoading } = useGameSessions(id);
@@ -53,6 +53,8 @@ export function GameDetailPage() {
         cover_image_url: sessions[0].game.cover_image_url,
         cover_source: 'EXTERNAL',
         enrichment_status: 'ENRICHED',
+        is_ignored: likelyIgnored,
+        is_accepted: true,
       }
     : null);
 
@@ -61,7 +63,7 @@ export function GameDetailPage() {
   const completed = sessions?.filter((s) => s.duration_seconds) || [];
   const totalSeconds = completed.reduce((sum, s) => sum + (s.duration_seconds || 0), 0);
   const avgSeconds = completed.length ? Math.round(totalSeconds / completed.length) : 0;
-  const isIgnored = ignored || likelyIgnored;
+  const isIgnored = ignored ?? gameFromList?.is_ignored ?? likelyIgnored;
 
   const toggleIgnore = () => {
     const next = !isIgnored;
@@ -76,7 +78,7 @@ export function GameDetailPage() {
 
       <div className={styles.hero}>
         <div className={styles.coverWrapper}>
-          <Cover coverImageUrl={game.cover_image_url} placeholderChar={game.primary_name} />
+          <Cover gameId={id} coverImageUrl={game.cover_image_url} placeholderChar={game.primary_name} />
         </div>
         <div className={styles.info}>
           <h1 className={styles.title}>{game.primary_name}</h1>

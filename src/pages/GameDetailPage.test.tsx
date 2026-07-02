@@ -6,6 +6,7 @@ import { test, expect, beforeEach } from 'vitest';
 import { GameDetailPage } from './GameDetailPage';
 import { renderAppRoutes, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
+import { useLocalCoversStore } from '../store/localCoversStore';
 
 beforeEach(() => {
   resetStores();
@@ -45,30 +46,19 @@ test('GameDetailPage ignore toggle calls preferences API', async () => {
   expect(screen.getByText('IGNOROWANA')).toBeInTheDocument();
 });
 
-test('GameDetailPage cover upload triggers API call', async () => {
-  let coverCalled = false;
-  server.use(
-    http.put('/api/v1/games/:id/cover', () => {
-      coverCalled = true;
-      return HttpResponse.json({
-        id: 1,
-        primary_name: 'Wiedźmin 3',
-        cover_image_url: '/covers/1.jpg',
-        cover_source: 'CUSTOM',
-        enrichment_status: 'ENRICHED',
-      });
-    }),
-  );
-
+test('GameDetailPage cover pick saves locally', async () => {
   const user = userEvent.setup();
   renderGameDetail();
 
-  await screen.findByRole('button', { name: /Wgraj okładkę/i });
+  await screen.findByRole('button', { name: /Wybierz zdjęcie/i });
 
   const file = new File(['cover'], 'cover.png', { type: 'image/png' });
   const input = document.querySelector('input[type="file"]') as HTMLInputElement;
 
   await user.upload(input, file);
 
-  await waitFor(() => expect(coverCalled).toBe(true));
+  await waitFor(() => {
+    expect(useLocalCoversStore.getState().covers[1]).toBeTruthy();
+  });
+  expect(screen.getByRole('button', { name: /Przywróć oryginalną/i })).toBeInTheDocument();
 });

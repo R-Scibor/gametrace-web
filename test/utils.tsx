@@ -3,6 +3,7 @@ import { render, renderHook } from '@testing-library/react';
 import { MemoryRouter, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuthStore } from '../src/store/authStore';
+import { useLocalCoversStore } from '../src/store/localCoversStore';
 import { useToastStore } from '../src/store/toastStore';
 
 export function createTestQueryClient() {
@@ -17,6 +18,8 @@ export function createTestQueryClient() {
 export function resetStores() {
   useAuthStore.getState().logout();
   useToastStore.setState({ toasts: [] });
+  useLocalCoversStore.setState({ covers: {} });
+  localStorage.removeItem('local-covers-storage');
 }
 
 export function seedAuth() {

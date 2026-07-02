@@ -14,6 +14,7 @@ export function GameCard({ game }: GameCardProps) {
     <Link to={`/library/${game.id}`} className={styles.card}>
       <div className={styles.coverWrapper}>
         <Cover
+          gameId={game.id}
           coverImageUrl={game.cover_image_url}
           placeholderChar={game.primary_name}
         />

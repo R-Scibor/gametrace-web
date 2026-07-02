@@ -40,6 +40,7 @@ export function RecentSessionsList({ sessions, loading }: RecentSessionsListProp
             className={[styles.row, isError ? styles.rowError : ''].filter(Boolean).join(' ')}
           >
             <Cover
+              gameId={session.game.id}
               coverImageUrl={session.game.cover_image_url}
               placeholderChar={session.game.primary_name}
               className={styles.cover}

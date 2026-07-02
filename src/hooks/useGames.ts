@@ -1,9 +1,8 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { getGames, mergeGame, uploadCover } from '../api/games';
+import { getGames, mergeGame } from '../api/games';
 import { deletePreference, upsertPreference } from '../api/preferences';
 import { qk } from '../lib/queryKeys';
-import { fileToBase64 } from '../lib/files';
 import { useToastStore } from '../store/toastStore';
 import type { EnrichmentStatus } from '../types/api';
 
@@ -13,7 +12,10 @@ export const GAMES_PAGE_SIZE = 40;
 export function useGamesAll(status?: EnrichmentStatus) {
   return useQuery({
     queryKey: qk.games(status),
-    queryFn: () => getGames(0, 1000, status),
+    queryFn: async () => {
+      const res = await getGames({ skip: 0, limit: 1000, status });
+      return res.items;
+    },
   });
 }
 
@@ -21,30 +23,10 @@ export function useGamesAll(status?: EnrichmentStatus) {
 export function useGamesPaginated(status?: EnrichmentStatus) {
   return useInfiniteQuery({
     queryKey: [...qk.games(status), 'pages'] as const,
-    queryFn: ({ pageParam }) => getGames(pageParam, GAMES_PAGE_SIZE, status),
+    queryFn: ({ pageParam }) => getGames({ skip: pageParam, limit: GAMES_PAGE_SIZE, status }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _all, lastPageParam) =>
-      lastPage.length < GAMES_PAGE_SIZE ? undefined : lastPageParam + GAMES_PAGE_SIZE,
-  });
-}
-
-export function useUploadCover(gameId: number) {
-  const queryClient = useQueryClient();
-  const pushToast = useToastStore((s) => s.pushToast);
-
-  return useMutation({
-    mutationFn: async (file: File) => {
-      const { base64, extension } = await fileToBase64(file);
-      return uploadCover(gameId, base64, extension);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qk.games() });
-      queryClient.invalidateQueries({ queryKey: qk.gameSessions(gameId) });
-      pushToast({ type: 'success', message: 'Okładka zaktualizowana.' });
-    },
-    onError: () => {
-      pushToast({ type: 'error', message: 'Nie udało się wgrać okładki.' });
-    },
+      lastPage.items.length < GAMES_PAGE_SIZE ? undefined : lastPageParam + GAMES_PAGE_SIZE,
   });
 }
 

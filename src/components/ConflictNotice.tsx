@@ -22,6 +22,7 @@ export function ConflictNotice({ conflict }: ConflictNoticeProps) {
       <p className={styles.message}>{conflict.detail}</p>
       <Link to={`/sessions/${session.id}/edit`} className={styles.row}>
         <Cover
+          gameId={session.game.id}
           coverImageUrl={session.game.cover_image_url}
           placeholderChar={session.game.primary_name}
           className={styles.cover}

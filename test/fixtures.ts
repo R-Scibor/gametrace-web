@@ -9,7 +9,7 @@ import type {
   StatsSummary,
   StreakResponse,
   TrashSession,
-  WeeklyTrendResponse,
+  TrendResponse,
 } from '../src/types/api';
 
 const gameBrief = {
@@ -24,6 +24,8 @@ export const game: Game = {
   cover_image_url: null,
   cover_source: 'EXTERNAL',
   enrichment_status: 'ENRICHED',
+  is_ignored: false,
+  is_accepted: true,
 };
 
 export const game2: Game = {
@@ -32,6 +34,8 @@ export const game2: Game = {
   cover_image_url: null,
   cover_source: 'EXTERNAL',
   enrichment_status: 'ENRICHED',
+  is_ignored: false,
+  is_accepted: true,
 };
 
 export const gameNeedsReview: Game = {
@@ -40,6 +44,8 @@ export const gameNeedsReview: Game = {
   cover_image_url: null,
   cover_source: 'EXTERNAL',
   enrichment_status: 'NEEDS_REVIEW',
+  is_ignored: false,
+  is_accepted: false,
 };
 
 export const session: Session = {
@@ -133,10 +139,11 @@ export const streak: StreakResponse = {
   longest_streak: 7,
 };
 
-export const weeklyTrend: WeeklyTrendResponse = {
-  weeks: [
-    { week_start: '2026-06-09', total_seconds: 7200 },
-    { week_start: '2026-06-02', total_seconds: 5400 },
+export const trend: TrendResponse = {
+  granularity: 'week',
+  buckets: [
+    { bucket_start: '2026-06-02', total_seconds: 5400 },
+    { bucket_start: '2026-06-09', total_seconds: 7200 },
   ],
 };
 
@@ -146,8 +153,8 @@ export const fixtures = {
   profileMe,
   game,
   gameNeedsReview,
-  games: [game, game2, gameNeedsReview],
-  gamesReview: [gameNeedsReview],
+  gamesList: { total: 3, items: [game, game2, gameNeedsReview] },
+  gamesReviewList: { total: 1, items: [gameNeedsReview] },
   session,
   sessionError,
   sessions: [session, sessionError],
@@ -157,7 +164,7 @@ export const fixtures = {
   statsSummary,
   heatmap,
   streak,
-  weeklyTrend,
+  trend,
   genres: { items: [{ genre: 'RPG', total_seconds: 14400 }] },
   themes: { items: [{ theme: 'Fantasy', total_seconds: 14400 }] },
   companies: { items: [{ name: 'CD Projekt Red', total_seconds: 14400, game_count: 2 }] },

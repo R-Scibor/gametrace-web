@@ -81,6 +81,7 @@ export function TrashPage() {
             <div key={session.id} className={styles.row}>
               <div className={styles.gameCell}>
                 <Cover
+                  gameId={session.game_id}
                   coverImageUrl={session.game?.cover_image_url}
                   placeholderChar={session.game?.primary_name}
                   className={styles.cover}

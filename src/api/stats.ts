@@ -1,7 +1,14 @@
 import client from './client';
 import type {
-  DashboardSummary, StatsSummary, HeatmapResponse, StreakResponse, WeeklyTrendResponse,
-  GenresResponse, ThemesResponse, CompaniesResponse, ReleaseYearsResponse
+  DashboardSummary,
+  StatsSummary,
+  HeatmapResponse,
+  StreakResponse,
+  TrendResponse,
+  GenresResponse,
+  ThemesResponse,
+  CompaniesResponse,
+  ReleaseYearsResponse,
 } from '../types/api';
 
 export const getStatsSummary = async (days?: number): Promise<StatsSummary> => {
@@ -24,27 +31,31 @@ export const getStreak = async (): Promise<StreakResponse> => {
   return response.data;
 };
 
-export const getWeeklyTrend = async (weeks?: number): Promise<WeeklyTrendResponse> => {
-  const response = await client.get<WeeklyTrendResponse>('/stats/weekly-trend', { params: { weeks } });
+export const getTrend = async (days?: number): Promise<TrendResponse> => {
+  const response = await client.get<TrendResponse>('/stats/trend', { params: { days } });
   return response.data;
 };
 
-export const getGenres = async (): Promise<GenresResponse> => {
-  const response = await client.get<GenresResponse>('/stats/genres');
+export const getGenres = async (days?: number): Promise<GenresResponse> => {
+  const response = await client.get<GenresResponse>('/stats/genres', { params: { days } });
   return response.data;
 };
 
-export const getThemes = async (): Promise<ThemesResponse> => {
-  const response = await client.get<ThemesResponse>('/stats/themes');
+export const getThemes = async (days?: number): Promise<ThemesResponse> => {
+  const response = await client.get<ThemesResponse>('/stats/themes', { params: { days } });
   return response.data;
 };
 
-export const getCompanies = async (role: 'developer' | 'publisher', limit?: number): Promise<CompaniesResponse> => {
-  const response = await client.get<CompaniesResponse>('/stats/companies', { params: { role, limit } });
+export const getCompanies = async (
+  role: 'developer' | 'publisher',
+  limit?: number,
+  days?: number,
+): Promise<CompaniesResponse> => {
+  const response = await client.get<CompaniesResponse>('/stats/companies', { params: { role, limit, days } });
   return response.data;
 };
 
-export const getReleaseYears = async (): Promise<ReleaseYearsResponse> => {
-  const response = await client.get<ReleaseYearsResponse>('/stats/release-years');
+export const getReleaseYears = async (days?: number): Promise<ReleaseYearsResponse> => {
+  const response = await client.get<ReleaseYearsResponse>('/stats/release-years', { params: { days } });
   return response.data;
 };

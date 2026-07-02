@@ -6,7 +6,7 @@ import {
   RankingPanel,
   HeatmapPanel,
   StreakPanel,
-  WeeklyTrendPanel,
+  TrendPanel,
   GenresPanel,
   ThemesPanel,
   CompaniesPanel,
@@ -54,11 +54,11 @@ export function AnalyticsPage() {
         <StreakPanel className={styles.span3} />
         <HeatmapPanel days={days} className={styles.span6} />
         <RankingPanel days={days} className={styles.span6} />
-        <WeeklyTrendPanel weeks={12} className={styles.span6} />
-        <GenresPanel className={styles.span3} />
-        <ThemesPanel className={styles.span3} />
-        <CompaniesPanel className={styles.span6} />
-        <ReleaseYearsPanel className={styles.span6} />
+        <TrendPanel days={days} className={styles.span6} />
+        <GenresPanel days={days} className={styles.span3} />
+        <ThemesPanel days={days} className={styles.span3} />
+        <CompaniesPanel days={days} className={styles.span6} />
+        <ReleaseYearsPanel days={days} className={styles.span6} />
       </div>
     </div>
   );

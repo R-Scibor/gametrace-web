@@ -85,9 +85,9 @@ export const handlers = [
     const url = new URL(request.url);
     const status = url.searchParams.get('status');
     if (status === 'NEEDS_REVIEW') {
-      return HttpResponse.json(fixtures.gamesReview);
+      return HttpResponse.json(fixtures.gamesReviewList);
     }
-    return HttpResponse.json(fixtures.games);
+    return HttpResponse.json(fixtures.gamesList);
   }),
 
   http.get('/api/v1/games/:id/sessions', ({ request }) => {
@@ -101,8 +101,8 @@ export const handlers = [
     return HttpResponse.json({ game_id: 1, name: 'Wiedźmin 3' });
   }),
 
-  http.put('/api/v1/games/:id/cover', ({ params }) => {
-    return HttpResponse.json({ ...fixtures.game, id: Number(params.id) });
+  http.put('/api/v1/games/:id/cover', () => {
+    return HttpResponse.json({ detail: 'Cover upload disabled' }, { status: 403 });
   }),
 
   http.put('/api/v1/user/preferences/:id', () => new HttpResponse(null, { status: 204 })),
@@ -115,7 +115,7 @@ export const handlers = [
 
   http.get('/api/v1/stats/streak', () => HttpResponse.json(fixtures.streak)),
 
-  http.get('/api/v1/stats/weekly-trend', () => HttpResponse.json(fixtures.weeklyTrend)),
+  http.get('/api/v1/stats/trend', () => HttpResponse.json(fixtures.trend)),
 
   http.get('/api/v1/stats/genres', () => HttpResponse.json(fixtures.genres)),
 
