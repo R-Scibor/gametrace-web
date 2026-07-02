@@ -1,11 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useGamesPaginated } from '../hooks/useGames';
 import { SectionHeader, EmptyState, Skeleton, Button } from '../components/ui';
 import { GameCard } from '../components/games/GameCard';
+import { useGamesStore } from '../store/gamesStore';
 import type { EnrichmentStatus } from '../types/api';
 import styles from './LibraryPage.module.css';
 
-type LibraryTab = 'all' | 'review';
+type LibraryTab = 'all' | 'review' | 'other';
 
 function LibrarySkeleton() {
   return (
@@ -17,22 +19,46 @@ function LibrarySkeleton() {
   );
 }
 
+function tabToFilter(tab: LibraryTab, q?: string) {
+  if (tab === 'review') return { status: 'NEEDS_REVIEW' as EnrichmentStatus, q };
+  if (tab === 'other') return { inLibrary: false, q };
+  return { q };
+}
+
 export function LibraryPage() {
   const [tab, setTab] = useState<LibraryTab>('all');
   const [query, setQuery] = useState('');
-  const status: EnrichmentStatus | undefined = tab === 'review' ? 'NEEDS_REVIEW' : undefined;
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+  const queryClient = useQueryClient();
+  const gamesStale = useGamesStore((s) => s.stale);
+  const markFresh = useGamesStore((s) => s.markFresh);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    if (!gamesStale) return;
+    void queryClient.invalidateQueries({ queryKey: ['games'] });
+    markFresh();
+  }, [gamesStale, markFresh, queryClient]);
+
+  const filter = useMemo(() => tabToFilter(tab, debouncedQuery || undefined), [tab, debouncedQuery]);
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGamesPaginated(status);
+    useGamesPaginated(filter);
 
   const games = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data]);
   const totalCount = data?.pages[0]?.total;
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return games;
-    return games.filter((game) => game.primary_name.toLowerCase().includes(q));
-  }, [games, query]);
 
-  const showSearchEmpty = !isLoading && games.length > 0 && filtered.length === 0;
+  const emptyMessage =
+    tab === 'review'
+      ? 'Brak gier wymagających sprawdzenia.'
+      : tab === 'other'
+        ? 'Brak gier poza biblioteką.'
+        : debouncedQuery
+          ? `Brak wyników dla „${debouncedQuery}".`
+          : 'Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!';
 
   return (
     <div className={styles.container}>
@@ -52,6 +78,13 @@ export function LibraryPage() {
             onClick={() => setTab('review')}
           >
             Do sprawdzenia
+          </button>
+          <button
+            type="button"
+            className={[styles.tab, tab === 'other' ? styles.tabActive : ''].filter(Boolean).join(' ')}
+            onClick={() => setTab('other')}
+          >
+            Inne
           </button>
         </div>
       </div>
@@ -75,35 +108,21 @@ export function LibraryPage() {
       )}
 
       {!isLoading && !isError && games.length === 0 && (
-        <EmptyState
-          message={
-            tab === 'review'
-              ? 'Brak gier wymagających sprawdzenia.'
-              : 'Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!'
-          }
-        />
+        <EmptyState message={emptyMessage} />
       )}
 
-      {showSearchEmpty && (
-        <EmptyState message={`Brak wyników dla „${query.trim()}”.`} />
-      )}
-
-      {!isLoading && filtered.length > 0 && (
+      {!isLoading && games.length > 0 && (
         <>
           <p className={styles.count}>
-            {query.trim()
-              ? filtered.length
-              : totalCount != null
-                ? totalCount
-                : filtered.length}
-            {!query.trim() && hasNextPage ? '+' : ''} {(query.trim() ? filtered.length : (totalCount ?? filtered.length)) === 1 ? 'gra' : 'gier'}
+            {totalCount ?? games.length}
+            {hasNextPage ? '+' : ''} {(totalCount ?? games.length) === 1 ? 'gra' : 'gier'}
           </p>
           <div className={styles.grid}>
-            {filtered.map((game) => (
+            {games.map((game) => (
               <GameCard key={game.id} game={game} />
             ))}
           </div>
-          {!query.trim() && hasNextPage && (
+          {hasNextPage && (
             <div className={styles.loadMore}>
               <Button
                 variant="secondary"

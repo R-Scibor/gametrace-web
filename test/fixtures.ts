@@ -48,6 +48,24 @@ export const gameNeedsReview: Game = {
   is_accepted: false,
 };
 
+export const gameIgnored: Game = {
+  id: 4,
+  primary_name: 'Stara Gra',
+  cover_image_url: null,
+  cover_source: 'EXTERNAL',
+  enrichment_status: 'ENRICHED',
+  is_ignored: true,
+  is_accepted: true,
+};
+
+export const gameStats = {
+  game_id: 1,
+  total_seconds: 7200,
+  session_count: 1,
+  first_played: '2026-06-10T18:00:00Z',
+  last_played: '2026-06-10T20:00:00Z',
+};
+
 export const session: Session = {
   id: 1,
   game_id: 1,
@@ -153,8 +171,10 @@ export const fixtures = {
   profileMe,
   game,
   gameNeedsReview,
-  gamesList: { total: 3, items: [game, game2, gameNeedsReview] },
+  gamesList: { total: 2, items: [game, game2] },
   gamesReviewList: { total: 1, items: [gameNeedsReview] },
+  gamesOtherList: { total: 2, items: [gameNeedsReview, gameIgnored] },
+  gameStats,
   session,
   sessionError,
   sessions: [session, sessionError],

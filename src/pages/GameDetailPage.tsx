@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Link, useParams, Navigate } from 'react-router-dom';
-import { useGamesAll, useGamePreference } from '../hooks/useGames';
+import { useMemo, useState } from 'react';
+import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
+import { useGamesAll, useUpdateGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
+import { useGameStats } from '../hooks/useGameStats';
 import { Cover } from '../components/Cover';
 import { CoverUpload } from '../components/library/CoverUpload';
 import { MergeDialog } from '../components/library/MergeDialog';
@@ -34,41 +35,47 @@ function GameDetailSkeleton() {
 export function GameDetailPage() {
   const { gameId } = useParams();
   const id = Number(gameId);
+  const location = useLocation();
+  const gameFromNav = (location.state as { game?: Game } | null)?.game;
   const [mergeOpen, setMergeOpen] = useState(false);
-  const [ignored, setIgnored] = useState<boolean | null>(null);
 
   const { data: games, isLoading: gamesLoading } = useGamesAll();
-  const { data: sessions, isLoading: sessionsLoading } = useGameSessions(id);
-  const prefMut = useGamePreference(id);
+  const { data: stats, isLoading: statsLoading } = useGameStats(id);
+  const {
+    data: sessionPages,
+    isLoading: sessionsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGameSessions(id);
+  const prefMut = useUpdateGamePreference(id);
 
-  if (gamesLoading || sessionsLoading) return <GameDetailSkeleton />;
+  const gameFromList = gameFromNav ?? games?.find((g) => g.id === id);
+  const sessions = useMemo(() => sessionPages?.pages.flat() ?? [], [sessionPages]);
 
-  const gameFromList = games?.find((g) => g.id === id);
-  const likelyIgnored = !gameFromList && (sessions?.length ?? 0) > 0;
+  const game: Game | null = useMemo(
+    () =>
+      gameFromList ?? (sessions[0]?.game
+        ? {
+            id,
+            primary_name: sessions[0].game.primary_name,
+            cover_image_url: sessions[0].game.cover_image_url,
+            cover_source: 'EXTERNAL' as const,
+            enrichment_status: 'ENRICHED' as const,
+            is_ignored: false,
+            is_accepted: true,
+          }
+        : null),
+    [gameFromList, sessions, id],
+  );
 
-  const game: Game | null = gameFromList ?? (sessions?.[0]?.game
-    ? {
-        id,
-        primary_name: sessions[0].game.primary_name,
-        cover_image_url: sessions[0].game.cover_image_url,
-        cover_source: 'EXTERNAL',
-        enrichment_status: 'ENRICHED',
-        is_ignored: likelyIgnored,
-        is_accepted: true,
-      }
-    : null);
-
+  if (gamesLoading || statsLoading || sessionsLoading) return <GameDetailSkeleton />;
   if (!game) return <Navigate to="/library" replace />;
 
-  const completed = sessions?.filter((s) => s.duration_seconds) || [];
-  const totalSeconds = completed.reduce((sum, s) => sum + (s.duration_seconds || 0), 0);
-  const avgSeconds = completed.length ? Math.round(totalSeconds / completed.length) : 0;
-  const isIgnored = ignored ?? gameFromList?.is_ignored ?? likelyIgnored;
-
-  const toggleIgnore = () => {
-    const next = !isIgnored;
-    prefMut.mutate(next, { onSuccess: () => setIgnored(next) });
-  };
+  const sessionCount = stats?.session_count ?? 0;
+  const totalSeconds = stats?.total_seconds ?? 0;
+  const avgSeconds = sessionCount ? Math.round(totalSeconds / sessionCount) : 0;
+  const canAccept = game.enrichment_status === 'NEEDS_REVIEW' && game.is_accepted !== true;
 
   return (
     <div className={styles.container}>
@@ -82,13 +89,11 @@ export function GameDetailPage() {
         </div>
         <div className={styles.info}>
           <h1 className={styles.title}>{game.primary_name}</h1>
-          {game.enrichment_status === 'NEEDS_REVIEW' && (
-            <span className={styles.reviewBadge}>DO SPRAWDZENIA</span>
-          )}
-          {isIgnored && <span className={styles.ignoredBadge}>IGNOROWANA</span>}
+          {canAccept && <span className={styles.reviewBadge}>DO SPRAWDZENIA</span>}
+          {game.is_ignored && <span className={styles.ignoredBadge}>IGNOROWANA</span>}
           <div className={styles.stats}>
             <div className={styles.stat}>
-              <span className={styles.statValue}>{sessions?.length || 0}</span>
+              <span className={styles.statValue}>{sessionCount}</span>
               <span className={styles.statLabel}>SESJE</span>
             </div>
             <div className={styles.stat}>
@@ -108,6 +113,15 @@ export function GameDetailPage() {
         <div className={styles.actionsGrid}>
           <CoverUpload gameId={id} coverUrl={game.cover_image_url} gameName={game.primary_name} />
           <div className={styles.actionButtons}>
+            {canAccept && (
+              <Button
+                type="button"
+                disabled={prefMut.isPending}
+                onClick={() => prefMut.mutate({ is_ignored: false, is_accepted: true })}
+              >
+                ZAAKCEPTUJ GRĘ
+              </Button>
+            )}
             <Button type="button" variant="secondary" onClick={() => setMergeOpen(true)}>
               POŁĄCZ Z GRĄ
             </Button>
@@ -115,9 +129,9 @@ export function GameDetailPage() {
               type="button"
               variant="secondary"
               disabled={prefMut.isPending}
-              onClick={toggleIgnore}
+              onClick={() => prefMut.mutate({ is_ignored: !game.is_ignored })}
             >
-              {isIgnored ? 'PRZYWRÓĆ DO BIBLIOTEKI' : 'IGNORUJ GRĘ'}
+              {game.is_ignored ? 'PRZYWRÓĆ DO BIBLIOTEKI' : 'IGNORUJ GRĘ'}
             </Button>
           </div>
         </div>
@@ -125,7 +139,18 @@ export function GameDetailPage() {
 
       <div>
         <SectionHeader title="Historia sesji" />
-        <SessionList sessions={sessions || []} />
+        <SessionList sessions={sessions} />
+        {hasNextPage && (
+          <div className={styles.loadMore}>
+            <Button
+              variant="secondary"
+              loading={isFetchingNextPage}
+              onClick={() => fetchNextPage()}
+            >
+              ZAŁADUJ WIĘCEJ
+            </Button>
+          </div>
+        )}
       </div>
 
       {mergeOpen && (

@@ -84,10 +84,23 @@ export const handlers = [
   http.get('/api/v1/games', ({ request }) => {
     const url = new URL(request.url);
     const status = url.searchParams.get('status');
-    if (status === 'NEEDS_REVIEW') {
-      return HttpResponse.json(fixtures.gamesReviewList);
+    const inLibrary = url.searchParams.get('in_library');
+    const q = url.searchParams.get('q')?.toLowerCase();
+
+    let list = fixtures.gamesList;
+    if (status === 'NEEDS_REVIEW') list = fixtures.gamesReviewList;
+    else if (inLibrary === 'false') list = fixtures.gamesOtherList;
+
+    if (q) {
+      const items = list.items.filter((g) => g.primary_name.toLowerCase().includes(q));
+      return HttpResponse.json({ total: items.length, items });
     }
-    return HttpResponse.json(fixtures.gamesList);
+
+    return HttpResponse.json(list);
+  }),
+
+  http.get('/api/v1/games/:id/stats', ({ params }) => {
+    return HttpResponse.json({ ...fixtures.gameStats, game_id: Number(params.id) });
   }),
 
   http.get('/api/v1/games/:id/sessions', ({ request }) => {

@@ -1,5 +1,5 @@
 import client from './client';
-import type { EnrichmentStatus, GameListResponse, GameResolveResponse, Session } from '../types/api';
+import type { EnrichmentStatus, GameListResponse, GameResolveResponse, GameStats, Session } from '../types/api';
 
 export interface GetGamesOptions {
   skip?: number;
@@ -14,6 +14,11 @@ export const getGames = async (opts: GetGamesOptions = {}): Promise<GameListResp
   const response = await client.get<GameListResponse>('/games', {
     params: { skip, limit, status, q, in_library: inLibrary },
   });
+  return response.data;
+};
+
+export const getGameStats = async (gameId: number): Promise<GameStats> => {
+  const response = await client.get<GameStats>(`/games/${gameId}/stats`);
   return response.data;
 };
 

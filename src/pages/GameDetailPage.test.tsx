@@ -27,6 +27,27 @@ test('GameDetailPage renders game stats and session history', async () => {
   expect(screen.getByText('SESJE')).toBeInTheDocument();
 });
 
+test('GameDetailPage accept button calls preferences API for NEEDS_REVIEW game', async () => {
+  let body: Record<string, unknown> | null = null;
+  server.use(
+    http.put('/api/v1/user/preferences/:id', async ({ request }) => {
+      body = (await request.json()) as Record<string, unknown>;
+      return new HttpResponse(null, { status: 204 });
+    }),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <Route path="/library/:gameId" element={<GameDetailPage />} />,
+    { route: '/library/3' },
+  );
+
+  await screen.findByRole('button', { name: /Zaakceptuj grę/i });
+  await user.click(screen.getByRole('button', { name: /Zaakceptuj grę/i }));
+
+  await waitFor(() => expect(body).toEqual({ is_ignored: false, is_accepted: true }));
+});
+
 test('GameDetailPage ignore toggle calls preferences API', async () => {
   let prefCalled = false;
   server.use(

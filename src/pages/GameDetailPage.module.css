@@ -104,6 +104,11 @@
   letter-spacing: 1px;
   text-transform: uppercase;
 }
+.loadMore {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+}
 @media (max-width: 640px) {
   .hero {
     flex-direction: column;

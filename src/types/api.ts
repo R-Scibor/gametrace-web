@@ -19,6 +19,13 @@ export interface GameListResponse {
   total: number;
   items: Game[];
 }
+export interface GameStats {
+  game_id: number;
+  total_seconds: number;
+  session_count: number;
+  first_played: string;
+  last_played: string;
+}
 export interface GamePreferenceUpdate {
   is_ignored?: boolean;
   is_accepted?: boolean;
