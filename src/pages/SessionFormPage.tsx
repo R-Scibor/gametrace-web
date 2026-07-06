@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { FormEvent } from 'react';
 import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getSession } from '../api/sessions';
+import { useSession } from '../hooks/useSession';
 import { ConflictNotice } from '../components/ConflictNotice';
 import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
 import { GameSelect } from '../components/games/GameSelect';
@@ -13,7 +12,7 @@ import {
   useDeleteSession,
 } from '../hooks/useSessions';
 import { parseConflict } from '../lib/conflict';
-import { qk } from '../lib/queryKeys';
+
 import styles from './SessionFormPage.module.css';
 
 const toLocalDatetime = (iso: string) => {
@@ -42,16 +41,12 @@ export function SessionFormPage() {
   const [gameId, setGameId] = useState<number | ''>('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [notes, setNotes] = useState('');
+  const [voiceNote, setVoiceNote] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
   const [dismissedConflict, setDismissedConflict] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const { data: session, isLoading } = useQuery({
-    queryKey: qk.session(sessionId),
-    queryFn: () => getSession(sessionId),
-    enabled: isEditing,
-  });
+  const { data: session, isLoading } = useSession(sessionId, isEditing);
 
   const createMut = useCreateSession();
   const updateMut = usePatchSession(sessionId, session?.game_id);
@@ -69,7 +64,6 @@ export function SessionFormPage() {
       setGameId(session.game_id);
       setStartTime(toLocalDatetime(session.start_time));
       if (session.end_time) setEndTime(toLocalDatetime(session.end_time));
-      setNotes(session.notes || '');
       setInitialized(true);
     } else if (!isEditing && !initialized) {
       const qGameId = searchParams.get('gameId');
@@ -78,7 +72,7 @@ export function SessionFormPage() {
       const qNote = searchParams.get('note');
 
       if (qGameId) setGameId(Number(qGameId));
-      if (qNote) setNotes(qNote);
+      if (qNote) setVoiceNote(qNote);
       if (qStart) {
         setStartTime(qStart);
         if (qEnd) setEndTime(qEnd);
@@ -118,10 +112,7 @@ export function SessionFormPage() {
 
     if (isEditing) {
       updateMut.mutate(
-        {
-          end_time: endTime ? new Date(endTime).toISOString() : undefined,
-          notes: notes || '',
-        },
+        { end_time: endTime ? new Date(endTime).toISOString() : undefined },
         { onSuccess: () => navigate(-1) },
       );
     } else {
@@ -130,7 +121,6 @@ export function SessionFormPage() {
           game_id: Number(gameId),
           start_time: new Date(startTime).toISOString(),
           end_time: new Date(endTime).toISOString(),
-          notes: notes || '',
         },
         { onSuccess: () => navigate('/') },
       );
@@ -148,17 +138,20 @@ export function SessionFormPage() {
 
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Gra</label>
+          <label htmlFor="session-game" className={styles.label}>Gra</label>
           <GameSelect
+            id="session-game"
             value={gameId}
             onChange={(v) => { setGameId(v); clearConflict(); }}
             disabled={isEditing || pending}
+            aria-label="Gra"
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Rozpoczęcie</label>
+          <label htmlFor="session-start" className={styles.label}>Rozpoczęcie</label>
           <input
+            id="session-start"
             type="datetime-local"
             value={startTime}
             onChange={(e) => { setStartTime(e.target.value); clearConflict(); }}
@@ -169,8 +162,9 @@ export function SessionFormPage() {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Zakończenie</label>
+          <label htmlFor="session-end" className={styles.label}>Zakończenie</label>
           <input
+            id="session-end"
             type="datetime-local"
             value={endTime}
             onChange={(e) => { setEndTime(e.target.value); clearConflict(); }}
@@ -180,16 +174,19 @@ export function SessionFormPage() {
           />
         </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Notatki</label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className={styles.textarea}
-            rows={4}
-            disabled={pending}
-          />
-        </div>
+        {isEditing && session?.notes && (
+          <div className={styles.inputGroup}>
+            <span className={styles.label}>Notatka systemowa</span>
+            <p className={styles.notesReadonly}>{session.notes}</p>
+          </div>
+        )}
+
+        {!isEditing && voiceNote && (
+          <div className={styles.inputGroup}>
+            <span className={styles.label}>Transkrypcja głosu</span>
+            <p className={styles.notesReadonly}>{voiceNote}</p>
+          </div>
+        )}
 
         <div className={styles.actions}>
           <Button type="submit" variant="primary" disabled={pending}>

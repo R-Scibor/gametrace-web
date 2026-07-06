@@ -69,7 +69,7 @@ export function useDiscardSession(sessionId: number, gameId?: number) {
   const pushToast = useToastStore((s) => s.pushToast);
 
   return useMutation({
-    mutationFn: () => patchSession(sessionId, { discard: true }),
+    mutationFn: () => deleteSession(sessionId),
     onSuccess: () => {
       invalidateAfterSessionChange(queryClient, gameId);
       pushToast({ type: 'success', message: 'Sesja odrzucona.' });

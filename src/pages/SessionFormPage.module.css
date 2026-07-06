@@ -48,6 +48,18 @@
 .textarea {
   resize: vertical;
 }
+.notesReadonly {
+  margin: 0;
+  padding: 12px;
+  background-color: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text2);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
 .actions {
   display: flex;
   flex-wrap: wrap;

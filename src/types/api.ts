@@ -1,6 +1,12 @@
 // Auth
 export interface LoginRequest { username: string; timezone?: string; }
-export interface LoginResponse { token: string; discord_id: string; username: string; timezone: string; }
+export interface LoginResponse {
+  token: string;
+  discord_id: string;
+  username: string;
+  timezone: string;
+  is_admin: boolean;
+}
 
 // Games
 export interface GameBrief { id: number; primary_name: string; cover_image_url: string | null; }
@@ -41,14 +47,18 @@ export interface Session {
   notes: string | null; created_at: string; deleted_at?: string | null;
 }
 export interface TrashSession extends Session { purges_at: string; }
-export interface SessionCreate { game_id: number; start_time: string; end_time: string; notes?: string; }
-export interface SessionPatch { end_time?: string; notes?: string; discard?: boolean; }
+export interface SessionCreate { game_id: number; start_time: string; end_time: string; }
+export interface SessionPatch { end_time?: string; }
 export interface ConflictResponse { detail: string; conflicting_session: Session; }
 
 // Profile
 export interface ProfileMe {
-  discord_id: string; username: string; timezone: string;
-  weekly_report_enabled: boolean; push_enabled: boolean;
+  discord_id: string;
+  username: string;
+  timezone: string;
+  weekly_report_enabled: boolean;
+  push_enabled: boolean;
+  is_admin: boolean;
 }
 export interface ProfileSettingsUpdate {
   timezone?: string; weekly_report_enabled?: boolean; push_enabled?: boolean;

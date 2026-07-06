@@ -48,6 +48,40 @@ test('SessionFormPage edit prefills session data', async () => {
 
   expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
   await waitFor(() => {
-    expect(screen.getByDisplayValue('Test session')).toBeInTheDocument();
+    expect(screen.getByText('Test session')).toBeInTheDocument();
+  });
+});
+
+test('SessionFormPage discard sends DELETE not PATCH', async () => {
+  let patchCalled = false;
+  let deleteCalled = false;
+
+  server.use(
+    http.get('/api/v1/sessions/2', () => HttpResponse.json(fixtures.sessionError)),
+    http.patch('/api/v1/sessions/2', () => {
+      patchCalled = true;
+      return HttpResponse.json(fixtures.sessionError);
+    }),
+    http.delete('/api/v1/sessions/2', () => {
+      deleteCalled = true;
+      return new HttpResponse(null, { status: 204 });
+    }),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/" element={<div>Dashboard</div>} />
+    </>,
+    { route: '/sessions/2/edit' },
+  );
+
+  await screen.findByText('Edytuj sesję');
+  await user.click(await screen.findByRole('button', { name: /Odrzuć sesję/i }));
+
+  await waitFor(() => {
+    expect(deleteCalled).toBe(true);
+    expect(patchCalled).toBe(false);
   });
 });
