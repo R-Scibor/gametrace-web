@@ -38,7 +38,7 @@ weekly trend, genres, themes, companies, release-years, trash/restore, game igno
 - Single user, authenticated by **Discord username** (pre-registered via the bot's `/login`
   slash command). `POST /api/v1/auth/login` issues a bearer token; 30-day sliding-window expiry.
 - Token + minimal user profile persist in `localStorage` (Zustand `persist`).
-- A 401 from any call clears auth and redirects to `/login`.
+- A 401 from any call clears auth (and query cache). Unauthenticated access to protected routes redirects to `/welcome` (not `/login`); `/login` remains the explicit sign-in page.
 - Login captures the browser timezone (`Intl.DateTimeFormat().resolvedOptions().timeZone`) and
   sends it so the backend's timezone-aware stats are correct.
 
@@ -64,7 +64,7 @@ weekly trend, genres, themes, companies, release-years, trash/restore, game igno
 Browser ──(https://gametrace.home)──► Nginx Proxy Manager (SSL)
                                           │
                                           ▼
-                         gametrace-web container (nginx :80, host :3060)
+                         gametrace-web container (nginx :80, host :8020)
                           ├─ /                serve static SPA (try_files → index.html)
                           ├─ /api/v1/*  ─────► proxy_pass http://<backend>:8010
                           └─ /covers/*  ─────► proxy_pass http://<backend>:8010
@@ -76,10 +76,9 @@ Browser ──(https://gametrace.home)──► Nginx Proxy Manager (SSL)
   at `homelab:8010`.
 - **Dev mode**: Vite dev server proxies `/api` and `/covers` to `http://homelab:8010`
   (configured in `vite.config.ts`), reproducing the same-origin shape locally.
-- **Cover images**: unlike mobile (which stores custom covers on-device in a local-covers
-  store), web has no filesystem. The web client uses the server-rendered `cover_image_url`
-  directly and, after a custom upload via `PUT /games/{id}/cover`, relies on the refreshed
-  game record. The mobile `localCoversStore` is **not** ported.
+- **Cover images**: server cover upload (`PUT /games/{id}/cover`) is not available to the
+  web client (403). Custom covers are stored **locally** in `localCoversStore` (browser
+  `localStorage`), matching the mobile pattern. Server `cover_image_url` is the fallback.
 
 ## 6. Navigation & Layout
 
@@ -96,11 +95,9 @@ Persistent **left sidebar** (collapses to icons under ~1100px):
 🗑 Kosz           (Trash, /trash)
 ⚙ Ustawienia     (Settings, /settings)
 ─────────────
-[bot status pill]
-[user / logout]
 ```
 
-Top bar (sticky): page title/eyebrow on the left; on the right a **bot/health status pill**
+Top bar (sticky): page title on the left; on the right a **bot/health status pill**
 and, whenever a session is `ONGOING`, a **pinned live timer** ("AKTYWNA SESJA · 01:23:45")
 that links to the active game. Both pull from the dashboard poll / health query already in
 cache.
@@ -109,16 +106,17 @@ cache.
 
 | Route               | Page             | Contents |
 |---------------------|------------------|----------|
+| `/welcome`          | Landing          | Public onboarding — what GameTrace is, how to get started. |
 | `/login`            | Auth             | Wordmark, Discord-username field, sign-in. Redirects to `/` when already authed. |
-| `/`                 | Dashboard        | Active-session card (live timer, 30s poll) · today/7d/30d tiles · pending-error banner · recent sessions (last 5, COMPLETED+ERROR). |
-| `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia** (NEEDS_REVIEW); pagination; click → detail. |
+| `/`                 | Dashboard        | Active-session card (live timer, 30s poll) · today/7d/avg-session tiles · idle hero spotlight · pending-error banner · recent sessions (last 5, COMPLETED+ERROR). |
+| `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia / Inne**; server-side search; pagination; click → detail. |
 | `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · actions: **upload cover**, **ignore toggle**, **merge into another game**. |
 | `/analytics`        | Analytics        | The powerhouse — see §8. |
 | `/sessions/new`     | Add session      | Game search/resolve, start/end datetime, notes. **409 conflict** rendered inline with the conflicting session. Prefill via query params (from Voice). |
 | `/sessions/:id/edit`| Edit session     | Edit `end_time` + notes; **fix ERROR sessions**; **delete** (→ trash). ONGOING is read-only. |
 | `/voice`            | Voice            | Browser `MediaRecorder` capture → `POST /voice/transcribe` → resolve game → redirect to `/sessions/new` prefilled. |
 | `/trash`            | Trash            | Trashed sessions, **`purges_at` countdown**, **restore** (re-validates conflict), **hard-delete**. |
-| `/settings`         | Settings         | Profile · timezone (PUT settings) · notification toggles · bot/health/version · logout. |
+| `/settings`         | Settings         | Profile · timezone · `weekly_report_enabled` + `push_enabled` toggles · bot/health/version · logout. |
 
 ## 8. Analytics Page (the differentiator)
 
@@ -130,7 +128,7 @@ never blanks the page:
 2. **Ranking gier** — full `per_game` breakdown (sortable table + horizontal bars).
 3. **Mapa aktywności** — `GET /stats/heatmap` 7×24 grid (custom CSS grid, orange intensity).
 4. **Passa** — `GET /stats/streak` current + longest streak.
-5. **Trend tygodniowy** — `GET /stats/weekly-trend?weeks=12` line/area chart.
+5. **Trend** — `GET /stats/trend?days=N` line/area chart (granularity adapts to window).
 6. **Gatunki** — `GET /stats/genres` horizontal bars (note: tag exposure, can exceed total).
 7. **Motywy** — `GET /stats/themes` horizontal bars (same caveat).
 8. **Studia / Wydawcy** — `GET /stats/companies?role=developer|publisher` top-N, role toggle.
@@ -143,8 +141,8 @@ Pending errors (from `/stats/summary`) surface a "napraw" link to the relevant e
 API modules mirror the backend, ported and extended from the mobile `app/api/*`:
 
 - `auth` (login, logout), `profile` (me, settings), `sessions` (list, get, trash, create,
-  patch, delete, restore, hard-delete), `games` (list, resolve, sessions, merge, cover),
-  `stats` (summary, dashboard, heatmap, streak, weekly-trend, genres, themes, companies,
+  patch, delete, restore, hard-delete), `games` (list as `GameListResponse`, resolve, sessions, stats, merge),
+  `stats` (summary, dashboard, heatmap, streak, trend, genres, themes, companies,
   release-years), `voice` (transcribe), `preferences` (upsert, delete), `health`.
 
 One typed TanStack Query hook per concern. Query keys are structured for targeted
@@ -152,7 +150,7 @@ invalidation — e.g. creating/patching/deleting a session invalidates
 `['dashboard']`, `['sessions']`, the affected `['game', id, 'sessions']`, and `['stats', ...]`.
 
 Shared types live in `src/types/api.ts`, ported from mobile and extended with the
-endpoint shapes mobile never used (heatmap cell, streak, weekly-trend point, genre/theme/company
+endpoint shapes mobile never used (heatmap cell, streak, trend bucket, genre/theme/company
 entry, release-year bucket, trash row with `purges_at`, profile/settings).
 
 ## 10. Design System (evolved/refined)
@@ -169,7 +167,7 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 
 ## 11. Error Handling
 
-- Global axios 401 interceptor → clear auth → redirect `/login`.
+- Global axios 401 interceptor → `teardownAuth()` (clear token + query cache). Route guard sends unauthenticated users to `/welcome`.
 - Per-panel/query error UI (ported `ErrorBanner`), never a full-page blank for one failure.
 - **409 conflict** on session create/restore: parse `ConflictResponse`
   (`detail.detail` + `detail.conflicting_session`) and render the conflicting session inline.
@@ -196,14 +194,12 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 
 - **Multi-stage Dockerfile**: `node:22-alpine` build (`npm ci && npm run build`) →
   `nginx:alpine` serving `/dist` with SPA fallback + the `/api` & `/covers` proxy.
-- **`docker-compose.yml`**: `gametrace-web` service, `3060:80`, `restart: unless-stopped`,
-  `label app=gametrace-web`. Reaches the backend via the backend's Docker network (preferred)
-  or `proxy_pass http://homelab:8010` as a fallback. The backend network/upstream is a
-  deploy-time decision recorded in the README.
-- **NPM**: new proxy host `gametrace.home → gametrace-web:80` (or host `:3060`) with SSL.
-  `.home` resolves via Pi-hole.
-- Port **3060** confirmed free (3050 = portfolio-site).
-- Optional later: a GitHub Actions workflow mirroring other homelab services.
+- **`docker-compose.yml`**: `gametrace-web` service, `8020:80`, `restart: unless-stopped`,
+  `label app=gametrace-web`. Reaches the backend via the `gametrace-backend_default` Docker
+  network (`gametrace_api:8010`).
+- **NPM**: proxy host `gametrace.home → host :8020` with SSL. `.home` resolves via Pi-hole.
+- Port **8020** (3050 = portfolio-site, 3060 unused).
+- **CI**: GitHub Actions runs lint, test, build, and a Docker build smoke step.
 
 ## 15. Repo Structure
 

@@ -23,3 +23,5 @@ jobs:
       - run: npm run test:run
 
       - run: npm run build
+
+      - run: docker build -t gametrace-web:ci .

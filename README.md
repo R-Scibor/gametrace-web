@@ -8,14 +8,30 @@ See `docs/DESIGN.md` for the product spec.
 
 React 19, TypeScript, Vite, React Router v7, TanStack Query, Zustand, axios, Recharts, CSS Modules.
 
-## Routes (public)
+## Routes
+
+### Public
 
 | Path | Purpose |
 |------|---------|
 | `/welcome` | Landing — what GameTrace is, onboarding, how to use |
 | `/login` | Sign in with Discord username (requires prior `/login` on the bot) |
 
-Unauthenticated users hitting any app route are redirected to `/welcome`.
+Unauthenticated users hitting any protected route are redirected to `/welcome`.
+
+### Protected (requires auth)
+
+| Path | Purpose |
+|------|---------|
+| `/` | Dashboard — active session, stat tiles, recent sessions |
+| `/library` | Library grid with tabs, search, pagination |
+| `/library/:gameId` | Game detail — stats, sessions, cover, merge, ignore |
+| `/analytics` | Analytics panels (`?days=` window, default 7) |
+| `/sessions/new` | Create session (voice prefill via query params) |
+| `/sessions/:id/edit` | Edit / discard / delete session |
+| `/voice` | Voice capture → transcribe → prefill new session |
+| `/trash` | Trashed sessions — restore or hard-delete |
+| `/settings` | Profile, timezone, notification toggles, logout |
 
 ## Development
 
@@ -36,10 +52,26 @@ VITE_BACKEND_ORIGIN=http://homelab:8010 npm run dev
 |---------|-------------|
 | `npm run dev` | Vite dev server with HMR |
 | `npm run build` | Type-check + production build |
-| `npm run preview` | Preview production build |
+| `npm run preview` | Preview production build (no API proxy — see below) |
 | `npm run test` | Vitest watch mode |
 | `npm run test:run` | Vitest single run |
+| `npm run test:coverage` | Vitest with coverage (70% line threshold) |
 | `npm run lint` | ESLint |
+
+### Preview warning
+
+`npm run preview` serves the static build only. It does **not** proxy `/api` or `/covers` — authenticated pages will fail unless you run behind nginx or configure a reverse proxy yourself. Use `npm run dev` for local full-stack development.
+
+## Testing
+
+Tests use Vitest + React Testing Library + MSW (full `/api/v1` mock surface).
+
+```bash
+npm run test:run          # single run
+npm run test:coverage     # with coverage report
+```
+
+Setup lives in `test/setup.ts` (global store reset), `test/handlers.ts` (MSW handlers), and `test/utils.tsx` (`renderPage`, `seedAuth`).
 
 ## Deployment
 
