@@ -7,6 +7,7 @@ import { SessionFormPage } from './SessionFormPage';
 import { renderAppRoutes, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
 import { fixtures } from '../../test/fixtures';
+import { setVoiceTranscriptPrefill } from '../lib/voicePrefill';
 
 beforeEach(() => {
   resetStores();
@@ -50,6 +51,36 @@ test('SessionFormPage edit prefills session data', async () => {
   await waitFor(() => {
     expect(screen.getByText('Test session')).toBeInTheDocument();
   });
+});
+
+test('SessionFormPage ERROR session hides trash delete button', async () => {
+  server.use(http.get('/api/v1/sessions/2', () => HttpResponse.json(fixtures.sessionError)));
+
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/2/edit' },
+  );
+
+  await screen.findByText('Edytuj sesję');
+  expect(screen.getByRole('button', { name: /Odrzuć sesję/i })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /Usuń sesję/i })).not.toBeInTheDocument();
+});
+
+test('SessionFormPage create shows voice transcript preview from sessionStorage', async () => {
+  setVoiceTranscriptPrefill('grałem dwa godziny w cyberpunka');
+
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/new' },
+  );
+
+  expect(await screen.findByText('Podgląd transkrypcji')).toBeInTheDocument();
+  expect(screen.getByText('Tylko podgląd — nie zapisuje się w sesji.')).toBeInTheDocument();
+  expect(screen.getByText('grałem dwa godziny w cyberpunka')).toBeInTheDocument();
 });
 
 test('SessionFormPage discard sends DELETE not PATCH', async () => {

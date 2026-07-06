@@ -12,6 +12,7 @@ import {
   useDeleteSession,
 } from '../hooks/useSessions';
 import { parseConflict } from '../lib/conflict';
+import { consumeVoiceTranscriptPrefill } from '../lib/voicePrefill';
 
 import styles from './SessionFormPage.module.css';
 
@@ -69,10 +70,9 @@ export function SessionFormPage() {
       const qGameId = searchParams.get('gameId');
       const qStart = searchParams.get('startTime');
       const qEnd = searchParams.get('endTime');
-      const qNote = searchParams.get('note');
-
       if (qGameId) setGameId(Number(qGameId));
-      if (qNote) setVoiceNote(qNote);
+      const transcript = consumeVoiceTranscriptPrefill();
+      if (transcript) setVoiceNote(transcript);
       if (qStart) {
         setStartTime(qStart);
         if (qEnd) setEndTime(qEnd);
@@ -183,7 +183,8 @@ export function SessionFormPage() {
 
         {!isEditing && voiceNote && (
           <div className={styles.inputGroup}>
-            <span className={styles.label}>Transkrypcja głosu</span>
+            <span className={styles.label}>Podgląd transkrypcji</span>
+            <p className={styles.notesHint}>Tylko podgląd — nie zapisuje się w sesji.</p>
             <p className={styles.notesReadonly}>{voiceNote}</p>
           </div>
         )}
@@ -207,7 +208,7 @@ export function SessionFormPage() {
               ODRZUĆ SESJĘ
             </Button>
           )}
-          {isEditing && session?.status !== 'ONGOING' && (
+          {isEditing && session?.status === 'COMPLETED' && (
             <Button
               type="button"
               variant="secondary"

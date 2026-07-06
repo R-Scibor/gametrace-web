@@ -59,11 +59,28 @@ test('AnalyticsPage genre bar drills into filtered library', async () => {
   );
 
   await screen.findByText('Gatunki');
-  await waitFor(() => expect(screen.getByText('RPG')).toBeInTheDocument());
-  await user.click(screen.getByRole('button', { name: /RPG/i }));
+  await waitFor(() => expect(screen.getByText('Adventure')).toBeInTheDocument());
+  await user.click(screen.getByRole('button', { name: /Adventure/i }));
 
-  expect(await screen.findByText('Gatunek: RPG')).toBeInTheDocument();
+  expect(await screen.findByText('Gatunek: Adventure')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'CZAS GRY' })).toBeInTheDocument();
+});
+
+test('AnalyticsPage facet panels refetch when window changes', async () => {
+  const user = userEvent.setup();
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+
+  await screen.findByText('Gatunki');
+  await waitFor(() => expect(screen.getByText('Adventure')).toBeInTheDocument());
+  expect(screen.queryByText('RPG')).not.toBeInTheDocument();
+
+  const select = screen.getByLabelText('Okres');
+  await user.selectOptions(select, '30');
+
+  await waitFor(() => {
+    expect(screen.getByText('RPG')).toBeInTheDocument();
+    expect(screen.queryByText('Adventure')).not.toBeInTheDocument();
+  });
 });
 
 test('AnalyticsPage isolates panel errors', async () => {

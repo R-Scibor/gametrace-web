@@ -186,13 +186,25 @@ export const handlers = [
 
   http.get('/api/v1/stats/trend', () => HttpResponse.json(fixtures.trend)),
 
-  http.get('/api/v1/stats/genres', () => HttpResponse.json(fixtures.genres)),
+  http.get('/api/v1/stats/genres', ({ request }) => {
+    const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
+    return HttpResponse.json(days === 7 ? fixtures.genres7d : fixtures.genres);
+  }),
 
-  http.get('/api/v1/stats/themes', () => HttpResponse.json(fixtures.themes)),
+  http.get('/api/v1/stats/themes', ({ request }) => {
+    const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
+    return HttpResponse.json(days === 7 ? fixtures.themes7d : fixtures.themes);
+  }),
 
-  http.get('/api/v1/stats/companies', () => HttpResponse.json(fixtures.companies)),
+  http.get('/api/v1/stats/companies', ({ request }) => {
+    const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
+    return HttpResponse.json(days === 7 ? fixtures.companies7d : fixtures.companies);
+  }),
 
-  http.get('/api/v1/stats/release-years', () => HttpResponse.json(fixtures.releaseYears)),
+  http.get('/api/v1/stats/release-years', ({ request }) => {
+    const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
+    return HttpResponse.json(days === 7 ? fixtures.releaseYears7d : fixtures.releaseYears);
+  }),
 
   http.post('/api/v1/voice/transcribe', () => {
     return HttpResponse.json({

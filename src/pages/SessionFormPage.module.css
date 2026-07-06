@@ -48,6 +48,11 @@
 .textarea {
   resize: vertical;
 }
+.notesHint {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text3);
+}
 .notesReadonly {
   margin: 0;
   padding: 12px;

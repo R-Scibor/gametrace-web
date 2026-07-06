@@ -64,6 +64,8 @@ export function usePatchSession(sessionId: number, gameId?: number) {
   });
 }
 
+// ERROR sessions: backend has no separate "discard" — DELETE soft-deletes like trash.
+// UI copy differs; trash cache is not invalidated here (user left the edit flow).
 export function useDiscardSession(sessionId: number, gameId?: number) {
   const queryClient = useQueryClient();
   const pushToast = useToastStore((s) => s.pushToast);

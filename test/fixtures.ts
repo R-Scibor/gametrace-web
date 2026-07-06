@@ -235,7 +235,11 @@ export const fixtures = {
   streak,
   trend,
   genres: { items: [{ genre: 'RPG', total_seconds: 14400 }] },
+  genres7d: { items: [{ genre: 'Adventure', total_seconds: 3600 }] },
   themes: { items: [{ theme: 'Fantasy', total_seconds: 14400 }] },
+  themes7d: { items: [{ theme: 'Open world', total_seconds: 3600 }] },
   companies: { items: [{ name: 'CD Projekt Red', total_seconds: 14400, game_count: 2 }] },
+  companies7d: { items: [{ name: 'FromSoftware', total_seconds: 3600, game_count: 1 }] },
   releaseYears: { items: [{ decade: '2010s', total_seconds: 14400 }] },
+  releaseYears7d: { items: [{ decade: '2000s', total_seconds: 3600 }] },
 };

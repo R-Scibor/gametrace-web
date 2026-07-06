@@ -47,6 +47,7 @@ export function LibraryPage() {
 
   const facet = useMemo(() => parseFacetFilter(searchParams), [searchParams]);
   const sort = useMemo(() => parseLibrarySort(searchParams), [searchParams]);
+  const activeTab: LibraryTab = facet ? 'all' : tab;
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
@@ -71,9 +72,16 @@ export function LibraryPage() {
     setSearchParams(clearFacetParams(searchParams), { replace: true });
   };
 
+  const selectTab = (next: LibraryTab) => {
+    if (next !== 'all' && facet) {
+      setSearchParams(clearFacetParams(searchParams), { replace: true });
+    }
+    setTab(next);
+  };
+
   const filter = useMemo(
-    () => tabToFilter(tab, debouncedQuery || undefined, sort, facet),
-    [tab, debouncedQuery, sort, facet],
+    () => tabToFilter(activeTab, debouncedQuery || undefined, sort, facet),
+    [activeTab, debouncedQuery, sort, facet],
   );
   const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGamesPaginated(filter);
@@ -82,9 +90,9 @@ export function LibraryPage() {
   const totalCount = data?.pages[0]?.total;
 
   const emptyMessage =
-    tab === 'review'
+    activeTab === 'review'
       ? 'Brak gier wymagających sprawdzenia.'
-      : tab === 'other'
+      : activeTab === 'other'
         ? 'Brak gier poza biblioteką.'
         : facet
           ? `Brak gier dla filtra „${facet.value}".`
@@ -99,22 +107,22 @@ export function LibraryPage() {
         <div className={styles.tabs}>
           <button
             type="button"
-            className={[styles.tab, tab === 'all' ? styles.tabActive : ''].filter(Boolean).join(' ')}
-            onClick={() => setTab('all')}
+            className={[styles.tab, activeTab === 'all' ? styles.tabActive : ''].filter(Boolean).join(' ')}
+            onClick={() => selectTab('all')}
           >
             Wszystkie
           </button>
           <button
             type="button"
-            className={[styles.tab, tab === 'review' ? styles.tabActive : ''].filter(Boolean).join(' ')}
-            onClick={() => setTab('review')}
+            className={[styles.tab, activeTab === 'review' ? styles.tabActive : ''].filter(Boolean).join(' ')}
+            onClick={() => selectTab('review')}
           >
             Do sprawdzenia
           </button>
           <button
             type="button"
-            className={[styles.tab, tab === 'other' ? styles.tabActive : ''].filter(Boolean).join(' ')}
-            onClick={() => setTab('other')}
+            className={[styles.tab, activeTab === 'other' ? styles.tabActive : ''].filter(Boolean).join(' ')}
+            onClick={() => selectTab('other')}
           >
             Inne
           </button>

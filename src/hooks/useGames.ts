@@ -6,6 +6,7 @@ import {
   type InfiniteData,
   type QueryClient,
 } from '@tanstack/react-query';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getGames, adminMergeGame } from '../api/games';
 import { upsertPreference } from '../api/preferences';
@@ -137,8 +138,12 @@ export function useMergeGame(sourceId: number) {
       pushToast({ type: 'success', message: 'Gry połączone.' });
       navigate(`/library/${targetId}`);
     },
-    onError: () => {
-      pushToast({ type: 'error', message: 'Nie udało się połączyć gier.' });
+    onError: (err) => {
+      const forbidden = axios.isAxiosError(err) && err.response?.status === 403;
+      pushToast({
+        type: 'error',
+        message: forbidden ? 'Brak uprawnień do łączenia gier.' : 'Nie udało się połączyć gier.',
+      });
     },
   });
 }

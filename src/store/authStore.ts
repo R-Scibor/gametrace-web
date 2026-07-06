@@ -36,11 +36,11 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         token: state.token,
         user: state.user,
-        isAdmin: state.isAdmin,
         isAuthenticated: state.isAuthenticated,
       }),
       onRehydrateStorage: () => () => {
-        useAuthStore.setState({ hasHydrated: true });
+        // isAdmin comes from login response + profile sync, not persisted storage.
+        useAuthStore.setState({ hasHydrated: true, isAdmin: false });
       },
     },
   ),
