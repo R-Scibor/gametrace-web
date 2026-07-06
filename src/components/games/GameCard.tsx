@@ -1,15 +1,25 @@
 import { Link } from 'react-router-dom';
-import type { Game } from '../../types/api';
+import type { Game, GameSort } from '../../types/api';
+import { useFormat } from '../../hooks/useFormat';
 import { Cover } from '../Cover';
 import styles from './GameCard.module.css';
 
 interface GameCardProps {
   game: Game;
+  sort?: GameSort;
 }
 
-export function GameCard({ game }: GameCardProps) {
+export function GameCard({ game, sort = 'name' }: GameCardProps) {
+  const { formatDuration, formatRecency } = useFormat();
   const needsReview =
     game.enrichment_status === 'NEEDS_REVIEW' && game.is_accepted !== true && !game.is_ignored;
+
+  const meta =
+    sort === 'playtime'
+      ? formatDuration(game.total_seconds)
+      : sort === 'last_played' && game.last_played
+        ? formatRecency(game.last_played)
+        : null;
 
   return (
     <Link to={`/library/${game.id}`} state={{ game }} className={styles.card}>
@@ -33,6 +43,7 @@ export function GameCard({ game }: GameCardProps) {
       <div className={styles.title} title={game.primary_name}>
         {game.primary_name}
       </div>
+      {meta && <div className={styles.meta}>{meta}</div>}
     </Link>
   );
 }

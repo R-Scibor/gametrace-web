@@ -66,3 +66,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.meta {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--display);
+  letter-spacing: 0.5px;
+}

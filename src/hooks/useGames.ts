@@ -12,7 +12,14 @@ import { upsertPreference } from '../api/preferences';
 import { qk } from '../lib/queryKeys';
 import { useGamesStore } from '../store/gamesStore';
 import { useToastStore } from '../store/toastStore';
-import type { EnrichmentStatus, Game, GameListResponse, GamePreferenceUpdate } from '../types/api';
+import type {
+  EnrichmentStatus,
+  Game,
+  GameListResponse,
+  GamePreferenceUpdate,
+  GameSort,
+  LibraryFilter,
+} from '../types/api';
 
 function applyGamePref(game: Game, pref: GamePreferenceUpdate): Game {
   return {
@@ -28,6 +35,8 @@ export type GamesLibraryFilter = {
   status?: EnrichmentStatus;
   inLibrary?: boolean;
   q?: string;
+  sort?: GameSort;
+  facet?: LibraryFilter | null;
 };
 
 function findGameInCache(queryClient: QueryClient, gameId: number): Game | undefined {
@@ -104,6 +113,8 @@ export function useGamesPaginated(filter: GamesLibraryFilter) {
         status: filter.status,
         inLibrary: filter.inLibrary,
         q: filter.q,
+        sort: filter.sort,
+        filter: filter.facet ?? undefined,
       }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _all, lastPageParam) =>

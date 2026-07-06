@@ -1,10 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { useGamesPaginated } from '../hooks/useGames';
 import { SectionHeader, EmptyState, ErrorBanner, Skeleton, Button } from '../components/ui';
 import { GameCard } from '../components/games/GameCard';
 import { useGamesStore } from '../store/gamesStore';
-import type { EnrichmentStatus } from '../types/api';
+import {
+  clearFacetParams,
+  FILTER_PREFIX,
+  GAME_SORTS,
+  parseFacetFilter,
+  parseLibrarySort,
+  persistLibrarySort,
+} from '../lib/libraryParams';
+import type { EnrichmentStatus, GameSort } from '../types/api';
 import styles from './LibraryPage.module.css';
 
 type LibraryTab = 'all' | 'review' | 'other';
@@ -19,19 +28,25 @@ function LibrarySkeleton() {
   );
 }
 
-function tabToFilter(tab: LibraryTab, q?: string) {
-  if (tab === 'review') return { status: 'NEEDS_REVIEW' as EnrichmentStatus, q };
-  if (tab === 'other') return { inLibrary: false, q };
-  return { q };
+function tabToFilter(tab: LibraryTab, q?: string, sort?: GameSort, facet?: ReturnType<typeof parseFacetFilter>) {
+  if (tab === 'review') {
+    return { status: 'NEEDS_REVIEW' as EnrichmentStatus, q, sort, facet: facet ?? null };
+  }
+  if (tab === 'other') return { inLibrary: false, q, sort, facet: facet ?? null };
+  return { q, sort, facet: facet ?? null };
 }
 
 export function LibraryPage() {
   const [tab, setTab] = useState<LibraryTab>('all');
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const gamesStale = useGamesStore((s) => s.stale);
   const markFresh = useGamesStore((s) => s.markFresh);
+
+  const facet = useMemo(() => parseFacetFilter(searchParams), [searchParams]);
+  const sort = useMemo(() => parseLibrarySort(searchParams), [searchParams]);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
@@ -44,7 +59,22 @@ export function LibraryPage() {
     markFresh();
   }, [gamesStale, markFresh, queryClient]);
 
-  const filter = useMemo(() => tabToFilter(tab, debouncedQuery || undefined), [tab, debouncedQuery]);
+  const setSort = (next: GameSort) => {
+    persistLibrarySort(next);
+    const params = new URLSearchParams(searchParams);
+    if (next === 'name') params.delete('sort');
+    else params.set('sort', next);
+    setSearchParams(params, { replace: true });
+  };
+
+  const clearFacet = () => {
+    setSearchParams(clearFacetParams(searchParams), { replace: true });
+  };
+
+  const filter = useMemo(
+    () => tabToFilter(tab, debouncedQuery || undefined, sort, facet),
+    [tab, debouncedQuery, sort, facet],
+  );
   const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGamesPaginated(filter);
 
@@ -56,9 +86,11 @@ export function LibraryPage() {
       ? 'Brak gier wymagających sprawdzenia.'
       : tab === 'other'
         ? 'Brak gier poza biblioteką.'
-        : debouncedQuery
-          ? `Brak wyników dla „${debouncedQuery}".`
-          : 'Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!';
+        : facet
+          ? `Brak gier dla filtra „${facet.value}".`
+          : debouncedQuery
+            ? `Brak wyników dla „${debouncedQuery}".`
+            : 'Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!';
 
   return (
     <div className={styles.container}>
@@ -101,6 +133,37 @@ export function LibraryPage() {
         />
       </div>
 
+      {facet && (
+        <div className={styles.chipRow}>
+          <span className={styles.chip}>
+            <span className={styles.chipText}>
+              {FILTER_PREFIX[facet.type]}: {facet.value}
+            </span>
+            <button
+              type="button"
+              className={styles.chipClear}
+              onClick={clearFacet}
+              aria-label="Wyczyść filtr"
+            >
+              ✕
+            </button>
+          </span>
+        </div>
+      )}
+
+      <div className={styles.sortRow}>
+        {GAME_SORTS.map(({ key, label }) => (
+          <button
+            key={key}
+            type="button"
+            className={[styles.sortPill, sort === key ? styles.sortPillActive : ''].filter(Boolean).join(' ')}
+            onClick={() => setSort(key)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       {isLoading && <LibrarySkeleton />}
 
       {!isLoading && (isError || !data) && (
@@ -124,7 +187,7 @@ export function LibraryPage() {
           </p>
           <div className={styles.grid}>
             {games.map((game) => (
-              <GameCard key={game.id} game={game} />
+              <GameCard key={game.id} game={game} sort={sort} />
             ))}
           </div>
           {hasNextPage && (

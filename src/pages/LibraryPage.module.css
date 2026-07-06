@@ -69,6 +69,69 @@
   outline: none;
   border-color: var(--border-bright);
 }
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 6px 10px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 12px;
+  color: var(--text2);
+}
+.chipText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chipClear {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text3);
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1;
+}
+.chipClear:hover {
+  color: var(--orange);
+}
+.sortRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sortPill {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+.sortPill:hover {
+  color: var(--text2);
+  border-color: var(--border-bright);
+}
+.sortPillActive {
+  color: var(--button-text-on-orange, #0a0a0a);
+  background-color: var(--orange);
+  border-color: var(--orange);
+}
 .count {
   font-size: 13px;
   color: var(--text3);

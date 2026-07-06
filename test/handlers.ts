@@ -101,17 +101,52 @@ export const handlers = [
     const status = url.searchParams.get('status');
     const inLibrary = url.searchParams.get('in_library');
     const q = url.searchParams.get('q')?.toLowerCase();
+    const sort = url.searchParams.get('sort') ?? 'name';
+    const genre = url.searchParams.get('genre');
+    const theme = url.searchParams.get('theme');
+    const developer = url.searchParams.get('developer');
+    const publisher = url.searchParams.get('publisher');
+    const releaseDecade = url.searchParams.get('release_decade');
 
     let list = fixtures.gamesList;
     if (status === 'NEEDS_REVIEW') list = fixtures.gamesReviewList;
     else if (inLibrary === 'false') list = fixtures.gamesOtherList;
 
+    let items = [...list.items];
+
     if (q) {
-      const items = list.items.filter((g) => g.primary_name.toLowerCase().includes(q));
-      return HttpResponse.json({ total: items.length, items });
+      items = items.filter((g) => g.primary_name.toLowerCase().includes(q));
     }
 
-    return HttpResponse.json(list);
+    if (genre) {
+      items = items.filter((g) => fixtures.gameFacets[g.id]?.genre === genre);
+    }
+    if (theme) {
+      items = items.filter((g) => fixtures.gameFacets[g.id]?.theme === theme);
+    }
+    if (developer) {
+      items = items.filter((g) => fixtures.gameFacets[g.id]?.developer === developer);
+    }
+    if (publisher) {
+      items = items.filter((g) => fixtures.gameFacets[g.id]?.publisher === publisher);
+    }
+    if (releaseDecade) {
+      items = items.filter((g) => fixtures.gameFacets[g.id]?.release_decade === releaseDecade);
+    }
+
+    if (sort === 'playtime') {
+      items.sort((a, b) => b.total_seconds - a.total_seconds);
+    } else if (sort === 'last_played') {
+      items.sort((a, b) => {
+        const aTs = a.last_played ? Date.parse(a.last_played) : 0;
+        const bTs = b.last_played ? Date.parse(b.last_played) : 0;
+        return bTs - aTs;
+      });
+    } else {
+      items.sort((a, b) => a.primary_name.localeCompare(b.primary_name));
+    }
+
+    return HttpResponse.json({ total: items.length, items });
   }),
 
   http.get('/api/v1/games/:id/stats', ({ params }) => {

@@ -26,6 +26,8 @@ export const game: Game = {
   enrichment_status: 'ENRICHED',
   is_ignored: false,
   is_accepted: true,
+  total_seconds: 14_400,
+  last_played: '2026-06-10T20:00:00Z',
 };
 
 export const game2: Game = {
@@ -36,6 +38,8 @@ export const game2: Game = {
   enrichment_status: 'ENRICHED',
   is_ignored: false,
   is_accepted: true,
+  total_seconds: 7_200,
+  last_played: '2026-06-08T18:00:00Z',
 };
 
 export const gameNeedsReview: Game = {
@@ -46,6 +50,8 @@ export const gameNeedsReview: Game = {
   enrichment_status: 'NEEDS_REVIEW',
   is_ignored: false,
   is_accepted: false,
+  total_seconds: 0,
+  last_played: null,
 };
 
 export const gameIgnored: Game = {
@@ -56,6 +62,8 @@ export const gameIgnored: Game = {
   enrichment_status: 'ENRICHED',
   is_ignored: true,
   is_accepted: true,
+  total_seconds: 3_600,
+  last_played: '2026-05-01T12:00:00Z',
 };
 
 export const gameStats = {
@@ -178,12 +186,39 @@ export const trend: TrendResponse = {
   ],
 };
 
+export const gameFacets: Record<
+  number,
+  {
+    genre?: string;
+    theme?: string;
+    developer?: string;
+    publisher?: string;
+    release_decade?: string;
+  }
+> = {
+  1: {
+    genre: 'RPG',
+    theme: 'Fantasy',
+    developer: 'CD Projekt Red',
+    publisher: 'CD Projekt Red',
+    release_decade: '2010s',
+  },
+  2: {
+    genre: 'RPG',
+    theme: 'Sci-fi',
+    developer: 'CD Projekt Red',
+    publisher: 'CD Projekt Red',
+    release_decade: '2010s',
+  },
+};
+
 export const fixtures = {
   dashboardSummary,
   dashboardNoActive,
   profileMe,
   game,
   gameNeedsReview,
+  gameFacets,
   gamesList: { total: 2, items: [game, game2] },
   gamesReviewList: { total: 1, items: [gameNeedsReview] },
   gamesOtherList: { total: 2, items: [gameNeedsReview, gameIgnored] },

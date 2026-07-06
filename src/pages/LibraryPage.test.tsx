@@ -59,6 +59,36 @@ test('LibraryPage review tab shows only NEEDS_REVIEW games', async () => {
   expect(screen.queryByText('Wiedźmin 3')).not.toBeInTheDocument();
 });
 
+test('LibraryPage playtime sort shows duration on cards', async () => {
+  const user = userEvent.setup();
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  await screen.findByText('Wiedźmin 3');
+  await user.click(screen.getByRole('button', { name: 'CZAS GRY' }));
+
+  expect(await screen.findByText('4h 0m')).toBeInTheDocument();
+});
+
+test('LibraryPage facet URL shows chip and filters games', async () => {
+  renderPage(<LibraryPage />, { route: '/library?genre=RPG&sort=playtime' });
+
+  expect(await screen.findByText('Gatunek: RPG')).toBeInTheDocument();
+  expect(await screen.findByText('Wiedźmin 3')).toBeInTheDocument();
+  expect(screen.getByText('Cyberpunk 2077')).toBeInTheDocument();
+});
+
+test('LibraryPage dismisses facet chip', async () => {
+  const user = userEvent.setup();
+  renderPage(<LibraryPage />, { route: '/library?developer=CD%20Projekt%20Red' });
+
+  await screen.findByText('Deweloper: CD Projekt Red');
+  await user.click(screen.getByRole('button', { name: 'Wyczyść filtr' }));
+
+  await waitFor(() => {
+    expect(screen.queryByText(/Deweloper:/)).not.toBeInTheDocument();
+  });
+});
+
 test('LibraryPage other tab shows out-of-library games', async () => {
   const user = userEvent.setup();
   renderPage(<LibraryPage />, { route: '/library' });
