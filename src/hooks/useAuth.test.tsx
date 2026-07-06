@@ -1,0 +1,101 @@
+import { waitFor } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
+import { test, expect, beforeEach } from 'vitest';
+import { useAuth } from './useAuth';
+import { useAuthStore } from '../store/authStore';
+import { renderHookWithProviders, resetStores } from '../../test/utils';
+import { server } from '../../test/server';
+
+beforeEach(() => {
+  resetStores();
+});
+
+test('useAuth stores token and sends timezone on username login', async () => {
+  let capturedBody: { username?: string; timezone?: string } = {};
+  server.use(
+    http.post('/api/v1/auth/login', async ({ request }) => {
+      capturedBody = (await request.json()) as { username?: string; timezone?: string };
+      return HttpResponse.json({
+        token: 'fresh-token',
+        discord_id: '999',
+        username: 'player',
+        timezone: 'Europe/Warsaw',
+        is_admin: false,
+      });
+    }),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+
+  const ok = await result.current.handleLogin('player');
+  expect(ok).toBe(true);
+
+  await waitFor(() => {
+    expect(useAuthStore.getState().token).toBe('fresh-token');
+    expect(useAuthStore.getState().user?.username).toBe('player');
+  });
+
+  expect(capturedBody?.username).toBe('player');
+  expect(typeof capturedBody?.timezone).toBe('string');
+  expect((capturedBody?.timezone as string).length).toBeGreaterThan(0);
+});
+
+test('useAuth sets error message on failed username login', async () => {
+  server.use(
+    http.post('/api/v1/auth/login', () =>
+      HttpResponse.json({ detail: 'Nieznany użytkownik' }, { status: 401 }),
+    ),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+  const ok = await result.current.handleLogin('ghost');
+
+  expect(ok).toBe(false);
+  await waitFor(() => expect(result.current.error).toBe('Nieznany użytkownik'));
+});
+
+test('useAuth stores token on successful link login', async () => {
+  let capturedBody: { code?: string; timezone?: string } = {};
+  server.use(
+    http.post('/api/v1/auth/link', async ({ request }) => {
+      capturedBody = (await request.json()) as { code?: string; timezone?: string };
+      return HttpResponse.json({
+        token: 'link-token',
+        discord_id: '888',
+        username: 'linked',
+        timezone: 'Europe/Warsaw',
+        is_admin: true,
+      });
+    }),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+  const ok = await result.current.handleLinkLogin('231 996');
+
+  expect(ok).toBe(true);
+  expect(capturedBody.code).toBe('231996');
+
+  await waitFor(() => {
+    expect(useAuthStore.getState().token).toBe('link-token');
+    expect(useAuthStore.getState().user?.username).toBe('linked');
+    expect(useAuthStore.getState().isAdmin).toBe(true);
+  });
+});
+
+test('useAuth maps expired link code to Polish error', async () => {
+  server.use(
+    http.post('/api/v1/auth/link', () =>
+      HttpResponse.json({ detail: 'Invalid' }, { status: 401 }),
+    ),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+  const ok = await result.current.handleLinkLogin('000000');
+
+  expect(ok).toBe(false);
+  await waitFor(() =>
+    expect(result.current.error).toBe(
+      'Nieprawidłowy lub wygasły kod. Uruchom /login na Discordzie ponownie.',
+    ),
+  );
+});

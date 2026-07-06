@@ -26,10 +26,10 @@ beforeEach(() => {
   useAuthStore.getState().logout();
 });
 
-test('LoginPage renders form', () => {
+test('LoginPage renders link code form by default', () => {
   renderLogin();
-  expect(screen.getByLabelText(/Nazwa Użytkownika Discord/i)).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /Zaloguj się/i })).toBeInTheDocument();
+  expect(screen.getByLabelText(/Kod logowania/i)).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i })).toBeInTheDocument();
 });
 
 test('LoginPage redirects if already authenticated', () => {
@@ -38,7 +38,19 @@ test('LoginPage redirects if already authenticated', () => {
   expect(screen.getByText('Home Page')).toBeInTheDocument();
 });
 
-test('LoginPage handles successful login', async () => {
+test('LoginPage handles successful link login', async () => {
+  renderLogin();
+
+  const input = screen.getByLabelText(/Kod logowania/i);
+  await userEvent.type(input, '231996');
+
+  const button = screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i });
+  await userEvent.click(button);
+
+  expect(await screen.findByText('Home Page')).toBeInTheDocument();
+});
+
+test('LoginPage handles successful username login in dev mode', async () => {
   server.use(
     http.post('/api/v1/auth/login', () => {
       return HttpResponse.json({
@@ -46,16 +58,19 @@ test('LoginPage handles successful login', async () => {
         discord_id: '123',
         username: 'test_user',
         timezone: 'UTC',
+        is_admin: false,
       });
     }),
   );
 
   renderLogin();
 
+  await userEvent.click(screen.getByRole('button', { name: /Zaloguj się nazwą/i }));
+
   const input = screen.getByLabelText(/Nazwa Użytkownika Discord/i);
   await userEvent.type(input, 'test_user');
 
-  const button = screen.getByRole('button', { name: /Zaloguj się/i });
+  const button = screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i });
   await userEvent.click(button);
 
   expect(await screen.findByText('Home Page')).toBeInTheDocument();

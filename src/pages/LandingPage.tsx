@@ -18,7 +18,7 @@ const STEPS = [
   {
     n: '03',
     title: 'Zaloguj się tutaj',
-    body: 'Wpisz tę samą nazwę użytkownika Discord — bez hasła. Logowanie jest zapamiętywane na 30 dni.',
+    body: 'Bot wyświetli 6-cyfrowy kod — wpisz go na stronie logowania. Bez hasła; sesja jest zapamiętywana na 30 dni.',
   },
   {
     n: '04',
@@ -157,7 +157,7 @@ export function LandingPage() {
       <footer className={[styles.footer, styles.reveal].join(' ')}>
         <div className={styles.footerLeft}>
           <span className={styles.footerDot} />
-          <span>LINK STABLE</span>
+          <span>POŁĄCZENIE STABILNE</span>
         </div>
         <span>v{health?.version ?? '—'}</span>
       </footer>
