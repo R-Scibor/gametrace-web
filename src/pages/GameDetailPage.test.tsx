@@ -6,6 +6,7 @@ import { test, expect, beforeEach } from 'vitest';
 import { GameDetailPage } from './GameDetailPage';
 import { renderAppRoutes, resetStores, seedAuth } from '../../test/utils';
 import { server } from '../../test/server';
+import { fixtures } from '../../test/fixtures';
 import { useLocalCoversStore } from '../store/localCoversStore';
 
 beforeEach(() => {
@@ -18,6 +19,49 @@ function renderGameDetail(gameId = 1) {
     { route: `/library/${gameId}` },
   );
 }
+
+test('GameDetailPage deep link fetches GET /games/{id} without list scan', async () => {
+  let getGameCalled = false;
+  let listGamesCalled = false;
+
+  server.use(
+    http.get('/api/v1/games', () => {
+      listGamesCalled = true;
+      return HttpResponse.json({ total: 0, items: [] });
+    }),
+    http.get('/api/v1/games/:id', () => {
+      getGameCalled = true;
+      return HttpResponse.json(fixtures.gameNeedsReview);
+    }),
+  );
+
+  renderAppRoutes(
+    <Route path="/library/:gameId" element={<GameDetailPage />} />,
+    { route: '/library/3' },
+  );
+
+  expect(await screen.findByRole('heading', { name: 'Nieznana Gra' })).toBeInTheDocument();
+  expect(getGameCalled).toBe(true);
+  expect(listGamesCalled).toBe(false);
+});
+
+test('GameDetailPage redirects to library on 404 game', async () => {
+  server.use(
+    http.get('/api/v1/games/:id', () =>
+      HttpResponse.json({ detail: 'Game not found' }, { status: 404 }),
+    ),
+  );
+
+  renderAppRoutes(
+    <>
+      <Route path="/library" element={<div data-testid="library">Biblioteka</div>} />
+      <Route path="/library/:gameId" element={<GameDetailPage />} />
+    </>,
+    { route: '/library/999' },
+  );
+
+  expect(await screen.findByTestId('library')).toBeInTheDocument();
+});
 
 test('GameDetailPage renders game stats and session history', async () => {
   renderGameDetail();

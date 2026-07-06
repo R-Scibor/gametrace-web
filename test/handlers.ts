@@ -149,6 +149,14 @@ export const handlers = [
     return HttpResponse.json({ total: items.length, items });
   }),
 
+  http.get('/api/v1/games/:id', ({ params }) => {
+    const id = Number(params.id);
+    const all = [...fixtures.gamesList.items, ...fixtures.gamesReviewList.items, ...fixtures.gamesOtherList.items];
+    const found = all.find((g) => g.id === id);
+    if (!found) return HttpResponse.json({ detail: 'Game not found' }, { status: 404 });
+    return HttpResponse.json(found);
+  }),
+
   http.get('/api/v1/games/:id/stats', ({ params }) => {
     return HttpResponse.json({ ...fixtures.gameStats, game_id: Number(params.id) });
   }),

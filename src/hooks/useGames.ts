@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { getGames, adminMergeGame } from '../api/games';
+import { getGame, getGames, adminMergeGame } from '../api/games';
 import { upsertPreference } from '../api/preferences';
 import { qk } from '../lib/queryKeys';
 import { useGamesStore } from '../store/gamesStore';
@@ -57,18 +57,12 @@ async function fetchGameById(gameId: number, queryClient: QueryClient): Promise<
   const cached = findGameInCache(queryClient, gameId);
   if (cached) return cached;
 
-  const sources = [
-    getGames({ skip: 0, limit: 1000 }),
-    getGames({ skip: 0, limit: 1000, inLibrary: false }),
-    getGames({ skip: 0, limit: 1000, status: 'NEEDS_REVIEW' }),
-  ];
-
-  for (const source of sources) {
-    const res = await source;
-    const found = res.items.find((g) => g.id === gameId);
-    if (found) return found;
+  try {
+    return await getGame(gameId);
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.status === 404) return null;
+    throw err;
   }
-  return null;
 }
 
 async function fetchAllGameSources(): Promise<Game[]> {
@@ -84,7 +78,7 @@ async function fetchAllGameSources(): Promise<Game[]> {
   return [...byId.values()];
 }
 
-/** Single game lookup — checks cache first, then targeted list scans */
+/** Single game lookup — cache first, then GET /games/{id} */
 export function useGame(gameId: number, seed?: Game) {
   const queryClient = useQueryClient();
   return useQuery({

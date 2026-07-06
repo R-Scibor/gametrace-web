@@ -1,6 +1,7 @@
 import client from './client';
 import type {
   EnrichmentStatus,
+  Game,
   GameListResponse,
   GameResolveResponse,
   GameSort,
@@ -31,6 +32,11 @@ export const getGames = async (opts: GetGamesOptions = {}): Promise<GameListResp
   };
   if (filter) params[filter.type] = filter.value;
   const response = await client.get<GameListResponse>('/games', { params });
+  return response.data;
+};
+
+export const getGame = async (gameId: number): Promise<Game> => {
+  const response = await client.get<Game>(`/games/${gameId}`);
   return response.data;
 };
 
