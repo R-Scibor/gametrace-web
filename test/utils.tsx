@@ -26,11 +26,12 @@ export function resetStores() {
   localStorage.removeItem('auth-storage');
 }
 
-export function seedAuth() {
-  useAuthStore.getState().login('test-token', {
-    discordId: '123',
-    username: 'testuser',
-  });
+export function seedAuth(isAdmin = true) {
+  useAuthStore.getState().login(
+    'test-token',
+    { discordId: '123', username: 'testuser' },
+    isAdmin,
+  );
 }
 
 interface RenderOptions {

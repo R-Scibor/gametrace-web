@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
-import { useGamesAll, useUpdateGamePreference } from '../hooks/useGames';
+import { useAuthStore } from '../store/authStore';
+import { useGame, useUpdateGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
 import { useGameStats } from '../hooks/useGameStats';
 import { Cover } from '../components/Cover';
@@ -38,8 +39,9 @@ export function GameDetailPage() {
   const location = useLocation();
   const gameFromNav = (location.state as { game?: Game } | null)?.game;
   const [mergeOpen, setMergeOpen] = useState(false);
+  const isAdmin = useAuthStore((s) => s.isAdmin);
 
-  const { data: games, isLoading: gamesLoading } = useGamesAll();
+  const { data: game, isLoading: gameLoading } = useGame(id, gameFromNav);
   const { data: stats, isLoading: statsLoading } = useGameStats(id);
   const {
     data: sessionPages,
@@ -50,26 +52,9 @@ export function GameDetailPage() {
   } = useGameSessions(id);
   const prefMut = useUpdateGamePreference(id);
 
-  const gameFromList = gameFromNav ?? games?.find((g) => g.id === id);
   const sessions = useMemo(() => sessionPages?.pages.flat() ?? [], [sessionPages]);
 
-  const game: Game | null = useMemo(
-    () =>
-      gameFromList ?? (sessions[0]?.game
-        ? {
-            id,
-            primary_name: sessions[0].game.primary_name,
-            cover_image_url: sessions[0].game.cover_image_url,
-            cover_source: 'EXTERNAL' as const,
-            enrichment_status: 'ENRICHED' as const,
-            is_ignored: false,
-            is_accepted: true,
-          }
-        : null),
-    [gameFromList, sessions, id],
-  );
-
-  if (gamesLoading || statsLoading || sessionsLoading) return <GameDetailSkeleton />;
+  if (gameLoading || statsLoading || sessionsLoading) return <GameDetailSkeleton />;
   if (!game) return <Navigate to="/library" replace />;
 
   const sessionCount = stats?.session_count ?? 0;
@@ -122,9 +107,11 @@ export function GameDetailPage() {
                 ZAAKCEPTUJ GRĘ
               </Button>
             )}
-            <Button type="button" variant="secondary" onClick={() => setMergeOpen(true)}>
-              POŁĄCZ Z GRĄ
-            </Button>
+            {isAdmin && (
+              <Button type="button" variant="secondary" onClick={() => setMergeOpen(true)}>
+                POŁĄCZ Z GRĄ
+              </Button>
+            )}
             <Button
               type="button"
               variant="secondary"

@@ -1,10 +1,10 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route } from 'react-router-dom';
 import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 import { GameDetailPage } from './GameDetailPage';
-import { renderAppRoutes, resetStores } from '../../test/utils';
+import { renderAppRoutes, resetStores, seedAuth } from '../../test/utils';
 import { server } from '../../test/server';
 import { useLocalCoversStore } from '../store/localCoversStore';
 
@@ -65,6 +65,47 @@ test('GameDetailPage ignore toggle calls preferences API', async () => {
 
   await waitFor(() => expect(prefCalled).toBe(true));
   expect(screen.getByText('IGNOROWANA')).toBeInTheDocument();
+});
+
+test('GameDetailPage merge dialog merges into target game', async () => {
+  let mergeCalled = false;
+  server.use(
+    http.post('/api/v1/admin/games/:id/merge/:targetId', () => {
+      mergeCalled = true;
+      return new HttpResponse(null, { status: 204 });
+    }),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/library/2" element={<div data-testid="target-detail">Target</div>} />
+      <Route path="/library/:gameId" element={<GameDetailPage />} />
+    </>,
+    { route: '/library/1' },
+  );
+
+  await screen.findByRole('heading', { name: 'Wiedźmin 3' });
+  await user.click(screen.getByRole('button', { name: /Połącz z grą/i }));
+  await user.click(screen.getByRole('button', { name: 'Cyberpunk 2077' }));
+  const mergeDialog = screen.getByRole('dialog');
+  await user.click(within(mergeDialog).getByRole('button', { name: /^POŁĄCZ$/i }));
+  await user.click(screen.getAllByRole('button', { name: /^POŁĄCZ$/i }).at(-1)!);
+
+  await waitFor(() => expect(mergeCalled).toBe(true));
+  expect(await screen.findByTestId('target-detail')).toBeInTheDocument();
+});
+
+test('GameDetailPage hides merge action for non-admin users', async () => {
+  resetStores();
+  seedAuth(false);
+  renderAppRoutes(
+    <Route path="/library/:gameId" element={<GameDetailPage />} />,
+    { route: '/library/1', authenticated: false },
+  );
+
+  await screen.findByRole('heading', { name: 'Wiedźmin 3' });
+  expect(screen.queryByRole('button', { name: /Połącz z grą/i })).not.toBeInTheDocument();
 });
 
 test('GameDetailPage cover pick saves locally', async () => {

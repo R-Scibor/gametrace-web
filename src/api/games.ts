@@ -27,8 +27,8 @@ export const getGameSessions = async (gameId: number, skip = 0, limit = 20): Pro
   return response.data;
 };
 
-export const mergeGame = async (gameId: number, targetId: number): Promise<void> => {
-  await client.post(`/games/${gameId}/merge/${targetId}`);
+export const adminMergeGame = async (gameId: number, targetId: number): Promise<void> => {
+  await client.post(`/admin/games/${gameId}/merge/${targetId}`);
 };
 
 export const resolveGame = async (name: string): Promise<GameResolveResponse | null> => {

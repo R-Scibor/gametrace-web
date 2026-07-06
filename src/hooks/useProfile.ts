@@ -1,14 +1,25 @@
+import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getMe, updateSettings } from '../api/profile';
 import { qk } from '../lib/queryKeys';
+import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 import type { ProfileSettingsUpdate } from '../types/api';
 
 export function useProfile() {
-  return useQuery({
+  const setIsAdmin = useAuthStore((s) => s.setIsAdmin);
+  const query = useQuery({
     queryKey: qk.profile,
     queryFn: getMe,
   });
+
+  useEffect(() => {
+    if (query.data?.is_admin !== undefined) {
+      setIsAdmin(query.data.is_admin);
+    }
+  }, [query.data?.is_admin, setIsAdmin]);
+
+  return query;
 }
 
 export function useUpdateSettings() {

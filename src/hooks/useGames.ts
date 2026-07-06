@@ -1,6 +1,13 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type InfiniteData } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type InfiniteData,
+  type QueryClient,
+} from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { getGames, mergeGame } from '../api/games';
+import { getGames, adminMergeGame } from '../api/games';
 import { upsertPreference } from '../api/preferences';
 import { qk } from '../lib/queryKeys';
 import { useGamesStore } from '../store/gamesStore';
@@ -23,6 +30,37 @@ export type GamesLibraryFilter = {
   q?: string;
 };
 
+function findGameInCache(queryClient: QueryClient, gameId: number): Game | undefined {
+  const allList = queryClient.getQueryData<Game[]>(qk.games({ source: 'all' }));
+  const fromAll = allList?.find((g) => g.id === gameId);
+  if (fromAll) return fromAll;
+
+  const pages = queryClient.getQueriesData<InfiniteData<GameListResponse>>({ queryKey: ['games'] });
+  for (const [, data] of pages) {
+    const found = data?.pages.flatMap((page) => page.items).find((g) => g.id === gameId);
+    if (found) return found;
+  }
+  return undefined;
+}
+
+async function fetchGameById(gameId: number, queryClient: QueryClient): Promise<Game | null> {
+  const cached = findGameInCache(queryClient, gameId);
+  if (cached) return cached;
+
+  const sources = [
+    getGames({ skip: 0, limit: 1000 }),
+    getGames({ skip: 0, limit: 1000, inLibrary: false }),
+    getGames({ skip: 0, limit: 1000, status: 'NEEDS_REVIEW' }),
+  ];
+
+  for (const source of sources) {
+    const res = await source;
+    const found = res.items.find((g) => g.id === gameId);
+    if (found) return found;
+  }
+  return null;
+}
+
 async function fetchAllGameSources(): Promise<Game[]> {
   const [main, other, review] = await Promise.all([
     getGames({ skip: 0, limit: 1000 }),
@@ -36,7 +74,18 @@ async function fetchAllGameSources(): Promise<Game[]> {
   return [...byId.values()];
 }
 
-/** Full list for merge picker and game detail lookup */
+/** Single game lookup — checks cache first, then targeted list scans */
+export function useGame(gameId: number, seed?: Game) {
+  const queryClient = useQueryClient();
+  return useQuery({
+    queryKey: qk.game(gameId),
+    queryFn: () => fetchGameById(gameId, queryClient),
+    enabled: !!gameId,
+    placeholderData: seed,
+  });
+}
+
+/** Full list for merge picker and game select */
 export function useGamesAll() {
   return useQuery({
     queryKey: qk.games({ source: 'all' }),
@@ -69,7 +118,7 @@ export function useMergeGame(sourceId: number) {
   const invalidateGames = useGamesStore((s) => s.invalidate);
 
   return useMutation({
-    mutationFn: (targetId: number) => mergeGame(sourceId, targetId),
+    mutationFn: (targetId: number) => adminMergeGame(sourceId, targetId),
     onSuccess: (_data, targetId) => {
       queryClient.invalidateQueries({ queryKey: ['games'] });
       queryClient.invalidateQueries({ queryKey: ['stats'] });
@@ -93,9 +142,8 @@ export function useUpdateGamePreference(gameId: number) {
     onSuccess: (_data, pref) => {
       const patch = (game: Game) => (game.id === gameId ? applyGamePref(game, pref) : game);
 
-      queryClient.setQueryData<Game[]>(qk.games({ source: 'all' }), (old) =>
-        old?.map(patch),
-      );
+      queryClient.setQueryData<Game>(qk.game(gameId), (old) => (old ? patch(old) : old));
+      queryClient.setQueryData<Game[]>(qk.games({ source: 'all' }), (old) => old?.map(patch));
 
       queryClient.setQueriesData<InfiniteData<GameListResponse>>({ queryKey: ['games'] }, (old) => {
         if (!old?.pages) return old;

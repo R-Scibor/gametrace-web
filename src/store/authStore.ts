@@ -9,9 +9,11 @@ type User = {
 type AuthState = {
   token: string | null;
   user: User | null;
+  isAdmin: boolean;
   isAuthenticated: boolean;
   hasHydrated: boolean;
-  login: (token: string, user: User) => void;
+  login: (token: string, user: User, isAdmin?: boolean) => void;
+  setIsAdmin: (isAdmin: boolean) => void;
   logout: () => void;
 };
 
@@ -20,17 +22,21 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       token: null,
       user: null,
+      isAdmin: false,
       isAuthenticated: false,
       hasHydrated: false,
 
-      login: (token, user) => set({ token, user, isAuthenticated: true }),
-      logout: () => set({ token: null, user: null, isAuthenticated: false }),
+      login: (token, user, isAdmin = false) =>
+        set({ token, user, isAdmin, isAuthenticated: true }),
+      setIsAdmin: (isAdmin) => set({ isAdmin }),
+      logout: () => set({ token: null, user: null, isAdmin: false, isAuthenticated: false }),
     }),
     {
       name: 'auth-storage',
       partialize: (state) => ({
         token: state.token,
         user: state.user,
+        isAdmin: state.isAdmin,
         isAuthenticated: state.isAuthenticated,
       }),
       onRehydrateStorage: () => () => {

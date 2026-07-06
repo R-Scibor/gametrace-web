@@ -8,6 +8,21 @@ export const handlers = [
       discord_id: '123',
       username: 'testuser',
       timezone: 'Europe/Warsaw',
+      is_admin: true,
+    });
+  }),
+
+  http.post('/api/v1/auth/link', async ({ request }) => {
+    const body = (await request.json()) as { code?: string };
+    if (body.code !== '231996') {
+      return HttpResponse.json({ detail: 'Invalid code' }, { status: 401 });
+    }
+    return HttpResponse.json({
+      token: 'test-token',
+      discord_id: '123',
+      username: 'testuser',
+      timezone: 'Europe/Warsaw',
+      is_admin: true,
     });
   }),
 
@@ -122,7 +137,7 @@ export const handlers = [
 
   http.delete('/api/v1/user/preferences/:id', () => new HttpResponse(null, { status: 204 })),
 
-  http.post('/api/v1/games/:id/merge/:targetId', () => new HttpResponse(null, { status: 204 })),
+  http.post('/api/v1/admin/games/:id/merge/:targetId', () => new HttpResponse(null, { status: 204 })),
 
   http.get('/api/v1/stats/summary', ({ request }) => {
     const days = Number(new URL(request.url).searchParams.get('days') ?? '30');

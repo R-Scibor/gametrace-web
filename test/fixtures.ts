@@ -124,6 +124,7 @@ export const profileMe: ProfileMe = {
   timezone: 'Europe/Warsaw',
   weekly_report_enabled: true,
   push_enabled: false,
+  is_admin: true,
 };
 
 export const trashSession: TrashSession = {
