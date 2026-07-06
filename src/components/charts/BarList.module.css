@@ -3,10 +3,29 @@
   flex-direction: column;
   gap: 12px;
 }
-.row {
+.row,
+.rowButton {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+.rowButton {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background-color 0.15s;
+}
+.rowButton:hover .label {
+  color: var(--orange);
+}
+.rowButton:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
 }
 .info {
   display: flex;

@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { libraryDrillUrl } from '../../lib/libraryParams';
+import type { LibraryFilter } from '../../types/api';
 import {
   useStatsSummary,
   useHeatmap,
@@ -17,6 +20,13 @@ import { TrendChart } from '../charts/TrendChart';
 import { formatDuration } from '../../lib/format';
 import { ErrorBanner, Panel, Skeleton } from '../ui';
 import panelStyles from './Panels.module.css';
+
+function useLibraryDrill() {
+  const navigate = useNavigate();
+  return (type: LibraryFilter['type'], value: string) => {
+    navigate(libraryDrillUrl(type, value));
+  };
+}
 
 export function TotalPanel({ days, className }: { days: number; className?: string }) {
   const { data, isLoading, isError } = useStatsSummary(days);
@@ -101,6 +111,7 @@ export function TrendPanel({ days, className }: { days: number; className?: stri
 }
 
 export function GenresPanel({ days, className }: { days: number; className?: string }) {
+  const drill = useLibraryDrill();
   const { data, isLoading, isError } = useGenres(days);
   if (isLoading) return <Panel title="Gatunki" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Gatunki" className={className}><ErrorBanner /></Panel>;
@@ -113,12 +124,13 @@ export function GenresPanel({ days, className }: { days: number; className?: str
   }));
   return (
     <Panel title="Gatunki" eyebrow="ekspozycja tagów, nie podział" className={className}>
-      <BarList items={items} />
+      <BarList items={items} onItemClick={(item) => drill('genre', item.label)} />
     </Panel>
   );
 }
 
 export function ThemesPanel({ days, className }: { days: number; className?: string }) {
+  const drill = useLibraryDrill();
   const { data, isLoading, isError } = useThemes(days);
   if (isLoading) return <Panel title="Motywy" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Motywy" className={className}><ErrorBanner /></Panel>;
@@ -131,12 +143,13 @@ export function ThemesPanel({ days, className }: { days: number; className?: str
   }));
   return (
     <Panel title="Motywy" eyebrow="ekspozycja tagów, nie podział" className={className}>
-      <BarList items={items} />
+      <BarList items={items} onItemClick={(item) => drill('theme', item.label)} />
     </Panel>
   );
 }
 
 export function CompaniesPanel({ days, className }: { days: number; className?: string }) {
+  const drill = useLibraryDrill();
   const [role, setRole] = useState<'developer' | 'publisher'>('developer');
   const { data, isLoading, isError } = useCompanies(role, 10, days);
 
@@ -189,12 +202,13 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
 
   return (
     <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
-      <BarList items={items} />
+      <BarList items={items} onItemClick={(item) => drill(role, item.label)} />
     </Panel>
   );
 }
 
 export function ReleaseYearsPanel({ days, className }: { days: number; className?: string }) {
+  const drill = useLibraryDrill();
   const { data, isLoading, isError } = useReleaseYears(days);
   if (isLoading) return <Panel title="Dekady premier" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Dekady premier" className={className}><ErrorBanner /></Panel>;
@@ -207,7 +221,7 @@ export function ReleaseYearsPanel({ days, className }: { days: number; className
   }));
   return (
     <Panel title="Dekady premier" className={className}>
-      <BarList items={items} />
+      <BarList items={items} onItemClick={(item) => drill('release_decade', item.label)} />
     </Panel>
   );
 }

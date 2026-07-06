@@ -1,10 +1,12 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Route } from 'react-router-dom';
 import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 import { server } from '../../test/server';
 import { AnalyticsPage } from './AnalyticsPage';
-import { renderPage, resetStores } from '../../test/utils';
+import { LibraryPage } from './LibraryPage';
+import { renderAppRoutes, renderPage, resetStores } from '../../test/utils';
 
 beforeEach(() => {
   resetStores();
@@ -44,6 +46,24 @@ test('AnalyticsPage reads days from URL query', async () => {
 
   const select = await screen.findByLabelText('Okres');
   expect((select as HTMLSelectElement).value).toBe('90');
+});
+
+test('AnalyticsPage genre bar drills into filtered library', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/analytics" element={<AnalyticsPage />} />
+      <Route path="/library" element={<LibraryPage />} />
+    </>,
+    { route: '/analytics' },
+  );
+
+  await screen.findByText('Gatunki');
+  await waitFor(() => expect(screen.getByText('RPG')).toBeInTheDocument());
+  await user.click(screen.getByRole('button', { name: /RPG/i }));
+
+  expect(await screen.findByText('Gatunek: RPG')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'CZAS GRY' })).toBeInTheDocument();
 });
 
 test('AnalyticsPage isolates panel errors', async () => {
