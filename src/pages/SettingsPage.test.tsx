@@ -49,6 +49,30 @@ test('SettingsPage timezone change calls settings API', async () => {
   await waitFor(() => expect(updatedTimezone).toBe('America/New_York'));
 });
 
+test('SettingsPage push toggle calls settings API', async () => {
+  let updatedPush: boolean | undefined;
+  server.use(
+    http.put('/api/v1/profile/settings', async ({ request }) => {
+      const body = (await request.json()) as { push_enabled?: boolean };
+      updatedPush = body.push_enabled;
+      return HttpResponse.json({ ...fixtures.profileMe, push_enabled: body.push_enabled });
+    }),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/settings" element={<SettingsPage />} />
+    </>,
+    { route: '/settings' },
+  );
+
+  const pushToggle = await screen.findByRole('checkbox', { name: /Powiadomienia push/i });
+  await user.click(pushToggle);
+
+  await waitFor(() => expect(updatedPush).toBe(true));
+});
+
 test('SettingsPage logout navigates to login', async () => {
   const user = userEvent.setup();
   renderAppRoutes(

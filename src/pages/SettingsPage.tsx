@@ -54,6 +54,10 @@ export function SettingsPage() {
     updateSettings.mutate({ weekly_report_enabled: enabled });
   };
 
+  const handlePushEnabled = (enabled: boolean) => {
+    updateSettings.mutate({ push_enabled: enabled });
+  };
+
   if (profileLoading) {
     return (
       <div className={styles.container}>
@@ -89,8 +93,21 @@ export function SettingsPage() {
           <label className={styles.toggle}>
             <input
               type="checkbox"
+              aria-label="Raport tygodniowy"
               checked={profile?.weekly_report_enabled ?? false}
               onChange={(e) => handleWeeklyReport(e.target.checked)}
+              disabled={updateSettings.isPending}
+            />
+            <span className={styles.toggleSlider} />
+          </label>
+        </SettingsRow>
+        <SettingsRow label="Powiadomienia push" subtext="Alerty na urządzeniu mobilnym">
+          <label className={styles.toggle}>
+            <input
+              type="checkbox"
+              aria-label="Powiadomienia push"
+              checked={profile?.push_enabled ?? false}
+              onChange={(e) => handlePushEnabled(e.target.checked)}
               disabled={updateSettings.isPending}
             />
             <span className={styles.toggleSlider} />

@@ -86,10 +86,9 @@ export function useRestoreSession() {
 
   return useMutation({
     mutationFn: restoreSession,
-    onSuccess: () => {
+    onSuccess: (session) => {
       queryClient.invalidateQueries({ queryKey: qk.trash });
-      queryClient.invalidateQueries({ queryKey: qk.sessions() });
-      queryClient.invalidateQueries({ queryKey: qk.dashboard });
+      invalidateAfterSessionChange(queryClient, session.game_id);
       pushToast({ type: 'success', message: 'Sesja przywrócona.' });
     },
     onError: (err) => {

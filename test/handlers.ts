@@ -122,6 +122,8 @@ export const handlers = [
 
   http.delete('/api/v1/user/preferences/:id', () => new HttpResponse(null, { status: 204 })),
 
+  http.post('/api/v1/games/:id/merge/:targetId', () => new HttpResponse(null, { status: 204 })),
+
   http.get('/api/v1/stats/summary', ({ request }) => {
     const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
     if (days === 7) return HttpResponse.json(fixtures.statsSummary7d);

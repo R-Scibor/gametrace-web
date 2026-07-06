@@ -73,7 +73,7 @@ test('useRecentSessions fetches COMPLETED and ERROR sessions', async () => {
   expect(new URL(capturedUrl).searchParams.getAll('status')).toEqual(['COMPLETED', 'ERROR']);
 });
 
-test('useRestoreSession invalidates trash on success', async () => {
+test('useRestoreSession invalidates trash and session-related caches on success', async () => {
   const queryClient = createTestQueryClient();
   const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
@@ -85,4 +85,8 @@ test('useRestoreSession invalidates trash on success', async () => {
 
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
   expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: qk.trash });
+  expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: qk.dashboard });
+  expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: qk.sessions() });
+  expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ['stats'] });
+  expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: qk.gameSessions(1) });
 });

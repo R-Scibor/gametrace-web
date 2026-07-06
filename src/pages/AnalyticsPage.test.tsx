@@ -8,6 +8,13 @@ beforeEach(() => {
   resetStores();
 });
 
+test('AnalyticsPage defaults to 7-day window', async () => {
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+
+  await screen.findByRole('heading', { name: 'Statystyki' });
+  expect((screen.getByLabelText('Okres') as HTMLSelectElement).value).toBe('7');
+});
+
 test('AnalyticsPage renders stat panels', async () => {
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
