@@ -149,7 +149,7 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
           .join(' ')}
         onClick={() => setRole('developer')}
       >
-        DEV
+        TWÓRCA
       </button>
       <button
         type="button"
@@ -158,7 +158,7 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
           .join(' ')}
         onClick={() => setRole('publisher')}
       >
-        WYD
+        WYDAWCA
       </button>
     </div>
   );

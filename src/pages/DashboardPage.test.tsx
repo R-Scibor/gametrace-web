@@ -13,7 +13,7 @@ beforeEach(() => {
 test('DashboardPage shows active session card and stat tiles', async () => {
   renderPage(<DashboardPage />, { route: '/' });
 
-  expect(await screen.findByText('Pulpit')).toBeInTheDocument();
+  expect(await screen.findByText('◈ GAMETRACE')).toBeInTheDocument();
   expect(await screen.findByText('AKTYWNA SESJA')).toBeInTheDocument();
   expect(screen.getAllByText('Wiedźmin 3').length).toBeGreaterThanOrEqual(1);
   expect(screen.getByText('DZIŚ')).toBeInTheDocument();
@@ -29,7 +29,7 @@ test('DashboardPage shows last-played spotlight when idle', async () => {
 
   renderPage(<DashboardPage />, { route: '/' });
 
-  expect(await screen.findByText('Pulpit')).toBeInTheDocument();
+  expect(await screen.findByText('◈ GAMETRACE')).toBeInTheDocument();
   expect(screen.queryByText('AKTYWNA SESJA')).not.toBeInTheDocument();
   expect(await screen.findByText('ŁĄCZNIE')).toBeInTheDocument();
   const gameLinks = screen.getAllByRole('link', { name: /Wiedźmin 3/i });

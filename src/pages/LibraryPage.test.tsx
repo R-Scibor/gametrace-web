@@ -1,11 +1,24 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 import { LibraryPage } from './LibraryPage';
 import { renderPage, resetStores } from '../../test/utils';
+import { server } from '../../test/server';
 
 beforeEach(() => {
   resetStores();
+});
+
+test('LibraryPage shows error banner with retry on fetch failure', async () => {
+  server.use(
+    http.get('/api/v1/games', () => HttpResponse.json({ detail: 'fail' }, { status: 500 })),
+  );
+
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  expect(await screen.findByText('Błąd ładowania biblioteki.')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Spróbuj ponownie/i })).toBeInTheDocument();
 });
 
 test('LibraryPage renders main library games by default', async () => {

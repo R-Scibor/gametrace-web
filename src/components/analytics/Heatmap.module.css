@@ -36,8 +36,11 @@
   cursor: default;
   transition: transform 0.1s, box-shadow 0.1s;
 }
-.cell:hover {
+.cell:hover,
+.cell:focus-visible {
   transform: scale(1.15);
   box-shadow: 0 0 6px var(--orange-glow);
   z-index: 1;
+  outline: 2px solid var(--orange);
+  outline-offset: 1px;
 }

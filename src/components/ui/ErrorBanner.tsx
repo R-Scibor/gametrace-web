@@ -12,7 +12,7 @@ export function ErrorBanner({
   className
 }: ErrorBannerProps) {
   return (
-    <div className={[styles.container, className].filter(Boolean).join(' ')}>
+    <div role="alert" className={[styles.container, className].filter(Boolean).join(' ')}>
       <div className={styles.bar} />
       <div className={styles.body}>
         <div className={styles.label}>{label}</div>

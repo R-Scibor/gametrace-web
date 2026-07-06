@@ -66,10 +66,7 @@ export function DashboardPage() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <div>
-          <span className={styles.eyebrow}>◈ GAMETRACE</span>
-          <h1 className={styles.title}>Pulpit</h1>
-        </div>
+        <span className={styles.eyebrow}>◈ GAMETRACE</span>
         <span className={styles.headerDate}>{formatHeaderDate()}</span>
       </header>
 

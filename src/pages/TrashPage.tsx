@@ -1,15 +1,12 @@
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ConflictResponse } from '../types/api';
 import { useTrash } from '../hooks/useTrash';
-import { hardDeleteSession } from '../api/sessions';
+import { useHardDeleteSession } from '../hooks/useHardDeleteSession';
 import { useRestoreSession } from '../hooks/useSessions';
 import { ConflictNotice } from '../components/ConflictNotice';
 import { Cover } from '../components/Cover';
 import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
-import { useToastStore } from '../store/toastStore';
 import { parseConflict } from '../lib/conflict';
-import { qk } from '../lib/queryKeys';
 import { useFormat } from '../hooks/useFormat';
 import styles from './TrashPage.module.css';
 
@@ -26,24 +23,11 @@ function TrashSkeleton() {
 export function TrashPage() {
   const { formatDate, formatDaysUntil } = useFormat();
   const { data: trash, isLoading } = useTrash();
-  const queryClient = useQueryClient();
-  const pushToast = useToastStore((s) => s.pushToast);
   const [restoreConflict, setRestoreConflict] = useState<ConflictResponse | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
 
   const restoreMut = useRestoreSession();
-
-  const deleteMut = useMutation({
-    mutationFn: hardDeleteSession,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qk.trash });
-      pushToast({ type: 'success', message: 'Sesja trwale usunięta.' });
-      setDeleteTarget(null);
-    },
-    onError: () => {
-      pushToast({ type: 'error', message: 'Nie udało się usunąć sesji.' });
-    },
-  });
+  const deleteMut = useHardDeleteSession();
 
   const handleRestore = (sessionId: number) => {
     setRestoreConflict(null);
@@ -126,7 +110,10 @@ export function TrashPage() {
         confirmLabel="USUŃ TRWALE"
         variant="danger"
         loading={deleteMut.isPending}
-        onConfirm={() => deleteTarget != null && deleteMut.mutate(deleteTarget)}
+        onConfirm={() => {
+          if (deleteTarget == null) return;
+          deleteMut.mutate(deleteTarget, { onSuccess: () => setDeleteTarget(null) });
+        }}
         onCancel={() => setDeleteTarget(null)}
       />
     </div>

@@ -5,7 +5,7 @@ import { useProfile, useUpdateSettings } from '../hooks/useProfile';
 import { useHealth } from '../hooks/useHealth';
 import { SectionHeader, Button, Skeleton } from '../components/ui';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
-import { formatUptime, botColor } from '../lib/bot';
+import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
 
 function SettingsRow({
@@ -122,7 +122,7 @@ export function SettingsPage() {
             className={styles.statusValue}
             style={{ color: health ? botColor(health.bot.status) : undefined }}
           >
-            {health ? health.bot.status.toUpperCase() : '—'}
+            {health ? formatBotStatus(health.bot.status) : '—'}
           </span>
         </SettingsRow>
         {health?.bot.uptime_seconds != null && (

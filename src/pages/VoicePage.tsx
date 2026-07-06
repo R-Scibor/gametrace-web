@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+
 import { SectionHeader, Button, ErrorBanner } from '../components/ui';
-import { transcribeAudio } from '../api/voice';
-import { resolveGame } from '../api/games';
+import { useTranscribeVoice } from '../hooks/useTranscribeVoice';
 import { useVoiceRecord, VoicePermissionError } from '../hooks/useVoiceRecord';
 import styles from './VoicePage.module.css';
 
@@ -16,38 +14,12 @@ function formatElapsed(seconds: number): string {
 }
 
 export function VoicePage() {
-  const navigate = useNavigate();
   const { isRecording, start, stop } = useVoiceRecord();
   const [elapsed, setElapsed] = useState(0);
   const [permissionError, setPermissionError] = useState(false);
   const [recordError, setRecordError] = useState<string | null>(null);
 
-  const transcribeMut = useMutation({
-    mutationFn: transcribeAudio,
-    onSuccess: async (data) => {
-      let gameId = '';
-      if (data.game) {
-        try {
-          const resolved = await resolveGame(data.game);
-          if (resolved) gameId = String(resolved.game_id);
-        } catch {
-          // ignore resolve failure
-        }
-      }
-
-      const params = new URLSearchParams();
-      if (gameId) params.append('gameId', gameId);
-
-      if (data.date && data.start_time) {
-        params.append('startTime', `${data.date}T${data.start_time}`);
-        if (data.end_time) params.append('endTime', `${data.date}T${data.end_time}`);
-      }
-
-      if (data.raw_transcript) params.append('note', data.raw_transcript);
-
-      navigate(`/sessions/new?${params.toString()}`);
-    },
-  });
+  const transcribeMut = useTranscribeVoice();
 
   const state: VoiceState = transcribeMut.isPending
     ? 'processing'
@@ -114,18 +86,6 @@ export function VoicePage() {
             />
           ))}
         </div>
-
-        <button
-          type="button"
-          className={[styles.recordBtn, isRecording ? styles.recordBtnActive : '']
-            .filter(Boolean)
-            .join(' ')}
-          onClick={handleRecordToggle}
-          disabled={state === 'processing'}
-          aria-label={isRecording ? 'Zakończ nagrywanie' : 'Rozpocznij nagrywanie'}
-        >
-          {state === 'processing' ? '...' : isRecording ? '■' : '●'}
-        </button>
 
         <p className={styles.hint}>
           Przykład: „Grałem w Wiedźmina dzisiaj od 18 do 20”. Naciśnij, aby nagrać, i ponownie aby

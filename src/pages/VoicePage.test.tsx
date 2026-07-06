@@ -6,28 +6,40 @@ import { test, expect, beforeEach, vi } from 'vitest';
 import { VoicePage } from './VoicePage';
 import { renderAppRoutes, resetStores } from '../../test/utils';
 
-vi.mock('../hooks/useVoiceRecord', () => ({
-  VoicePermissionError: class VoicePermissionError extends Error {
+const voiceMock = vi.hoisted(() => ({ denyPermission: false }));
+
+vi.mock('../hooks/useVoiceRecord', () => {
+  class VoicePermissionError extends Error {
     constructor() {
       super('PERMISSION_DENIED');
       this.name = 'VoicePermissionError';
     }
-  },
-  useVoiceRecord: () => {
+  }
+
+  return {
+    VoicePermissionError,
+    useVoiceRecord: () => {
     const [isRecording, setIsRecording] = React.useState(false);
     return {
       isRecording,
-      start: async () => setIsRecording(true),
+      start: async () => {
+        if (voiceMock.denyPermission) {
+          throw new VoicePermissionError();
+        }
+        setIsRecording(true);
+      },
       stop: async () => {
         setIsRecording(false);
         return new Blob(['audio'], { type: 'audio/webm' });
       },
     };
   },
-}));
+  };
+});
 
 beforeEach(() => {
   resetStores();
+  voiceMock.denyPermission = false;
 });
 
 function renderVoice() {
@@ -45,6 +57,17 @@ test('VoicePage renders recording UI', async () => {
 
   expect(await screen.findByText('Sesja głosowa')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' })).toBeInTheDocument();
+});
+
+test('VoicePage shows permission error when mic is blocked', async () => {
+  voiceMock.denyPermission = true;
+  const user = userEvent.setup();
+  renderVoice();
+
+  await screen.findByText('Sesja głosowa');
+  await user.click(screen.getByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' }));
+
+  expect(await screen.findByText('Zezwól na mikrofon w ustawieniach przeglądarki.')).toBeInTheDocument();
 });
 
 test('VoicePage record flow transcribes and navigates to session form', async () => {

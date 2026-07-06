@@ -8,6 +8,16 @@ export function formatUptime(s: number | null): string {
   return `${m}m`;
 }
 
+const BOT_STATUS_LABEL: Record<string, string> = {
+  online: 'ONLINE',
+  offline: 'OFFLINE',
+  unknown: 'NIEZNANY',
+};
+
+export function formatBotStatus(status: string): string {
+  return BOT_STATUS_LABEL[status] ?? status.toUpperCase();
+}
+
 export function botColor(status: string) {
   if (status === 'online') return 'var(--orange)';
   if (status === 'offline') return 'var(--warn)';

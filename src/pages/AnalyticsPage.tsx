@@ -35,7 +35,6 @@ export function AnalyticsPage() {
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
-        <h1 className={styles.pageTitle}>Statystyki</h1>
         <Select value={days} onChange={(e) => setDays(Number(e.target.value))} aria-label="Okres">
           {ANALYTICS_DAY_PRESETS.map((preset) => (
             <option key={preset} value={preset}>

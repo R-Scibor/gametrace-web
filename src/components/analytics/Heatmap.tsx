@@ -42,6 +42,8 @@ export function Heatmap({ data }: HeatmapProps) {
                 className={styles.cell}
                 style={{ backgroundColor: `rgba(255, 122, 26, ${opacity})` }}
                 title={tooltip}
+                tabIndex={seconds > 0 ? 0 : undefined}
+                aria-label={seconds > 0 ? tooltip : undefined}
               />
             );
           })}

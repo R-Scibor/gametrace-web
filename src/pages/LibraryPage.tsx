@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGamesPaginated } from '../hooks/useGames';
-import { SectionHeader, EmptyState, Skeleton, Button } from '../components/ui';
+import { SectionHeader, EmptyState, ErrorBanner, Skeleton, Button } from '../components/ui';
 import { GameCard } from '../components/games/GameCard';
 import { useGamesStore } from '../store/gamesStore';
 import type { EnrichmentStatus } from '../types/api';
@@ -45,7 +45,7 @@ export function LibraryPage() {
   }, [gamesStale, markFresh, queryClient]);
 
   const filter = useMemo(() => tabToFilter(tab, debouncedQuery || undefined), [tab, debouncedQuery]);
-  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGamesPaginated(filter);
 
   const games = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data]);
@@ -104,7 +104,12 @@ export function LibraryPage() {
       {isLoading && <LibrarySkeleton />}
 
       {!isLoading && (isError || !data) && (
-        <EmptyState message="Błąd ładowania biblioteki." />
+        <div className={styles.errorWrap}>
+          <ErrorBanner message="Błąd ładowania biblioteki." />
+          <Button variant="secondary" onClick={() => refetch()}>
+            SPRÓBUJ PONOWNIE
+          </Button>
+        </div>
       )}
 
       {!isLoading && !isError && games.length === 0 && (
