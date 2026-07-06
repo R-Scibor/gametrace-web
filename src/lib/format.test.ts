@@ -6,6 +6,7 @@ import {
   formatTimeShort,
   formatDateShort,
   formatDaysUntil,
+  formatRecency,
 } from './format';
 
 afterEach(() => {
@@ -45,4 +46,14 @@ test('formatDaysUntil returns Polish day labels', () => {
   expect(formatDaysUntil('2026-06-16T12:00:00Z')).toBe('1 dzień');
   expect(formatDaysUntil('2026-06-18T12:00:00Z')).toBe('3 dni');
   expect(formatDaysUntil('2026-06-15T11:00:00Z')).toBe('wkrótce');
+});
+
+test('formatRecency returns Polish relative play labels', () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date('2026-06-15T12:00:00Z'));
+
+  expect(formatRecency('2026-06-15T08:00:00Z')).toBe('grano dziś');
+  expect(formatRecency('2026-06-14T08:00:00Z')).toBe('grano wczoraj');
+  expect(formatRecency('2026-06-12T08:00:00Z')).toBe('grano 3 dni temu');
+  expect(formatRecency('2026-05-20T08:00:00Z')).toMatch(/grano \d{2}/);
 });

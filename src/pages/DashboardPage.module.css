@@ -44,12 +44,6 @@
   flex-direction: column;
   gap: 10px;
 }
-.tilesOnly {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  grid-column: 1 / -1;
-}
 .retry {
   align-self: flex-start;
   font-family: var(--display);
@@ -68,9 +62,6 @@
 }
 @media (max-width: 900px) {
   .topRow {
-    grid-template-columns: 1fr;
-  }
-  .tilesOnly {
     grid-template-columns: 1fr;
   }
 }

@@ -18,6 +18,22 @@ test('DashboardPage shows active session card and stat tiles', async () => {
   expect(screen.getAllByText('Wiedźmin 3').length).toBeGreaterThanOrEqual(1);
   expect(screen.getByText('DZIŚ')).toBeInTheDocument();
   expect(screen.getByText('7 DNI')).toBeInTheDocument();
+  expect(screen.getByText('ŚR. SESJA')).toBeInTheDocument();
+  expect(screen.queryByText('30 DNI')).not.toBeInTheDocument();
+});
+
+test('DashboardPage shows last-played spotlight when idle', async () => {
+  server.use(
+    http.get('/api/v1/stats/dashboard', () => HttpResponse.json(fixtures.dashboardNoActive)),
+  );
+
+  renderPage(<DashboardPage />, { route: '/' });
+
+  expect(await screen.findByText('Pulpit')).toBeInTheDocument();
+  expect(screen.queryByText('AKTYWNA SESJA')).not.toBeInTheDocument();
+  expect(await screen.findByText('ŁĄCZNIE')).toBeInTheDocument();
+  const gameLinks = screen.getAllByRole('link', { name: /Wiedźmin 3/i });
+  expect(gameLinks.some((link) => link.getAttribute('href') === '/library/1')).toBe(true);
 });
 
 test('DashboardPage shows recent sessions', async () => {

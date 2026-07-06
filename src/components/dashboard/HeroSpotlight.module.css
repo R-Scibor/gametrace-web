@@ -1,0 +1,95 @@
+.card {
+  display: block;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s;
+}
+.card:hover {
+  border-color: var(--text3);
+}
+.row {
+  display: flex;
+  min-height: 124px;
+}
+.coverWrap {
+  width: 90px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.meta {
+  flex: 1;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recency {
+  font-size: 11px;
+  color: var(--text3);
+}
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  margin-top: auto;
+  gap: 16px;
+}
+.statLabel {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  margin-bottom: 3px;
+}
+.bigRow {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+.big {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+  color: var(--orange);
+  line-height: 26px;
+}
+.bigUnit {
+  font-family: var(--display);
+  font-size: 13px;
+  color: var(--text3);
+}
+.sideStats {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+  padding-bottom: 1px;
+}
+.statValue {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text2);
+}

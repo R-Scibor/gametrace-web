@@ -1,0 +1,16 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-column: 1 / -1;
+}
+@media (max-width: 900px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

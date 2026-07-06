@@ -1,7 +1,11 @@
 import { useDashboard } from '../hooks/useDashboard';
 import { useRecentSessions } from '../hooks/useSessions';
-import { StatTile, SectionHeader, ErrorBanner, Skeleton } from '../components/ui';
+import { useStatsSummary } from '../hooks/useStats';
+import { useGameStats } from '../hooks/useGameStats';
+import { SectionHeader, ErrorBanner, Skeleton } from '../components/ui';
 import { ActiveSessionCard } from '../components/dashboard/ActiveSessionCard';
+import { HeroSpotlight } from '../components/dashboard/HeroSpotlight';
+import { DashboardStatTiles } from '../components/dashboard/DashboardStatTiles';
 import { PendingErrorsBanner } from '../components/dashboard/PendingErrorsBanner';
 import { RecentSessionsList } from '../components/dashboard/RecentSessionsList';
 import { useFormat } from '../hooks/useFormat';
@@ -33,10 +37,16 @@ function DashboardSkeleton() {
 }
 
 export function DashboardPage() {
-  const { formatHours, formatHeaderDate } = useFormat();
+  const { formatHeaderDate } = useFormat();
   const { data, isLoading, isError, refetch } = useDashboard();
+  const { data: weekStats, isLoading: weekStatsLoading } = useStatsSummary(7);
   const activeId = data?.active_session?.id ?? null;
   const { data: recents, isLoading: recentsLoading } = useRecentSessions(activeId);
+
+  const lastPlayed = !data?.active_session
+    ? recents?.find((s) => s.status === 'COMPLETED') ?? null
+    : null;
+  const { data: spotlightStats } = useGameStats(lastPlayed?.game_id ?? 0);
 
   if (isLoading) return <DashboardSkeleton />;
 
@@ -50,6 +60,8 @@ export function DashboardPage() {
       </div>
     );
   }
+
+  const hasHero = !!data.active_session || !!lastPlayed;
 
   return (
     <div className={styles.container}>
@@ -68,19 +80,25 @@ export function DashboardPage() {
       <div className={styles.topRow}>
         {data.active_session ? (
           <ActiveSessionCard session={data.active_session} />
+        ) : lastPlayed ? (
+          <HeroSpotlight session={lastPlayed} stats={spotlightStats} />
+        ) : null}
+
+        {hasHero ? (
+          <DashboardStatTiles
+            todaySeconds={data.total_seconds_today}
+            weekSeconds={data.total_seconds_7d}
+            avgSessionSeconds={weekStats?.avg_session_seconds ?? null}
+            avgLoading={weekStatsLoading}
+          />
         ) : (
-          <div className={styles.tilesOnly}>
-            <StatTile label="DZIŚ" value={formatHours(data.total_seconds_today)} unit="h" />
-            <StatTile label="7 DNI" value={formatHours(data.total_seconds_7d)} unit="h" />
-            <StatTile label="30 DNI" value={formatHours(data.total_seconds_30d)} unit="h" />
-          </div>
-        )}
-        {data.active_session && (
-          <div className={styles.tiles}>
-            <StatTile label="DZIŚ" value={formatHours(data.total_seconds_today)} unit="h" />
-            <StatTile label="7 DNI" value={formatHours(data.total_seconds_7d)} unit="h" />
-            <StatTile label="30 DNI" value={formatHours(data.total_seconds_30d)} unit="h" />
-          </div>
+          <DashboardStatTiles
+            todaySeconds={data.total_seconds_today}
+            weekSeconds={data.total_seconds_7d}
+            avgSessionSeconds={weekStats?.avg_session_seconds ?? null}
+            avgLoading={weekStatsLoading}
+            layout="row"
+          />
         )}
       </div>
 

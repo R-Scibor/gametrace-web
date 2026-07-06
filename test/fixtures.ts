@@ -143,8 +143,20 @@ export const statsSummary: StatsSummary = {
   window_start: '2026-05-16T00:00:00Z',
   window_end: '2026-06-15T00:00:00Z',
   total_seconds: 21600,
+  avg_session_seconds: 5400,
+  longest_session_seconds: 7200,
+  longest_session_game_id: 1,
+  longest_session_game_name: 'Wiedźmin 3',
+  previous_total_seconds: 18000,
+  new_games_count: 0,
   per_game: perGame,
   pending_errors: [],
+};
+
+export const statsSummary7d: StatsSummary = {
+  ...statsSummary,
+  days: 7,
+  avg_session_seconds: 3600,
 };
 
 export const heatmap: HeatmapResponse = {
@@ -182,6 +194,7 @@ export const fixtures = {
   trash: [trashSession],
   conflictResponse,
   statsSummary,
+  statsSummary7d,
   heatmap,
   streak,
   trend,

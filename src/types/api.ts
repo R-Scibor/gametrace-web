@@ -58,8 +58,18 @@ export interface ProfileSettingsUpdate {
 export interface GameStatEntry { game_id: number; game_name: string; cover_image_url: string | null; total_seconds: number; }
 export interface PendingErrorEntry { id: number; game_id: number; game_name: string; start_time: string; notes: string | null; }
 export interface StatsSummary {
-  days: number; window_start: string; window_end: string; total_seconds: number;
-  per_game: GameStatEntry[]; pending_errors: PendingErrorEntry[];
+  days: number;
+  window_start: string | null;
+  window_end: string;
+  total_seconds: number;
+  avg_session_seconds: number;
+  longest_session_seconds: number;
+  longest_session_game_id: number | null;
+  longest_session_game_name: string | null;
+  previous_total_seconds: number;
+  new_games_count: number;
+  per_game: GameStatEntry[];
+  pending_errors: PendingErrorEntry[];
 }
 export interface ActiveSessionBrief { id: number; game_id: number; game_name: string; cover_image_url: string | null; start_time: string; }
 export interface DashboardSummary {

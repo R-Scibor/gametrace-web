@@ -15,6 +15,7 @@ export function useFormat() {
       formatDuration: format.formatDuration,
       formatHours: format.formatHours,
       formatDaysUntil: format.formatDaysUntil,
+      formatRecency: format.formatRecency,
     }),
     [timeZone],
   );

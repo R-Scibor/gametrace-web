@@ -60,3 +60,14 @@ export function formatDaysUntil(iso: string): string {
   if (days === 1) return '1 dzień';
   return `${days} dni`;
 }
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+export function formatRecency(iso: string): string {
+  const then = new Date(iso);
+  const days = Math.round((startOfDay(new Date()) - startOfDay(then)) / 86_400_000);
+  if (days <= 0) return 'grano dziś';
+  if (days === 1) return 'grano wczoraj';
+  if (days < 7) return `grano ${days} dni temu`;
+  return `grano ${then.toLocaleDateString(LOCALE, { day: '2-digit', month: 'short' })}`;
+}
