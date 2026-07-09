@@ -182,6 +182,18 @@ export const handlers = [
 
   http.post('/api/v1/admin/games/:id/merge/:targetId', () => new HttpResponse(null, { status: 204 })),
 
+  http.put('/api/v1/admin/games/:id/cover', async ({ params, request }) => {
+    const body = (await request.json()) as { extension?: string };
+    const id = Number(params.id);
+    const ext = body.extension ?? 'jpg';
+    return HttpResponse.json({
+      ...fixtures.game,
+      id,
+      cover_image_url: `/covers/${id}.${ext}`,
+      cover_source: 'CUSTOM',
+    });
+  }),
+
   http.get('/api/v1/stats/summary', ({ request }) => {
     const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
     if (days === 7) return HttpResponse.json(fixtures.statsSummary7d);
