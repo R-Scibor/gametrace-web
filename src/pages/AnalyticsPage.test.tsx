@@ -102,6 +102,16 @@ test('AnalyticsPage shows comparison delta and longest session link', async () =
   expect(recordLink).toHaveAttribute('href', '/library/1');
 });
 
+test('AnalyticsPage ranking rows link to game detail', async () => {
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+
+  await screen.findByText('Ranking gier');
+  await waitFor(() => {
+    const links = screen.getAllByRole('link');
+    expect(links.some((link) => link.getAttribute('href') === '/library/2')).toBe(true);
+  });
+});
+
 test('AnalyticsPage isolates panel errors', async () => {
   server.use(
     http.get('/api/v1/stats/heatmap', () =>

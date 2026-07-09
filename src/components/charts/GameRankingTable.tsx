@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { GameStatEntry } from '../../types/api';
 import { formatDuration } from '../../lib/format';
 import styles from './GameRankingTable.module.css';
@@ -69,7 +70,11 @@ export function GameRankingTable({ games }: GameRankingTableProps) {
       {sorted.map((game) => {
         const ratio = game.total_seconds / max;
         return (
-          <div key={game.game_id} className={styles.row} role="row">
+          <Link
+            key={game.game_id}
+            to={`/library/${game.game_id}`}
+            className={styles.row}
+          >
             <span className={styles.name}>{game.game_name}</span>
             <div className={styles.timeCell}>
               <div className={styles.track}>
@@ -80,7 +85,7 @@ export function GameRankingTable({ games }: GameRankingTableProps) {
               </div>
               <span className={styles.time}>{formatDuration(game.total_seconds)}</span>
             </div>
-          </div>
+          </Link>
         );
       })}
     </div>

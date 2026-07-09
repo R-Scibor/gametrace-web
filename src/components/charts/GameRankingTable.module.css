@@ -38,10 +38,16 @@
   align-items: center;
   padding: 8px;
   border-radius: 4px;
+  text-decoration: none;
+  color: inherit;
   transition: background-color 0.15s;
 }
 .row:hover {
   background-color: var(--bg3);
+}
+.row:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
 }
 .name {
   font-size: 14px;
