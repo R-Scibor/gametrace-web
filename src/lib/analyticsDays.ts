@@ -9,3 +9,7 @@ export function parseAnalyticsDays(value: string | null): AnalyticsDays {
   if (!Number.isFinite(n)) return DEFAULT_ANALYTICS_DAYS;
   return (ANALYTICS_DAY_PRESETS as readonly number[]).includes(n) ? (n as AnalyticsDays) : DEFAULT_ANALYTICS_DAYS;
 }
+
+export function analyticsPeriodPillLabel(days: AnalyticsDays): string {
+  return days === 0 ? 'MAX' : `${days} DNI`;
+}

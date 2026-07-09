@@ -12,6 +12,38 @@
   gap: 16px;
   flex-wrap: wrap;
 }
+.periodRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.periodPill {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+.periodPill:hover {
+  color: var(--text2);
+  border-color: var(--border-bright);
+}
+.periodPill:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+.periodPillActive {
+  color: var(--button-text-on-orange, #0a0a0a);
+  background-color: var(--orange);
+  border-color: var(--orange);
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);

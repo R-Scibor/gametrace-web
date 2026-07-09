@@ -12,17 +12,21 @@ beforeEach(() => {
   resetStores();
 });
 
+function periodButton(name: string) {
+  return screen.getByRole('button', { name });
+}
+
 test('AnalyticsPage defaults to 7-day window', async () => {
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
-  const select = await screen.findByLabelText('Okres');
-  expect((select as HTMLSelectElement).value).toBe('7');
+  await screen.findByRole('group', { name: 'Okres' });
+  expect(periodButton('7 DNI')).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('AnalyticsPage renders stat panels', async () => {
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
-  await screen.findByLabelText('Okres');
+  await screen.findByRole('group', { name: 'Okres' });
   await waitFor(() => {
     expect(screen.getByText('Przegląd')).toBeInTheDocument();
     expect(screen.getByText('ŚR. SESJA')).toBeInTheDocument();
@@ -36,17 +40,18 @@ test('AnalyticsPage window selector changes period', async () => {
   const user = userEvent.setup();
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
-  const select = await screen.findByLabelText('Okres');
-  await user.selectOptions(select, '7');
+  await screen.findByRole('group', { name: 'Okres' });
+  await user.click(periodButton('30 DNI'));
 
-  expect((select as HTMLSelectElement).value).toBe('7');
+  expect(periodButton('30 DNI')).toHaveAttribute('aria-pressed', 'true');
+  expect(periodButton('7 DNI')).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('AnalyticsPage reads days from URL query', async () => {
   renderPage(<AnalyticsPage />, { route: '/analytics?days=90' });
 
-  const select = await screen.findByLabelText('Okres');
-  expect((select as HTMLSelectElement).value).toBe('90');
+  await screen.findByRole('group', { name: 'Okres' });
+  expect(periodButton('90 DNI')).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('AnalyticsPage genre bar drills into filtered library', async () => {
@@ -75,8 +80,7 @@ test('AnalyticsPage facet panels refetch when window changes', async () => {
   await waitFor(() => expect(screen.getByText('Adventure')).toBeInTheDocument());
   expect(screen.queryByText('RPG')).not.toBeInTheDocument();
 
-  const select = screen.getByLabelText('Okres');
-  await user.selectOptions(select, '30');
+  await user.click(periodButton('30 DNI'));
 
   await waitFor(() => {
     expect(screen.getByText('RPG')).toBeInTheDocument();
@@ -88,10 +92,10 @@ test('AnalyticsPage supports all-time window', async () => {
   const user = userEvent.setup();
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
-  const select = await screen.findByLabelText('Okres');
-  await user.selectOptions(select, '0');
+  await screen.findByRole('group', { name: 'Okres' });
+  await user.click(periodButton('MAX'));
 
-  expect((select as HTMLSelectElement).value).toBe('0');
+  expect(periodButton('MAX')).toHaveAttribute('aria-pressed', 'true');
   expect(await screen.findByText('w całym okresie')).toBeInTheDocument();
 });
 
@@ -131,7 +135,7 @@ test('AnalyticsPage isolates panel errors', async () => {
 
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
-  await screen.findByLabelText('Okres');
+  await screen.findByRole('group', { name: 'Okres' });
   await waitFor(() => {
     expect(screen.getByText('Przegląd')).toBeInTheDocument();
     expect(screen.getByText('Mapa aktywności')).toBeInTheDocument();

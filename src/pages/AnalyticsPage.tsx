@@ -1,5 +1,4 @@
 import { useSearchParams } from 'react-router-dom';
-import { Select } from '../components/ui/Select';
 import { PendingErrorsBanner } from '../components/dashboard/PendingErrorsBanner';
 import { StatsOverview } from '../components/analytics/StatsOverview';
 import {
@@ -12,8 +11,7 @@ import {
   ReleaseYearsPanel,
 } from '../components/analytics/Panels';
 import { useStatsSummary } from '../hooks/useStats';
-import { ANALYTICS_DAY_PRESETS, parseAnalyticsDays } from '../lib/analyticsDays';
-import { analyticsPeriodLabel } from '../lib/format';
+import { ANALYTICS_DAY_PRESETS, analyticsPeriodPillLabel, parseAnalyticsDays } from '../lib/analyticsDays';
 import styles from './AnalyticsPage.module.css';
 
 export function AnalyticsPage() {
@@ -35,13 +33,24 @@ export function AnalyticsPage() {
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
-        <Select value={days} onChange={(e) => setDays(Number(e.target.value))} aria-label="Okres">
+        <div className={styles.periodRow} role="group" aria-label="Okres">
           {ANALYTICS_DAY_PRESETS.map((preset) => (
-            <option key={preset} value={preset}>
-              {analyticsPeriodLabel(preset)}
-            </option>
+            <button
+              key={preset}
+              type="button"
+              className={[
+                styles.periodPill,
+                days === preset ? styles.periodPillActive : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              aria-pressed={days === preset}
+              onClick={() => setDays(preset)}
+            >
+              {analyticsPeriodPillLabel(preset)}
+            </button>
           ))}
-        </Select>
+        </div>
       </div>
 
       {summary && summary.pending_errors.length > 0 && (
