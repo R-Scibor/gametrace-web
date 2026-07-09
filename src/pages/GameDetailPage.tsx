@@ -5,6 +5,7 @@ import { useGame, useUpdateGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
 import { useGameStats } from '../hooks/useGameStats';
 import { Cover } from '../components/Cover';
+import { AdminGlobalCoverUpload } from '../components/admin/AdminGlobalCoverUpload';
 import { CoverUpload } from '../components/library/CoverUpload';
 import { MergeDialog } from '../components/library/MergeDialog';
 import { SectionHeader, Skeleton, Button } from '../components/ui';
@@ -96,7 +97,21 @@ export function GameDetailPage() {
       <div className={styles.actionsPanel}>
         <SectionHeader title="Akcje" />
         <div className={styles.actionsGrid}>
-          <CoverUpload gameId={id} coverUrl={game.cover_image_url} gameName={game.primary_name} />
+          <div className={styles.coverSection}>
+            <p className={styles.coverSectionLabel}>Okładka lokalna</p>
+            <CoverUpload gameId={id} coverUrl={game.cover_image_url} gameName={game.primary_name} />
+          </div>
+          {isAdmin && (
+            <div className={styles.coverSection}>
+              <p className={styles.coverSectionLabel}>Okładka globalna</p>
+              <AdminGlobalCoverUpload
+                gameId={id}
+                gameName={game.primary_name}
+                coverUrl={game.cover_image_url}
+                coverSource={game.cover_source}
+              />
+            </div>
+          )}
           <div className={styles.actionButtons}>
             {canAccept && (
               <Button
