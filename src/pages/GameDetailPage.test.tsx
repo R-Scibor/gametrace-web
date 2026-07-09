@@ -113,7 +113,12 @@ test('GameDetailPage ignore toggle calls preferences API', async () => {
 
 test('GameDetailPage merge dialog merges into target game', async () => {
   let mergeCalled = false;
+  let gamesListCalls = 0;
   server.use(
+    http.get('/api/v1/games', () => {
+      gamesListCalls += 1;
+      return HttpResponse.json(fixtures.gamesList);
+    }),
     http.post('/api/v1/admin/games/:id/merge/:targetId', () => {
       mergeCalled = true;
       return new HttpResponse(null, { status: 204 });
@@ -131,6 +136,7 @@ test('GameDetailPage merge dialog merges into target game', async () => {
 
   await screen.findByRole('heading', { name: 'Wiedźmin 3' });
   await user.click(screen.getByRole('button', { name: /Połącz z grą/i }));
+  await waitFor(() => expect(gamesListCalls).toBe(1));
   await user.click(screen.getByRole('button', { name: 'Cyberpunk 2077' }));
   const mergeDialog = screen.getByRole('dialog');
   await user.click(within(mergeDialog).getByRole('button', { name: /^POŁĄCZ$/i }));

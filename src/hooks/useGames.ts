@@ -41,9 +41,9 @@ export type GamesLibraryFilter = {
 };
 
 function findGameInCache(queryClient: QueryClient, gameId: number): Game | undefined {
-  const allList = queryClient.getQueryData<Game[]>(qk.games({ source: 'all' }));
-  const fromAll = allList?.find((g) => g.id === gameId);
-  if (fromAll) return fromAll;
+  const pickerList = queryClient.getQueryData<Game[]>(qk.games({ source: 'picker' }));
+  const fromPicker = pickerList?.find((g) => g.id === gameId);
+  if (fromPicker) return fromPicker;
 
   const pages = queryClient.getQueriesData<InfiniteData<GameListResponse>>({ queryKey: ['games'] });
   for (const [, data] of pages) {
@@ -65,18 +65,8 @@ async function fetchGameById(gameId: number, queryClient: QueryClient): Promise<
   }
 }
 
-async function fetchAllGameSources(): Promise<Game[]> {
-  const [main, other, review] = await Promise.all([
-    getGames({ skip: 0, limit: 1000 }),
-    getGames({ skip: 0, limit: 1000, inLibrary: false }),
-    getGames({ skip: 0, limit: 1000, status: 'NEEDS_REVIEW' }),
-  ]);
-  const byId = new Map<number, Game>();
-  for (const game of [...main.items, ...other.items, ...review.items]) {
-    byId.set(game.id, game);
-  }
-  return [...byId.values()];
-}
+export const GAME_PICKER_LIMIT = 500;
+export const GAME_SEARCH_LIMIT = 20;
 
 /** Single game lookup — cache first, then GET /games/{id} */
 export function useGame(gameId: number, seed?: Game) {
@@ -89,11 +79,27 @@ export function useGame(gameId: number, seed?: Game) {
   });
 }
 
-/** Full list for merge picker and game select */
-export function useGamesAll() {
+/** Sorted library list for session form game select (single request). */
+export function useGamesPicker() {
   return useQuery({
-    queryKey: qk.games({ source: 'all' }),
-    queryFn: fetchAllGameSources,
+    queryKey: qk.games({ source: 'picker' }),
+    queryFn: () => getGames({ limit: GAME_PICKER_LIMIT, sort: 'name' }),
+    select: (data) => data.items,
+    staleTime: 60_000,
+  });
+}
+
+/** Server-side name search for merge target picker. */
+export function useGameSearch(query: string, excludeId?: number) {
+  return useQuery({
+    queryKey: qk.games({ search: query, excludeId }),
+    queryFn: () =>
+      getGames({
+        q: query || undefined,
+        limit: GAME_SEARCH_LIMIT,
+        sort: 'name',
+      }),
+    select: (data) => data.items.filter((g) => g.id !== excludeId),
   });
 }
 
@@ -153,7 +159,7 @@ export function useUpdateGamePreference(gameId: number) {
       const patch = (game: Game) => (game.id === gameId ? applyGamePref(game, pref) : game);
 
       queryClient.setQueryData<Game>(qk.game(gameId), (old) => (old ? patch(old) : old));
-      queryClient.setQueryData<Game[]>(qk.games({ source: 'all' }), (old) => old?.map(patch));
+      queryClient.setQueryData<Game[]>(qk.games({ source: 'picker' }), (old) => old?.map(patch));
 
       queryClient.setQueriesData<InfiniteData<GameListResponse>>({ queryKey: ['games'] }, (old) => {
         if (!old?.pages) return old;

@@ -1,4 +1,4 @@
-import { useGamesAll } from '../../hooks/useGames';
+import { useGamesPicker } from '../../hooks/useGames';
 import { Skeleton } from '../ui';
 import styles from './GameSelect.module.css';
 
@@ -11,13 +11,13 @@ interface GameSelectProps {
 }
 
 export function GameSelect({ id, value, onChange, disabled, 'aria-label': ariaLabel }: GameSelectProps) {
-  const { data: games, isLoading } = useGamesAll();
+  const { data: games, isLoading } = useGamesPicker();
 
   if (isLoading) {
     return <Skeleton height={44} />;
   }
 
-  const sorted = [...(games || [])].sort((a, b) => a.primary_name.localeCompare(b.primary_name));
+  const sorted = games ?? [];
 
   return (
     <select

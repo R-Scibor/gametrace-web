@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
-import { useGamesAll, useMergeGame } from '../../hooks/useGames';
-import { Button, ConfirmDialog } from '../ui';
+import { useEffect, useState } from 'react';
+import { useGameSearch, useMergeGame } from '../../hooks/useGames';
+import { Button, ConfirmDialog, Skeleton } from '../ui';
 import styles from './MergeDialog.module.css';
 
 interface MergeDialogProps {
@@ -11,19 +11,18 @@ interface MergeDialogProps {
 
 export function MergeDialog({ sourceId, sourceName, onClose }: MergeDialogProps) {
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [targetId, setTargetId] = useState<number | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const { data: games } = useGamesAll();
+  const { data: candidates = [], isLoading } = useGameSearch(debouncedQuery, sourceId);
   const merge = useMergeGame(sourceId);
 
-  const targetGame = games?.find((g) => g.id === targetId);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
+    return () => clearTimeout(timer);
+  }, [query]);
 
-  const candidates = useMemo(() => {
-    const list = (games ?? []).filter((g) => g.id !== sourceId);
-    if (!query.trim()) return list.slice(0, 20);
-    const q = query.toLowerCase();
-    return list.filter((g) => g.primary_name.toLowerCase().includes(q)).slice(0, 20);
-  }, [games, sourceId, query]);
+  const targetGame = candidates.find((g) => g.id === targetId);
 
   const handleMerge = () => {
     if (!targetId || targetId === sourceId) return;
@@ -49,7 +48,12 @@ export function MergeDialog({ sourceId, sourceName, onClose }: MergeDialogProps)
         />
 
         <ul className={styles.list}>
-          {candidates.map((g) => (
+          {isLoading && (
+            <li className={styles.empty}>
+              <Skeleton height={36} />
+            </li>
+          )}
+          {!isLoading && candidates.map((g) => (
             <li key={g.id}>
               <button
                 type="button"
@@ -60,7 +64,7 @@ export function MergeDialog({ sourceId, sourceName, onClose }: MergeDialogProps)
               </button>
             </li>
           ))}
-          {candidates.length === 0 && (
+          {!isLoading && candidates.length === 0 && (
             <li className={styles.empty}>Brak pasujących gier</li>
           )}
         </ul>
