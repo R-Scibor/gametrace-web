@@ -166,6 +166,7 @@ export const statsSummary7d: StatsSummary = {
   ...statsSummary,
   days: 7,
   avg_session_seconds: 3600,
+  new_games_count: 2,
 };
 
 export const heatmap: HeatmapResponse = {

@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { libraryDrillUrl } from '../../lib/libraryParams';
-import type { LibraryFilter, StatsSummary } from '../../types/api';
+import type { LibraryFilter } from '../../types/api';
 import {
   useStatsSummary,
   useHeatmap,
-  useStreak,
   useTrend,
   useGenres,
   useThemes,
@@ -17,13 +16,7 @@ import { Heatmap } from './Heatmap';
 import { BarList } from '../charts/BarList';
 import { GameRankingTable } from '../charts/GameRankingTable';
 import { TrendChart } from '../charts/TrendChart';
-import { Cover } from '../Cover';
-import {
-  formatAnalyticsPeriodSubtitle,
-  formatDuration,
-  formatHours,
-  formatPeriodDelta,
-} from '../../lib/format';
+import { formatDuration } from '../../lib/format';
 import { ErrorBanner, Panel, Skeleton } from '../ui';
 import panelStyles from './Panels.module.css';
 
@@ -32,59 +25,6 @@ function useLibraryDrill() {
   return (type: LibraryFilter['type'], value: string) => {
     navigate(libraryDrillUrl(type, value));
   };
-}
-
-function longestSessionCover(summary: StatsSummary): string | null {
-  if (summary.longest_session_game_id == null) return null;
-  return summary.per_game.find((g) => g.game_id === summary.longest_session_game_id)?.cover_image_url ?? null;
-}
-
-function TotalInsights({ data, days }: { data: StatsSummary; days: number }) {
-  const delta = formatPeriodDelta(data.total_seconds, data.previous_total_seconds);
-  const showRecord = data.longest_session_seconds > 0 && data.longest_session_game_id != null;
-
-  return (
-    <div className={panelStyles.totalStack}>
-      <div className={panelStyles.bigNumber}>{formatDuration(data.total_seconds)}</div>
-      <div className={panelStyles.totalMeta}>
-        {delta && <span className={panelStyles.totalDelta}>{delta}</span>}
-        <span className={panelStyles.totalSubtitle}>{formatAnalyticsPeriodSubtitle(days)}</span>
-      </div>
-      {showRecord && (
-        <Link
-          to={`/library/${data.longest_session_game_id}`}
-          className={panelStyles.recordCard}
-        >
-          <Cover
-            gameId={data.longest_session_game_id}
-            coverImageUrl={longestSessionCover(data) ?? undefined}
-            placeholderChar={data.longest_session_game_name ?? undefined}
-            className={panelStyles.recordCover}
-          />
-          <div className={panelStyles.recordMeta}>
-            <span className={panelStyles.recordLabel}>Rekord · najdłuższa sesja</span>
-            {data.longest_session_game_name && (
-              <span className={panelStyles.recordGame}>{data.longest_session_game_name}</span>
-            )}
-            <span className={panelStyles.recordValue}>
-              {formatHours(data.longest_session_seconds)} h
-            </span>
-          </div>
-        </Link>
-      )}
-    </div>
-  );
-}
-
-export function TotalPanel({ days, className }: { days: number; className?: string }) {
-  const { data, isLoading, isError } = useStatsSummary(days);
-  if (isLoading) return <Panel title="Łączny czas" className={className}><Skeleton height={40} /></Panel>;
-  if (isError || !data) return <Panel title="Łączny czas" className={className}><ErrorBanner /></Panel>;
-  return (
-    <Panel title="Łączny czas" className={className}>
-      <TotalInsights data={data} days={days} />
-    </Panel>
-  );
 }
 
 export function RankingPanel({ days, className }: { days: number; className?: string }) {
@@ -105,28 +45,6 @@ export function HeatmapPanel({ days, className }: { days: number; className?: st
   return (
     <Panel title="Mapa aktywności" className={className}>
       <Heatmap data={data.cells} />
-    </Panel>
-  );
-}
-
-export function StreakPanel({ className }: { className?: string }) {
-  const { data, isLoading, isError } = useStreak();
-  if (isLoading) return <Panel title="Passa" className={className}><Skeleton height={40} /></Panel>;
-  if (isError || !data) return <Panel title="Passa" className={className}><ErrorBanner /></Panel>;
-  return (
-    <Panel title="Passa" className={className}>
-      <div className={panelStyles.streakRow}>
-        <div className={panelStyles.streakBlock}>
-          <span className={panelStyles.streakLabel}>Obecnie</span>
-          <span className={`${panelStyles.streakValue} ${panelStyles.streakValueActive}`}>
-            {data.current_streak}
-          </span>
-        </div>
-        <div className={panelStyles.streakBlock}>
-          <span className={panelStyles.streakLabel}>Rekord</span>
-          <span className={panelStyles.streakValue}>{data.longest_streak}</span>
-        </div>
-      </div>
     </Panel>
   );
 }

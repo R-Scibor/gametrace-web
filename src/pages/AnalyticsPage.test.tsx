@@ -24,10 +24,11 @@ test('AnalyticsPage renders stat panels', async () => {
 
   await screen.findByLabelText('Okres');
   await waitFor(() => {
-    expect(screen.getByText('Łączny czas')).toBeInTheDocument();
+    expect(screen.getByText('Przegląd')).toBeInTheDocument();
+    expect(screen.getByText('ŚR. SESJA')).toBeInTheDocument();
+    expect(screen.getByText('NOWE GRY')).toBeInTheDocument();
     expect(screen.getByText('Ranking gier')).toBeInTheDocument();
     expect(screen.getByText('Mapa aktywności')).toBeInTheDocument();
-    expect(screen.getByText('Passa')).toBeInTheDocument();
   });
 });
 
@@ -94,6 +95,15 @@ test('AnalyticsPage supports all-time window', async () => {
   expect(await screen.findByText('w całym okresie')).toBeInTheDocument();
 });
 
+test('AnalyticsPage shows mobile parity insight tiles', async () => {
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+
+  expect(await screen.findByText('ŚR. SESJA')).toBeInTheDocument();
+  expect(screen.getByText('NOWE GRY')).toBeInTheDocument();
+  expect(screen.getByText('1.0')).toBeInTheDocument();
+  expect(screen.getByText('2')).toBeInTheDocument();
+});
+
 test('AnalyticsPage shows comparison delta and longest session link', async () => {
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
@@ -123,7 +133,7 @@ test('AnalyticsPage isolates panel errors', async () => {
 
   await screen.findByLabelText('Okres');
   await waitFor(() => {
-    expect(screen.getByText('Łączny czas')).toBeInTheDocument();
+    expect(screen.getByText('Przegląd')).toBeInTheDocument();
     expect(screen.getByText('Mapa aktywności')).toBeInTheDocument();
     expect(screen.getByText('BŁĄD POŁĄCZENIA')).toBeInTheDocument();
   });

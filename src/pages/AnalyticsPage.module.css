@@ -18,17 +18,36 @@
   gap: 20px;
   align-items: stretch;
 }
-.span3 {
-  grid-column: span 3;
+.span2 {
+  grid-column: span 2;
+}
+.span4 {
+  grid-column: span 4;
 }
 .span6 {
   grid-column: span 6;
+}
+.sectionLabel {
+  grid-column: 1 / -1;
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+.sectionLabel:first-of-type {
+  border-top: none;
+  padding-top: 0;
 }
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
   }
-  .span3,
+  .span2,
+  .span4,
   .span6 {
     grid-column: span 1;
   }

@@ -1,11 +1,10 @@
 import { useSearchParams } from 'react-router-dom';
 import { Select } from '../components/ui/Select';
 import { PendingErrorsBanner } from '../components/dashboard/PendingErrorsBanner';
+import { StatsOverview } from '../components/analytics/StatsOverview';
 import {
-  TotalPanel,
   RankingPanel,
   HeatmapPanel,
-  StreakPanel,
   TrendPanel,
   GenresPanel,
   ThemesPanel,
@@ -50,15 +49,20 @@ export function AnalyticsPage() {
       )}
 
       <div className={styles.grid}>
-        <TotalPanel days={days} className={styles.span3} />
-        <StreakPanel className={styles.span3} />
-        <HeatmapPanel days={days} className={styles.span6} />
-        <RankingPanel days={days} className={styles.span6} />
+        <StatsOverview days={days} className={styles.span6} />
+
+        <div className={styles.sectionLabel}>Aktywność</div>
+
+        <HeatmapPanel days={days} className={styles.span4} />
+        <RankingPanel days={days} className={styles.span2} />
         <TrendPanel days={days} className={styles.span6} />
-        <GenresPanel days={days} className={styles.span3} />
-        <ThemesPanel days={days} className={styles.span3} />
+
+        <div className={styles.sectionLabel}>Tagi i wydawcy</div>
+
+        <GenresPanel days={days} className={styles.span2} />
+        <ThemesPanel days={days} className={styles.span2} />
+        <ReleaseYearsPanel days={days} className={styles.span2} />
         <CompaniesPanel days={days} className={styles.span6} />
-        <ReleaseYearsPanel days={days} className={styles.span6} />
       </div>
     </div>
   );

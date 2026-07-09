@@ -1,0 +1,167 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.5fr) repeat(2, minmax(110px, 0.85fr)) minmax(130px, 0.95fr) minmax(220px, 1.35fr);
+  gap: 14px;
+  align-items: stretch;
+}
+.totalBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 16px;
+  background-color: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  min-height: 100%;
+}
+.totalLabel {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.totalValue {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.totalMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.totalDelta {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--orange);
+}
+.totalSubtitle {
+  color: var(--text3);
+}
+.tile {
+  min-height: 100%;
+}
+.streakBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.streakLabel {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.streakValues {
+  display: flex;
+  gap: 20px;
+}
+.streakItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.streakItemLabel {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.streakItemValue {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+.streakActive {
+  color: var(--orange);
+}
+.streakMuted {
+  font-size: 14px;
+  color: var(--text3);
+}
+.recordCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-decoration: none;
+  color: inherit;
+  min-height: 100%;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.recordCard:hover {
+  border-color: var(--orange);
+  background-color: var(--bg3);
+}
+.recordPlaceholder {
+  display: none;
+}
+.recordCover {
+  width: 44px;
+  height: 58px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.recordMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.recordLabel {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.recordGame {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recordValue {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--orange);
+}
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .totalBlock {
+    grid-column: 1 / -1;
+  }
+  .recordCard,
+  .recordPlaceholder {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
