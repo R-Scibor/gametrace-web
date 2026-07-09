@@ -71,3 +71,32 @@ export function formatRecency(iso: string): string {
   if (days < 7) return `grano ${days} dni temu`;
   return `grano ${then.toLocaleDateString(LOCALE, { day: '2-digit', month: 'short' })}`;
 }
+
+export function formatSessionWindow(
+  startIso: string,
+  endIso: string | null,
+  options?: FormatOptions,
+): string {
+  const startDate = formatDateShort(startIso, options);
+  const startTime = formatTimeShort(startIso, options);
+  if (!endIso) return `${startDate}, ${startTime} → —`;
+  const endDate = formatDateShort(endIso, options);
+  const endTime = formatTimeShort(endIso, options);
+  if (startDate === endDate) return `${startDate}, ${startTime} → ${endTime}`;
+  return `${startDate}, ${startTime} → ${endDate}, ${endTime}`;
+}
+
+export function formatPeriodDelta(total: number, previous: number): string | null {
+  if (previous <= 0) return null;
+  const delta = (total - previous) / previous;
+  const up = delta >= 0;
+  return `${up ? '↑' : '↓'}${Math.abs(Math.round(delta * 100))}%`;
+}
+
+export function formatAnalyticsPeriodSubtitle(days: number): string {
+  return days === 0 ? 'w całym okresie' : `w ciągu ostatnich ${days} dni`;
+}
+
+export function analyticsPeriodLabel(days: number): string {
+  return days === 0 ? 'Cały okres' : `Ostatnie ${days} dni`;
+}

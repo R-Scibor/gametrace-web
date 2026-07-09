@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import type { Session, SessionStatus } from '../../types/api';
+import type { Session } from '../../types/api';
+import { SESSION_SOURCE_LABEL, SESSION_STATUS_LABEL } from '../../lib/sessionLabels';
 import { useFormat } from '../../hooks/useFormat';
 import { EmptyState } from '../ui';
 import styles from './SessionList.module.css';
@@ -7,17 +8,6 @@ import styles from './SessionList.module.css';
 interface SessionListProps {
   sessions: Session[];
 }
-
-const STATUS_LABEL: Record<SessionStatus, string | null> = {
-  COMPLETED: null,
-  ONGOING: 'TRWA',
-  ERROR: 'BŁĄD',
-};
-
-const SOURCE_LABEL: Record<Session['source'], string> = {
-  BOT: '⬡ BOT',
-  MANUAL: '✎ RĘCZNA',
-};
 
 export function SessionList({ sessions }: SessionListProps) {
   const { formatDuration, formatDateShort, formatTimeShort } = useFormat();
@@ -36,7 +26,7 @@ export function SessionList({ sessions }: SessionListProps) {
         <span>Źródło</span>
       </div>
       {sessions.map((session) => {
-        const statusLabel = STATUS_LABEL[session.status];
+        const statusLabel = SESSION_STATUS_LABEL[session.status];
         const isError = session.status === 'ERROR';
         return (
           <Link
@@ -67,7 +57,7 @@ export function SessionList({ sessions }: SessionListProps) {
               )}
             </span>
             <span className={styles.source} title={session.source === 'BOT' ? 'Bot Discord' : 'Ręczna'}>
-              {SOURCE_LABEL[session.source]}
+              {SESSION_SOURCE_LABEL[session.source]}
             </span>
           </Link>
         );

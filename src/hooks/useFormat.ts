@@ -16,6 +16,8 @@ export function useFormat() {
       formatHours: format.formatHours,
       formatDaysUntil: format.formatDaysUntil,
       formatRecency: format.formatRecency,
+      formatSessionWindow: (startIso: string, endIso: string | null) =>
+        format.formatSessionWindow(startIso, endIso, { timeZone }),
     }),
     [timeZone],
   );
