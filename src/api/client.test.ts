@@ -7,7 +7,6 @@ import { beforeEach, test, expect } from 'vitest';
 
 beforeEach(() => {
   useAuthStore.getState().logout();
-  useAuthStore.setState({ hasHydrated: true });
   queryClient.clear();
 });
 
@@ -37,4 +36,18 @@ test('client handles 401 and tears down auth', async () => {
   await expect(client.get('/test')).rejects.toThrow();
   expect(useAuthStore.getState().isAuthenticated).toBe(false);
   expect(queryClient.getQueryCache().getAll()).toHaveLength(0);
+});
+
+test('client does not tear down auth on failed login attempts', async () => {
+  useAuthStore.getState().login('test-token', { discordId: '1', username: 'test' });
+
+  server.use(
+    http.post('/api/v1/auth/link', () =>
+      HttpResponse.json({ detail: 'Invalid or expired code' }, { status: 401 }),
+    ),
+  );
+
+  await expect(client.post('/auth/link', { code: '000000' })).rejects.toThrow();
+  expect(useAuthStore.getState().isAuthenticated).toBe(true);
+  expect(useAuthStore.getState().token).toBe('test-token');
 });

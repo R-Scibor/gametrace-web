@@ -18,7 +18,6 @@ export function createTestQueryClient() {
 
 export function resetStores() {
   useAuthStore.getState().logout();
-  useAuthStore.setState({ hasHydrated: true });
   useToastStore.setState({ toasts: [] });
   useGamesStore.setState({ stale: false });
   useLocalCoversStore.setState({ covers: {} });

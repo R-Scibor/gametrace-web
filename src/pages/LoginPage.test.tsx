@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoginPage } from './LoginPage';
+import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useAuthStore } from '../store/authStore';
 import { server } from '../../test/server';
 import { http, HttpResponse } from 'msw';
@@ -48,6 +49,29 @@ test('LoginPage handles successful link login', async () => {
   await userEvent.click(button);
 
   expect(await screen.findByText('Home Page')).toBeInTheDocument();
+});
+
+test('LoginPage reaches protected home through ProtectedRoute', async () => {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={['/login']}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<div>Dashboard Home</div>} />
+          </Route>
+          <Route path="/welcome" element={<div>Welcome Page</div>} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
+  );
+
+  await userEvent.type(screen.getByLabelText(/Kod logowania/i), '231996');
+  await userEvent.click(screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i }));
+
+  expect(await screen.findByText('Dashboard Home')).toBeInTheDocument();
+  expect(useAuthStore.getState().isAuthenticated).toBe(true);
 });
 
 test('LoginPage handles successful username login in dev mode', async () => {

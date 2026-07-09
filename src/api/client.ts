@@ -19,10 +19,13 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
+const isAuthEndpoint = (url?: string) =>
+  !!url && /^\/auth\/(?:link|login|logout|discord)(?:\?|$)/.test(url);
+
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && !isAuthEndpoint(error.config?.url)) {
       teardownAuth();
     }
     return Promise.reject(error);

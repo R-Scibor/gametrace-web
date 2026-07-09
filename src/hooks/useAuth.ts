@@ -40,7 +40,9 @@ export function useAuth() {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const res = await loginApi(username, tz);
-      authState.login(res.token, { discordId: res.discord_id, username: res.username }, res.is_admin);
+      useAuthStore
+        .getState()
+        .login(res.token, { discordId: res.discord_id, username: res.username }, res.is_admin);
       return true;
     } catch (err: unknown) {
       const message = axios.isAxiosError(err)
@@ -61,7 +63,9 @@ export function useAuth() {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const res = await linkLoginApi(code, tz);
-      authState.login(res.token, { discordId: res.discord_id, username: res.username }, res.is_admin);
+      useAuthStore
+        .getState()
+        .login(res.token, { discordId: res.discord_id, username: res.username }, res.is_admin);
       return true;
     } catch (err: unknown) {
       setError(linkErrorMessage(err));

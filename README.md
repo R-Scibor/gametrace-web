@@ -87,6 +87,8 @@ docker compose up -d --build
 
 The backend has no CORS middleware — all browser traffic must be same-origin through this nginx proxy.
 
+`nginx.conf` resolves `gametrace_api` via Docker DNS on each request (avoids 502 after the API container is recreated without restarting web). If API calls still return **502** while `curl :8010/api/v1/health` is OK, reload web nginx: `docker exec gametrace-web nginx -s reload`.
+
 ### Nginx Proxy Manager (homelab)
 
 1. Add a **Proxy Host** for `gametrace.home`.

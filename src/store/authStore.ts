@@ -11,7 +11,6 @@ type AuthState = {
   user: User | null;
   isAdmin: boolean;
   isAuthenticated: boolean;
-  hasHydrated: boolean;
   login: (token: string, user: User, isAdmin?: boolean) => void;
   setIsAdmin: (isAdmin: boolean) => void;
   logout: () => void;
@@ -24,7 +23,6 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAdmin: false,
       isAuthenticated: false,
-      hasHydrated: false,
 
       login: (token, user, isAdmin = false) =>
         set({ token, user, isAdmin, isAuthenticated: true }),
@@ -38,9 +36,12 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
-      onRehydrateStorage: () => () => {
+      onRehydrateStorage: () => (_state, error) => {
+        if (error) {
+          useAuthStore.persist.clearStorage();
+        }
         // isAdmin comes from login response + profile sync, not persisted storage.
-        useAuthStore.setState({ hasHydrated: true, isAdmin: false });
+        useAuthStore.setState({ isAdmin: false });
       },
     },
   ),
