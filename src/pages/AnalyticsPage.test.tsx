@@ -83,6 +83,25 @@ test('AnalyticsPage facet panels refetch when window changes', async () => {
   });
 });
 
+test('AnalyticsPage supports all-time window', async () => {
+  const user = userEvent.setup();
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+
+  const select = await screen.findByLabelText('Okres');
+  await user.selectOptions(select, '0');
+
+  expect((select as HTMLSelectElement).value).toBe('0');
+  expect(await screen.findByText('w całym okresie')).toBeInTheDocument();
+});
+
+test('AnalyticsPage shows comparison delta and longest session link', async () => {
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+
+  expect(await screen.findByText('↑20%')).toBeInTheDocument();
+  const recordLink = screen.getByText('Rekord · najdłuższa sesja').closest('a');
+  expect(recordLink).toHaveAttribute('href', '/library/1');
+});
+
 test('AnalyticsPage isolates panel errors', async () => {
   server.use(
     http.get('/api/v1/stats/heatmap', () =>

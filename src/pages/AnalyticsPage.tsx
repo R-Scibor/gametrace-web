@@ -14,6 +14,7 @@ import {
 } from '../components/analytics/Panels';
 import { useStatsSummary } from '../hooks/useStats';
 import { ANALYTICS_DAY_PRESETS, parseAnalyticsDays } from '../lib/analyticsDays';
+import { analyticsPeriodLabel } from '../lib/format';
 import styles from './AnalyticsPage.module.css';
 
 export function AnalyticsPage() {
@@ -38,7 +39,7 @@ export function AnalyticsPage() {
         <Select value={days} onChange={(e) => setDays(Number(e.target.value))} aria-label="Okres">
           {ANALYTICS_DAY_PRESETS.map((preset) => (
             <option key={preset} value={preset}>
-              Ostatnie {preset} dni
+              {analyticsPeriodLabel(preset)}
             </option>
           ))}
         </Select>
