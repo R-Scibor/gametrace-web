@@ -16,6 +16,8 @@ test('TrashPage renders trashed sessions', async () => {
 
   expect(await screen.findByText('Kosz')).toBeInTheDocument();
   expect(await screen.findByText('Wiedźmin 3')).toBeInTheDocument();
+  expect(screen.getByText(/2h 0m/)).toBeInTheDocument();
+  expect(screen.getByText('Test session')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Przywróć/i })).toBeInTheDocument();
 });
 

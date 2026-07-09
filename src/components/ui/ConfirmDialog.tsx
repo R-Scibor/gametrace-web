@@ -1,10 +1,11 @@
+import type { ReactNode } from 'react';
 import { Button } from './Button';
 import styles from './ConfirmDialog.module.css';
 
 interface ConfirmDialogProps {
   open: boolean;
   title: string;
-  message: string;
+  message: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   variant?: 'default' | 'danger';
@@ -38,7 +39,7 @@ export function ConfirmDialog({
         <h2 id="confirm-title" className={styles.title}>
           {title}
         </h2>
-        <p className={styles.message}>{message}</p>
+        <div className={styles.message}>{message}</div>
         <div className={styles.actions}>
           <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
             {cancelLabel}
