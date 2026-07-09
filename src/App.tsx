@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { AdminRoute } from './components/AdminRoute';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { Skeleton } from './components/ui';
@@ -19,6 +20,9 @@ const AnalyticsPage = lazy(() =>
 );
 const VoicePage = lazy(() =>
   import('./pages/VoicePage').then(m => ({ default: m.VoicePage }))
+);
+const AdminPage = lazy(() =>
+  import('./pages/AdminPage').then(m => ({ default: m.AdminPage }))
 );
 
 function PageFallback() {
@@ -47,6 +51,9 @@ function App() {
             <Route path="/voice" element={<VoicePage />} />
             <Route path="/trash" element={<TrashPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
