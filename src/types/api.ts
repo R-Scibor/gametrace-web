@@ -35,6 +35,46 @@ export interface GameListResponse {
   total: number;
   items: Game[];
 }
+
+export type AdminCatalogSort = 'sessions_desc' | 'id_asc' | 'name_asc';
+
+export interface AdminGameItem {
+  id: number;
+  primary_name: string;
+  enrichment_status: EnrichmentStatus;
+  cover_image_url: string | null;
+  cover_source: CoverSource;
+  external_api_id: string | null;
+  aliases: string[];
+  session_count: number;
+}
+
+export interface AdminGameListResponse {
+  total: number;
+  items: AdminGameItem[];
+}
+
+export interface IGDBCandidate {
+  igdb_id: number;
+  name: string;
+  year: number | null;
+  cover_url: string | null;
+  score: number;
+}
+
+export interface AdminAliasResponse {
+  game_id: number;
+  discord_process_name: string;
+}
+
+export interface AdminGamesQuery {
+  status?: EnrichmentStatus;
+  q?: string;
+  skip?: number;
+  limit?: number;
+  sort?: AdminCatalogSort;
+}
+
 export interface GameStats {
   game_id: number;
   total_seconds: number;
