@@ -28,15 +28,18 @@ weekly trend, genres, themes, companies, release-years, trash/restore, game igno
 
 **Non-Goals (YAGNI)**
 - No push notifications (FCM is mobile-only; the `/notifications/*` endpoints are out of scope).
-- No multi-user / admin features. One user per browser session.
+- No multi-tenant operator console. A thin **homelab admin panel** exists for `is_admin` users (catalog review, merge, global covers); regular users see one library per session.
 - No offline mode / PWA / service worker.
 - No i18n framework. UI is **Polish only** (matching mobile).
 - No SSR. Plain client-rendered SPA.
 
 ## 3. Users & Auth
 
-- Single user, authenticated by **Discord username** (pre-registered via the bot's `/login`
-  slash command). `POST /api/v1/auth/login` issues a bearer token; 30-day sliding-window expiry.
+- Primary auth: **6-digit link code** from the Discord `/login` slash command →
+  `POST /api/v1/auth/link`. Dev fallback: username + `X-Dev-Login-Secret` when
+  `VITE_DEV_LOGIN_SECRET` is set (`POST /api/v1/auth/login`, backend-gated).
+- Bearer token; 30-day sliding-window expiry. `LoginResponse` and `/profile/me` include
+  `is_admin` for gating admin routes and actions.
 - Token + minimal user profile persist in `localStorage` (Zustand `persist`).
 - A 401 from any call clears auth (and query cache). Unauthenticated access to protected routes redirects to `/welcome` (not `/login`); `/login` remains the explicit sign-in page.
 - Login captures the browser timezone (`Intl.DateTimeFormat().resolvedOptions().timeZone`) and
@@ -95,7 +98,10 @@ Persistent **left sidebar** (collapses to icons under ~1100px):
 🗑 Kosz           (Trash, /trash)
 ⚙ Ustawienia     (Settings, /settings)
 ─────────────
+◆ Administracja  (Admin hub, /admin — **admins only**)
 ```
+
+Admin pages use a horizontal sub-nav: **Operacje** (`/admin`) · **Katalog** (`/admin/catalog`).
 
 Top bar (sticky): page title on the left; on the right a **bot/health status pill**
 and, whenever a session is `ONGOING`, a **pinned live timer** ("AKTYWNA SESJA · 01:23:45")
@@ -107,16 +113,18 @@ cache.
 | Route               | Page             | Contents |
 |---------------------|------------------|----------|
 | `/welcome`          | Landing          | Public onboarding — what GameTrace is, how to get started. |
-| `/login`            | Auth             | Wordmark, Discord-username field, sign-in. Redirects to `/` when already authed. |
+| `/login`            | Auth             | Link-code form (default); optional dev username mode. Redirects to `/` when already authed. |
 | `/`                 | Dashboard        | Active-session card (live timer, 30s poll) · today/7d/avg-session tiles · idle hero spotlight · pending-error banner · recent sessions (last 5, COMPLETED+ERROR). |
 | `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia / Inne**; server-side search; pagination; click → detail. |
-| `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · actions: **upload cover**, **ignore toggle**, **merge into another game**. |
+| `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · **local cover** (everyone) · **ignore toggle** · **merge + global cover** (admins only). |
 | `/analytics`        | Analytics        | The powerhouse — see §8. |
 | `/sessions/new`     | Add session      | Game search/resolve, start/end datetime, notes. **409 conflict** rendered inline with the conflicting session. Prefill via query params (from Voice). |
-| `/sessions/:id/edit`| Edit session     | Edit `end_time` + notes; **fix ERROR sessions**; **delete** (→ trash). ONGOING is read-only. |
+| `/sessions/:id/edit`| Edit session     | Edit `end_time` only (`PATCH`); **discard ERROR** → `DELETE` (soft-delete to trash). ONGOING is read-only. System notes displayed read-only when present. |
 | `/voice`            | Voice            | Browser `MediaRecorder` capture → `POST /voice/transcribe` → resolve game → redirect to `/sessions/new` prefilled. |
 | `/trash`            | Trash            | Trashed sessions, **`purges_at` countdown**, **restore** (re-validates conflict), **hard-delete**. |
 | `/settings`         | Settings         | Profile · timezone · `weekly_report_enabled` + `push_enabled` toggles · bot/health/version · logout. |
+| `/admin`            | Admin ops        | **Admin only.** Game search + ID lookup · merge · global cover upload. |
+| `/admin/catalog`    | Catalog review   | **Admin only.** Global `NEEDS_REVIEW` table · re-queue enrich · IGDB link · add alias · merge/cover on selected row. |
 
 ## 8. Analytics Page (the differentiator)
 
@@ -140,10 +148,11 @@ Pending errors (from `/stats/summary`) surface a "napraw" link to the relevant e
 
 API modules mirror the backend, ported and extended from the mobile `app/api/*`:
 
-- `auth` (login, logout), `profile` (me, settings), `sessions` (list, get, trash, create,
-  patch, delete, restore, hard-delete), `games` (list as `GameListResponse`, resolve, sessions, stats, merge),
-  `stats` (summary, dashboard, heatmap, streak, trend, genres, themes, companies,
-  release-years), `voice` (transcribe), `preferences` (upsert, delete), `health`.
+- `auth` (link, login, logout), `profile` (me, settings), `sessions` (list, get, trash, create,
+  patch `{ end_time? }`, delete, restore, hard-delete), `games` (list as `GameListResponse`,
+  get by id, resolve, sessions, stats), `admin` (catalog list, enrich, IGDB match/link,
+  aliases, merge, global cover), `stats` (summary, dashboard, heatmap, streak, trend,
+  genres, themes, companies, release-years), `voice` (transcribe), `preferences` (upsert, delete), `health`.
 
 One typed TanStack Query hook per concern. Query keys are structured for targeted
 invalidation — e.g. creating/patching/deleting a session invalidates
@@ -185,9 +194,10 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 ## 13. Testing Strategy
 
 - **Vitest + React Testing Library + MSW** (mock the whole `/api/v1` surface with fixtures).
-- Priority coverage: api client (bearer + 401), auth/login flow, session create incl. 409
+- Priority coverage: api client (bearer + 401), auth/link flow, session create incl. 409
   conflict, dashboard polling + live timer, each analytics panel renders from a fixture,
-  voice state machine (mocked `MediaRecorder`), trash restore/hard-delete.
+  voice state machine (mocked `MediaRecorder`), trash restore/hard-delete, admin catalog
+  ops (MSW handlers for `/admin/games/*`).
 - Formatting/util helpers get plain unit tests.
 
 ## 14. Deployment

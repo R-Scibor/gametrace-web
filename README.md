@@ -15,7 +15,7 @@ React 19, TypeScript, Vite, React Router v7, TanStack Query, Zustand, axios, Rec
 | Path | Purpose |
 |------|---------|
 | `/welcome` | Landing — what GameTrace is, onboarding, how to use |
-| `/login` | Sign in with Discord username (requires prior `/login` on the bot) |
+| `/login` | Sign in with 6-digit link code from Discord `/login` (dev username fallback when `VITE_DEV_LOGIN_SECRET` is set) |
 
 Unauthenticated users hitting any protected route are redirected to `/welcome`.
 
@@ -32,6 +32,17 @@ Unauthenticated users hitting any protected route are redirected to `/welcome`.
 | `/voice` | Voice capture → transcribe → prefill new session |
 | `/trash` | Trashed sessions — restore or hard-delete |
 | `/settings` | Profile, timezone, notification toggles, logout |
+
+### Admin (`is_admin` only)
+
+Visible in the sidebar only when the logged-in user has `is_admin: true`. Non-admins hitting these URLs are redirected to `/`.
+
+| Path | Purpose |
+|------|---------|
+| `/admin` | Ad-hoc ops — search game or lookup by ID; merge; global cover upload |
+| `/admin/catalog` | Global catalog review — `NEEDS_REVIEW` queue, enrich, IGDB link, aliases |
+
+Admin API surface: `GET/POST /api/v1/admin/games/*` (list, enrich, match, igdb-link, aliases, merge, cover). See backend `docs/api.md` § Admin.
 
 ## Development
 
