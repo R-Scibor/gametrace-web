@@ -194,6 +194,76 @@ export const handlers = [
     });
   }),
 
+  http.get('/api/v1/admin/games', ({ request }) => {
+    const url = new URL(request.url);
+    const status = url.searchParams.get('status') ?? 'NEEDS_REVIEW';
+    const q = url.searchParams.get('q')?.toLowerCase() ?? '';
+    let items = fixtures.adminCatalogGames.items;
+    if (status !== 'NEEDS_REVIEW') {
+      items = items.filter((g) => g.enrichment_status === status);
+    }
+    if (q) {
+      items = items.filter(
+        (g) =>
+          g.primary_name.toLowerCase().includes(q) ||
+          g.aliases.some((a) => a.toLowerCase().includes(q)),
+      );
+    }
+    const skip = Number(url.searchParams.get('skip') ?? 0);
+    const limit = Number(url.searchParams.get('limit') ?? 50);
+    const page = items.slice(skip, skip + limit);
+    return HttpResponse.json({ total: items.length, items: page });
+  }),
+
+  http.post('/api/v1/admin/games/:id/enrich', () =>
+    HttpResponse.json({ queued: true }, { status: 202 }),
+  ),
+
+  http.post('/api/v1/admin/games/match', async ({ request }) => {
+    const body = (await request.json()) as { query?: string };
+    if (!body.query?.trim()) {
+      return HttpResponse.json({ detail: 'query required' }, { status: 422 });
+    }
+    return HttpResponse.json(fixtures.igdbCandidates);
+  }),
+
+  http.post('/api/v1/admin/games/:id/igdb-link', async ({ params, request }) => {
+    const body = (await request.json()) as { igdb_id: number };
+    const id = Number(params.id);
+    const item = fixtures.adminCatalogGames.items.find((g) => g.id === id);
+    if (!item) return HttpResponse.json({ detail: 'Not found' }, { status: 404 });
+    if (body.igdb_id === 99999) {
+      return HttpResponse.json(
+        { detail: { message: 'IGDB id already linked to another game', conflicting_game_id: 33 } },
+        { status: 409 },
+      );
+    }
+    return HttpResponse.json({
+      id,
+      primary_name: fixtures.igdbCandidates[0].name,
+      cover_image_url: fixtures.igdbCandidates[0].cover_url,
+      cover_source: 'EXTERNAL',
+      enrichment_status: 'ENRICHED',
+      is_ignored: false,
+      is_accepted: null,
+      total_seconds: 0,
+      last_played: null,
+    });
+  }),
+
+  http.post('/api/v1/admin/games/:id/aliases', async ({ params, request }) => {
+    const body = (await request.json()) as { discord_process_name?: string };
+    const name = body.discord_process_name?.trim() ?? '';
+    if (!name) return HttpResponse.json({ detail: 'blank' }, { status: 422 });
+    if (name === 'taken.exe') {
+      return HttpResponse.json({ detail: { conflicting_game_id: 33 } }, { status: 409 });
+    }
+    return HttpResponse.json(
+      { game_id: Number(params.id), discord_process_name: name },
+      { status: 201 },
+    );
+  }),
+
   http.get('/api/v1/stats/summary', ({ request }) => {
     const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
     if (days === 7) return HttpResponse.json(fixtures.statsSummary7d);

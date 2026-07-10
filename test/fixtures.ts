@@ -243,4 +243,38 @@ export const fixtures = {
   companies7d: { items: [{ name: 'FromSoftware', total_seconds: 3600, game_count: 1 }] },
   releaseYears: { items: [{ decade: '2010s', total_seconds: 14400 }] },
   releaseYears7d: { items: [{ decade: '2000s', total_seconds: 3600 }] },
+  adminCatalogGames: {
+    total: 2,
+    items: [
+      {
+        id: 45,
+        primary_name: 'Kingdom Hearts HD 1.5 + 2.5 ReMIX',
+        enrichment_status: 'NEEDS_REVIEW' as const,
+        cover_image_url: null,
+        cover_source: 'EXTERNAL' as const,
+        external_api_id: null,
+        aliases: ['KINGDOM HEARTS -HD 1.5+2.5 ReMIX-'],
+        session_count: 26,
+      },
+      {
+        id: 99,
+        primary_name: 'Nieznana Gra',
+        enrichment_status: 'NEEDS_REVIEW' as const,
+        cover_image_url: null,
+        cover_source: 'EXTERNAL' as const,
+        external_api_id: null,
+        aliases: ['unknown.exe'],
+        session_count: 3,
+      },
+    ],
+  },
+  igdbCandidates: [
+    {
+      igdb_id: 11142,
+      name: 'Kingdom Hearts HD 1.5 + 2.5 ReMIX',
+      year: 2017,
+      cover_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1wyy.jpg',
+      score: 0.98,
+    },
+  ],
 };
