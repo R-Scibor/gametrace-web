@@ -12,6 +12,11 @@ beforeEach(() => {
   resetStores();
 });
 
+test('AdminPage shows Operacje sub-nav as active', () => {
+  renderPage(<AdminPage />, { route: '/admin' });
+  expect(screen.getByRole('link', { name: 'Operacje' })).toHaveAttribute('aria-current', 'page');
+});
+
 test('AdminPage search selects game and shows ops panel', async () => {
   const user = userEvent.setup();
   renderPage(<AdminPage />);

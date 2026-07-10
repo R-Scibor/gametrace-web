@@ -13,6 +13,7 @@ export function getPageTitle(pathname: string): PageTitle | null {
   if (pathname === '/voice') return { title: 'Sesja głosowa' };
   if (pathname === '/trash') return { title: 'Kosz' };
   if (pathname === '/admin') return { title: 'Administracja' };
+  if (pathname === '/admin/catalog') return { title: 'Katalog gier' };
   if (pathname === '/settings') return { title: 'Ustawienia' };
   return null;
 }

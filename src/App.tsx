@@ -24,6 +24,9 @@ const VoicePage = lazy(() =>
 const AdminPage = lazy(() =>
   import('./pages/AdminPage').then(m => ({ default: m.AdminPage }))
 );
+const AdminCatalogPage = lazy(() =>
+  import('./pages/AdminCatalogPage').then(m => ({ default: m.AdminCatalogPage }))
+);
 
 function PageFallback() {
   return (
@@ -53,6 +56,7 @@ function App() {
             <Route path="/settings" element={<SettingsPage />} />
             <Route element={<AdminRoute />}>
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin/catalog" element={<AdminCatalogPage />} />
             </Route>
           </Route>
         </Route>

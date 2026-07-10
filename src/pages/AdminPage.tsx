@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AdminGameOpsPanel } from '../components/admin/AdminGameOpsPanel';
+import { AdminSubNav } from '../components/admin/AdminSubNav';
 import { Cover } from '../components/Cover';
 import { SectionHeader, Button, Skeleton } from '../components/ui';
 import { useGame, useGameSearch } from '../hooks/useGames';
@@ -49,6 +50,7 @@ export function AdminPage() {
   return (
     <div className={styles.container}>
       <p className={styles.intro}>Operacje globalne na katalogu gier.</p>
+      <AdminSubNav />
 
       <div className={styles.panel}>
         <SectionHeader title="Wybierz grę" />
