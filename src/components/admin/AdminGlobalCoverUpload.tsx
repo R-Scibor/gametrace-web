@@ -37,10 +37,10 @@ export function AdminGlobalCoverUpload({
 
   return (
     <div className={styles.wrapper}>
-      <p className={styles.meta}>Źródło serwera: {coverSource}</p>
       <div className={styles.preview}>
         <Cover gameId={gameId} coverImageUrl={displayUrl} placeholderChar={gameName} />
       </div>
+      <p className={styles.meta}>Źródło: {coverSource}</p>
       <input
         ref={inputRef}
         type="file"

@@ -156,7 +156,11 @@ test('GameDetailPage hides merge action for non-admin users', async () => {
 
   await screen.findByRole('heading', { name: 'Wiedźmin 3' });
   expect(screen.queryByRole('button', { name: /Połącz z grą/i })).not.toBeInTheDocument();
-  expect(screen.queryByText('Okładka globalna')).not.toBeInTheDocument();
+  // Non-admins see the global cover read-only, but not the upload control.
+  expect(screen.getByText('Okładka globalna')).toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: /Wybierz globalną okładkę/i }),
+  ).not.toBeInTheDocument();
 });
 
 test('GameDetailPage shows global cover upload for admins', async () => {
