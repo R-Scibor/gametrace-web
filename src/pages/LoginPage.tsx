@@ -68,10 +68,22 @@ export function LoginPage() {
         </form>
 
         <div className={styles.helper}>
-          <p>
-            Uruchom <span className={styles.helperAccent}>/login</span> na Discordzie
+          <p className={styles.helperTitle}>SKĄD WZIĄĆ KOD?</p>
+          <ol className={styles.helperSteps}>
+            <li>
+              Na <strong>kanale serwera</strong> Discord (nie na privie do bota) wpisz{' '}
+              <span className={styles.helperAccent}>/login</span>
+            </li>
+            <li>Bot odpowie <strong>6-cyfrowym kodem</strong> — ważny 5 minut</li>
+            <li>Wpisz go powyżej i kliknij Zaloguj się</li>
+          </ol>
+          <p className={styles.helperNote}>
+            Nie masz bota na serwerze? Zacznij od{' '}
+            <Link to="/welcome?onboarding=1" className={styles.helperLink}>
+              konfiguracji na stronie powitalnej
+            </Link>
+            .
           </p>
-          <p>i wpisz 6-cyfrowy kod (ważny 5 minut)</p>
           <Link to="/welcome" className={styles.backLink}>
             ← CO TO JEST GAMETRACE?
           </Link>
