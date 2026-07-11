@@ -30,8 +30,11 @@ test('SessionFormPage create shows 409 ConflictNotice', async () => {
 
   await screen.findByText('Dodaj sesję');
 
-  const gameSelect = await screen.findByRole('combobox');
-  await user.selectOptions(gameSelect, '1');
+  const gameInput = await screen.findByRole('combobox');
+  await user.click(gameInput);
+  await user.type(gameInput, 'Wiedź');
+  const options = await screen.findAllByRole('option');
+  await user.click(options[0]);
 
   await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
 
