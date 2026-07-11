@@ -104,6 +104,13 @@ export const handlers = [
     const developer = url.searchParams.get('developer');
     const publisher = url.searchParams.get('publisher');
     const releaseDecade = url.searchParams.get('release_decade');
+    const skip = Number(url.searchParams.get('skip') ?? '0');
+    const limit = Number(url.searchParams.get('limit') ?? '20');
+
+    // Backend caps limit at 100 (Query(..., le=100)); mirror that here.
+    if (limit > 100) {
+      return HttpResponse.json({ detail: 'limit must be <= 100' }, { status: 422 });
+    }
 
     let list = fixtures.gamesList;
     if (status === 'NEEDS_REVIEW') list = fixtures.gamesReviewList;
@@ -143,7 +150,7 @@ export const handlers = [
       items.sort((a, b) => a.primary_name.localeCompare(b.primary_name));
     }
 
-    return HttpResponse.json({ total: items.length, items });
+    return HttpResponse.json({ total: items.length, items: items.slice(skip, skip + limit) });
   }),
 
   http.get('/api/v1/games/:id', ({ params }) => {

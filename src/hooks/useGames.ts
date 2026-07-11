@@ -65,8 +65,19 @@ async function fetchGameById(gameId: number, queryClient: QueryClient): Promise<
   }
 }
 
-export const GAME_PICKER_LIMIT = 500;
+/** Backend caps GET /games at limit=100, so the picker pages through the library. */
+export const GAME_PICKER_PAGE_SIZE = 100;
 export const GAME_SEARCH_LIMIT = 20;
+
+async function getAllGamesForPicker(): Promise<Game[]> {
+  const all: Game[] = [];
+  for (let skip = 0; ; skip += GAME_PICKER_PAGE_SIZE) {
+    const page = await getGames({ skip, limit: GAME_PICKER_PAGE_SIZE, sort: 'name' });
+    all.push(...page.items);
+    if (all.length >= page.total || page.items.length < GAME_PICKER_PAGE_SIZE) break;
+  }
+  return all;
+}
 
 /** Single game lookup — cache first, then GET /games/{id} */
 export function useGame(gameId: number, seed?: Game) {
@@ -83,8 +94,7 @@ export function useGame(gameId: number, seed?: Game) {
 export function useGamesPicker() {
   return useQuery({
     queryKey: qk.games({ source: 'picker' }),
-    queryFn: () => getGames({ limit: GAME_PICKER_LIMIT, sort: 'name' }),
-    select: (data) => data.items,
+    queryFn: getAllGamesForPicker,
     staleTime: 60_000,
   });
 }
