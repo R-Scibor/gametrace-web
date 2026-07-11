@@ -3,6 +3,7 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 const BACKEND = process.env.VITE_BACKEND_ORIGIN ?? 'http://homelab:8010';
+const WEB_STATIC = process.env.VITE_WEB_STATIC_ORIGIN ?? 'http://localhost:8020';
 
 export default defineConfig({
   plugins: [react()],
@@ -19,6 +20,7 @@ export default defineConfig({
     proxy: {
       '/api': { target: BACKEND, changeOrigin: true },
       '/covers': { target: BACKEND, changeOrigin: true },
+      '/download': { target: WEB_STATIC, changeOrigin: true },
     },
   },
   test: {

@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui';
+import buttonStyles from '../components/ui/Button.module.css';
+import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
 import styles from './LandingPage.module.css';
 
 const DiscordIcon = () => (
@@ -196,6 +199,23 @@ const FEED = [
 export function LandingPage() {
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const [apkAvailable, setApkAvailable] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    isApkDownloadReady()
+      .then((ready) => {
+        if (!cancelled) setApkAvailable(ready);
+      })
+      .catch(() => {
+        if (!cancelled) setApkAvailable(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -345,9 +365,25 @@ export function LandingPage() {
                     DODAJ BOTA DO SERWERA
                   </Button>
                 )}
-                {p.id === 'app' && (
+                {p.id === 'app' && apkAvailable === true && (
+                  <a
+                    href={APK_DOWNLOAD_PATH}
+                    className={[buttonStyles.button, buttonStyles.secondary, styles.platformAction].join(' ')}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      if (await isApkDownloadReady()) {
+                        window.location.assign(APK_DOWNLOAD_PATH);
+                      } else {
+                        setApkAvailable(false);
+                      }
+                    }}
+                  >
+                    POBIERZ APK
+                  </a>
+                )}
+                {p.id === 'app' && apkAvailable !== true && (
                   <Button variant="secondary" disabled>
-                    POBIERZ · WKRÓTCE
+                    {apkAvailable === null ? 'SPRAWDZANIE…' : 'POBIERZ · WKRÓTCE'}
                   </Button>
                 )}
                 {p.id === 'web' && (

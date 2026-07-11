@@ -2,6 +2,13 @@ import { http, HttpResponse } from 'msw';
 import { fixtures } from './fixtures';
 
 export const handlers = [
+  http.get('/download/gametrace.apk', () =>
+    new HttpResponse(new Uint8Array([0x50, 0x4b, 0x03, 0x04]), {
+      status: 206,
+      headers: { 'Content-Type': 'application/vnd.android.package-archive' },
+    }),
+  ),
+
   http.post('/api/v1/auth/link', async ({ request }) => {
     const body = (await request.json()) as { code?: string };
     if (body.code !== '231996') {

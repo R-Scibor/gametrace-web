@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "8020:80"
+    volumes:
+      - ./downloads:/var/downloads:ro
     networks:
       - gametrace-backend_default
 

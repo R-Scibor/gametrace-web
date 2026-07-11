@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+downloads/*.apk
 
 # Internal planning — not for git history
 docs/internal/

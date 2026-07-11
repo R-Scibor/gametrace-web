@@ -1,15 +1,17 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
 import { Route } from 'react-router-dom';
 import { test, expect, beforeEach } from 'vitest';
 import { LandingPage } from './LandingPage';
+import { server } from '../../test/server';
 import { renderAppRoutes, resetStores, seedAuth } from '../../test/utils';
 
 beforeEach(() => {
   resetStores();
 });
 
-test('LandingPage renders ecosystem gateway sections', () => {
+test('LandingPage renders ecosystem gateway sections', async () => {
   renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
 
   expect(screen.getByRole('heading', { level: 1, name: /dziennik rozgrywek/i })).toBeInTheDocument();
@@ -19,9 +21,23 @@ test('LandingPage renders ecosystem gateway sections', () => {
   expect(screen.getByRole('heading', { name: 'Mapa aktywności' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Bot, aplikacja, przeglądarka' })).toBeInTheDocument();
   expect(screen.getByText('APLIKACJA')).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByRole('link', { name: /pobierz apk/i })).toHaveAttribute('href', '/download/gametrace.apk');
+  });
   expect(screen.getAllByText('PRZEGLĄDARKA').length).toBeGreaterThan(0);
   expect(screen.getByText(/nie na privie do bota/i)).toBeInTheDocument();
   expect(screen.getByText(/Jedno konto, te same sesje/i)).toBeInTheDocument();
+});
+
+test('LandingPage hides APK download when artifact is missing', async () => {
+  server.use(http.get('/download/gametrace.apk', () => new HttpResponse(null, { status: 404 })));
+
+  renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
+
+  await waitFor(() => {
+    expect(screen.getByRole('button', { name: /pobierz · wkrótce/i })).toBeDisabled();
+  });
+  expect(screen.queryByRole('link', { name: /pobierz apk/i })).not.toBeInTheDocument();
 });
 
 test('LandingPage navigates to login from CTA', async () => {
