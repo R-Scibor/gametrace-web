@@ -98,10 +98,12 @@ Persistent **left sidebar** (collapses to icons under ~1100px):
 🗑 Kosz           (Trash, /trash)
 ⚙ Ustawienia     (Settings, /settings)
 ─────────────
-◆ Administracja  (Admin hub, /admin — **admins only**)
+◆ Administracja  (Games Catalogue, /admin — **admins only**)
 ```
 
-Admin pages use a horizontal sub-nav: **Operacje** (`/admin`) · **Katalog** (`/admin/catalog`).
+> **2026-07-11:** Operacje (`/admin` game search + ID lookup) is **scheduled for deletion**.
+> It incorrectly used the user library API, not the global catalog. All admin game ops
+> live in **Games Catalogue** only. See `.internal/admin-decisions.md`.
 
 Top bar (sticky): page title on the left; on the right a **bot/health status pill**
 and, whenever a session is `ONGOING`, a **pinned live timer** ("AKTYWNA SESJA · 01:23:45")
@@ -123,8 +125,8 @@ cache.
 | `/voice`            | Voice            | Browser `MediaRecorder` capture → `POST /voice/transcribe` → resolve game → redirect to `/sessions/new` prefilled. |
 | `/trash`            | Trash            | Trashed sessions, **`purges_at` countdown**, **restore** (re-validates conflict), **hard-delete**. |
 | `/settings`         | Settings         | Profile · timezone · `weekly_report_enabled` + `push_enabled` toggles · bot/health/version · logout. |
-| `/admin`            | Admin ops        | **Admin only.** Game search + ID lookup · merge · global cover upload. |
-| `/admin/catalog`    | Catalog review   | **Admin only.** Global `NEEDS_REVIEW` table · re-queue enrich · IGDB link · add alias · merge/cover on selected row. |
+| `/admin`            | Games Catalogue  | **Admin only.** Single admin surface. Global catalog table (`GET /admin/games`) · filter/search/paginate · on row select: re-queue enrich · IGDB link · add alias · merge · global cover. *(Replaces deleted Operacje + sub-nav split.)* |
+| `/admin/catalog`    | *(legacy route)* | Redirect to `/admin` when Operacje removal lands. |
 
 ## 8. Analytics Page (the differentiator)
 
