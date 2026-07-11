@@ -11,7 +11,7 @@ interface RecentSessionsListProps {
 }
 
 export function RecentSessionsList({ sessions, loading }: RecentSessionsListProps) {
-  const { formatDuration, formatDateShort } = useFormat();
+  const { formatDuration, formatSessionWindow } = useFormat();
 
   if (loading) {
     return (
@@ -39,23 +39,28 @@ export function RecentSessionsList({ sessions, loading }: RecentSessionsListProp
             to={to}
             className={[styles.row, isError ? styles.rowError : ''].filter(Boolean).join(' ')}
           >
-            <Cover
-              gameId={session.game.id}
-              coverImageUrl={session.game.cover_image_url}
-              placeholderChar={session.game.primary_name}
-              className={styles.cover}
-            />
-            <div className={styles.meta}>
-              <span className={styles.name}>{session.game.primary_name}</span>
-              <span className={styles.date}>
-                {session.source === 'BOT' ? '⬡' : '✎'} {formatDateShort(session.start_time)}
-              </span>
+            <div className={styles.coverWrap}>
+              <Cover
+                gameId={session.game.id}
+                coverImageUrl={session.game.cover_image_url}
+                placeholderChar={session.game.primary_name}
+                className={styles.cover}
+              />
             </div>
-            {isError ? (
-              <span className={styles.errorBadge}>BŁĄD</span>
-            ) : (
-              <span className={styles.duration}>{formatDuration(session.duration_seconds)}</span>
-            )}
+            <div className={styles.body}>
+              <div className={styles.meta}>
+                <span className={styles.name}>{session.game.primary_name}</span>
+                <span className={styles.date}>
+                  {session.source === 'BOT' ? '⬡' : '✎'}{' '}
+                  {formatSessionWindow(session.start_time, session.end_time)}
+                </span>
+              </div>
+              {isError ? (
+                <span className={styles.errorBadge}>BŁĄD</span>
+              ) : (
+                <span className={styles.duration}>{formatDuration(session.duration_seconds)}</span>
+              )}
+            </div>
           </Link>
         );
       })}

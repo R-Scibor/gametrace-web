@@ -27,6 +27,7 @@ export function HeroSpotlight({ session, stats }: HeroSpotlightProps) {
           />
         </div>
         <div className={styles.meta}>
+          <span className={styles.eyebrow}>OSTATNIO GRANE</span>
           <span className={styles.name}>{session.game.primary_name}</span>
           <span className={styles.recency}>
             {formatRecency(session.end_time ?? session.start_time)}

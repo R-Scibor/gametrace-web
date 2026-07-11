@@ -11,7 +11,7 @@ import { qk } from '../lib/queryKeys';
 import { useToastStore } from '../store/toastStore';
 import type { SessionCreate, SessionPatch } from '../types/api';
 
-const RECENT_LIMIT = 5;
+const RECENT_LIMIT = 8;
 
 function invalidateAfterSessionChange(queryClient: ReturnType<typeof useQueryClient>, gameId?: number) {
   queryClient.invalidateQueries({ queryKey: qk.dashboard });

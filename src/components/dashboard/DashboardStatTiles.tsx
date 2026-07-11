@@ -1,4 +1,3 @@
-import { StatTile } from '../ui';
 import { useFormat } from '../../hooks/useFormat';
 import styles from './DashboardStatTiles.module.css';
 
@@ -7,7 +6,15 @@ interface DashboardStatTilesProps {
   weekSeconds: number;
   avgSessionSeconds: number | null;
   avgLoading?: boolean;
-  layout?: 'column' | 'row';
+  streakDays?: number | null;
+  layout?: 'rail' | 'row';
+}
+
+interface Tile {
+  label: string;
+  value: string;
+  unit?: string;
+  key: string;
 }
 
 export function DashboardStatTiles({
@@ -15,18 +22,44 @@ export function DashboardStatTiles({
   weekSeconds,
   avgSessionSeconds,
   avgLoading = false,
-  layout = 'column',
+  streakDays = null,
+  layout = 'rail',
 }: DashboardStatTilesProps) {
   const { formatHours } = useFormat();
 
   const avgValue =
     avgLoading || avgSessionSeconds == null ? '—' : formatHours(avgSessionSeconds);
+  const streakValue = streakDays == null ? '—' : String(streakDays);
+
+  const tiles: Tile[] = [
+    { key: 'today', label: 'DZIŚ', value: formatHours(todaySeconds), unit: 'h' },
+    { key: 'week', label: '7 DNI', value: formatHours(weekSeconds), unit: 'h' },
+    {
+      key: 'avg',
+      label: 'ŚR. SESJA',
+      value: avgValue,
+      unit: avgValue === '—' ? undefined : 'h',
+    },
+    {
+      key: 'streak',
+      label: 'PASSA',
+      value: streakValue,
+      unit: streakValue === '—' ? undefined : 'dni',
+    },
+  ];
 
   return (
-    <div className={layout === 'row' ? styles.row : styles.column}>
-      <StatTile label="DZIŚ" value={formatHours(todaySeconds)} unit="h" />
-      <StatTile label="7 DNI" value={formatHours(weekSeconds)} unit="h" />
-      <StatTile label="ŚR. SESJA" value={avgValue} unit={avgValue === '—' ? undefined : 'h'} />
+    <div className={layout === 'row' ? styles.row : styles.rail}>
+      {tiles.map((tile) => (
+        <div key={tile.key} className={styles.tile}>
+          <span className={styles.accent} aria-hidden />
+          <span className={styles.label}>{tile.label}</span>
+          <span className={styles.value}>
+            {tile.value}
+            {tile.unit && <span className={styles.unit}>{tile.unit}</span>}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

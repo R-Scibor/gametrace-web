@@ -14,6 +14,11 @@ export function ActiveSessionCard({ session }: ActiveSessionCardProps) {
 
   return (
     <Link to={`/library/${session.game_id}`} className={styles.card}>
+      <div className={styles.topBar}>
+        <span className={styles.liveDot} />
+        <span className={styles.liveLabel}>AKTYWNA SESJA</span>
+        <span className={styles.liveBadge}>● LIVE</span>
+      </div>
       <div className={styles.row}>
         <div className={styles.coverWrap}>
           <Cover
@@ -24,17 +29,12 @@ export function ActiveSessionCard({ session }: ActiveSessionCardProps) {
           />
         </div>
         <div className={styles.meta}>
-          <div className={styles.liveRow}>
-            <span className={styles.liveDot} />
-            <span className={styles.liveLabel}>AKTYWNA SESJA</span>
-          </div>
           <span className={styles.name}>{session.game_name}</span>
           <LiveTimer startIso={session.start_time} className={styles.timer} />
           <span className={styles.startedAt}>od {formatTimeShort(session.start_time)}</span>
         </div>
       </div>
       <div className={styles.footer}>
-        <span className={styles.footerLabel}>⬡ WYKRYTO PRZEZ BOTA</span>
         <span className={styles.footerAction}>szczegóły →</span>
       </div>
     </Link>
