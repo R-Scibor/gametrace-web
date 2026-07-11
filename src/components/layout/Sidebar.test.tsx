@@ -14,7 +14,7 @@ test('Sidebar renders nav links', () => {
       <Sidebar />
     </MemoryRouter>,
   );
-  expect(screen.getByText('Pulpit')).toBeInTheDocument();
+  expect(screen.getByText('Dashboard')).toBeInTheDocument();
   expect(screen.getByText('Biblioteka')).toBeInTheDocument();
   expect(screen.getByText('Statystyki')).toBeInTheDocument();
   expect(screen.getByText('Dodaj sesję')).toBeInTheDocument();

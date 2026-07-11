@@ -4,7 +4,7 @@ export interface PageTitle {
 }
 
 export function getPageTitle(pathname: string): PageTitle | null {
-  if (pathname === '/') return { eyebrow: '◈ GAMETRACE', title: 'Pulpit' };
+  if (pathname === '/') return { title: 'Dashboard' };
   if (pathname === '/library') return { title: 'Biblioteka' };
   if (pathname.startsWith('/library/')) return { title: 'Szczegóły gry' };
   if (pathname === '/analytics') return { title: 'Statystyki' };
