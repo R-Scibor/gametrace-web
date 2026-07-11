@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
-import { login as loginApi, linkLogin as linkLoginApi, logout as logoutApi } from '../api/auth';
+import { linkLogin as linkLoginApi, logout as logoutApi } from '../api/auth';
 import { teardownAuth } from '../lib/authTeardown';
 
 const linkErrorMessage = (err: unknown): string => {
@@ -33,29 +33,6 @@ export function useAuth() {
   const authState = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleLogin = async (username: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const res = await loginApi(username, tz);
-      useAuthStore
-        .getState()
-        .login(res.token, { discordId: res.discord_id, username: res.username }, res.is_admin);
-      return true;
-    } catch (err: unknown) {
-      const message = axios.isAxiosError(err)
-        ? (err.response?.data as { detail?: string } | undefined)?.detail
-        : err instanceof Error
-          ? err.message
-          : undefined;
-      setError(message || 'Wystąpił błąd');
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleLinkLogin = async (code: string) => {
     setLoading(true);
@@ -89,7 +66,6 @@ export function useAuth() {
     ...authState,
     loading,
     error,
-    handleLogin,
     handleLinkLogin,
     logout: handleLogout,
   };

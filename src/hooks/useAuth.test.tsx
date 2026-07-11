@@ -10,50 +10,6 @@ beforeEach(() => {
   resetStores();
 });
 
-test('useAuth stores token and sends timezone on username login', async () => {
-  let capturedBody: { username?: string; timezone?: string } = {};
-  server.use(
-    http.post('/api/v1/auth/login', async ({ request }) => {
-      capturedBody = (await request.json()) as { username?: string; timezone?: string };
-      return HttpResponse.json({
-        token: 'fresh-token',
-        discord_id: '999',
-        username: 'player',
-        timezone: 'Europe/Warsaw',
-        is_admin: false,
-      });
-    }),
-  );
-
-  const { result } = renderHookWithProviders(() => useAuth());
-
-  const ok = await result.current.handleLogin('player');
-  expect(ok).toBe(true);
-
-  await waitFor(() => {
-    expect(useAuthStore.getState().token).toBe('fresh-token');
-    expect(useAuthStore.getState().user?.username).toBe('player');
-  });
-
-  expect(capturedBody?.username).toBe('player');
-  expect(typeof capturedBody?.timezone).toBe('string');
-  expect((capturedBody?.timezone as string).length).toBeGreaterThan(0);
-});
-
-test('useAuth sets error message on failed username login', async () => {
-  server.use(
-    http.post('/api/v1/auth/login', () =>
-      HttpResponse.json({ detail: 'Nieznany użytkownik' }, { status: 401 }),
-    ),
-  );
-
-  const { result } = renderHookWithProviders(() => useAuth());
-  const ok = await result.current.handleLogin('ghost');
-
-  expect(ok).toBe(false);
-  await waitFor(() => expect(result.current.error).toBe('Nieznany użytkownik'));
-});
-
 test('useAuth stores token on successful link login', async () => {
   let capturedBody: { code?: string; timezone?: string } = {};
   server.use(

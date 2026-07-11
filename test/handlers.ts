@@ -2,16 +2,6 @@ import { http, HttpResponse } from 'msw';
 import { fixtures } from './fixtures';
 
 export const handlers = [
-  http.post('/api/v1/auth/login', () => {
-    return HttpResponse.json({
-      token: 'test-token',
-      discord_id: '123',
-      username: 'testuser',
-      timezone: 'Europe/Warsaw',
-      is_admin: true,
-    });
-  }),
-
   http.post('/api/v1/auth/link', async ({ request }) => {
     const body = (await request.json()) as { code?: string };
     if (body.code !== '231996') {

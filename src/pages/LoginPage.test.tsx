@@ -5,8 +5,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoginPage } from './LoginPage';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useAuthStore } from '../store/authStore';
-import { server } from '../../test/server';
-import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 
 function renderLogin(route = '/login') {
@@ -72,30 +70,4 @@ test('LoginPage reaches protected home through ProtectedRoute', async () => {
 
   expect(await screen.findByText('Dashboard Home')).toBeInTheDocument();
   expect(useAuthStore.getState().isAuthenticated).toBe(true);
-});
-
-test('LoginPage handles successful username login in dev mode', async () => {
-  server.use(
-    http.post('/api/v1/auth/login', () => {
-      return HttpResponse.json({
-        token: 'test-token',
-        discord_id: '123',
-        username: 'test_user',
-        timezone: 'UTC',
-        is_admin: false,
-      });
-    }),
-  );
-
-  renderLogin();
-
-  await userEvent.click(screen.getByRole('button', { name: /Zaloguj się nazwą/i }));
-
-  const input = screen.getByLabelText(/Nazwa Użytkownika Discord/i);
-  await userEvent.type(input, 'test_user');
-
-  const button = screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i });
-  await userEvent.click(button);
-
-  expect(await screen.findByText('Home Page')).toBeInTheDocument();
 });
