@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
-import buttonStyles from '../components/ui/Button.module.css';
+import { WelcomeOnboarding } from '../components/welcome/WelcomeOnboarding';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
 import styles from './LandingPage.module.css';
 
@@ -96,7 +97,6 @@ type Platform = {
   status: string;
   body: string;
   points: string[];
-  accent?: boolean;
 };
 
 const PLATFORMS: Platform[] = [
@@ -112,18 +112,17 @@ const PLATFORMS: Platform[] = [
     id: 'app',
     icon: <PhoneIcon />,
     label: 'APLIKACJA',
-    status: 'Beta',
-    body: 'Szybkie dodawanie sesji, nagranie głosowe i podstawowe statystyki, gdy jesteś z dala od komputera.',
+    status: 'Android',
+    body: 'Sesje, biblioteka i statystyki w kieszeni — ten sam pulpit co w przeglądarce.',
     points: ['Pulpit i ostatnie sesje', 'Dodawanie sesji i głos', 'Biblioteka i kosz na telefonie'],
   },
   {
     id: 'web',
     icon: <MonitorIcon />,
     label: 'PRZEGLĄDARKA',
-    status: 'Ta strona',
-    body: 'Szczegółowe statystyki, wykresy i pełna biblioteka gier, wygodnie na dużym ekranie.',
+    status: 'Desktop',
+    body: 'Sesje, biblioteka i statystyki na dużym ekranie — ten sam pulpit co w aplikacji.',
     points: ['Mapa aktywności, passa i trendy', 'Biblioteka, okładki i łączenie gier', 'Sesja głosowa z komputera'],
-    accent: true,
   },
 ];
 
@@ -175,18 +174,18 @@ const BOT_INVITE_URL =
 const STEPS = [
   {
     n: '01',
-    title: 'Wejdź na serwer z botem',
-    body: 'Dołącz do serwera Discord z GameTrace albo zaproś bota na swój. Bez tego nie uruchomisz komend.',
+    title: 'Serwer z botem',
+    body: 'Zaproś bota na swój serwer albo dołącz na serwer, który go już ma.',
   },
   {
     n: '02',
-    title: 'Zarejestruj się przez /login',
-    body: 'Na kanale serwera wpisz /login i wyślij na czacie serwera, nie na privie do bota. Wystarczy raz.',
+    title: '/login na kanale',
+    body: 'Wyślij komendę na czacie serwera — nie na privie. Bot poda kod do logowania.',
   },
   {
     n: '03',
-    title: 'Wybierz klienta',
-    body: 'Zaloguj się tutaj w przeglądarce albo w aplikacji. Jedno konto, te same sesje i statystyki.',
+    title: 'Przeglądarka lub aplikacja',
+    body: 'Zaloguj się kodem tutaj albo pobierz APK. Jedno konto wszędzie.',
   },
 ] as const;
 
@@ -198,8 +197,21 @@ const FEED = [
 
 export function LandingPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { data: health } = useHealth();
   const [apkAvailable, setApkAvailable] = useState<boolean | null>(null);
+  const [onboardingOpen, setOnboardingOpen] = useState(
+    () => searchParams.get('onboarding') === '1',
+  );
+
+  useEffect(() => {
+    if (searchParams.get('onboarding') !== '1') return;
+
+    const next = new URLSearchParams(searchParams);
+    next.delete('onboarding');
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     let cancelled = false;
@@ -216,10 +228,6 @@ export function LandingPage() {
       cancelled = true;
     };
   }, []);
-
-  if (isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <div className={styles.page}>
@@ -243,23 +251,39 @@ export function LandingPage() {
               porządkujesz bibliotekę w przeglądarce albo w aplikacji.
             </p>
             <div className={styles.heroActions}>
-              <Button
-                onClick={() =>
-                  document.getElementById('jak-zaczac')?.scrollIntoView({ behavior: 'smooth' })
-                }
-              >
-                JAK ZACZĄĆ
+              <Button className={styles.ctaGlow} onClick={() => setOnboardingOpen(true)}>
+                ROZPOCZNIJ
               </Button>
-              <a
-                href="/login"
-                className={styles.secondaryLink}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('/login');
-                }}
+              {isAuthenticated ? (
+                <a
+                  href="/"
+                  className={styles.secondaryLink}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/');
+                  }}
+                >
+                  PRZEJDŹ DO PULPITU →
+                </a>
+              ) : (
+                <a
+                  href="/login"
+                  className={styles.secondaryLink}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/login');
+                  }}
+                >
+                  MAM JUŻ KONTO → ZALOGUJ SIĘ
+                </a>
+              )}
+              <button
+                type="button"
+                className={styles.learnMoreLink}
+                onClick={() => document.getElementById('funkcje')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                MAM JUŻ KONTO → ZALOGUJ SIĘ
-              </a>
+                Dowiedz się więcej ↓
+              </button>
             </div>
           </div>
 
@@ -333,6 +357,11 @@ export function LandingPage() {
               </li>
             ))}
           </ol>
+          <div className={styles.stepsCta}>
+            <Button className={styles.ctaGlow} onClick={() => setOnboardingOpen(true)}>
+              ROZPOCZNIJ
+            </Button>
+          </div>
         </section>
 
         <section className={styles.section} id="platformy">
@@ -342,10 +371,7 @@ export function LandingPage() {
           </div>
           <div className={styles.platformGrid}>
             {PLATFORMS.map((p) => (
-              <article
-                key={p.id}
-                className={[styles.platformCard, p.accent ? styles.platformCardAccent : ''].join(' ')}
-              >
+              <article key={p.id} className={styles.platformCard}>
                 <div className={styles.platformHead}>
                   <span className={styles.platformIcon}>{p.icon}</span>
                   <span className={styles.platformStatus}>{p.status}</span>
@@ -365,12 +391,10 @@ export function LandingPage() {
                     DODAJ BOTA DO SERWERA
                   </Button>
                 )}
-                {p.id === 'app' && apkAvailable === true && (
-                  <a
-                    href={APK_DOWNLOAD_PATH}
-                    className={[buttonStyles.button, buttonStyles.secondary, styles.platformAction].join(' ')}
-                    onClick={async (e) => {
-                      e.preventDefault();
+                {p.id === 'app' && (
+                  <Button
+                    disabled={apkAvailable !== true}
+                    onClick={async () => {
                       if (await isApkDownloadReady()) {
                         window.location.assign(APK_DOWNLOAD_PATH);
                       } else {
@@ -378,17 +402,12 @@ export function LandingPage() {
                       }
                     }}
                   >
-                    POBIERZ APK
-                  </a>
-                )}
-                {p.id === 'app' && apkAvailable !== true && (
-                  <Button variant="secondary" disabled>
-                    {apkAvailable === null ? 'SPRAWDZANIE…' : 'POBIERZ · WKRÓTCE'}
+                    {apkAvailable === null ? 'SPRAWDZANIE…' : 'POBIERZ APK'}
                   </Button>
                 )}
                 {p.id === 'web' && (
-                  <Button variant="primary" onClick={() => navigate('/login')}>
-                    ZALOGUJ SIĘ
+                  <Button onClick={() => navigate(isAuthenticated ? '/' : '/login')}>
+                    {isAuthenticated ? 'OTWÓRZ W PRZEGLĄDARCE' : 'ZALOGUJ W PRZEGLĄDARCE'}
                   </Button>
                 )}
               </article>
@@ -396,18 +415,25 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section className={styles.cta}>
-          <div className={styles.ctaInner}>
-            <p className={styles.ctaEyebrow}>PRZEGLĄDARKA</p>
-            <p className={styles.ctaText}>
-              Masz już konto z bota? Zaloguj się kodem z /login i otwórz pulpit.
-            </p>
-          </div>
-          <Button variant="primary" onClick={() => navigate('/login')}>
-            PRZEJDŹ DO LOGOWANIA
-          </Button>
-        </section>
       </div>
+
+      <footer className={styles.footer} role="contentinfo">
+        <div className={styles.footerInner}>
+          <div className={styles.footerLeft}>
+            <span className={styles.footerDot} aria-hidden />
+            <span>GAMETRACE</span>
+          </div>
+          <span className={styles.footerMeta}>v{health?.version ?? '…'}</span>
+        </div>
+      </footer>
+
+      <WelcomeOnboarding
+        open={onboardingOpen}
+        onClose={() => setOnboardingOpen(false)}
+        apkAvailable={apkAvailable}
+        isAuthenticated={isAuthenticated}
+        onApkUnavailable={() => setApkAvailable(false)}
+      />
     </div>
   );
 }

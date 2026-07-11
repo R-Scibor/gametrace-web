@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { Route } from 'react-router-dom';
@@ -22,11 +22,13 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   expect(screen.getByRole('heading', { name: 'Bot, aplikacja, przeglądarka' })).toBeInTheDocument();
   expect(screen.getByText('APLIKACJA')).toBeInTheDocument();
   await waitFor(() => {
-    expect(screen.getByRole('link', { name: /pobierz apk/i })).toHaveAttribute('href', '/download/gametrace.apk');
+    expect(screen.getAllByRole('button', { name: /pobierz apk/i }).length).toBeGreaterThanOrEqual(1);
   });
   expect(screen.getAllByText('PRZEGLĄDARKA').length).toBeGreaterThan(0);
-  expect(screen.getByText(/nie na privie do bota/i)).toBeInTheDocument();
-  expect(screen.getByText(/Jedno konto, te same sesje/i)).toBeInTheDocument();
+  expect(screen.getByText(/nie na privie/i)).toBeInTheDocument();
+  expect(screen.getByText(/Jedno konto wszędzie/i)).toBeInTheDocument();
+  expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+  expect(screen.getByText('GAMETRACE', { selector: 'footer span' })).toBeInTheDocument();
 });
 
 test('LandingPage hides APK download when artifact is missing', async () => {
@@ -35,12 +37,47 @@ test('LandingPage hides APK download when artifact is missing', async () => {
   renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
 
   await waitFor(() => {
-    expect(screen.getByRole('button', { name: /pobierz · wkrótce/i })).toBeDisabled();
+    const apkButtons = screen.getAllByRole('button', { name: /pobierz apk/i });
+    expect(apkButtons.length).toBeGreaterThan(0);
+    apkButtons.forEach((btn) => expect(btn).toBeDisabled());
   });
-  expect(screen.queryByRole('link', { name: /pobierz apk/i })).not.toBeInTheDocument();
 });
 
-test('LandingPage navigates to login from CTA', async () => {
+test('LandingPage opens onboarding wizard from onboarding query param', async () => {
+  renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, {
+    route: '/welcome?onboarding=1',
+    authenticated: false,
+  });
+
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Uruchom GameTrace' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Zaproś bota albo dołącz na serwer' })).toBeInTheDocument();
+});
+
+test('LandingPage opens onboarding wizard from hero CTA', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
+
+  const [heroCta] = screen.getAllByRole('button', { name: /^Rozpocznij$/i });
+  await user.click(heroCta);
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Uruchom GameTrace' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Zaproś bota albo dołącz na serwer' })).toBeInTheDocument();
+});
+
+test('LandingPage opens onboarding wizard from Jak zacząć CTA', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
+
+  const stepsSection = document.getElementById('jak-zaczac');
+  expect(stepsSection).not.toBeNull();
+
+  await user.click(within(stepsSection!).getByRole('button', { name: /^Rozpocznij$/i }));
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Uruchom GameTrace' })).toBeInTheDocument();
+});
+
+test('LandingPage navigates to login from platform card', async () => {
   const user = userEvent.setup();
   renderAppRoutes(
     <>
@@ -50,12 +87,13 @@ test('LandingPage navigates to login from CTA', async () => {
     { route: '/welcome', authenticated: false },
   );
 
-  await user.click(screen.getByRole('button', { name: /Przejdź do logowania/i }));
+  await user.click(screen.getByRole('button', { name: /Zaloguj w przeglądarce/i }));
   expect(screen.getByText('Login Screen')).toBeInTheDocument();
 });
 
-test('LandingPage redirects authenticated users to dashboard', () => {
+test('LandingPage keeps wizard as primary CTA when authenticated', async () => {
   seedAuth();
+  const user = userEvent.setup();
   renderAppRoutes(
     <>
       <Route path="/welcome" element={<LandingPage />} />
@@ -64,5 +102,10 @@ test('LandingPage redirects authenticated users to dashboard', () => {
     { route: '/welcome', authenticated: true },
   );
 
+  expect(screen.getAllByRole('button', { name: /^Rozpocznij$/i })).toHaveLength(2);
+  await user.click(screen.getAllByRole('button', { name: /^Rozpocznij$/i })[0]);
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('link', { name: /Przejdź do pulpitu/i }));
   expect(screen.getByText('Dashboard')).toBeInTheDocument();
 });
