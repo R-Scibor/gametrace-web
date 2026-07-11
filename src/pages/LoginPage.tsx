@@ -31,9 +31,11 @@ export function LoginPage() {
     <div className={styles.container}>
       <div className={styles.center}>
         <div className={styles.wordmark}>
-          <h1 className={styles.title}>
-            Game<span className={styles.titleAccent}>Trace</span>
-          </h1>
+          <Link to="/welcome" className={styles.titleLink} aria-label="Strona powitalna GameTrace">
+            <h1 className={styles.title}>
+              Game<span className={styles.titleAccent}>Trace</span>
+            </h1>
+          </Link>
           <p className={styles.tagline}>ZALOGUJ SIĘ</p>
           <div className={styles.rule} />
         </div>

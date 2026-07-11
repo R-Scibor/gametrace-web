@@ -25,6 +25,14 @@ beforeEach(() => {
   useAuthStore.getState().logout();
 });
 
+test('LoginPage title links to welcome page', () => {
+  renderLogin();
+  expect(screen.getByRole('link', { name: 'Strona powitalna GameTrace' })).toHaveAttribute(
+    'href',
+    '/welcome',
+  );
+});
+
 test('LoginPage renders link code form by default', () => {
   renderLogin();
   expect(screen.getByLabelText(/Kod logowania/i)).toBeInTheDocument();
