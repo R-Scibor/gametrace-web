@@ -73,17 +73,14 @@ test('SettingsPage push toggle calls settings API', async () => {
   await waitFor(() => expect(updatedPush).toBe(true));
 });
 
-test('SettingsPage logout navigates to login', async () => {
-  const user = userEvent.setup();
+test('SettingsPage does not render logout button', async () => {
   renderAppRoutes(
     <>
       <Route path="/settings" element={<SettingsPage />} />
-      <Route path="/login" element={<div>Login Screen</div>} />
     </>,
     { route: '/settings' },
   );
 
-  await user.click(await screen.findByRole('button', { name: /Wyloguj się/i }));
-
-  expect(await screen.findByText('Login Screen')).toBeInTheDocument();
+  await screen.findByText('testuser');
+  expect(screen.queryByRole('button', { name: /Wyloguj się/i })).not.toBeInTheDocument();
 });

@@ -1,9 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useProfile, useUpdateSettings } from '../hooks/useProfile';
 import { useHealth } from '../hooks/useHealth';
-import { SectionHeader, Button, Skeleton } from '../components/ui';
+import { SectionHeader, Skeleton } from '../components/ui';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
@@ -29,22 +27,10 @@ function SettingsRow({
 }
 
 export function SettingsPage() {
-  const { user, logout } = useAuth();
-  const [logoutLoading, setLogoutLoading] = useState(false);
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { data: health } = useHealth();
   const updateSettings = useUpdateSettings();
-
-  const handleLogout = async () => {
-    setLogoutLoading(true);
-    try {
-      await logout();
-      navigate('/login', { replace: true });
-    } finally {
-      setLogoutLoading(false);
-    }
-  };
 
   const handleTimezone = (tz: string) => {
     updateSettings.mutate({ timezone: tz });
@@ -134,10 +120,6 @@ export function SettingsPage() {
           <span className={styles.statusValue}>{health?.version ?? '—'}</span>
         </SettingsRow>
       </div>
-
-      <Button onClick={handleLogout} variant="secondary" disabled={logoutLoading}>
-        {logoutLoading ? 'WYLOGOWYWANIE...' : 'WYLOGUJ SIĘ'}
-      </Button>
 
       <footer className={styles.footer}>
         <span className={styles.footerLine} />

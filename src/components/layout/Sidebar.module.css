@@ -14,6 +14,20 @@
   gap: 8px;
   padding: 0 16px;
   margin-bottom: 24px;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: color 0.15s;
+}
+.brand:hover .wordmark,
+.brand:focus-visible .wordmark {
+  color: var(--orange);
+}
+.brand:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+.brand:hover .logoMark {
+  filter: brightness(1.08);
 }
 .logoMark {
   flex-shrink: 0;
@@ -36,6 +50,44 @@
   flex-direction: column;
   gap: 4px;
   padding: 0 12px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.footer {
+  padding: 12px 12px 0;
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+}
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+  color: var(--text3);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s;
+}
+.logoutBtn:hover {
+  background-color: var(--bg3);
+  color: var(--warn);
+}
+.logoutBtn:hover .icon {
+  color: var(--warn);
+}
+.logoutBtn:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
 }
 .link {
   position: relative;
@@ -103,5 +155,6 @@
   .wordmark { display: none; }
   .label { display: none; }
   .link { padding: 10px; justify-content: center; }
+  .logoutBtn { padding: 10px; justify-content: center; }
   .active::before { left: -12px; top: 6px; bottom: 6px; }
 }

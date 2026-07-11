@@ -1,6 +1,8 @@
-import type { ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, type ReactNode } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import { useAuthStore } from '../../store/authStore';
+import { ConfirmDialog } from '../ui/ConfirmDialog';
 import styles from './Sidebar.module.css';
 
 const icon = (paths: ReactNode) => (
@@ -83,6 +85,14 @@ const SettingsIcon = icon(
   </>,
 );
 
+const LogoutIcon = icon(
+  <>
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <polyline points="16 17 21 12 16 7" />
+    <line x1="21" y1="12" x2="9" y2="12" />
+  </>,
+);
+
 const mainNavItems = [
   { path: '/', label: 'Dashboard', icon: DashboardIcon },
   { path: '/library', label: 'Biblioteka', icon: LibraryIcon },
@@ -109,13 +119,28 @@ function NavItem({ path, label, icon }: { path: string; label: string; icon: Rea
 
 export function Sidebar() {
   const isAdmin = useAuthStore((s) => s.isAdmin);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
+
+  const handleLogoutConfirm = async () => {
+    setLogoutLoading(true);
+    try {
+      await logout();
+      navigate('/login', { replace: true });
+    } finally {
+      setLogoutLoading(false);
+      setLogoutOpen(false);
+    }
+  };
 
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.brand}>
+      <Link to="/welcome" className={styles.brand} aria-label="Strona powitalna GameTrace">
         <img src="/splash-icon.png" alt="" className={styles.logoMark} width={64} height={64} />
         <span className={styles.wordmark}>GAMETRACE</span>
-      </div>
+      </Link>
       <nav className={styles.nav}>
         {mainNavItems.map((item) => (
           <NavItem key={item.path} {...item} />
@@ -126,6 +151,27 @@ export function Sidebar() {
           <NavItem key={item.path} {...item} />
         ))}
       </nav>
+      <div className={styles.footer}>
+        <button
+          type="button"
+          className={styles.logoutBtn}
+          onClick={() => setLogoutOpen(true)}
+          aria-label="Wyloguj się"
+        >
+          {LogoutIcon}
+          <span className={styles.label}>Wyloguj się</span>
+        </button>
+      </div>
+      <ConfirmDialog
+        open={logoutOpen}
+        title="WYLOGUJ SIĘ"
+        message="Na pewno chcesz się wylogować? Będziesz musiał ponownie wpisać kod z /login."
+        confirmLabel="WYLOGUJ SIĘ"
+        variant="danger"
+        loading={logoutLoading}
+        onConfirm={handleLogoutConfirm}
+        onCancel={() => setLogoutOpen(false)}
+      />
     </aside>
   );
 }
