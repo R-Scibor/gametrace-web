@@ -9,15 +9,19 @@ beforeEach(() => {
   resetStores();
 });
 
-test('LandingPage renders onboarding sections', () => {
+test('LandingPage renders ecosystem gateway sections', () => {
   renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
 
-  expect(screen.getByRole('heading', { level: 1, name: /GameTrace/i })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Czym jest GameTrace?' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Jak zacząć?' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Jak korzystać?' })).toBeInTheDocument();
-  expect(screen.getByText(/Wejdź na serwer z botem/i)).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 1, name: /dziennik rozgrywek/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Jak zacząć' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Co potrafi GameTrace' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Statystyki, które dostajesz' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Mapa aktywności' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Bot, aplikacja, przeglądarka' })).toBeInTheDocument();
+  expect(screen.getByText('APLIKACJA')).toBeInTheDocument();
+  expect(screen.getAllByText('PRZEGLĄDARKA').length).toBeGreaterThan(0);
   expect(screen.getByText(/nie na privie do bota/i)).toBeInTheDocument();
+  expect(screen.getByText(/Jedno konto, te same sesje/i)).toBeInTheDocument();
 });
 
 test('LandingPage navigates to login from CTA', async () => {
@@ -30,7 +34,7 @@ test('LandingPage navigates to login from CTA', async () => {
     { route: '/welcome', authenticated: false },
   );
 
-  await user.click(screen.getByRole('button', { name: /Zaloguj się/i }));
+  await user.click(screen.getByRole('button', { name: /Przejdź do logowania/i }));
   expect(screen.getByText('Login Screen')).toBeInTheDocument();
 });
 

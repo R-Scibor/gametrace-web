@@ -6,5 +6,5 @@ import { test, expect } from 'vitest';
 
 test('renders App smoke test', async () => {
   renderWithProviders(<App />, { route: '/welcome' });
-  expect(await screen.findByRole('heading', { level: 1, name: /GameTrace/i })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { level: 1, name: /dziennik rozgrywek/i })).toBeInTheDocument();
 });
