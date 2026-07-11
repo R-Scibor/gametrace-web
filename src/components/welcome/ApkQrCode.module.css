@@ -1,0 +1,30 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.qr {
+  display: block;
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  padding: 6px;
+  background: var(--bg);
+}
+
+.caption {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    display: none;
+  }
+}
