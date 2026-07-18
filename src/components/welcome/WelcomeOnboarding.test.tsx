@@ -20,18 +20,46 @@ test('WelcomeOnboarding step 1 opens bot invite and advances', async () => {
     authenticated: false,
   });
 
+  const joinServerBtn = screen.getByRole('button', { name: /Dołącz do serwera z botem/i });
   const addBotBtn = screen.getByRole('button', { name: /Dodaj bota do serwera/i });
   const nextBtn = screen.getByRole('button', { name: /Mam już bota/i });
+  expect(joinServerBtn.className).toMatch(/stepBtnOrange/);
   expect(addBotBtn.className).toMatch(/stepBtnOrange/);
   expect(nextBtn.className).toMatch(/stepBtnNeutral/);
 
   await user.click(addBotBtn);
-  expect(window.open).toHaveBeenCalled();
+  expect(window.open).toHaveBeenCalledWith(
+    expect.stringContaining('discord.com/oauth2'),
+    '_blank',
+    'noopener,noreferrer',
+  );
   expect(addBotBtn.className).toMatch(/stepBtnNeutral/);
+  expect(joinServerBtn.className).toMatch(/stepBtnNeutral/);
   expect(nextBtn.className).toMatch(/stepBtnOrange/);
 
   await user.click(nextBtn);
   expect(screen.getByRole('heading', { name: 'Przedstaw się botowi' })).toBeInTheDocument();
+});
+
+test('WelcomeOnboarding step 1 opens public server join invite', async () => {
+  const user = userEvent.setup();
+
+  renderAppRoutes(<Route path="/welcome" element={<WelcomeOnboarding open onClose={vi.fn()} apkAvailable={false} isAuthenticated={false} onApkUnavailable={vi.fn()} />} />, {
+    route: '/welcome',
+    authenticated: false,
+  });
+
+  const joinServerBtn = screen.getByRole('button', { name: /Dołącz do serwera z botem/i });
+  const nextBtn = screen.getByRole('button', { name: /Mam już bota/i });
+
+  await user.click(joinServerBtn);
+  expect(window.open).toHaveBeenCalledWith(
+    'https://discord.gg/ZhHu2zWbKd',
+    '_blank',
+    'noopener,noreferrer',
+  );
+  expect(screen.getByText(/po dołączeniu do serwera wróć tutaj/i)).toBeInTheDocument();
+  expect(nextBtn.className).toMatch(/stepBtnOrange/);
 });
 
 test('WelcomeOnboarding shows bot hint after invite and supports back navigation', async () => {

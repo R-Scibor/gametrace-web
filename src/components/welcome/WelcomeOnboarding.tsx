@@ -9,6 +9,9 @@ import styles from './WelcomeOnboarding.module.css';
 const BOT_INVITE_URL =
   'https://discord.com/oauth2/authorize?client_id=1486092367072334014&permissions=2048&integration_type=0&scope=bot+applications.commands';
 
+/** Public GameTrace Discord (bot already present). Never-expire invite. */
+const SERVER_JOIN_URL = 'https://discord.gg/ZhHu2zWbKd';
+
 const STEPS = [
   { id: 1, label: 'Discord' },
   { id: 2, label: 'Rejestracja' },
@@ -36,20 +39,29 @@ export function WelcomeOnboarding({
   const [step, setStep] = useState<StepId>(1);
   const [commandStatus, setCommandStatus] = useState<'idle' | 'selected' | 'copied'>('idle');
   const [botInviteOpened, setBotInviteOpened] = useState(false);
+  const [serverJoinOpened, setServerJoinOpened] = useState(false);
   const commandInputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
+
+  const discordPathOpened = botInviteOpened || serverJoinOpened;
 
   const resetAndClose = () => {
     setStep(1);
     setCommandStatus('idle');
     setBotInviteOpened(false);
+    setServerJoinOpened(false);
     onClose();
   };
 
   const openBotInvite = () => {
     window.open(BOT_INVITE_URL, '_blank', 'noopener,noreferrer');
     setBotInviteOpened(true);
+  };
+
+  const openServerJoin = () => {
+    window.open(SERVER_JOIN_URL, '_blank', 'noopener,noreferrer');
+    setServerJoinOpened(true);
   };
 
   const goToLogin = () => {
@@ -141,14 +153,25 @@ export function WelcomeOnboarding({
           <section className={styles.step}>
             <h3 className={styles.stepTitle}>Zaproś bota albo dołącz na serwer</h3>
             <p className={styles.stepBody}>
-              GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do serwera, który już go ma.
+              GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do publicznego serwera z
+              botem — obie drogi działają tak samo.
             </p>
             <div className={styles.stepActions}>
               <button
                 type="button"
                 className={[
                   styles.stepBtn,
-                  botInviteOpened ? styles.stepBtnNeutral : styles.stepBtnOrange,
+                  discordPathOpened ? styles.stepBtnNeutral : styles.stepBtnOrange,
+                ].join(' ')}
+                onClick={openServerJoin}
+              >
+                DOŁĄCZ DO SERWERA Z BOTEM
+              </button>
+              <button
+                type="button"
+                className={[
+                  styles.stepBtn,
+                  discordPathOpened ? styles.stepBtnNeutral : styles.stepBtnOrange,
                 ].join(' ')}
                 onClick={openBotInvite}
               >
@@ -158,13 +181,18 @@ export function WelcomeOnboarding({
                 type="button"
                 className={[
                   styles.stepBtn,
-                  botInviteOpened ? styles.stepBtnOrange : styles.stepBtnNeutral,
+                  discordPathOpened ? styles.stepBtnOrange : styles.stepBtnNeutral,
                 ].join(' ')}
                 onClick={() => setStep(2)}
               >
                 MAM JUŻ BOTA → DALEJ
               </button>
             </div>
+            {serverJoinOpened && (
+              <p className={styles.stepHint}>
+                Po dołączeniu do serwera wróć tutaj i kliknij dalej.
+              </p>
+            )}
             {botInviteOpened && (
               <p className={styles.stepHint}>
                 Po dodaniu bota do swojego serwera wróć tutaj i kliknij dalej.
