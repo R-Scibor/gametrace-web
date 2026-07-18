@@ -5,6 +5,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { Skeleton } from './components/ui';
 import { LandingPage } from './pages/LandingPage';
+import { DownloadPage } from './pages/DownloadPage';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LibraryPage } from './pages/LibraryPage';
@@ -41,7 +42,11 @@ function App() {
   return (
     <Suspense fallback={<PageFallback />}>
       <Routes>
+        {/* Public — must stay outside ProtectedRoute (unauth → /welcome) */}
         <Route path="/welcome" element={<LandingPage />} />
+        {/* Both forms: full-page /download is 302→/download/ in nginx; in-app links may use either */}
+        <Route path="/download" element={<DownloadPage />} />
+        <Route path="/download/" element={<DownloadPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
@@ -60,6 +65,7 @@ function App() {
             </Route>
           </Route>
         </Route>
+        {/* Unmatched → home; ProtectedRoute sends unauth users to /welcome */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

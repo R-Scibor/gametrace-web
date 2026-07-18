@@ -1,0 +1,441 @@
+.page {
+  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, monospace;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse 90% 55% at 78% -8%, rgba(255, 122, 26, 0.10), transparent 60%),
+    linear-gradient(180deg, #0d0b09 0%, var(--bg) 42%, #100d0b 100%);
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(ellipse 100% 80% at 50% 20%, black, transparent 75%);
+}
+
+.glow {
+  position: fixed;
+  left: -10%;
+  bottom: -30%;
+  width: 60%;
+  height: 60%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(184, 90, 20, 0.07), transparent 65%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px;
+  flex: 1;
+}
+
+/* ---------- HERO ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 48px;
+  padding: 80px 0 48px;
+}
+
+.heroCopy {
+  opacity: 0;
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+}
+
+.eyebrow {
+  margin: 0 0 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+}
+
+.eyebrowPulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--orange);
+  box-shadow: 0 0 10px var(--orange-glow);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -1.6px;
+  line-height: 1.06;
+  color: var(--text);
+}
+
+.titleAccent {
+  color: var(--orange);
+  text-shadow: 0 0 34px rgba(255, 122, 26, 0.4);
+}
+
+.lead {
+  margin: 22px 0 0;
+  max-width: 460px;
+  font-size: 16px;
+  line-height: 1.68;
+  color: var(--text2);
+}
+
+.unavailable {
+  margin: 18px 0 0;
+  max-width: 460px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--warn);
+  background: var(--warn-tint, rgba(220, 185, 92, 0.1));
+  border: 1px solid var(--warn-border, rgba(220, 185, 92, 0.4));
+  border-radius: 4px;
+}
+
+.heroActions {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+
+.ctaGlow {
+  box-shadow:
+    0 0 20px var(--orange-glow),
+    0 0 40px rgba(255, 122, 26, 0.18);
+  animation: ctaPulse 2.4s ease-in-out infinite;
+}
+
+.secondaryLink {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.secondaryLink:hover {
+  color: var(--orange);
+  transform: translateX(3px);
+}
+
+.secondaryLink:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* ---------- HANDOFF PANEL (signature) ---------- */
+
+.handoff {
+  font-family: var(--mono);
+  background: linear-gradient(180deg, rgba(28, 24, 20, 0.9), rgba(20, 17, 15, 0.9));
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(18px) rotate(0.4deg);
+  animation: feedIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.28s forwards;
+}
+
+.handoffReady {
+  border-color: rgba(255, 122, 26, 0.45);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 122, 26, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.handoffBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.handoffDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 8px var(--orange-glow);
+  flex-shrink: 0;
+}
+
+.handoffTitle {
+  flex: 1;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--text2);
+}
+
+.handoffStatus {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.handoffStatusReady {
+  color: var(--orange);
+}
+
+.handoffBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 20px 20px;
+}
+
+.handoffHint {
+  margin: 0;
+  max-width: 240px;
+  font-family: var(--body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text3);
+  text-align: center;
+}
+
+.handoffFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 9.5px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.handoffFootValue {
+  color: var(--text2);
+}
+
+/* ---------- INSTALL DETAILS ---------- */
+
+.installSection {
+  padding: 8px 0 48px;
+  opacity: 0;
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+
+.installDetails {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(28, 24, 21, 0.55), rgba(20, 17, 15, 0.55));
+  overflow: hidden;
+}
+
+.installSummary {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text2);
+  transition: color 0.2s, background 0.2s;
+}
+
+.installSummary::-webkit-details-marker {
+  display: none;
+}
+
+.installSummary::before {
+  content: '▸ ';
+  color: var(--orange);
+}
+
+.installDetails[open] .installSummary::before {
+  content: '▾ ';
+}
+
+.installSummary:hover {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.installSummary:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -2px;
+}
+
+.installSteps {
+  margin: 0;
+  padding: 4px 18px 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.installStep {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.installNum {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--orange);
+  padding-top: 2px;
+}
+
+.installTitle {
+  margin: 0 0 4px;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.installBody {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text2);
+}
+
+/* ---------- FOOTER ---------- */
+
+.footer {
+  margin-top: auto;
+  padding: 0 24px 56px;
+  border-top: 1px solid var(--border);
+}
+
+.footerInner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text3);
+}
+
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footerDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--orange);
+  box-shadow: 0 0 8px var(--orange-glow);
+}
+
+.footerMeta {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* ---------- ANIMATIONS ---------- */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes feedIn {
+  to { opacity: 1; transform: translateY(0) rotate(0.4deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes ctaPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 20px var(--orange-glow),
+      0 0 40px rgba(255, 122, 26, 0.18);
+  }
+  50% {
+    box-shadow:
+      0 0 28px rgba(255, 122, 26, 0.45),
+      0 0 56px rgba(255, 122, 26, 0.22);
+  }
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 60px 0 36px;
+  }
+
+  .handoff {
+    max-width: 420px;
+    transform: none;
+    animation-name: fadeUp;
+  }
+}
+
+/* On phone: user is already on-device — hide QR handoff */
+@media (max-width: 640px) {
+  .handoff {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroCopy,
+  .handoff,
+  .installSection,
+  .eyebrowPulse,
+  .ctaGlow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

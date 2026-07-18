@@ -20,7 +20,9 @@ export default defineConfig({
     proxy: {
       '/api': { target: BACKEND, changeOrigin: true },
       '/covers': { target: BACKEND, changeOrigin: true },
-      '/download': { target: WEB_STATIC, changeOrigin: true },
+      // Exact APK only — must not steal SPA route `/download`
+      '/download/gametrace.apk': { target: WEB_STATIC, changeOrigin: true },
+
     },
   },
   test: {
