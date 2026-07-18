@@ -1,19 +1,36 @@
+/* One horizontal row: total | avg | new | record. The record cover stretches to
+   the row height set by the other cards, so it stays proportionate without making
+   the whole panel tall. Tiles carry big values so they read full, not empty. */
 .grid {
   display: grid;
-  grid-template-columns: minmax(160px, 1.5fr) repeat(2, minmax(110px, 0.85fr)) minmax(130px, 0.95fr) minmax(220px, 1.35fr);
-  gap: 14px;
+  grid-template-columns:
+    minmax(150px, 1.4fr)
+    minmax(92px, 0.8fr)
+    minmax(92px, 0.8fr)
+    minmax(200px, 1.6fr);
+  grid-template-areas: "total avg new record";
+  gap: 12px;
   align-items: stretch;
 }
+.gridNoRecord {
+  display: grid;
+  grid-template-columns: minmax(150px, 1.4fr) minmax(92px, 0.8fr) minmax(92px, 0.8fr);
+  grid-template-areas: "total avg new";
+  gap: 12px;
+  align-items: stretch;
+}
+
 .totalBlock {
+  grid-area: total;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 6px;
-  padding: 14px 16px;
+  gap: 5px;
+  padding: 12px 18px;
   background-color: var(--bg3);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--orange);
   border-radius: 4px;
-  min-height: 100%;
 }
 .totalLabel {
   font-family: var(--display);
@@ -25,15 +42,16 @@
 }
 .totalValue {
   font-family: var(--display);
-  font-size: 30px;
+  font-size: clamp(30px, 3.4vw, 40px);
   font-weight: 700;
-  color: var(--text);
-  line-height: 1.1;
+  letter-spacing: -0.8px;
+  color: var(--orange);
+  line-height: 1;
 }
 .totalMeta {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
   font-size: 13px;
 }
@@ -45,86 +63,93 @@
 .totalSubtitle {
   color: var(--text3);
 }
+
+/* Tiles: orange left rule, caps label, big orange value — filled, not sparse. */
 .tile {
-  min-height: 100%;
-}
-.streakBlock {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 14px 16px;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 14px 12px 16px;
   background-color: var(--bg2);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--orange);
   border-radius: 4px;
+  min-width: 0;
 }
-.streakLabel {
+.avgTile {
+  grid-area: avg;
+}
+.newTile {
+  grid-area: new;
+}
+.tileLabel {
   font-family: var(--display);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text3);
 }
-.streakValues {
+.tileValue {
   display: flex;
-  gap: 20px;
-}
-.streakItem {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.streakItemLabel {
-  font-size: 11px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.streakItemValue {
+  align-items: baseline;
+  gap: 4px;
   font-family: var(--display);
-  font-size: 22px;
+  font-size: clamp(32px, 3.6vw, 42px);
   font-weight: 700;
+  letter-spacing: -1px;
   color: var(--text);
+  line-height: 1;
 }
-.streakActive {
-  color: var(--orange);
-}
-.streakMuted {
-  font-size: 14px;
+.tileUnit {
+  font-size: 18px;
   color: var(--text3);
 }
+
+/* Record: cover fills the card edge-to-edge (dashboard pattern) — the img is
+   absolutely positioned so its intrinsic size can't inflate the row. */
 .recordCard {
+  grid-area: record;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
   background-color: var(--bg2);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--orange);
   border-radius: 4px;
   text-decoration: none;
   color: inherit;
-  min-height: 100%;
   transition: border-color 0.15s, background-color 0.15s;
 }
 .recordCard:hover {
   border-color: var(--orange);
   background-color: var(--bg3);
 }
-.recordPlaceholder {
-  display: none;
-}
-.recordCover {
-  width: 44px;
-  height: 58px;
-  border-radius: 2px;
+.recordCoverWrap {
+  position: relative;
+  width: 76px;
+  align-self: stretch;
   flex-shrink: 0;
+  overflow: hidden;
+}
+.recordCoverWrap .recordCover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  border-radius: 0;
 }
 .recordMeta {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  justify-content: center;
+  gap: 3px;
   min-width: 0;
+  padding: 12px 16px;
 }
 .recordLabel {
   font-family: var(--display);
@@ -132,7 +157,7 @@
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: var(--text3);
+  color: var(--orange);
 }
 .recordGame {
   font-size: 14px;
@@ -144,24 +169,23 @@
 }
 .recordValue {
   font-family: var(--display);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--orange);
+  color: var(--text);
 }
-@media (max-width: 1100px) {
+
+@media (max-width: 760px) {
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "total  total"
+      "avg    new"
+      "record record";
   }
-  .totalBlock {
-    grid-column: 1 / -1;
-  }
-  .recordCard,
-  .recordPlaceholder {
-    grid-column: 1 / -1;
-  }
-}
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
+  .gridNoRecord {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "total total"
+      "avg   new";
   }
 }

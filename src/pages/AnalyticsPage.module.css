@@ -1,49 +1,117 @@
 .container {
+  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, monospace;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  max-width: 1200px;
+  gap: 22px;
+  max-width: 1240px;
   margin: 0 auto;
 }
+
+/* Atmospheric backdrop — scoped orange glow + faint dotted grid, echoing the dashboard + landing. */
+.ambient {
+  position: absolute;
+  inset: -24px -24px auto -24px;
+  height: 360px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 100% at 88% -10%, rgba(255, 122, 26, 0.10), transparent 62%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: auto, 32px 32px;
+  mask-image: linear-gradient(180deg, black, transparent 92%);
+}
+
+.container > *:not(.ambient) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Staggered entrance */
+.toolbar,
+.grid {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.toolbar { animation-delay: 0.02s; }
+.grid { animation-delay: 0.1s; }
+
+/* ---------- TOOLBAR / STATUS STRIP ---------- */
+
 .toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  background-image: linear-gradient(90deg, var(--orange), transparent 60%);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
 }
+
+.statusLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--text2);
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: var(--orange);
+  box-shadow: 0 0 10px var(--orange-glow);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+/* ---------- PERIOD SELECTOR (segmented) ---------- */
+
 .periodRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.periodPill {
-  font-family: var(--display);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text3);
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
   background-color: var(--bg2);
   border: 1px solid var(--border);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.periodPill {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text3);
+  background: none;
+  border: none;
   border-radius: 2px;
-  padding: 8px 12px;
+  padding: 7px 13px;
   cursor: pointer;
-  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+  transition: color 0.15s, background-color 0.15s;
 }
 .periodPill:hover {
   color: var(--text2);
-  border-color: var(--border-bright);
 }
 .periodPill:focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 2px;
 }
-.periodPillActive {
+.periodPillActive,
+.periodPillActive:hover {
   color: var(--button-text-on-orange, #0a0a0a);
   background-color: var(--orange);
-  border-color: var(--orange);
+  font-weight: 700;
 }
+
+/* ---------- GRID ---------- */
+
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -59,21 +127,61 @@
 .span6 {
   grid-column: span 6;
 }
+
+/* ---------- ACTIVITY BLOCK (Idea A: heatmap + trend stacked, ranking as a tall rail) ---------- */
+
+.activityBlock {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+.activityMain {
+  flex: 2 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.activityRail {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* ---------- SECTION DIVIDERS (title + orange rule, matching landing) ---------- */
+
 .sectionLabel {
   grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+.sectionText {
   font-family: var(--display);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--text3);
-  padding-top: 4px;
-  border-top: 1px solid var(--border);
+  color: var(--text2);
+  white-space: nowrap;
 }
-.sectionLabel:first-of-type {
-  border-top: none;
-  padding-top: 0;
+.sectionRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+  opacity: 0.45;
 }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
@@ -82,5 +190,28 @@
   .span4,
   .span6 {
     grid-column: span 1;
+  }
+  .activityBlock {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .toolbar {
+    align-items: flex-start;
+  }
+  .periodRow {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolbar,
+  .grid,
+  .statusDot {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

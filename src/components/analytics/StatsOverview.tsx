@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useStatsSummary, useStreak } from '../../hooks/useStats';
+import { useStatsSummary } from '../../hooks/useStats';
 import type { StatsSummary } from '../../types/api';
 import { Cover } from '../Cover';
-import { ErrorBanner, Panel, Skeleton, StatTile } from '../ui';
+import { ErrorBanner, Panel, Skeleton } from '../ui';
 import {
   formatAnalyticsPeriodSubtitle,
   formatDuration,
@@ -23,7 +23,6 @@ interface StatsOverviewProps {
 
 export function StatsOverview({ days, className }: StatsOverviewProps) {
   const { data, isLoading, isError } = useStatsSummary(days);
-  const { data: streak, isLoading: streakLoading, isError: streakError } = useStreak();
 
   if (isLoading) {
     return (
@@ -46,7 +45,7 @@ export function StatsOverview({ days, className }: StatsOverviewProps) {
 
   return (
     <Panel title="Przegląd" eyebrow="podsumowanie okresu" className={className}>
-      <div className={styles.grid}>
+      <div className={showRecord ? styles.grid : styles.gridNoRecord}>
         <section className={styles.totalBlock} aria-label="Łączny czas">
           <span className={styles.totalLabel}>Łącznie</span>
           <span className={styles.totalValue}>{formatDuration(data.total_seconds)}</span>
@@ -56,53 +55,33 @@ export function StatsOverview({ days, className }: StatsOverviewProps) {
           </div>
         </section>
 
-        <StatTile
-          label="ŚR. SESJA"
-          value={formatHours(data.avg_session_seconds)}
-          unit="h"
-          className={styles.tile}
-        />
+        <div className={`${styles.tile} ${styles.avgTile}`}>
+          <span className={styles.tileLabel}>ŚR. SESJA</span>
+          <span className={styles.tileValue}>
+            {formatHours(data.avg_session_seconds)}
+            <span className={styles.tileUnit}>h</span>
+          </span>
+        </div>
 
-        <StatTile
-          label="NOWE GRY"
-          value={String(data.new_games_count)}
-          className={styles.tile}
-        />
+        <div className={`${styles.tile} ${styles.newTile}`}>
+          <span className={styles.tileLabel}>NOWE GRY</span>
+          <span className={styles.tileValue}>{data.new_games_count}</span>
+        </div>
 
-        <section className={styles.streakBlock} aria-label="Passa">
-          <span className={styles.streakLabel}>Passa</span>
-          {streakLoading ? (
-            <Skeleton height={48} />
-          ) : streakError || !streak ? (
-            <span className={styles.streakMuted}>—</span>
-          ) : (
-            <div className={styles.streakValues}>
-              <div className={styles.streakItem}>
-                <span className={styles.streakItemLabel}>Obecnie</span>
-                <span className={`${styles.streakItemValue} ${styles.streakActive}`}>
-                  {streak.current_streak}
-                </span>
-              </div>
-              <div className={styles.streakItem}>
-                <span className={styles.streakItemLabel}>Rekord</span>
-                <span className={styles.streakItemValue}>{streak.longest_streak}</span>
-              </div>
-            </div>
-          )}
-        </section>
-
-        {showRecord ? (
+        {showRecord && (
           <Link
             to={`/library/${data.longest_session_game_id}`}
             className={styles.recordCard}
             aria-label={`Rekord: ${data.longest_session_game_name ?? 'najdłuższa sesja'}`}
           >
-            <Cover
-              gameId={data.longest_session_game_id}
-              coverImageUrl={longestSessionCover(data) ?? undefined}
-              placeholderChar={data.longest_session_game_name ?? undefined}
-              className={styles.recordCover}
-            />
+            <div className={styles.recordCoverWrap}>
+              <Cover
+                gameId={data.longest_session_game_id}
+                coverImageUrl={longestSessionCover(data) ?? undefined}
+                placeholderChar={data.longest_session_game_name ?? undefined}
+                className={styles.recordCover}
+              />
+            </div>
             <div className={styles.recordMeta}>
               <span className={styles.recordLabel}>Rekord · najdłuższa sesja</span>
               {data.longest_session_game_name && (
@@ -111,8 +90,6 @@ export function StatsOverview({ days, className }: StatsOverviewProps) {
               <span className={styles.recordValue}>{formatHours(data.longest_session_seconds)} h</span>
             </div>
           </Link>
-        ) : (
-          <section className={styles.recordPlaceholder} aria-hidden="true" />
         )}
       </div>
     </Panel>

@@ -33,7 +33,9 @@ export function RankingPanel({ days, className }: { days: number; className?: st
   if (isError || !data) return <Panel title="Ranking gier" className={className}><ErrorBanner /></Panel>;
   return (
     <Panel title="Ranking gier" className={className}>
-      <GameRankingTable games={data.per_game} />
+      <div className={panelStyles.rankScroll}>
+        <GameRankingTable games={data.per_game} />
+      </div>
     </Panel>
   );
 }

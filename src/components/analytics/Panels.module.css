@@ -1,3 +1,20 @@
+/* Ranking rail: bounds a long game list to the neighbouring column's height,
+   scrolling internally instead of stretching the whole activity row. */
+.rankScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bright) transparent;
+}
+.rankScroll::-webkit-scrollbar {
+  width: 6px;
+}
+.rankScroll::-webkit-scrollbar-thumb {
+  background-color: var(--border-bright);
+  border-radius: 3px;
+}
+
 .roleToggle {
   display: flex;
   gap: 8px;
