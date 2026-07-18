@@ -6,7 +6,10 @@ import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
 import { WelcomeOnboarding } from '../components/welcome/WelcomeOnboarding';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
+import { getDiscordBotInviteUrl } from '../lib/discordInvites';
 import styles from './LandingPage.module.css';
+
+const BOT_INVITE_URL = getDiscordBotInviteUrl();
 
 const DiscordIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden width="22" height="22">
@@ -167,9 +170,6 @@ const METRICS = [
   { value: '84', label: 'GIER W BIBLIOTECE' },
   { value: '1 320', label: 'SESJI' },
 ] as const;
-
-const BOT_INVITE_URL =
-  'https://discord.com/oauth2/authorize?client_id=1486092367072334014&permissions=2048&integration_type=0&scope=bot+applications.commands';
 
 const STEPS = [
   {
@@ -383,14 +383,14 @@ export function LandingPage() {
                     <li key={point}>{point}</li>
                   ))}
                 </ul>
-                {p.id === 'bot' && (
+                {p.id === 'bot' && BOT_INVITE_URL ? (
                   <Button
                     variant="secondary"
                     onClick={() => window.open(BOT_INVITE_URL, '_blank', 'noopener,noreferrer')}
                   >
                     DODAJ BOTA DO SERWERA
                   </Button>
-                )}
+                ) : null}
                 {p.id === 'app' && (
                   <Button
                     disabled={apkAvailable !== true}

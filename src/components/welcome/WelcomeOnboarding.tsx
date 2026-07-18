@@ -4,13 +4,11 @@ import { Button } from '../ui/Button';
 import { ApkQrCode } from './ApkQrCode';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../../lib/apkDownload';
 import { copyFromInput } from '../../lib/copyToClipboard';
+import { getDiscordBotInviteUrl, getDiscordServerJoinUrl } from '../../lib/discordInvites';
 import styles from './WelcomeOnboarding.module.css';
 
-const BOT_INVITE_URL =
-  'https://discord.com/oauth2/authorize?client_id=1486092367072334014&permissions=2048&integration_type=0&scope=bot+applications.commands';
-
-/** Public server invite — set at build time via VITE_DISCORD_SERVER_INVITE_URL. */
-const SERVER_JOIN_URL = String(import.meta.env.VITE_DISCORD_SERVER_INVITE_URL ?? '').trim();
+const BOT_INVITE_URL = getDiscordBotInviteUrl();
+const SERVER_JOIN_URL = getDiscordServerJoinUrl();
 
 const STEPS = [
   { id: 1, label: 'Discord' },
@@ -55,6 +53,7 @@ export function WelcomeOnboarding({
   };
 
   const openBotInvite = () => {
+    if (!BOT_INVITE_URL) return;
     window.open(BOT_INVITE_URL, '_blank', 'noopener,noreferrer');
     setBotInviteOpened(true);
   };
@@ -154,9 +153,11 @@ export function WelcomeOnboarding({
           <section className={styles.step}>
             <h3 className={styles.stepTitle}>Zaproś bota albo dołącz na serwer</h3>
             <p className={styles.stepBody}>
-              {SERVER_JOIN_URL
+              {SERVER_JOIN_URL && BOT_INVITE_URL
                 ? 'GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do publicznego serwera z botem — obie drogi działają tak samo.'
-                : 'GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do serwera, który już go ma.'}
+                : SERVER_JOIN_URL
+                  ? 'GameTrace działa na Discordzie. Dołącz do publicznego serwera z botem albo użyj serwera, na którym bot już jest.'
+                  : 'GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do serwera, który już go ma.'}
             </p>
             <div className={styles.stepActions}>
               {SERVER_JOIN_URL ? (
@@ -171,16 +172,18 @@ export function WelcomeOnboarding({
                   DOŁĄCZ DO SERWERA Z BOTEM
                 </button>
               ) : null}
-              <button
-                type="button"
-                className={[
-                  styles.stepBtn,
-                  discordPathOpened ? styles.stepBtnNeutral : styles.stepBtnOrange,
-                ].join(' ')}
-                onClick={openBotInvite}
-              >
-                DODAJ BOTA DO SERWERA
-              </button>
+              {BOT_INVITE_URL ? (
+                <button
+                  type="button"
+                  className={[
+                    styles.stepBtn,
+                    discordPathOpened ? styles.stepBtnNeutral : styles.stepBtnOrange,
+                  ].join(' ')}
+                  onClick={openBotInvite}
+                >
+                  DODAJ BOTA DO SERWERA
+                </button>
+              ) : null}
               <button
                 type="button"
                 className={[

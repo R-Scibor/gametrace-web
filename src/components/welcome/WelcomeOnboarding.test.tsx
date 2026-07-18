@@ -29,7 +29,7 @@ test('WelcomeOnboarding step 1 opens bot invite and advances', async () => {
 
   await user.click(addBotBtn);
   expect(window.open).toHaveBeenCalledWith(
-    expect.stringContaining('discord.com/oauth2'),
+    'https://discord.com/oauth2/authorize?client_id=test&permissions=2048&integration_type=0&scope=bot+applications.commands',
     '_blank',
     'noopener,noreferrer',
   );

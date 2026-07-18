@@ -30,9 +30,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./test/setup.ts'],
     css: true,
-    // Public Discord invite used by WelcomeOnboarding join path
+    // Discord invites used by WelcomeOnboarding / LandingPage
     env: {
       VITE_DISCORD_SERVER_INVITE_URL: 'https://discord.gg/test-invite',
+      VITE_DISCORD_BOT_INVITE_URL:
+        'https://discord.com/oauth2/authorize?client_id=test&permissions=2048&integration_type=0&scope=bot+applications.commands',
     },
     coverage: {
       provider: 'v8',
