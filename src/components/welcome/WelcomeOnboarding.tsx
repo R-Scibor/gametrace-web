@@ -9,8 +9,8 @@ import styles from './WelcomeOnboarding.module.css';
 const BOT_INVITE_URL =
   'https://discord.com/oauth2/authorize?client_id=1486092367072334014&permissions=2048&integration_type=0&scope=bot+applications.commands';
 
-/** Public GameTrace Discord (bot already present). Never-expire invite. */
-const SERVER_JOIN_URL = 'https://discord.gg/tnt5wmuX34';
+/** Public server invite — set at build time via VITE_DISCORD_SERVER_INVITE_URL. */
+const SERVER_JOIN_URL = String(import.meta.env.VITE_DISCORD_SERVER_INVITE_URL ?? '').trim();
 
 const STEPS = [
   { id: 1, label: 'Discord' },
@@ -60,6 +60,7 @@ export function WelcomeOnboarding({
   };
 
   const openServerJoin = () => {
+    if (!SERVER_JOIN_URL) return;
     window.open(SERVER_JOIN_URL, '_blank', 'noopener,noreferrer');
     setServerJoinOpened(true);
   };
@@ -153,20 +154,23 @@ export function WelcomeOnboarding({
           <section className={styles.step}>
             <h3 className={styles.stepTitle}>Zaproś bota albo dołącz na serwer</h3>
             <p className={styles.stepBody}>
-              GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do publicznego serwera z
-              botem — obie drogi działają tak samo.
+              {SERVER_JOIN_URL
+                ? 'GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do publicznego serwera z botem — obie drogi działają tak samo.'
+                : 'GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do serwera, który już go ma.'}
             </p>
             <div className={styles.stepActions}>
-              <button
-                type="button"
-                className={[
-                  styles.stepBtn,
-                  discordPathOpened ? styles.stepBtnNeutral : styles.stepBtnOrange,
-                ].join(' ')}
-                onClick={openServerJoin}
-              >
-                DOŁĄCZ DO SERWERA Z BOTEM
-              </button>
+              {SERVER_JOIN_URL ? (
+                <button
+                  type="button"
+                  className={[
+                    styles.stepBtn,
+                    discordPathOpened ? styles.stepBtnNeutral : styles.stepBtnOrange,
+                  ].join(' ')}
+                  onClick={openServerJoin}
+                >
+                  DOŁĄCZ DO SERWERA Z BOTEM
+                </button>
+              ) : null}
               <button
                 type="button"
                 className={[

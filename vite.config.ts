@@ -30,6 +30,10 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./test/setup.ts'],
     css: true,
+    // Public Discord invite used by WelcomeOnboarding join path
+    env: {
+      VITE_DISCORD_SERVER_INVITE_URL: 'https://discord.gg/test-invite',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'text-summary'],
