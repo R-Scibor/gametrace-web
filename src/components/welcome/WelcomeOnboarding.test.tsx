@@ -54,7 +54,7 @@ test('WelcomeOnboarding step 1 opens public server join invite', async () => {
 
   await user.click(joinServerBtn);
   expect(window.open).toHaveBeenCalledWith(
-    'https://discord.gg/ZhHu2zWbKd',
+    'https://discord.gg/tnt5wmuX34',
     '_blank',
     'noopener,noreferrer',
   );

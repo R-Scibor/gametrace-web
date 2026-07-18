@@ -10,7 +10,7 @@ const BOT_INVITE_URL =
   'https://discord.com/oauth2/authorize?client_id=1486092367072334014&permissions=2048&integration_type=0&scope=bot+applications.commands';
 
 /** Public GameTrace Discord (bot already present). Never-expire invite. */
-const SERVER_JOIN_URL = 'https://discord.gg/ZhHu2zWbKd';
+const SERVER_JOIN_URL = 'https://discord.gg/tnt5wmuX34';
 
 const STEPS = [
   { id: 1, label: 'Discord' },
