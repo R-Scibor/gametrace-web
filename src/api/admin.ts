@@ -29,7 +29,7 @@ export const getAdminGames = async (
 ): Promise<AdminGameListResponse> => {
   const response = await client.get<AdminGameListResponse>('/admin/games', {
     params: {
-      status: query.status ?? 'NEEDS_REVIEW',
+      status: query.status,
       q: query.q || undefined,
       skip: query.skip ?? 0,
       limit: query.limit ?? 50,

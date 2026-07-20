@@ -200,10 +200,10 @@ export const handlers = [
 
   http.get('/api/v1/admin/games', ({ request }) => {
     const url = new URL(request.url);
-    const status = url.searchParams.get('status') ?? 'NEEDS_REVIEW';
+    const status = url.searchParams.get('status');
     const q = url.searchParams.get('q')?.toLowerCase() ?? '';
     let items = fixtures.adminCatalogGames.items;
-    if (status !== 'NEEDS_REVIEW') {
+    if (status) {
       items = items.filter((g) => g.enrichment_status === status);
     }
     if (q) {
