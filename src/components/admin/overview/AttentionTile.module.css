@@ -1,0 +1,48 @@
+.tile {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+}
+
+.active {
+  border-color: var(--orange);
+}
+
+.active:hover {
+  background: var(--surface-2);
+}
+
+.value {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  line-height: 1.1;
+  color: var(--text-1);
+}
+
+.active .value {
+  color: var(--orange);
+}
+
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+}
+
+.cta {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  margin-top: 2px;
+}
+
+.idle {
+  opacity: 0.55;
+}
