@@ -3,6 +3,7 @@ import type {
   AdminAliasResponse,
   AdminGameListResponse,
   AdminGamesQuery,
+  AdminOverviewResponse,
   Game,
   IGDBCandidate,
 } from '../types/api';
@@ -59,5 +60,10 @@ export const addGameAlias = async (
   const response = await client.post<AdminAliasResponse>(`/admin/games/${gameId}/aliases`, {
     discord_process_name: discordProcessName,
   });
+  return response.data;
+};
+
+export const getAdminStatsOverview = async (): Promise<AdminOverviewResponse> => {
+  const response = await client.get<AdminOverviewResponse>('/admin/stats/overview');
   return response.data;
 };

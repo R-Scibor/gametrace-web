@@ -1,4 +1,5 @@
 import type {
+  AdminOverviewResponse,
   ConflictResponse,
   DashboardSummary,
   Game,
@@ -187,6 +188,26 @@ export const trend: TrendResponse = {
   ],
 };
 
+export const adminOverview: AdminOverviewResponse = {
+  user_count: 4,
+  session_count: 1284,
+  total_seconds: 3211200,
+  game_count: 317,
+  needs_review_count: 12,
+  pending_enrichment_count: 5,
+  open_reports_count: 3,
+};
+
+export const adminOverviewIdle: AdminOverviewResponse = {
+  user_count: 4,
+  session_count: 1284,
+  total_seconds: 3211200,
+  game_count: 317,
+  needs_review_count: 0,
+  pending_enrichment_count: 0,
+  open_reports_count: 0,
+};
+
 export const gameFacets: Record<
   number,
   {
@@ -268,6 +289,8 @@ export const fixtures = {
       },
     ],
   },
+  adminOverview,
+  adminOverviewIdle,
   igdbCandidates: [
     {
       igdb_id: 11142,

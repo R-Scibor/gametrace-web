@@ -268,6 +268,10 @@ export const handlers = [
     );
   }),
 
+  http.get('/api/v1/admin/stats/overview', () =>
+    HttpResponse.json(fixtures.adminOverview),
+  ),
+
   http.get('/api/v1/stats/summary', ({ request }) => {
     const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
     if (days === 7) return HttpResponse.json(fixtures.statsSummary7d);

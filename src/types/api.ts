@@ -75,6 +75,16 @@ export interface AdminGamesQuery {
   sort?: AdminCatalogSort;
 }
 
+export interface AdminOverviewResponse {
+  user_count: number;
+  session_count: number;
+  total_seconds: number;
+  game_count: number;
+  needs_review_count: number;
+  pending_enrichment_count: number;
+  open_reports_count: number;
+}
+
 export interface GameStats {
   game_id: number;
   total_seconds: number;
