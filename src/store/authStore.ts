@@ -34,14 +34,16 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         token: state.token,
         user: state.user,
+        isAdmin: state.isAdmin,
         isAuthenticated: state.isAuthenticated,
       }),
       onRehydrateStorage: () => (_state, error) => {
         if (error) {
           useAuthStore.persist.clearStorage();
         }
-        // isAdmin comes from login response + profile sync, not persisted storage.
-        useAuthStore.setState({ isAdmin: false });
+        // isAdmin is restored optimistically so the sidebar link does not flicker.
+        // useProfile overwrites it with the server's answer once /profile/me lands,
+        // and AdminRoute gates on that query rather than on this flag.
       },
     },
   ),
