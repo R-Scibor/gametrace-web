@@ -12,4 +12,5 @@ export const qk = {
   stats: (kind: string, params?: object) => ['stats', kind, params ?? {}] as const,
   adminGames: (filter?: object) => ['admin', 'games', filter ?? {}] as const,
   adminOverview: ['admin', 'overview'] as const,
+  adminReports: (filter?: object) => ['admin', 'reports', filter ?? {}] as const,
 };

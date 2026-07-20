@@ -184,3 +184,27 @@ export interface GameResolveResponse { game_id: number; name: string; }
 export interface AddSessionPrefill {
   gameId?: number; date?: string | null; startTime?: string | null; endTime?: string | null; note?: string;
 }
+
+// Admin Reports
+export type ReportStatus = 'open' | 'triaged' | 'closed';
+
+export interface AdminReportItem {
+  id: number;
+  user_id: string;
+  username: string | null;
+  message: string;
+  context: Record<string, unknown>;
+  status: ReportStatus;
+  created_at: string;
+}
+
+export interface AdminReportListResponse {
+  total: number;
+  items: AdminReportItem[];
+}
+
+export interface AdminReportsQuery {
+  status?: ReportStatus;
+  skip?: number;
+  limit?: number;
+}

@@ -4,6 +4,9 @@ import type {
   AdminGameListResponse,
   AdminGamesQuery,
   AdminOverviewResponse,
+  AdminReportItem,
+  AdminReportListResponse,
+  AdminReportsQuery,
   Game,
   IGDBCandidate,
 } from '../types/api';
@@ -65,5 +68,26 @@ export const addGameAlias = async (
 
 export const getAdminStatsOverview = async (): Promise<AdminOverviewResponse> => {
   const response = await client.get<AdminOverviewResponse>('/admin/stats/overview');
+  return response.data;
+};
+
+export const getAdminReports = async (
+  query: AdminReportsQuery = {},
+): Promise<AdminReportListResponse> => {
+  const response = await client.get<AdminReportListResponse>('/admin/reports', {
+    params: {
+      status: query.status,
+      skip: query.skip ?? 0,
+      limit: query.limit ?? 50,
+    },
+  });
+  return response.data;
+};
+
+export const patchAdminReport = async (
+  reportId: number,
+  body: { status: 'triaged' | 'closed' },
+): Promise<AdminReportItem> => {
+  const response = await client.patch<AdminReportItem>(`/admin/reports/${reportId}`, body);
   return response.data;
 };

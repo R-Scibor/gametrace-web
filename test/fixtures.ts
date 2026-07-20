@@ -1,5 +1,6 @@
 import type {
   AdminOverviewResponse,
+  AdminReportListResponse,
   ConflictResponse,
   DashboardSummary,
   Game,
@@ -208,6 +209,41 @@ export const adminOverviewIdle: AdminOverviewResponse = {
   open_reports_count: 0,
 };
 
+export const adminReports: AdminReportListResponse = {
+  total: 3,
+  items: [
+    {
+      id: 17,
+      user_id: '123',
+      username: 'testuser',
+      message: 'Nie mogę dodać sesji na telefonie',
+      context: { screen: 'SessionForm', platform: 'android', app_version: '1.4.2' },
+      status: 'open',
+      created_at: '2026-07-18T10:00:00Z',
+    },
+    {
+      id: 16,
+      user_id: '456',
+      username: 'kuba',
+      message: 'Okładka Hadesa jest zła',
+      context: { screen: 'GameDetail', platform: 'ios', app_version: '1.4.1' },
+      status: 'open',
+      created_at: '2026-07-16T09:00:00Z',
+    },
+    {
+      id: 15,
+      user_id: '789',
+      username: null,
+      message: 'Statystyki tygodniowe się nie zgadzają',
+      context: {},
+      status: 'open',
+      created_at: '2026-07-14T08:00:00Z',
+    },
+  ],
+};
+
+export const adminReportsEmpty: AdminReportListResponse = { total: 0, items: [] };
+
 export const gameFacets: Record<
   number,
   {
@@ -291,6 +327,8 @@ export const fixtures = {
   },
   adminOverview,
   adminOverviewIdle,
+  adminReports,
+  adminReportsEmpty,
   igdbCandidates: [
     {
       igdb_id: 11142,

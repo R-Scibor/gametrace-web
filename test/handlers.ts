@@ -272,6 +272,24 @@ export const handlers = [
     HttpResponse.json(fixtures.adminOverview),
   ),
 
+  http.get('/api/v1/admin/reports', ({ request }) => {
+    const status = new URL(request.url).searchParams.get('status');
+    const items = status
+      ? fixtures.adminReports.items.filter((r) => r.status === status)
+      : fixtures.adminReports.items;
+    return HttpResponse.json({ total: items.length, items });
+  }),
+
+  http.patch('/api/v1/admin/reports/:id', async ({ params, request }) => {
+    const id = Number(params.id);
+    const body = (await request.json()) as { status: 'triaged' | 'closed' };
+    const item = fixtures.adminReports.items.find((r) => r.id === id);
+    if (!item) {
+      return HttpResponse.json({ detail: 'Not found' }, { status: 404 });
+    }
+    return HttpResponse.json({ ...item, status: body.status });
+  }),
+
   http.get('/api/v1/stats/summary', ({ request }) => {
     const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
     if (days === 7) return HttpResponse.json(fixtures.statsSummary7d);
