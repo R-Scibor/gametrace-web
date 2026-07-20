@@ -1,0 +1,43 @@
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+
+.message {
+  font-size: 14px;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+.context {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  gap: 4px 12px;
+  font-size: 12px;
+}
+
+.key {
+  color: var(--text3);
+}
+
+.value {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
