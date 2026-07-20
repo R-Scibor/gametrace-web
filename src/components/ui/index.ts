@@ -5,6 +5,7 @@ export * from './SectionHeader';
 export * from './Skeleton';
 export * from './EmptyState';
 export * from './ConfirmDialog';
+export * from './Modal';
 export * from './Panel';
 export * from './Select';
 export * from './Toast';

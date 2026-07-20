@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Button } from './Button';
+import { Modal } from './Modal';
 import styles from './ConfirmDialog.module.css';
 
 interface ConfirmDialogProps {
@@ -25,36 +26,26 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  if (!open) return null;
-
   return (
-    <div className={styles.overlay} onClick={onCancel} role="presentation">
-      <div
-        className={styles.dialog}
-        onClick={(e) => e.stopPropagation()}
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="confirm-title"
-      >
-        <h2 id="confirm-title" className={styles.title}>
-          {title}
-        </h2>
-        <div className={styles.message}>{message}</div>
-        <div className={styles.actions}>
-          <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
-            {cancelLabel}
-          </Button>
-          <Button
-            type="button"
-            variant="primary"
-            className={variant === 'danger' ? styles.dangerConfirm : undefined}
-            onClick={onConfirm}
-            loading={loading}
-          >
-            {confirmLabel}
-          </Button>
-        </div>
+    <Modal open={open} onClose={onCancel} labelledBy="confirm-title" role="alertdialog">
+      <h2 id="confirm-title" className={styles.title}>
+        {title}
+      </h2>
+      <div className={styles.message}>{message}</div>
+      <div className={styles.actions}>
+        <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
+          {cancelLabel}
+        </Button>
+        <Button
+          type="button"
+          variant="primary"
+          className={variant === 'danger' ? styles.dangerConfirm : undefined}
+          onClick={onConfirm}
+          loading={loading}
+        >
+          {confirmLabel}
+        </Button>
       </div>
-    </div>
+    </Modal>
   );
 }
