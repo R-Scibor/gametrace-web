@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { AdminCatalogDetail } from '../components/admin/AdminCatalogDetail';
 import { AdminCatalogTable } from '../components/admin/AdminCatalogTable';
-import { AdminSubNav } from '../components/admin/AdminSubNav';
 import { useAdminGames } from '../hooks/useAdmin';
 import type { AdminGamesQuery } from '../types/api';
 import styles from './AdminCatalogPage.module.css';
@@ -30,7 +29,6 @@ export function AdminCatalogPage() {
   return (
     <div className={styles.container}>
       <p className={styles.intro}>Przegląd globalnego katalogu gier.</p>
-      <AdminSubNav />
       <AdminCatalogTable
         filter={filter}
         items={items}

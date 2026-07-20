@@ -19,7 +19,6 @@ test('AdminCatalogPage shows table and selects row detail', async () => {
     screen.getByRole('heading', { name: /Kingdom Hearts HD 1\.5 \+ 2\.5 ReMIX/i }),
   ).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Ponów wzbogacanie/i })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Katalog' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('AdminCatalogPage shows empty state when filter has no matches', async () => {

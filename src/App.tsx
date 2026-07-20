@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AdminRoute } from './components/AdminRoute';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
+import { AdminLayout } from './components/admin/AdminLayout';
+import { AdminReportsPlaceholder } from './pages/admin/AdminReportsPlaceholder';
 import { Skeleton } from './components/ui';
 import { LandingPage } from './pages/LandingPage';
 import { DownloadPage } from './pages/DownloadPage';
@@ -22,8 +24,8 @@ const AnalyticsPage = lazy(() =>
 const VoicePage = lazy(() =>
   import('./pages/VoicePage').then(m => ({ default: m.VoicePage }))
 );
-const AdminPage = lazy(() =>
-  import('./pages/AdminPage').then(m => ({ default: m.AdminPage }))
+const AdminOverviewPage = lazy(() =>
+  import('./pages/admin/AdminOverviewPage').then(m => ({ default: m.AdminOverviewPage }))
 );
 const AdminCatalogPage = lazy(() =>
   import('./pages/AdminCatalogPage').then(m => ({ default: m.AdminCatalogPage }))
@@ -60,8 +62,11 @@ function App() {
             <Route path="/trash" element={<TrashPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route element={<AdminRoute />}>
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/admin/catalog" element={<AdminCatalogPage />} />
+              <Route element={<AdminLayout />}>
+                <Route path="/admin" element={<AdminOverviewPage />} />
+                <Route path="/admin/reports" element={<AdminReportsPlaceholder />} />
+                <Route path="/admin/catalog" element={<AdminCatalogPage />} />
+              </Route>
             </Route>
           </Route>
         </Route>
