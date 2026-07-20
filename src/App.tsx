@@ -4,7 +4,6 @@ import { AdminRoute } from './components/AdminRoute';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { AdminLayout } from './components/admin/AdminLayout';
-import { AdminReportsPlaceholder } from './pages/admin/AdminReportsPlaceholder';
 import { Skeleton } from './components/ui';
 import { LandingPage } from './pages/LandingPage';
 import { DownloadPage } from './pages/DownloadPage';
@@ -29,6 +28,9 @@ const AdminOverviewPage = lazy(() =>
 );
 const AdminCatalogPage = lazy(() =>
   import('./pages/AdminCatalogPage').then(m => ({ default: m.AdminCatalogPage }))
+);
+const AdminReportsPage = lazy(() =>
+  import('./pages/admin/AdminReportsPage').then(m => ({ default: m.AdminReportsPage }))
 );
 
 function PageFallback() {
@@ -64,7 +66,7 @@ function App() {
             <Route element={<AdminRoute />}>
               <Route element={<AdminLayout />}>
                 <Route path="/admin" element={<AdminOverviewPage />} />
-                <Route path="/admin/reports" element={<AdminReportsPlaceholder />} />
+                <Route path="/admin/reports" element={<AdminReportsPage />} />
                 <Route path="/admin/catalog" element={<AdminCatalogPage />} />
               </Route>
             </Route>
