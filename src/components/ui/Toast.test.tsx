@@ -2,7 +2,7 @@ import { render, screen, act } from '@testing-library/react';
 import { test, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ToastViewport } from './Toast';
 import { useToastStore } from '../../store/toastStore';
-import { resetStores } from '../../../test/utils';
+import { resetStores, renderWithProviders } from '../../../test/utils';
 
 beforeEach(() => {
   resetStores();
@@ -45,4 +45,20 @@ test('ToastViewport dismisses on click', () => {
     screen.getByText('Błąd zapisu').click();
   });
   expect(screen.queryByText('Błąd zapisu')).not.toBeInTheDocument();
+});
+
+it('renders an action link when the toast carries one', () => {
+  vi.useRealTimers();
+  renderWithProviders(<ToastViewport />);
+
+  act(() => {
+    useToastStore.getState().pushToast({
+      type: 'error',
+      message: 'Alias należy do innej gry.',
+      action: { label: 'Pokaż grę', to: '/admin/catalog?game=88' },
+    });
+  });
+
+  const link = screen.getByRole('link', { name: 'Pokaż grę' });
+  expect(link).toHaveAttribute('href', '/admin/catalog?game=88');
 });

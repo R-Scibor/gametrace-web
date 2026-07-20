@@ -30,6 +30,13 @@
 .toast.error {
   border-left: 4px solid var(--warn);
 }
+.action {
+  margin-left: 10px;
+  color: inherit;
+  text-decoration: underline;
+  font-weight: 600;
+  white-space: nowrap;
+}
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }

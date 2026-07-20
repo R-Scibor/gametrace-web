@@ -2,10 +2,16 @@ import { create } from 'zustand';
 
 export type ToastType = 'success' | 'error' | 'info';
 
+export interface ToastAction {
+  label: string;
+  to: string;
+}
+
 export interface ToastMessage {
   id: string;
   type: ToastType;
   message: string;
+  action?: ToastAction;
 }
 
 interface ToastStore {
