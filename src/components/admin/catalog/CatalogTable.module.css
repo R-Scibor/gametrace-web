@@ -1,0 +1,72 @@
+.wrapper {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table th {
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+}
+
+.row:hover {
+  background: var(--bg3);
+}
+
+.row td {
+  padding: 7px 10px;
+  border-left: 2px solid transparent;
+}
+
+.row td:not(:first-child) {
+  border-left: none;
+}
+
+.selected {
+  background: var(--bg3);
+  color: var(--text);
+}
+
+.selected td:first-child {
+  border-left-color: var(--orange);
+}
+
+.cover {
+  width: 28px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 2px;
+  background: var(--bg4);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.pageButton {
+  width: auto;
+  padding: 6px 14px;
+}
