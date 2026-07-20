@@ -18,14 +18,14 @@
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-3);
+  color: var(--text3);
   text-decoration: none;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
 
 .tab:hover {
-  color: var(--text-1);
+  color: var(--text);
 }
 
 .active {

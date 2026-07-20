@@ -1,13 +1,26 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AdminCatalogDetail } from '../components/admin/AdminCatalogDetail';
 import { AdminCatalogTable } from '../components/admin/AdminCatalogTable';
 import { useAdminGames } from '../hooks/useAdmin';
-import type { AdminGamesQuery } from '../types/api';
+import type { AdminGamesQuery, EnrichmentStatus } from '../types/api';
 import styles from './AdminCatalogPage.module.css';
 
+const VALID_STATUSES: EnrichmentStatus[] = ['NEEDS_REVIEW', 'PENDING', 'ENRICHED'];
+
 export function AdminCatalogPage() {
+  const [searchParams] = useSearchParams();
+
+  // The overview hub links here with ?status=, so honour it on mount. The rest
+  // of this page's state stays local until the catalog rebuild replaces it.
+  const requestedStatus = searchParams.get('status') as EnrichmentStatus | null;
+  const initialStatus =
+    requestedStatus && VALID_STATUSES.includes(requestedStatus)
+      ? requestedStatus
+      : 'NEEDS_REVIEW';
+
   const [filter, setFilter] = useState<AdminGamesQuery>({
-    status: 'NEEDS_REVIEW',
+    status: initialStatus,
     skip: 0,
     limit: 50,
     sort: 'sessions_desc',

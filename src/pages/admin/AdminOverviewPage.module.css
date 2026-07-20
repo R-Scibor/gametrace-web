@@ -23,7 +23,7 @@
 .state {
   padding: 32px;
   text-align: center;
-  color: var(--text-3);
+  color: var(--text3);
   display: flex;
   flex-direction: column;
   align-items: center;

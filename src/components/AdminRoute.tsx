@@ -10,8 +10,9 @@ export function AdminRoute() {
     return <Navigate to="/welcome" replace />;
   }
 
-  // isAdmin is never persisted, so after a refresh it is unknown until the
-  // profile lands. Redirecting before then would bounce admins off their page.
+  // The persisted isAdmin flag is only an optimistic hint for the sidebar, so
+  // access is gated on the profile query instead. Redirecting before it lands
+  // would bounce admins off their page.
   if (isPending) {
     return null;
   }

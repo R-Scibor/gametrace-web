@@ -125,8 +125,9 @@ cache.
 | `/voice`            | Voice            | Browser `MediaRecorder` capture → `POST /voice/transcribe` → resolve game → redirect to `/sessions/new` prefilled. |
 | `/trash`            | Trash            | Trashed sessions, **`purges_at` countdown**, **restore** (re-validates conflict), **hard-delete**. |
 | `/settings`         | Settings         | Profile · timezone · `weekly_report_enabled` + `push_enabled` toggles · bot/health/version · logout. |
-| `/admin`            | Games Catalogue  | **Admin only.** Single admin surface. Global catalog table (`GET /admin/games`) · filter/search/paginate · on row select: re-queue enrich · IGDB link · add alias · merge · global cover. *(Replaces deleted Operacje + sub-nav split.)* |
-| `/admin/catalog`    | *(legacy route)* | Redirect to `/admin` when Operacje removal lands. |
+| `/admin`            | Przegląd         | **Admin only.** Overview hub (`GET /admin/stats/overview`). Passive context tiles (users, sessions, hours, games) plus attention tiles that link into pre-filtered surfaces. Tiles at zero render inert. *(Replaces deleted Operacje + sub-nav split.)* |
+| `/admin/reports`    | Zgłoszenia       | **Admin only.** User report inbox and triage. *(Temporary placeholder; built in a later plan.)* |
+| `/admin/catalog`    | Katalog          | **Admin only.** Global catalog table (`GET /admin/games`) · filter/search/paginate · on row select: re-queue enrich · IGDB link · add alias · merge · global cover. Honours an incoming `?status=` from the overview tiles. *(Rebuilt as master-detail in a later plan.)* |
 
 ## 8. Analytics Page (the differentiator)
 

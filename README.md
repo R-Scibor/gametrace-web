@@ -39,8 +39,9 @@ Visible in the sidebar only when the logged-in user has `is_admin: true`. Non-ad
 
 | Path | Purpose |
 |------|---------|
-| `/admin` | Ad-hoc ops — search game or lookup by ID; merge; global cover upload |
-| `/admin/catalog` | Global catalog review — `NEEDS_REVIEW` queue, enrich, IGDB link, aliases |
+| `/admin` | Przegląd: homelab overview tiles; attention counts link into filtered work surfaces |
+| `/admin/reports` | Zgłoszenia: user report inbox and triage *(placeholder, not yet built)* |
+| `/admin/catalog` | Katalog: global catalog review, enrich, IGDB link, aliases, merge, global cover |
 
 Admin API surface: `GET/POST /api/v1/admin/games/*` (list, enrich, match, igdb-link, aliases, merge, cover). See backend `docs/api.md` § Admin.
 

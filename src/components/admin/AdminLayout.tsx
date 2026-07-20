@@ -14,7 +14,7 @@ export function AdminLayout() {
 
   return (
     <div className={styles.container}>
-      <nav className={styles.tabs}>
+      <nav className={styles.tabs} aria-label="Sekcje administracji">
         <NavLink to="/admin" end className={tabClass}>
           Przegląd
         </NavLink>
