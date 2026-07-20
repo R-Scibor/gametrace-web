@@ -20,7 +20,7 @@ export function useTriageReport() {
     mutationFn: ({ id, status }: { id: number; status: 'triaged' | 'closed' }) =>
       patchAdminReport(id, { status }),
     onSuccess: (_data, { status }) => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'reports'] });
+      queryClient.invalidateQueries({ queryKey: qk.adminReportsPrefix });
       // The overview's open_reports_count is downstream of this mutation.
       queryClient.invalidateQueries({ queryKey: qk.adminOverview });
       pushToast({

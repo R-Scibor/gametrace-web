@@ -28,7 +28,7 @@ function catalogConflictId(err: unknown): number | undefined {
 
 /** Every catalog mutation moves a number the overview hub displays. */
 function invalidateCatalog(queryClient: ReturnType<typeof useQueryClient>) {
-  queryClient.invalidateQueries({ queryKey: ['admin', 'games'] });
+  queryClient.invalidateQueries({ queryKey: qk.adminGamesPrefix });
   queryClient.invalidateQueries({ queryKey: qk.adminOverview });
 }
 
