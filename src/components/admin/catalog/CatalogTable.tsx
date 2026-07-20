@@ -1,4 +1,5 @@
-import type { AdminGameItem } from '../../../types/api';
+import type { KeyboardEvent } from 'react';
+import type { AdminGameItem, EnrichmentStatus } from '../../../types/api';
 import { Button, EmptyState } from '../../ui';
 import styles from './CatalogTable.module.css';
 
@@ -12,7 +13,7 @@ interface CatalogTableProps {
   onPage: (nextSkip: number) => void;
 }
 
-const STATUS_LABELS: Record<string, string> = {
+const STATUS_LABELS: Record<EnrichmentStatus, string> = {
   NEEDS_REVIEW: 'Do sprawdzenia',
   PENDING: 'Oczekuje',
   ENRICHED: 'Wzbogacona',
@@ -30,9 +31,16 @@ export function CatalogTable({
   const page = Math.floor(skip / limit) + 1;
   const pages = Math.max(1, Math.ceil(total / limit));
 
+  const handleRowKeyDown = (event: KeyboardEvent<HTMLTableRowElement>, id: number) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onSelect(id);
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
-      <table className={styles.table}>
+      <table className={styles.table} role="grid">
         <thead>
           <tr>
             <th scope="col">Okładka</th>
@@ -47,11 +55,13 @@ export function CatalogTable({
           {items.map((item) => (
             <tr
               key={item.id}
+              tabIndex={0}
               className={
                 item.id === selectedId ? `${styles.row} ${styles.selected}` : styles.row
               }
               aria-selected={item.id === selectedId}
               onClick={() => onSelect(item.id)}
+              onKeyDown={(event) => handleRowKeyDown(event, item.id)}
             >
               <td>
                 {item.cover_image_url ? (

@@ -30,6 +30,11 @@
   background: var(--bg3);
 }
 
+.row:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -2px;
+}
+
 .row td {
   padding: 7px 10px;
   border-left: 2px solid transparent;

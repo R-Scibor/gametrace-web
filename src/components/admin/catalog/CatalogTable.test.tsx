@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../../../test/utils';
 import { fixtures } from '../../../../test/fixtures';
 import { CatalogTable } from './CatalogTable';
+import styles from './CatalogTable.module.css';
 
 const items = fixtures.adminCatalogGames.items;
 
@@ -29,6 +30,40 @@ describe('CatalogTable', () => {
       name: new RegExp(escapeRegExp(items[0].primary_name), 'i'),
     });
     expect(row).toHaveAttribute('aria-selected', 'true');
+    expect(row).toHaveClass(styles.selected);
+
+    const otherRow = screen.getByRole('row', {
+      name: new RegExp(escapeRegExp(items[1].primary_name), 'i'),
+    });
+    expect(otherRow).not.toHaveClass(styles.selected);
+  });
+
+  it('selects a row via the keyboard', async () => {
+    const onSelect = vi.fn();
+    renderWithProviders(
+      <CatalogTable
+        items={items}
+        total={items.length}
+        skip={0}
+        limit={50}
+        selectedId={null}
+        onSelect={onSelect}
+        onPage={vi.fn()}
+      />,
+    );
+
+    const row = screen.getByRole('row', {
+      name: new RegExp(escapeRegExp(items[1].primary_name), 'i'),
+    });
+    row.focus();
+    expect(row).toHaveFocus();
+
+    await userEvent.keyboard('{Enter}');
+    expect(onSelect).toHaveBeenCalledWith(items[1].id);
+
+    await userEvent.keyboard(' ');
+    expect(onSelect).toHaveBeenCalledWith(items[1].id);
+    expect(onSelect).toHaveBeenCalledTimes(2);
   });
 
   it('reports the clicked game', async () => {
@@ -101,6 +136,22 @@ describe('CatalogTable', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Następna' }));
 
     expect(onPage).toHaveBeenCalledWith(50);
+  });
+
+  it('clamps the page label to 1 / 1 when total is zero', () => {
+    renderWithProviders(
+      <CatalogTable
+        items={[]}
+        total={0}
+        skip={0}
+        limit={50}
+        selectedId={null}
+        onSelect={vi.fn()}
+        onPage={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('1 / 1')).toBeInTheDocument();
   });
 
   it('shows an empty state when there are no items', () => {
