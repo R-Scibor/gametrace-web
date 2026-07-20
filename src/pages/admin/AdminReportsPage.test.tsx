@@ -31,6 +31,31 @@ describe('AdminReportsPage', () => {
     expect(await screen.findByText('SessionForm')).toBeInTheDocument();
   });
 
+  it('refetches the chosen bucket and drops the selection when the filter changes', async () => {
+    const requested: string[] = [];
+    server.use(
+      http.get('/api/v1/admin/reports', ({ request }) => {
+        const status = new URL(request.url).searchParams.get('status') ?? '';
+        requested.push(status);
+        const items = fixtures.adminReports.items.filter((r) => r.status === status);
+        return HttpResponse.json({ total: items.length, items });
+      }),
+    );
+
+    renderPage(<AdminReportsPage />, { route: '/admin/reports?status=open&report=17' });
+
+    // Selection from the URL is live before the filter changes.
+    expect(await screen.findByText('SessionForm')).toBeInTheDocument();
+
+    await userEvent.selectOptions(await screen.findByLabelText('Status'), 'closed');
+
+    // The new bucket is fetched, and the stale selection is gone rather than
+    // pointing at a report that is not in this bucket.
+    await screen.findByText(/Brak zgłoszeń/i);
+    expect(requested).toEqual(['open', 'closed']);
+    expect(screen.queryByText('SessionForm')).not.toBeInTheDocument();
+  });
+
   it('renders an empty state when the inbox is clear', async () => {
     server.use(
       http.get('/api/v1/admin/reports', () => HttpResponse.json(fixtures.adminReportsEmpty)),

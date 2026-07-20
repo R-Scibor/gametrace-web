@@ -1,4 +1,5 @@
 import { formatRecency } from '../../../lib/format';
+import { REPORT_STATUS_LABELS } from '../../../lib/reportStatus';
 import type { AdminReportItem } from '../../../types/api';
 import styles from './ReportList.module.css';
 
@@ -21,7 +22,8 @@ export function ReportList({ items, selectedId, onSelect }: ReportListProps) {
         >
           <span className={styles.message}>{item.message}</span>
           <span className={styles.meta}>
-            {item.username ?? item.user_id} · {formatRecency(item.created_at)} · {item.status}
+            {item.username ?? item.user_id} · {formatRecency(item.created_at)} ·{' '}
+            {REPORT_STATUS_LABELS[item.status]}
           </span>
         </button>
       ))}

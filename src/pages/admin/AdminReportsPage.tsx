@@ -2,16 +2,11 @@ import { useSearchParams } from 'react-router-dom';
 import { MasterDetail } from '../../components/admin/MasterDetail';
 import { ReportInspector } from '../../components/admin/reports/ReportInspector';
 import { ReportList } from '../../components/admin/reports/ReportList';
-import { Button, EmptyState, ErrorBanner, Skeleton } from '../../components/ui';
+import { Button, EmptyState, ErrorBanner, Select, Skeleton } from '../../components/ui';
 import { useAdminReports, useTriageReport } from '../../hooks/useAdminReports';
+import { REPORT_STATUS_OPTIONS } from '../../lib/reportStatus';
 import type { ReportStatus } from '../../types/api';
 import styles from './AdminReportsPage.module.css';
-
-const STATUS_OPTIONS: { value: ReportStatus; label: string }[] = [
-  { value: 'open', label: 'Otwarte' },
-  { value: 'triaged', label: 'Obsłużone' },
-  { value: 'closed', label: 'Zamknięte' },
-];
 
 export function AdminReportsPage() {
   const [params, setParams] = useSearchParams();
@@ -47,18 +42,17 @@ export function AdminReportsPage() {
   return (
     <div className={styles.container}>
       <div className={styles.filters}>
-        <label htmlFor="report-status">Status</label>
-        <select
-          id="report-status"
+        <Select
+          label="Status"
           value={status}
           onChange={(e) => setStatus(e.target.value as ReportStatus)}
         >
-          {STATUS_OPTIONS.map((opt) => (
+          {REPORT_STATUS_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
 
       {isLoading && <Skeleton height={220} />}
