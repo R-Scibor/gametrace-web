@@ -1,0 +1,24 @@
+.filters {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1;
+  min-width: 180px;
+  background-color: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--orange);
+  border-radius: 2px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+}
+
+.search:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
