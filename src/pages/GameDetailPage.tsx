@@ -1,14 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
 import { useGame, useUpdateGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
 import { useGameStats } from '../hooks/useGameStats';
 import { formatDuration, formatDateShort, formatRecency } from '../lib/format';
 import { Cover } from '../components/Cover';
-import { AdminGlobalCoverUpload } from '../components/admin/AdminGlobalCoverUpload';
 import { CoverUpload } from '../components/library/CoverUpload';
-import { MergeDialog } from '../components/library/MergeDialog';
 import { SectionHeader, Skeleton, Button } from '../components/ui';
 import { SessionList } from '../components/games/SessionList';
 import type { Game } from '../types/api';
@@ -42,8 +39,6 @@ export function GameDetailPage() {
   const id = Number(gameId);
   const location = useLocation();
   const gameFromNav = (location.state as { game?: Game } | null)?.game;
-  const [mergeOpen, setMergeOpen] = useState(false);
-  const isAdmin = useAuthStore((s) => s.isAdmin);
 
   const { data: game, isLoading: gameLoading } = useGame(id, gameFromNav);
   const { data: stats, isLoading: statsLoading } = useGameStats(id);
@@ -131,22 +126,13 @@ export function GameDetailPage() {
           </div>
           <div className={styles.coverSection}>
             <p className={styles.coverSectionLabel}>Okładka globalna</p>
-            {isAdmin ? (
-              <AdminGlobalCoverUpload
-                gameId={id}
-                gameName={game.primary_name}
-                coverUrl={game.cover_image_url}
-                coverSource={game.cover_source}
+            <div className={styles.readonlyPreview}>
+              <Cover
+                coverImageUrl={game.cover_image_url}
+                placeholderChar={game.primary_name}
+                className={styles.cover}
               />
-            ) : (
-              <div className={styles.readonlyPreview}>
-                <Cover
-                  coverImageUrl={game.cover_image_url}
-                  placeholderChar={game.primary_name}
-                  className={styles.cover}
-                />
-              </div>
-            )}
+            </div>
           </div>
           <div className={styles.actionButtons}>
             <p className={styles.coverSectionLabel}>Zarządzanie</p>
@@ -160,16 +146,6 @@ export function GameDetailPage() {
                   ZAAKCEPTUJ GRĘ
                 </Button>
                 <p className={styles.actionHint}>Dodaj rozpoznaną grę do biblioteki i statystyk.</p>
-              </div>
-            )}
-            {isAdmin && (
-              <div className={styles.actionItem}>
-                <Button type="button" variant="secondary" onClick={() => setMergeOpen(true)}>
-                  POŁĄCZ Z GRĄ
-                </Button>
-                <p className={styles.actionHint}>
-                  Scal duplikat z inną grą — sesje i statystyki trafią do wybranego tytułu.
-                </p>
               </div>
             )}
             <div className={styles.actionItem}>
@@ -206,14 +182,6 @@ export function GameDetailPage() {
           </div>
         )}
       </div>
-
-      {mergeOpen && (
-        <MergeDialog
-          sourceId={id}
-          sourceName={game.primary_name}
-          onClose={() => setMergeOpen(false)}
-        />
-      )}
     </div>
   );
 }
