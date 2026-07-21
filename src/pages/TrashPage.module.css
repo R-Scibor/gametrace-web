@@ -92,7 +92,7 @@
   color: var(--text2);
 }
 .statusError {
-  background-color: var(--warn-bg);
+  background-color: var(--warn-tint);
   color: var(--warn);
 }
 .statusOngoing {

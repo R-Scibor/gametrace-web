@@ -15,7 +15,7 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--text);
-  font-family: var(--sans);
+  font-family: var(--body);
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   display: flex;

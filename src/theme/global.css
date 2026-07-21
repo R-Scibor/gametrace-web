@@ -12,6 +12,7 @@
   --warn:#dcb95c; --warn-tint:rgba(220,185,92,.10); --warn-border:rgba(220,185,92,.40);
   --chart1:#ff7a1a; --chart2:#dcb95c; --chart3:#9a8c7a; --chart4:#5a4a3a; --chart5:#b85a14;
   --display:'Space Grotesk',sans-serif; --body:'DM Sans',sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--text); font-family:var(--body); }

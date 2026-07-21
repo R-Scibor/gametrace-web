@@ -59,7 +59,7 @@
   border-radius: 0 2px 2px 0;
   padding: 12px 14px;
   color: var(--text);
-  font-family: var(--sans);
+  font-family: var(--body);
   font-size: 15px;
 }
 .search::placeholder {
