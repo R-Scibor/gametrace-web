@@ -4,6 +4,7 @@ import { ReportInspector } from '../../components/admin/reports/ReportInspector'
 import { ReportList } from '../../components/admin/reports/ReportList';
 import { Button, EmptyState, ErrorBanner, Select, Skeleton } from '../../components/ui';
 import { useAdminReports, useTriageReport } from '../../hooks/useAdminReports';
+import { parseIntParamOrNull } from '../../lib/urlParams';
 import { REPORT_STATUS_OPTIONS } from '../../lib/reportStatus';
 import type { ReportStatus } from '../../types/api';
 import styles from './AdminReportsPage.module.css';
@@ -12,7 +13,7 @@ export function AdminReportsPage() {
   const [params, setParams] = useSearchParams();
 
   const status = (params.get('status') as ReportStatus | null) ?? 'open';
-  const selectedId = params.get('report') ? Number(params.get('report')) : null;
+  const selectedId = parseIntParamOrNull(params, 'report');
 
   const { data, isLoading, isError, refetch } = useAdminReports({ status });
   const triage = useTriageReport();

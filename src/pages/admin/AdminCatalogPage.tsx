@@ -5,6 +5,7 @@ import { CatalogInspector } from '../../components/admin/catalog/CatalogInspecto
 import { CatalogTable } from '../../components/admin/catalog/CatalogTable';
 import { Button, EmptyState, ErrorBanner, Skeleton } from '../../components/ui';
 import { useAdminGames } from '../../hooks/useAdminCatalog';
+import { parseIntParam, parseIntParamOrNull } from '../../lib/urlParams';
 import type { AdminCatalogSort, EnrichmentStatus } from '../../types/api';
 import styles from './AdminCatalogPage.module.css';
 
@@ -16,8 +17,8 @@ export function AdminCatalogPage() {
   const q = params.get('q') ?? '';
   const status = (params.get('status') as EnrichmentStatus | null) ?? undefined;
   const sort = (params.get('sort') as AdminCatalogSort | null) ?? 'sessions_desc';
-  const skip = Number(params.get('skip') ?? 0);
-  const selectedId = params.get('game') ? Number(params.get('game')) : null;
+  const skip = parseIntParam(params, 'skip', 0);
+  const selectedId = parseIntParamOrNull(params, 'game');
 
   const { data, isLoading, isError, refetch } = useAdminGames({ q, status, sort, skip, limit: LIMIT });
 
@@ -25,7 +26,7 @@ export function AdminCatalogPage() {
   const total = data?.total ?? 0;
   const selected = items.find((g) => g.id === selectedId) ?? null;
 
-  const patch = (next: Record<string, string | undefined>) => {
+  const patch = (next: Record<string, string | undefined>, options?: { replace?: boolean }) => {
     const draft = new URLSearchParams(params);
     Object.entries(next).forEach(([key, value]) => {
       if (value === undefined || value === '') {
@@ -34,16 +35,23 @@ export function AdminCatalogPage() {
         draft.set(key, value);
       }
     });
-    setParams(draft);
+    setParams(draft, options);
   };
 
   const handleFilterChange = (change: CatalogFilterChange) => {
-    patch({
-      ...('q' in change ? { q: change.q } : {}),
-      ...('status' in change ? { status: change.status } : {}),
-      ...('sort' in change ? { sort: change.sort } : {}),
-      skip: '0',
-    });
+    // Free-text search fires on every keystroke; replace so typing doesn't
+    // flood the history stack. Discrete selections (status, sort) stay as
+    // pushes so the back button can step through them meaningfully.
+    const isSearch = 'q' in change;
+    patch(
+      {
+        ...('q' in change ? { q: change.q } : {}),
+        ...('status' in change ? { status: change.status } : {}),
+        ...('sort' in change ? { sort: change.sort } : {}),
+        skip: '0',
+      },
+      { replace: isSearch },
+    );
   };
 
   return (

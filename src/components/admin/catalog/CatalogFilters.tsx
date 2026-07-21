@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import type { AdminCatalogSort, EnrichmentStatus } from '../../../types/api';
+import { ENRICHMENT_STATUS_OPTIONS } from '../../../lib/enrichmentStatus';
 import { Select } from '../../ui';
 import styles from './CatalogFilters.module.css';
 
@@ -15,20 +17,29 @@ interface CatalogFiltersProps {
   onChange: (patch: CatalogFilterChange) => void;
 }
 
-const STATUS_OPTIONS: { value: string; label: string }[] = [
-  { value: '', label: 'Wszystkie' },
-  { value: 'NEEDS_REVIEW', label: 'Do sprawdzenia' },
-  { value: 'PENDING', label: 'Oczekuje' },
-  { value: 'ENRICHED', label: 'Wzbogacona' },
-];
-
 const SORT_OPTIONS: { value: AdminCatalogSort; label: string }[] = [
   { value: 'sessions_desc', label: 'Najwięcej sesji' },
   { value: 'name_asc', label: 'Nazwa A-Z' },
   { value: 'id_asc', label: 'Najstarsze ID' },
 ];
 
+const SEARCH_DEBOUNCE_MS = 300;
+
 export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProps) {
+  const [searchInput, setSearchInput] = useState(q);
+
+  // Keep local input in sync when q changes from outside (e.g. cleared elsewhere).
+  useEffect(() => {
+    setSearchInput(q);
+  }, [q]);
+
+  useEffect(() => {
+    if (searchInput === q) return;
+    const timer = setTimeout(() => onChange({ q: searchInput }), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
+
   return (
     <div className={styles.filters}>
       <input
@@ -36,8 +47,8 @@ export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProp
         type="search"
         aria-label="Szukaj gry"
         placeholder="Szukaj nazwy lub aliasu"
-        value={q}
-        onChange={(e) => onChange({ q: e.target.value })}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
       />
 
       <Select
@@ -47,7 +58,7 @@ export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProp
           onChange({ status: (e.target.value || undefined) as EnrichmentStatus | undefined })
         }
       >
-        {STATUS_OPTIONS.map((opt) => (
+        {ENRICHMENT_STATUS_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>

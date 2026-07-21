@@ -29,12 +29,13 @@ describe('CatalogTable', () => {
     const row = screen.getByRole('row', {
       name: new RegExp(escapeRegExp(items[0].primary_name), 'i'),
     });
-    expect(row).toHaveAttribute('aria-selected', 'true');
+    expect(row).toHaveAttribute('aria-current', 'true');
     expect(row).toHaveClass(styles.selected);
 
     const otherRow = screen.getByRole('row', {
       name: new RegExp(escapeRegExp(items[1].primary_name), 'i'),
     });
+    expect(otherRow).not.toHaveAttribute('aria-current');
     expect(otherRow).not.toHaveClass(styles.selected);
   });
 

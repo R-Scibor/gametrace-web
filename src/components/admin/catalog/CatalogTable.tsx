@@ -1,5 +1,6 @@
 import type { KeyboardEvent } from 'react';
-import type { AdminGameItem, EnrichmentStatus } from '../../../types/api';
+import type { AdminGameItem } from '../../../types/api';
+import { ENRICHMENT_STATUS_LABELS } from '../../../lib/enrichmentStatus';
 import { Button, EmptyState } from '../../ui';
 import styles from './CatalogTable.module.css';
 
@@ -12,12 +13,6 @@ interface CatalogTableProps {
   onSelect: (id: number) => void;
   onPage: (nextSkip: number) => void;
 }
-
-const STATUS_LABELS: Record<EnrichmentStatus, string> = {
-  NEEDS_REVIEW: 'Do sprawdzenia',
-  PENDING: 'Oczekuje',
-  ENRICHED: 'Wzbogacona',
-};
 
 export function CatalogTable({
   items,
@@ -40,7 +35,7 @@ export function CatalogTable({
 
   return (
     <div className={styles.wrapper}>
-      <table className={styles.table} role="grid">
+      <table className={styles.table}>
         <thead>
           <tr>
             <th scope="col">Okładka</th>
@@ -59,7 +54,7 @@ export function CatalogTable({
               className={
                 item.id === selectedId ? `${styles.row} ${styles.selected}` : styles.row
               }
-              aria-selected={item.id === selectedId}
+              aria-current={item.id === selectedId ? 'true' : undefined}
               onClick={() => onSelect(item.id)}
               onKeyDown={(event) => handleRowKeyDown(event, item.id)}
             >
@@ -72,7 +67,7 @@ export function CatalogTable({
               </td>
               <td>{item.primary_name}</td>
               <td>#{item.id}</td>
-              <td>{STATUS_LABELS[item.enrichment_status] ?? item.enrichment_status}</td>
+              <td>{ENRICHMENT_STATUS_LABELS[item.enrichment_status] ?? item.enrichment_status}</td>
               <td>{item.session_count}</td>
               <td>{item.aliases.length}</td>
             </tr>

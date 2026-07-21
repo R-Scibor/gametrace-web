@@ -1,4 +1,6 @@
 import type { AdminGameItem } from '../../../types/api';
+import { ENRICHMENT_STATUS_LABELS } from '../../../lib/enrichmentStatus';
+import { sessionsLabel } from '../../../lib/pluralize';
 import { EmptyState, Panel, SectionHeader } from '../../ui';
 import { ActionsSection } from './ActionsSection';
 import { AliasSection } from './AliasSection';
@@ -17,7 +19,7 @@ export function CatalogInspector({ item, onMerged }: CatalogInspectorProps) {
 
   return (
     <Panel
-      eyebrow={`#${item.id} · ${item.enrichment_status} · ${item.session_count} sesji`}
+      eyebrow={`#${item.id} · ${ENRICHMENT_STATUS_LABELS[item.enrichment_status]} · ${sessionsLabel(item.session_count)}`}
       title={item.primary_name}
       headerExtra={
         item.cover_image_url ? (
