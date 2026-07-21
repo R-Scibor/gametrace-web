@@ -45,7 +45,7 @@ function findGameInCache(queryClient: QueryClient, gameId: number): Game | undef
   const fromPicker = pickerList?.find((g) => g.id === gameId);
   if (fromPicker) return fromPicker;
 
-  const pages = queryClient.getQueriesData<InfiniteData<GameListResponse>>({ queryKey: ['games'] });
+  const pages = queryClient.getQueriesData<InfiniteData<GameListResponse>>({ queryKey: qk.gamesPrefix });
   for (const [, data] of pages) {
     const found = data?.pages.flatMap((page) => page.items).find((g) => g.id === gameId);
     if (found) return found;
@@ -142,8 +142,8 @@ export function useMergeGame(sourceId: number) {
   return useMutation({
     mutationFn: (targetId: number) => adminMergeGame(sourceId, targetId),
     onSuccess: (_data, targetId) => {
-      queryClient.invalidateQueries({ queryKey: ['games'] });
-      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: qk.gamesPrefix });
+      queryClient.invalidateQueries({ queryKey: qk.statsPrefix });
       invalidateGames();
       pushToast({ type: 'success', message: 'Gry połączone.' });
       navigate(`/library/${targetId}`);
@@ -171,7 +171,7 @@ export function useUpdateGamePreference(gameId: number) {
       queryClient.setQueryData<Game>(qk.game(gameId), (old) => (old ? patch(old) : old));
       queryClient.setQueryData<Game[]>(qk.games({ source: 'picker' }), (old) => old?.map(patch));
 
-      queryClient.setQueriesData<InfiniteData<GameListResponse>>({ queryKey: ['games'] }, (old) => {
+      queryClient.setQueriesData<InfiniteData<GameListResponse>>({ queryKey: qk.gamesPrefix }, (old) => {
         if (!old?.pages) return old;
         return {
           ...old,
@@ -183,7 +183,7 @@ export function useUpdateGamePreference(gameId: number) {
       });
 
       queryClient.invalidateQueries({ queryKey: qk.gameStats(gameId) });
-      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: qk.statsPrefix });
       invalidateGames();
 
       if (pref.is_accepted) {

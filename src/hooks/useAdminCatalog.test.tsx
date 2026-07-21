@@ -1,10 +1,12 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { waitFor } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
-import { renderHookWithProviders, resetStores, seedAuth } from '../../test/utils';
+import { createTestQueryClient, renderHookWithProviders, resetStores, seedAuth } from '../../test/utils';
 import { server } from '../../test/server';
+import { qk } from '../lib/queryKeys';
 import { useToastStore } from '../store/toastStore';
-import { useAddAlias, useAdminGameSearch, useLinkIgdb } from './useAdminCatalog';
+import { useAddAlias, useAdminGameSearch, useAdminMergeGame, useLinkIgdb } from './useAdminCatalog';
 
 const requestedUrls: string[] = [];
 
@@ -27,6 +29,56 @@ describe('useAdminGameSearch', () => {
 
     expect(requestedUrls).toContain('/api/v1/admin/games');
     expect(requestedUrls).not.toContain('/api/v1/games');
+  });
+});
+
+describe('useAdminMergeGame cache invalidation', () => {
+  beforeEach(() => {
+    resetStores();
+    seedAuth();
+  });
+
+  it('invalidates the shared games and stats caches after a merge', async () => {
+    server.use(
+      http.post('/api/v1/admin/games/:id/merge/:targetId', () => new HttpResponse(null, { status: 204 })),
+    );
+
+    const client: QueryClient = createTestQueryClient();
+    const invalidated: unknown[] = [];
+    const original = client.invalidateQueries.bind(client);
+    client.invalidateQueries = (filters?: Parameters<typeof original>[0]) => {
+      invalidated.push(filters?.queryKey);
+      return original(filters);
+    };
+
+    const { result } = renderHookWithProviders(() => useAdminMergeGame(45, vi.fn()), client);
+
+    result.current.mutate(99);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Asserted as the keys actually handed to invalidateQueries. A prefix that
+    // stopped lining up with what qk.games/qk.stats build would silently stop
+    // invalidating rather than fail to compile.
+    expect(invalidated).toContainEqual(qk.gamesPrefix);
+    expect(invalidated).toContainEqual(qk.statsPrefix);
+  });
+
+  it('uses prefixes that actually match the keys the builders produce', () => {
+    // invalidateQueries is prefix-matching, so these must stay structurally
+    // aligned or invalidation quietly becomes a no-op.
+    expect(qk.games({ source: 'picker' }).slice(0, qk.gamesPrefix.length)).toEqual([
+      ...qk.gamesPrefix,
+    ]);
+    expect(qk.stats('summary', { days: 30 }).slice(0, qk.statsPrefix.length)).toEqual([
+      ...qk.statsPrefix,
+    ]);
+    expect(qk.adminGames({}).slice(0, qk.adminGamesPrefix.length)).toEqual([
+      ...qk.adminGamesPrefix,
+    ]);
+    expect(qk.adminReports({}).slice(0, qk.adminReportsPrefix.length)).toEqual([
+      ...qk.adminReportsPrefix,
+    ]);
   });
 });
 

@@ -204,8 +204,8 @@ export function useAdminMergeGame(sourceId: number, onMerged: (targetId: number)
     mutationFn: (targetId: number) => adminMergeGame(sourceId, targetId),
     onSuccess: (_data, targetId) => {
       invalidateCatalog(queryClient);
-      queryClient.invalidateQueries({ queryKey: ['games'] });
-      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: qk.gamesPrefix });
+      queryClient.invalidateQueries({ queryKey: qk.statsPrefix });
       invalidateGames();
       pushToast({ type: 'success', message: 'Gry połączone.' });
       onMerged(targetId);

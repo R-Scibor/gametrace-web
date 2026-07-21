@@ -16,7 +16,7 @@ const RECENT_LIMIT = 8;
 function invalidateAfterSessionChange(queryClient: ReturnType<typeof useQueryClient>, gameId?: number) {
   queryClient.invalidateQueries({ queryKey: qk.dashboard });
   queryClient.invalidateQueries({ queryKey: qk.sessions() });
-  queryClient.invalidateQueries({ queryKey: ['stats'] });
+  queryClient.invalidateQueries({ queryKey: qk.statsPrefix });
   if (gameId != null) {
     queryClient.invalidateQueries({ queryKey: qk.gameSessions(gameId) });
   }
