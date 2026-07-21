@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAdminMatch, useLinkIgdb } from '../../../hooks/useAdminCatalog';
 import type { IGDBCandidate } from '../../../types/api';
-import { Button, Modal } from '../../ui';
+import { Button, EmptyState, Modal } from '../../ui';
 import styles from './IgdbLinkDialog.module.css';
 
 interface IgdbLinkDialogProps {
@@ -45,7 +45,7 @@ export function IgdbLinkDialog({ gameId, gameName, onClose }: IgdbLinkDialogProp
       </div>
 
       {searched && candidates.length === 0 && !match.isPending && (
-        <p className={styles.empty}>Brak wyników.</p>
+        <EmptyState message="Brak wyników." />
       )}
 
       {candidates.length > 0 && (
