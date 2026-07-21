@@ -27,11 +27,15 @@ const SEARCH_DEBOUNCE_MS = 300;
 
 export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProps) {
   const [searchInput, setSearchInput] = useState(q);
+  const [syncedQ, setSyncedQ] = useState(q);
 
   // Keep local input in sync when q changes from outside (e.g. cleared elsewhere).
-  useEffect(() => {
+  // This runs during render (the React-recommended pattern for adjusting state
+  // to a prop change), not in an effect, so it doesn't trigger an extra render pass.
+  if (q !== syncedQ) {
+    setSyncedQ(q);
     setSearchInput(q);
-  }, [q]);
+  }
 
   useEffect(() => {
     if (searchInput === q) return;
