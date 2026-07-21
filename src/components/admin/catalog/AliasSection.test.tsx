@@ -28,4 +28,25 @@ describe('AliasSection', () => {
       expect(useToastStore.getState().toasts.some((t) => t.message === 'Alias dodany.')).toBe(true),
     );
   });
+
+  it('clears the input after a successful add', async () => {
+    renderWithProviders(<AliasSection gameId={1} aliases={[]} />);
+
+    const input = screen.getByLabelText('Nowy alias');
+    await userEvent.type(input, 'hades.exe');
+    await userEvent.click(screen.getByRole('button', { name: 'Dodaj' }));
+
+    await waitFor(() => expect(input).toHaveValue(''));
+  });
+
+  it('does not submit on whitespace-only input', async () => {
+    renderWithProviders(<AliasSection gameId={1} aliases={[]} />);
+
+    await userEvent.type(screen.getByLabelText('Nowy alias'), '   ');
+    await userEvent.click(screen.getByRole('button', { name: 'Dodaj' }));
+
+    // Give any accidental request a tick to land, then assert nothing fired.
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(useToastStore.getState().toasts).toHaveLength(0);
+  });
 });

@@ -27,6 +27,10 @@ export const useToastStore = create<ToastStore>((set) => ({
     set((state) => ({
       toasts: [...state.toasts, { ...toast, id }]
     }));
+    // Toasts carrying an action (e.g. the 409 conflict deep link) are the
+    // payoff of that feature and must stay until the user dismisses them
+    // or clicks through, not vanish on a timer.
+    if (toast.action) return;
     setTimeout(() => {
       set((state) => ({
         toasts: state.toasts.filter(t => t.id !== id)

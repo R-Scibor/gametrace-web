@@ -29,11 +29,7 @@ describe('admin routing', () => {
     renderWithProviders(<App />, { route: '/admin/catalog', authenticated: true });
 
     expect(
-      await screen.findByRole(
-        'link',
-        { name: /Przegląd/i },
-        { timeout: LAZY_ROUTE_TIMEOUT },
-      ),
+      await screen.findByLabelText('Szukaj gry', {}, { timeout: LAZY_ROUTE_TIMEOUT }),
     ).toBeInTheDocument();
   });
 });
