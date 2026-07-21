@@ -40,10 +40,12 @@ Visible in the sidebar only when the logged-in user has `is_admin: true`. Non-ad
 | Path | Purpose |
 |------|---------|
 | `/admin` | Przegląd: homelab overview tiles; attention counts link into filtered work surfaces |
-| `/admin/reports` | Zgłoszenia: user report inbox and triage *(placeholder, not yet built)* |
-| `/admin/catalog` | Katalog: global catalog review, enrich, IGDB link, aliases, merge, global cover |
+| `/admin/reports` | Zgłoszenia: user report inbox, status filter, triage (mark triaged/closed) |
+| `/admin/catalog` | Katalog: master-detail catalog review — filter/search/sort/paginate a list, inspect a selected game, enrich, IGDB link, aliases, merge (global search), global cover |
 
-Admin API surface: `GET/POST /api/v1/admin/games/*` (list, enrich, match, igdb-link, aliases, merge, cover). See backend `docs/api.md` § Admin.
+Admin API surface: `GET /api/v1/admin/stats/overview`, `GET/POST /api/v1/admin/games/*`
+(list, enrich, match, igdb-link, aliases, merge, cover), `GET/PATCH /api/v1/admin/reports/*`
+(list, triage). See backend `docs/api.md` § Admin.
 
 ## Development
 

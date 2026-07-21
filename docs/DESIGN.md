@@ -98,12 +98,13 @@ Persistent **left sidebar** (collapses to icons under ~1100px):
 🗑 Kosz           (Trash, /trash)
 ⚙ Ustawienia     (Settings, /settings)
 ─────────────
-◆ Administracja  (Games Catalogue, /admin — **admins only**)
+◆ Administracja  (Admin hub, /admin — **admins only**)
 ```
 
-> **2026-07-11:** Operacje (`/admin` game search + ID lookup) is **scheduled for deletion**.
-> It incorrectly used the user library API, not the global catalog. All admin game ops
-> live in **Games Catalogue** only. See `.internal/admin-decisions.md`.
+The sidebar has a single admin entry point. It lands on `/admin`, an internal three-tab
+shell (**Przegląd · Zgłoszenia · Katalog**) — see §7. Admin actions (enrich, IGDB link,
+alias, merge, global cover) live only inside this panel; game detail exposes no admin
+controls to anyone, admin or not.
 
 Top bar (sticky): page title on the left; on the right a **bot/health status pill**
 and, whenever a session is `ONGOING`, a **pinned live timer** ("AKTYWNA SESJA · 01:23:45")
@@ -118,16 +119,16 @@ cache.
 | `/login`            | Auth             | Link-code form (default); optional dev username mode. Redirects to `/` when already authed. |
 | `/`                 | Dashboard        | Active-session card (live timer, 30s poll) · today/7d/avg-session tiles · idle hero spotlight · pending-error banner · recent sessions (last 5, COMPLETED+ERROR). |
 | `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia / Inne**; server-side search; pagination; click → detail. |
-| `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · **local cover** (everyone) · **ignore toggle** · **merge + global cover** (admins only). |
+| `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · **local cover** (everyone) · **ignore toggle**. No admin controls here — merge and global cover live only in the admin catalog. |
 | `/analytics`        | Analytics        | The powerhouse — see §8. |
 | `/sessions/new`     | Add session      | Game search/resolve, start/end datetime, notes. **409 conflict** rendered inline with the conflicting session. Prefill via query params (from Voice). |
 | `/sessions/:id/edit`| Edit session     | Edit `end_time` only (`PATCH`); **discard ERROR** → `DELETE` (soft-delete to trash). ONGOING is read-only. System notes displayed read-only when present. |
 | `/voice`            | Voice            | Browser `MediaRecorder` capture → `POST /voice/transcribe` → resolve game → redirect to `/sessions/new` prefilled. |
 | `/trash`            | Trash            | Trashed sessions, **`purges_at` countdown**, **restore** (re-validates conflict), **hard-delete**. |
 | `/settings`         | Settings         | Profile · timezone · `weekly_report_enabled` + `push_enabled` toggles · bot/health/version · logout. |
-| `/admin`            | Przegląd         | **Admin only.** Overview hub (`GET /admin/stats/overview`). Passive context tiles (users, sessions, hours, games) plus attention tiles that link into pre-filtered surfaces. Tiles at zero render inert. *(Replaces deleted Operacje + sub-nav split.)* |
-| `/admin/reports`    | Zgłoszenia       | **Admin only.** User report inbox and triage. *(Temporary placeholder; built in a later plan.)* |
-| `/admin/catalog`    | Katalog          | **Admin only.** Global catalog table (`GET /admin/games`) · filter/search/paginate · on row select: re-queue enrich · IGDB link · add alias · merge · global cover. Honours an incoming `?status=` from the overview tiles. *(Rebuilt as master-detail in a later plan.)* |
+| `/admin`            | Przegląd         | **Admin only.** Overview hub (`GET /admin/stats/overview`). Passive context tiles (users, sessions, hours, games) plus attention tiles (do sprawdzenia, w kolejce, otwarte zgłoszenia) that link into the other two surfaces pre-filtered. Tiles at zero render inert. |
+| `/admin/reports`    | Zgłoszenia       | **Admin only.** User report inbox — status filter, list + inspector, triage to `triaged`/`closed`. |
+| `/admin/catalog`    | Katalog          | **Admin only.** Master-detail catalog surface. Filter/search/sort/paginate state lives entirely in the URL query string. Selecting a row opens an inspector with re-queue enrich, IGDB link, add alias, merge, and global cover upload. The merge target picker searches the **global** admin catalog (not the admin's personal library), so games the admin never played are still mergeable. Honours an incoming `?status=` from the overview tiles. |
 
 ## 8. Analytics Page (the differentiator)
 
@@ -153,8 +154,8 @@ API modules mirror the backend, ported and extended from the mobile `app/api/*`:
 
 - `auth` (link, login, logout), `profile` (me, settings), `sessions` (list, get, trash, create,
   patch `{ end_time? }`, delete, restore, hard-delete), `games` (list as `GameListResponse`,
-  get by id, resolve, sessions, stats), `admin` (catalog list, enrich, IGDB match/link,
-  aliases, merge, global cover), `stats` (summary, dashboard, heatmap, streak, trend,
+  get by id, resolve, sessions, stats), `admin` (overview, catalog list, enrich, IGDB
+  match/link, aliases, merge, global cover, reports list/triage), `stats` (summary, dashboard, heatmap, streak, trend,
   genres, themes, companies, release-years), `voice` (transcribe), `preferences` (upsert, delete), `health`.
 
 One typed TanStack Query hook per concern. Query keys are structured for targeted
