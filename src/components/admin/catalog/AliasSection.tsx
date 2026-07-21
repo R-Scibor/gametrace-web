@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAddAlias } from '../../../hooks/useAdminCatalog';
-import { Button } from '../../ui';
+import { Button, Input } from '../../ui';
 import styles from './AliasSection.module.css';
 
 interface AliasSectionProps {
@@ -34,7 +34,7 @@ export function AliasSection({ gameId, aliases }: AliasSectionProps) {
       )}
 
       <form className={styles.form} onSubmit={submit}>
-        <input
+        <Input
           className={styles.input}
           aria-label="Nowy alias"
           placeholder="nazwa procesu"

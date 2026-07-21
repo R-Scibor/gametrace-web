@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAdminGameSearch, useAdminMergeGame } from '../../../hooks/useAdminCatalog';
 import type { AdminGameItem } from '../../../types/api';
-import { Button, ConfirmDialog } from '../../ui';
+import { Button, ConfirmDialog, Input } from '../../ui';
 import styles from './MergeSection.module.css';
 
 interface MergeSectionProps {
@@ -22,7 +22,7 @@ export function MergeSection({ gameId, onMerged }: MergeSectionProps) {
 
   return (
     <div className={styles.zone}>
-      <input
+      <Input
         className={styles.input}
         aria-label="Szukaj gry docelowej"
         placeholder="nazwa gry docelowej"

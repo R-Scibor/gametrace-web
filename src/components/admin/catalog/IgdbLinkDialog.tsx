@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAdminMatch, useLinkIgdb } from '../../../hooks/useAdminCatalog';
 import type { IGDBCandidate } from '../../../types/api';
-import { Button, EmptyState, Modal } from '../../ui';
+import { Button, EmptyState, Input, Modal } from '../../ui';
 import styles from './IgdbLinkDialog.module.css';
 
 interface IgdbLinkDialogProps {
@@ -33,7 +33,7 @@ export function IgdbLinkDialog({ gameId, gameName, onClose }: IgdbLinkDialogProp
       </h2>
 
       <div className={styles.search}>
-        <input
+        <Input
           className={styles.input}
           aria-label="Zapytanie IGDB"
           value={query}

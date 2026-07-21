@@ -8,17 +8,14 @@
 .search {
   flex: 1;
   min-width: 180px;
-  background-color: var(--bg3);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--orange);
-  border-radius: 2px;
-  padding: 8px 12px;
-  color: var(--text);
-  font-family: var(--body);
-  font-size: 14px;
 }
 
-.search:focus-visible {
-  outline: 2px solid var(--orange);
-  outline-offset: 2px;
+/*
+  Doubled class for specificity, deliberately. The Input primitive sets the
+  `border` shorthand, which resets border-left, and it lives in a different
+  stylesheet at equal specificity. Relying on chunk load order to win would be
+  a silent regression the moment chunking changes.
+*/
+.search.search {
+  border-left: 3px solid var(--orange);
 }

@@ -4,6 +4,7 @@ export * from './StatTile';
 export * from './SectionHeader';
 export * from './Skeleton';
 export * from './EmptyState';
+export * from './Input';
 export * from './ConfirmDialog';
 export * from './Modal';
 export * from './Panel';

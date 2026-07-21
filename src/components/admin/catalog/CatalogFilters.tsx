@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { AdminCatalogSort, EnrichmentStatus } from '../../../types/api';
 import { ENRICHMENT_STATUS_OPTIONS } from '../../../lib/enrichmentStatus';
-import { Select } from '../../ui';
+import { Input, Select } from '../../ui';
 import styles from './CatalogFilters.module.css';
 
 export interface CatalogFilterChange {
@@ -46,7 +46,7 @@ export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProp
 
   return (
     <div className={styles.filters}>
-      <input
+      <Input
         className={styles.search}
         type="search"
         aria-label="Szukaj gry"

@@ -28,16 +28,4 @@
 .input {
   flex: 1;
   min-width: 0;
-  background-color: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 8px 12px;
-  color: var(--text);
-  font-family: var(--body);
-  font-size: 14px;
-}
-
-.input:focus-visible {
-  outline: 2px solid var(--orange);
-  outline-offset: 2px;
 }

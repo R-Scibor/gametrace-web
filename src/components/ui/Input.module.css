@@ -1,0 +1,33 @@
+.input {
+  background-color: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+}
+
+.input::placeholder {
+  color: var(--text3);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
