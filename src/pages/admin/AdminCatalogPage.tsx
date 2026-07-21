@@ -3,7 +3,7 @@ import { MasterDetail } from '../../components/admin/MasterDetail';
 import { CatalogFilters, type CatalogFilterChange } from '../../components/admin/catalog/CatalogFilters';
 import { CatalogInspector } from '../../components/admin/catalog/CatalogInspector';
 import { CatalogTable } from '../../components/admin/catalog/CatalogTable';
-import { Button, EmptyState, ErrorBanner, Skeleton } from '../../components/ui';
+import { Button, ErrorBanner, Skeleton } from '../../components/ui';
 import { useAdminGames } from '../../hooks/useAdminCatalog';
 import { parseIntParam, parseIntParamOrNull } from '../../lib/urlParams';
 import type { AdminCatalogSort, EnrichmentStatus } from '../../types/api';
@@ -69,11 +69,12 @@ export function AdminCatalogPage() {
         </div>
       )}
 
-      {!isLoading && !isError && items.length === 0 && (
-        <EmptyState message="Brak gier w tym widoku." />
-      )}
-
-      {!isLoading && !isError && items.length > 0 && (
+      {/*
+        Rendered even with zero rows: CatalogTable owns the empty state so its
+        pagination controls stay mounted. A filter that collapses the result set
+        would otherwise strand the admin on an out-of-range skip.
+      */}
+      {!isLoading && !isError && (
         <MasterDetail
           list={
             <CatalogTable
@@ -89,6 +90,10 @@ export function AdminCatalogPage() {
           inspector={
             <CatalogInspector
               item={selected}
+              missingId={selectedId !== null && !selected ? selectedId : null}
+              onShowAll={() =>
+                patch({ status: undefined, q: undefined, skip: '0' })
+              }
               onMerged={(targetId) => patch({ game: String(targetId) })}
             />
           }

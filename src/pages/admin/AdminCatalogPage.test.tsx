@@ -59,6 +59,52 @@ describe('AdminCatalogPage', () => {
     expect(await screen.findByText('KINGDOM HEARTS -HD 1.5+2.5 ReMIX-')).toBeInTheDocument();
   });
 
+  it('keeps pagination reachable when a filter yields no rows', async () => {
+    server.use(
+      http.get('/api/v1/admin/games', () => HttpResponse.json({ total: 0, items: [] })),
+    );
+
+    // Deep into pagination, then the result set collapses to nothing. Without
+    // pagination still mounted the admin is stranded on an out-of-range skip
+    // with no in-UI way back.
+    renderPage(<AdminCatalogPage />, { route: '/admin/catalog?status=NEEDS_REVIEW&skip=100' });
+
+    expect(await screen.findByText('Brak gier dla wybranego filtra.')).toBeInTheDocument();
+
+    const back = screen.getByRole('button', { name: 'Poprzednia' });
+    expect(back).toBeEnabled();
+
+    await userEvent.click(back);
+    expect(screen.getByRole('button', { name: 'Poprzednia' })).toBeInTheDocument();
+  });
+
+  it('says so when the selected game is not visible under the current filter', async () => {
+    // This is what an admin sees after merging into a game that lives under a
+    // different status filter or on another page: the merge succeeded, but the
+    // survivor is not in the loaded result set.
+    renderPage(<AdminCatalogPage />, {
+      route: '/admin/catalog?status=NEEDS_REVIEW&game=4242',
+    });
+
+    expect(await screen.findByText(/nie jest widoczna przy tym filtrze/i)).toBeInTheDocument();
+    // The generic prompt would wrongly read as "your selection was lost".
+    expect(screen.queryByText('Wybierz grę z tabeli.')).not.toBeInTheDocument();
+  });
+
+  it('clears the filter so a game hidden by it becomes reachable', async () => {
+    const user = userEvent.setup();
+    renderPage(<AdminCatalogPage />, {
+      route: '/admin/catalog?status=NEEDS_REVIEW&q=cokolwiek&skip=100&game=45',
+    });
+
+    await user.click(await screen.findByRole('button', { name: /Pokaż wszystkie/i }));
+
+    // Filter and pagination both reset, so the selected game resolves again.
+    expect(
+      await screen.findByRole('heading', { name: 'Kingdom Hearts HD 1.5 + 2.5 ReMIX' }),
+    ).toBeInTheDocument();
+  });
+
   it('omits the status param entirely when "Wszystkie" is selected', async () => {
     let lastStatusParam: string | null | undefined;
     server.use(
