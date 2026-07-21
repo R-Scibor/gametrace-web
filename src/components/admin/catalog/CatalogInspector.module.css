@@ -1,0 +1,12 @@
+.cover {
+  width: 56px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 2px;
+  background: var(--bg4);
+}
+
+.danger {
+  border-top: 1px solid var(--border);
+  padding-top: 4px;
+}
