@@ -4,6 +4,12 @@
   gap: 12px;
 }
 
+.listCol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .state {
   padding: 32px;
   text-align: center;

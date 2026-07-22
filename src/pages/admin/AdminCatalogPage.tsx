@@ -56,49 +56,52 @@ export function AdminCatalogPage() {
 
   return (
     <div className={styles.container}>
-      <CatalogFilters q={q} status={status} sort={sort} onChange={handleFilterChange} />
+      <MasterDetail
+        toolbar={
+          <CatalogFilters q={q} status={status} sort={sort} onChange={handleFilterChange} />
+        }
+        list={
+          <div className={styles.listCol}>
+            {isLoading && <Skeleton height={280} />}
 
-      {isLoading && <Skeleton height={280} />}
+            {isError && (
+              <div className={styles.state}>
+                <ErrorBanner message="Nie udało się wczytać katalogu." />
+                <Button type="button" variant="secondary" onClick={() => refetch()}>
+                  Spróbuj ponownie
+                </Button>
+              </div>
+            )}
 
-      {isError && (
-        <div className={styles.state}>
-          <ErrorBanner message="Nie udało się wczytać katalogu." />
-          <Button type="button" variant="secondary" onClick={() => refetch()}>
-            Spróbuj ponownie
-          </Button>
-        </div>
-      )}
-
-      {/*
-        Rendered even with zero rows: CatalogTable owns the empty state so its
-        pagination controls stay mounted. A filter that collapses the result set
-        would otherwise strand the admin on an out-of-range skip.
-      */}
-      {!isLoading && !isError && (
-        <MasterDetail
-          list={
-            <CatalogTable
-              items={items}
-              total={total}
-              skip={skip}
-              limit={LIMIT}
-              selectedId={selectedId}
-              onSelect={(id) => patch({ game: String(id) })}
-              onPage={(nextSkip) => patch({ skip: String(nextSkip) })}
-            />
-          }
-          inspector={
+            {/*
+              Rendered even with zero rows: CatalogTable owns the empty state so its
+              pagination controls stay mounted. A filter that collapses the result set
+              would otherwise strand the admin on an out-of-range skip.
+            */}
+            {!isLoading && !isError && (
+              <CatalogTable
+                items={items}
+                total={total}
+                skip={skip}
+                limit={LIMIT}
+                selectedId={selectedId}
+                onSelect={(id) => patch({ game: String(id) })}
+                onPage={(nextSkip) => patch({ skip: String(nextSkip) })}
+              />
+            )}
+          </div>
+        }
+        inspector={
+          isLoading || isError ? null : (
             <CatalogInspector
               item={selected}
               missingId={selectedId !== null && !selected ? selectedId : null}
-              onShowAll={() =>
-                patch({ status: undefined, q: undefined, skip: '0' })
-              }
+              onShowAll={() => patch({ status: undefined, q: undefined, skip: '0' })}
               onMerged={(targetId) => patch({ game: String(targetId) })}
             />
-          }
-        />
-      )}
+          )
+        }
+      />
     </div>
   );
 }
