@@ -11,13 +11,16 @@
 
 .search {
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+  gap: 8px;
   margin: 0;
+}
+.search > button {
+  align-self: flex-end;
 }
 
 .input {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
 }
 .list {
   display: flex;
