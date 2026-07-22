@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
+  border-left: 2px solid transparent;
   border-radius: 6px;
   overflow: hidden;
   text-decoration: none;
@@ -14,7 +15,9 @@
 }
 .card:hover {
   transform: translateY(-3px);
+  background-color: rgba(255, 122, 26, 0.05);
   border-color: var(--border-bright);
+  border-left-color: var(--orange);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
 }
 .row {
