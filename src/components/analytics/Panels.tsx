@@ -11,7 +11,7 @@ import {
   useCompanies,
   useReleaseYears,
 } from '../../hooks/useStats';
-import type { TrendGranularity } from '../../types/api';
+import type { GameStatEntry, HeatmapCell, TrendResponse, TrendGranularity } from '../../types/api';
 import { Heatmap } from './Heatmap';
 import { BarList } from '../charts/BarList';
 import { GameRankingTable } from '../charts/GameRankingTable';
@@ -27,8 +27,25 @@ function useLibraryDrill() {
   };
 }
 
-export function RankingPanel({ days, className }: { days: number; className?: string }) {
-  const { data, isLoading, isError } = useStatsSummary(days);
+export function RankingPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: GameStatEntry[];
+}) {
+  const { data, isLoading, isError } = useStatsSummary(days, { enabled: sampleData == null });
+  if (sampleData != null) {
+    return (
+      <Panel title="Ranking gier" className={className}>
+        <div className={panelStyles.rankScroll}>
+          <GameRankingTable games={sampleData} disabled />
+        </div>
+      </Panel>
+    );
+  }
   if (isLoading) return <Panel title="Ranking gier" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Ranking gier" className={className}><ErrorBanner /></Panel>;
   return (
@@ -40,8 +57,23 @@ export function RankingPanel({ days, className }: { days: number; className?: st
   );
 }
 
-export function HeatmapPanel({ days, className }: { days: number; className?: string }) {
-  const { data, isLoading, isError } = useHeatmap(days);
+export function HeatmapPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: HeatmapCell[];
+}) {
+  const { data, isLoading, isError } = useHeatmap(days, { enabled: sampleData == null });
+  if (sampleData != null) {
+    return (
+      <Panel title="Mapa aktywności" className={className}>
+        <Heatmap data={sampleData} />
+      </Panel>
+    );
+  }
   if (isLoading) return <Panel title="Mapa aktywności" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Mapa aktywności" className={className}><ErrorBanner /></Panel>;
   return (
@@ -62,18 +94,36 @@ function formatTrendLabel(bucketStart: string, granularity: TrendGranularity): s
   return bucketStart.slice(5, 10);
 }
 
-export function TrendPanel({ days, className }: { days: number; className?: string }) {
-  const { data, isLoading, isError } = useTrend(days);
+function trendChartData(trend: TrendResponse) {
+  return trend.buckets.map((b) => ({
+    label: formatTrendLabel(b.bucket_start, trend.granularity),
+    value: Math.round((b.total_seconds / 3600) * 10) / 10,
+  }));
+}
+
+export function TrendPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: TrendResponse;
+}) {
+  const { data, isLoading, isError } = useTrend(days, { enabled: sampleData == null });
+  if (sampleData != null) {
+    return (
+      <Panel title={trendPanelTitle(sampleData.granularity)} className={className}>
+        <TrendChart data={trendChartData(sampleData)} />
+      </Panel>
+    );
+  }
   const title = trendPanelTitle(data?.granularity);
   if (isLoading) return <Panel title="Trend" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Trend" className={className}><ErrorBanner /></Panel>;
-  const chartData = data.buckets.map((b) => ({
-    label: formatTrendLabel(b.bucket_start, data.granularity),
-    value: Math.round((b.total_seconds / 3600) * 10) / 10,
-  }));
   return (
     <Panel title={title} className={className}>
-      <TrendChart data={chartData} />
+      <TrendChart data={trendChartData(data)} />
     </Panel>
   );
 }
