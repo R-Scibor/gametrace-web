@@ -11,7 +11,15 @@ import {
   useCompanies,
   useReleaseYears,
 } from '../../hooks/useStats';
-import type { GameStatEntry, HeatmapCell, TrendResponse, TrendGranularity } from '../../types/api';
+import type {
+  GameStatEntry,
+  HeatmapCell,
+  TrendResponse,
+  TrendGranularity,
+  GenresResponse,
+  ThemesResponse,
+  ReleaseYearsResponse,
+} from '../../types/api';
 import { Heatmap } from './Heatmap';
 import { BarList } from '../charts/BarList';
 import { GameRankingTable } from '../charts/GameRankingTable';
@@ -128,11 +136,24 @@ export function TrendPanel({
   );
 }
 
-export function GenresPanel({ days, className }: { days: number; className?: string }) {
+export function GenresPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: GenresResponse;
+}) {
   const drill = useLibraryDrill();
-  const { data, isLoading, isError } = useGenres(days);
-  if (isLoading) return <Panel title="Gatunki" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Gatunki" className={className}><ErrorBanner /></Panel>;
+  const { data: liveData, isLoading, isError } = useGenres(days, { enabled: sampleData == null });
+
+  if (sampleData == null) {
+    if (isLoading) return <Panel title="Gatunki" className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title="Gatunki" className={className}><ErrorBanner /></Panel>;
+  }
+
+  const data = sampleData ?? liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.genre,
@@ -142,16 +163,29 @@ export function GenresPanel({ days, className }: { days: number; className?: str
   }));
   return (
     <Panel title="Gatunki" eyebrow="ekspozycja tagów, nie podział" className={className}>
-      <BarList items={items} onItemClick={(item) => drill('genre', item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill('genre', item.label) : undefined} />
     </Panel>
   );
 }
 
-export function ThemesPanel({ days, className }: { days: number; className?: string }) {
+export function ThemesPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: ThemesResponse;
+}) {
   const drill = useLibraryDrill();
-  const { data, isLoading, isError } = useThemes(days);
-  if (isLoading) return <Panel title="Motywy" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Motywy" className={className}><ErrorBanner /></Panel>;
+  const { data: liveData, isLoading, isError } = useThemes(days, { enabled: sampleData == null });
+
+  if (sampleData == null) {
+    if (isLoading) return <Panel title="Motywy" className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title="Motywy" className={className}><ErrorBanner /></Panel>;
+  }
+
+  const data = sampleData ?? liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.theme,
@@ -161,7 +195,7 @@ export function ThemesPanel({ days, className }: { days: number; className?: str
   }));
   return (
     <Panel title="Motywy" eyebrow="ekspozycja tagów, nie podział" className={className}>
-      <BarList items={items} onItemClick={(item) => drill('theme', item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill('theme', item.label) : undefined} />
     </Panel>
   );
 }
@@ -225,11 +259,24 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
   );
 }
 
-export function ReleaseYearsPanel({ days, className }: { days: number; className?: string }) {
+export function ReleaseYearsPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: ReleaseYearsResponse;
+}) {
   const drill = useLibraryDrill();
-  const { data, isLoading, isError } = useReleaseYears(days);
-  if (isLoading) return <Panel title="Dekady premier" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Dekady premier" className={className}><ErrorBanner /></Panel>;
+  const { data: liveData, isLoading, isError } = useReleaseYears(days, { enabled: sampleData == null });
+
+  if (sampleData == null) {
+    if (isLoading) return <Panel title="Dekady premier" className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title="Dekady premier" className={className}><ErrorBanner /></Panel>;
+  }
+
+  const data = sampleData ?? liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.decade,
@@ -239,7 +286,7 @@ export function ReleaseYearsPanel({ days, className }: { days: number; className
   }));
   return (
     <Panel title="Dekady premier" className={className}>
-      <BarList items={items} onItemClick={(item) => drill('release_decade', item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill('release_decade', item.label) : undefined} />
     </Panel>
   );
 }

@@ -1,8 +1,15 @@
 import { screen, waitFor } from '@testing-library/react';
 import { test, expect, vi } from 'vitest';
-import { RankingPanel, HeatmapPanel, TrendPanel } from './Panels';
+import { RankingPanel, HeatmapPanel, TrendPanel, GenresPanel, ThemesPanel, ReleaseYearsPanel } from './Panels';
 import { renderWithProviders } from '../../../test/utils';
-import { SAMPLE_STATS_SUMMARY, SAMPLE_HEATMAP, SAMPLE_TREND } from '../../lib/sampleData';
+import {
+  SAMPLE_STATS_SUMMARY,
+  SAMPLE_HEATMAP,
+  SAMPLE_TREND,
+  SAMPLE_GENRES,
+  SAMPLE_THEMES,
+  SAMPLE_RELEASE_YEARS,
+} from '../../lib/sampleData';
 import { formatDuration } from '../../lib/format';
 
 // Mirrors Heatmap.tsx's DAY_LABELS ordering (Monday-first).
@@ -82,4 +89,41 @@ test('TrendPanel renders sampleData without fetching', async () => {
     rectSpy.mockRestore();
     vi.unstubAllGlobals();
   }
+});
+
+test('GenresPanel renders sampleData rows as non-interactive', async () => {
+  renderWithProviders(<GenresPanel days={30} sampleData={SAMPLE_GENRES} />);
+  expect(screen.getByText('Gatunki')).toBeInTheDocument();
+
+  // 'Strzelanka' only appears in SAMPLE_GENRES, never in the MSW-mocked live
+  // response (fixtures.genres only has 'RPG') -- so this could not come from a
+  // loading skeleton or a mistakenly-rendered live fetch.
+  await waitFor(() => {
+    expect(screen.getByText('Strzelanka')).toBeInTheDocument();
+  });
+  expect(screen.queryByRole('button', { name: /strzelanka/i })).not.toBeInTheDocument();
+});
+
+test('ThemesPanel renders sampleData rows as non-interactive', async () => {
+  renderWithProviders(<ThemesPanel days={30} sampleData={SAMPLE_THEMES} />);
+  expect(screen.getByText('Motywy')).toBeInTheDocument();
+
+  // 'Sci-Fi' only appears in SAMPLE_THEMES, never in the MSW-mocked live
+  // response (fixtures.themes only has 'Fantasy').
+  await waitFor(() => {
+    expect(screen.getByText('Sci-Fi')).toBeInTheDocument();
+  });
+  expect(screen.queryByRole('button', { name: /sci-fi/i })).not.toBeInTheDocument();
+});
+
+test('ReleaseYearsPanel renders sampleData rows as non-interactive', async () => {
+  renderWithProviders(<ReleaseYearsPanel days={30} sampleData={SAMPLE_RELEASE_YEARS} />);
+  expect(screen.getByText('Dekady premier')).toBeInTheDocument();
+
+  // '2020s' only appears in SAMPLE_RELEASE_YEARS, never in the MSW-mocked live
+  // response (fixtures.releaseYears only has '2010s').
+  await waitFor(() => {
+    expect(screen.getByText('2020s')).toBeInTheDocument();
+  });
+  expect(screen.queryByRole('button', { name: /2020s/i })).not.toBeInTheDocument();
 });
