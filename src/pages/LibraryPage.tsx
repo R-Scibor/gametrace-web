@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { useGamesPaginated } from '../hooks/useGames';
-import { SectionHeader, EmptyState, ErrorBanner, Skeleton, Button } from '../components/ui';
+import { SectionHeader, EmptyState, ErrorBanner, Skeleton, Button, SampleDataBanner } from '../components/ui';
 import { GameCard } from '../components/games/GameCard';
 import { useGamesStore } from '../store/gamesStore';
+import { useAuthStore } from '../store/authStore';
+import { SAMPLE_GAMES } from '../lib/sampleData';
 import {
   clearFacetParams,
   FILTER_PREFIX,
@@ -88,6 +90,11 @@ export function LibraryPage() {
 
   const games = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data]);
   const totalCount = data?.pages[0]?.total;
+
+  const previewDismissed = useAuthStore((s) => s.previewDismissed);
+  const isDefaultUnfilteredView = activeTab === 'all' && !facet && !debouncedQuery;
+  const showPreview =
+    !isLoading && !isError && games.length === 0 && isDefaultUnfilteredView && !previewDismissed;
 
   const emptyMessage =
     activeTab === 'review'
@@ -183,8 +190,19 @@ export function LibraryPage() {
         </div>
       )}
 
-      {!isLoading && !isError && games.length === 0 && (
+      {!isLoading && !isError && games.length === 0 && !showPreview && (
         <EmptyState message={emptyMessage} />
+      )}
+
+      {showPreview && (
+        <>
+          <SampleDataBanner />
+          <div className={styles.grid}>
+            {SAMPLE_GAMES.map((game) => (
+              <GameCard key={game.id} game={game} disabled />
+            ))}
+          </div>
+        </>
       )}
 
       {!isLoading && games.length > 0 && (
