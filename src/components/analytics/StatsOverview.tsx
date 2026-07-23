@@ -19,29 +19,52 @@ function longestSessionCover(summary: StatsSummary): string | null {
 interface StatsOverviewProps {
   days: number;
   className?: string;
+  sampleData?: StatsSummary;
 }
 
-export function StatsOverview({ days, className }: StatsOverviewProps) {
-  const { data, isLoading, isError } = useStatsSummary(days);
+export function StatsOverview({ days, className, sampleData }: StatsOverviewProps) {
+  const { data: liveData, isLoading, isError } = useStatsSummary(days, { enabled: sampleData == null });
 
-  if (isLoading) {
-    return (
-      <Panel title="Przegląd" className={className}>
-        <Skeleton height={120} />
-      </Panel>
-    );
+  if (sampleData == null) {
+    if (isLoading) {
+      return (
+        <Panel title="Przegląd" className={className}>
+          <Skeleton height={120} />
+        </Panel>
+      );
+    }
+    if (isError || !liveData) {
+      return (
+        <Panel title="Przegląd" className={className}>
+          <ErrorBanner />
+        </Panel>
+      );
+    }
   }
 
-  if (isError || !data) {
-    return (
-      <Panel title="Przegląd" className={className}>
-        <ErrorBanner />
-      </Panel>
-    );
-  }
-
+  const data = sampleData ?? liveData!;
   const delta = formatPeriodDelta(data.total_seconds, data.previous_total_seconds);
   const showRecord = data.longest_session_seconds > 0 && data.longest_session_game_id != null;
+
+  const recordBody = (
+    <>
+      <div className={styles.recordCoverWrap}>
+        <Cover
+          gameId={data.longest_session_game_id!}
+          coverImageUrl={longestSessionCover(data) ?? undefined}
+          placeholderChar={data.longest_session_game_name ?? undefined}
+          className={styles.recordCover}
+        />
+      </div>
+      <div className={styles.recordMeta}>
+        <span className={styles.recordLabel}>Rekord · najdłuższa sesja</span>
+        {data.longest_session_game_name && (
+          <span className={styles.recordGame}>{data.longest_session_game_name}</span>
+        )}
+        <span className={styles.recordValue}>{formatHours(data.longest_session_seconds)} h</span>
+      </div>
+    </>
+  );
 
   return (
     <Panel title="Przegląd" eyebrow="podsumowanie okresu" className={className}>
@@ -68,28 +91,19 @@ export function StatsOverview({ days, className }: StatsOverviewProps) {
           <span className={styles.tileValue}>{data.new_games_count}</span>
         </div>
 
-        {showRecord && (
+        {showRecord && sampleData == null && (
           <Link
             to={`/library/${data.longest_session_game_id}`}
             className={styles.recordCard}
             aria-label={`Rekord: ${data.longest_session_game_name ?? 'najdłuższa sesja'}`}
           >
-            <div className={styles.recordCoverWrap}>
-              <Cover
-                gameId={data.longest_session_game_id}
-                coverImageUrl={longestSessionCover(data) ?? undefined}
-                placeholderChar={data.longest_session_game_name ?? undefined}
-                className={styles.recordCover}
-              />
-            </div>
-            <div className={styles.recordMeta}>
-              <span className={styles.recordLabel}>Rekord · najdłuższa sesja</span>
-              {data.longest_session_game_name && (
-                <span className={styles.recordGame}>{data.longest_session_game_name}</span>
-              )}
-              <span className={styles.recordValue}>{formatHours(data.longest_session_seconds)} h</span>
-            </div>
+            {recordBody}
           </Link>
+        )}
+        {showRecord && sampleData != null && (
+          <div className={styles.recordCard} aria-label={`Rekord: ${data.longest_session_game_name ?? 'najdłuższa sesja'}`}>
+            {recordBody}
+          </div>
         )}
       </div>
     </Panel>
