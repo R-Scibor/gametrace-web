@@ -235,12 +235,23 @@ export function LandingPage() {
       <div className={styles.glow} aria-hidden />
 
       <div className={styles.content}>
+        <div className={styles.topBar}>
+          <span className={styles.topBarBrand}>
+            <span className={styles.topBarMark} aria-hidden />
+            GAMETRACE<span className={styles.topBarSubtitle}> · SYSTEM ŚLEDZENIA SESJI</span>
+          </span>
+          <button
+            type="button"
+            className={styles.topBarLogin}
+            onClick={() => navigate(isAuthenticated ? '/' : '/login')}
+          >
+            {isAuthenticated ? 'PULPIT' : 'ZALOGUJ SIĘ'}
+            <span className={styles.topBarLoginArrow} aria-hidden>→</span>
+          </button>
+        </div>
+
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>
-              <span className={styles.eyebrowPulse} />
-              GAMETRACE · SYSTEM ŚLEDZENIA SESJI
-            </p>
             <h1 className={styles.title}>
               Twój dziennik rozgrywek<span className={styles.titleAccent}>.</span>
               <br />

@@ -41,6 +41,76 @@
   flex: 1;
 }
 
+/* ---------- TOP BAR ---------- */
+
+.topBar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 0 0;
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.topBarBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--text3);
+}
+
+.topBarMark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 10px var(--orange-glow);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+.topBarLogin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border-bright);
+  background: transparent;
+  border-radius: 2px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  color: var(--text2);
+  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topBarLoginArrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.topBarLogin:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  box-shadow: 0 0 16px var(--orange-glow);
+}
+
+.topBarLogin:hover .topBarLoginArrow {
+  transform: translateX(3px);
+}
+
+.topBarLogin:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
 /* ---------- HERO ---------- */
 
 .hero {
@@ -48,33 +118,12 @@
   grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
   gap: 48px;
-  padding: 80px 0 64px;
+  padding: 48px 0 64px;
 }
 
 .heroCopy {
   opacity: 0;
   animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
-}
-
-.eyebrow {
-  margin: 0 0 22px;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  color: var(--text3);
-}
-
-.eyebrowPulse {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--orange);
-  box-shadow: 0 0 10px var(--orange-glow);
-  animation: pulse 2.2s ease-in-out infinite;
 }
 
 .title {
@@ -677,7 +726,7 @@ button.secondaryLink {
   .hero {
     grid-template-columns: 1fr;
     gap: 36px;
-    padding: 60px 0 48px;
+    padding: 40px 0 48px;
   }
 
   .feed {
@@ -729,12 +778,25 @@ button.secondaryLink {
   .metricGrid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .topBarBrand {
+    letter-spacing: 2px;
+  }
+
+  .topBarSubtitle {
+    display: none;
+  }
+
+  .topBarLogin {
+    padding: 9px 13px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .topBar,
   .heroCopy,
   .feed,
-  .eyebrowPulse,
+  .topBarMark,
   .feedLive,
   .feedRowDot,
   .ctaGlow {
