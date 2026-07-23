@@ -18,6 +18,7 @@ import type {
   TrendGranularity,
   GenresResponse,
   ThemesResponse,
+  CompaniesResponse,
   ReleaseYearsResponse,
 } from '../../types/api';
 import { Heatmap } from './Heatmap';
@@ -200,10 +201,18 @@ export function ThemesPanel({
   );
 }
 
-export function CompaniesPanel({ days, className }: { days: number; className?: string }) {
+export function CompaniesPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: { developer: CompaniesResponse; publisher: CompaniesResponse };
+}) {
   const drill = useLibraryDrill();
   const [role, setRole] = useState<'developer' | 'publisher'>('developer');
-  const { data, isLoading, isError } = useCompanies(role, 10, days);
+  const { data: liveData, isLoading, isError } = useCompanies(role, 10, days, { enabled: sampleData == null });
 
   const roleToggle = (
     <div className={panelStyles.roleToggle}>
@@ -228,21 +237,24 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
     </div>
   );
 
-  if (isLoading) {
-    return (
-      <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
-        <Skeleton height={200} />
-      </Panel>
-    );
-  }
-  if (isError || !data) {
-    return (
-      <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
-        <ErrorBanner />
-      </Panel>
-    );
+  if (sampleData == null) {
+    if (isLoading) {
+      return (
+        <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
+          <Skeleton height={200} />
+        </Panel>
+      );
+    }
+    if (isError || !liveData) {
+      return (
+        <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
+          <ErrorBanner />
+        </Panel>
+      );
+    }
   }
 
+  const data = sampleData ? sampleData[role] : liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.name,
@@ -254,7 +266,7 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
 
   return (
     <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
-      <BarList items={items} onItemClick={(item) => drill(role, item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill(role, item.label) : undefined} />
     </Panel>
   );
 }

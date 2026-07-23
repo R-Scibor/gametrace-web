@@ -1,6 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { test, expect, vi } from 'vitest';
-import { RankingPanel, HeatmapPanel, TrendPanel, GenresPanel, ThemesPanel, ReleaseYearsPanel } from './Panels';
+import userEvent from '@testing-library/user-event';
+import { RankingPanel, HeatmapPanel, TrendPanel, GenresPanel, ThemesPanel, ReleaseYearsPanel, CompaniesPanel } from './Panels';
 import { renderWithProviders } from '../../../test/utils';
 import {
   SAMPLE_STATS_SUMMARY,
@@ -9,6 +10,8 @@ import {
   SAMPLE_GENRES,
   SAMPLE_THEMES,
   SAMPLE_RELEASE_YEARS,
+  SAMPLE_COMPANIES_DEVELOPER,
+  SAMPLE_COMPANIES_PUBLISHER,
 } from '../../lib/sampleData';
 import { formatDuration } from '../../lib/format';
 
@@ -126,4 +129,36 @@ test('ReleaseYearsPanel renders sampleData rows as non-interactive', async () =>
     expect(screen.getByText('2020s')).toBeInTheDocument();
   });
   expect(screen.queryByRole('button', { name: /2020s/i })).not.toBeInTheDocument();
+});
+
+test('CompaniesPanel renders sampleData and role toggle switches between developer/publisher samples', async () => {
+  const user = userEvent.setup();
+  renderWithProviders(
+    <CompaniesPanel
+      days={30}
+      sampleData={{ developer: SAMPLE_COMPANIES_DEVELOPER, publisher: SAMPLE_COMPANIES_PUBLISHER }}
+    />,
+  );
+
+  // 'Larian Studios' is the top sample developer/publisher and never appears in the
+  // MSW-mocked live fixtures (companies/companies7d only have CD Projekt Red / FromSoftware),
+  // so this could not come from a loading skeleton or a mistakenly-rendered live fetch.
+  await waitFor(() => {
+    expect(screen.getByText(SAMPLE_COMPANIES_DEVELOPER.items[0].name)).toBeInTheDocument();
+  });
+  expect(
+    screen.queryByRole('button', { name: SAMPLE_COMPANIES_DEVELOPER.items[0].name }),
+  ).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'WYDAWCA' }));
+
+  // Distinct rows unique to each role -- proves the toggle switched sample sources
+  // while still not fetching (no onItemClick means still non-interactive rows).
+  await waitFor(() => {
+    expect(screen.getByText('Sony Interactive Entertainment')).toBeInTheDocument();
+  });
+  expect(screen.queryByText('Arrowhead Game Studios')).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: SAMPLE_COMPANIES_PUBLISHER.items[0].name }),
+  ).not.toBeInTheDocument();
 });
