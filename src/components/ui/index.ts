@@ -10,3 +10,4 @@ export * from './Modal';
 export * from './Panel';
 export * from './Select';
 export * from './Toast';
+export * from './Switch';
