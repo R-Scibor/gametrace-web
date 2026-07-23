@@ -115,7 +115,7 @@ export function DashboardPage() {
 
       <div className={hasHero || showPreview ? styles.topRow : styles.topRowIdle}>
         {showPreview ? (
-          <HeroSpotlight session={SAMPLE_LAST_SESSION} stats={sampleSpotlightStats} />
+          <HeroSpotlight session={SAMPLE_LAST_SESSION} stats={sampleSpotlightStats} disabled />
         ) : data.active_session ? (
           <ActiveSessionCard session={data.active_session} />
         ) : lastPlayed ? (

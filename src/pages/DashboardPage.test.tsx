@@ -81,4 +81,7 @@ test('DashboardPage shows the sample preview for a brand-new empty account', asy
   expect(await screen.findByText(/to są przykładowe dane/i)).toBeInTheDocument();
   expect(screen.getAllByText(SAMPLE_LAST_SESSION.game.primary_name).length).toBeGreaterThanOrEqual(1);
   expect(screen.queryByText('Brak sesji do wyświetlenia')).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('link', { name: new RegExp(SAMPLE_LAST_SESSION.game.primary_name, 'i') }),
+  ).not.toBeInTheDocument();
 });
