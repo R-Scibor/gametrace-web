@@ -5,6 +5,7 @@ import { DashboardPage } from './DashboardPage';
 import { renderPage, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
 import { fixtures } from '../../test/fixtures';
+import { SAMPLE_LAST_SESSION } from '../lib/sampleData';
 
 beforeEach(() => {
   resetStores();
@@ -67,4 +68,17 @@ test('DashboardPage shows pending errors banner', async () => {
 
   expect(await screen.findByText(/nieudana sesja wymaga uwagi/i)).toBeInTheDocument();
   expect(screen.getByText('NAPRAW →')).toBeInTheDocument();
+});
+
+test('DashboardPage shows the sample preview for a brand-new empty account', async () => {
+  server.use(
+    http.get('/api/v1/stats/dashboard', () => HttpResponse.json(fixtures.dashboardNoActive)),
+    http.get('/api/v1/sessions', () => HttpResponse.json([])),
+  );
+
+  renderPage(<DashboardPage />, { route: '/' });
+
+  expect(await screen.findByText(/to są przykładowe dane/i)).toBeInTheDocument();
+  expect(screen.getAllByText(SAMPLE_LAST_SESSION.game.primary_name).length).toBeGreaterThanOrEqual(1);
+  expect(screen.queryByText('Brak sesji do wyświetlenia')).not.toBeInTheDocument();
 });
