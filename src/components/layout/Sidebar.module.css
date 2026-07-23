@@ -59,6 +59,19 @@
   margin-top: auto;
   border-top: 1px solid var(--border);
 }
+.previewRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px 10px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
 .logoutBtn {
   display: flex;
   align-items: center;
@@ -157,4 +170,6 @@
   .link { padding: 10px; justify-content: center; }
   .logoutBtn { padding: 10px; justify-content: center; }
   .active::before { left: -12px; top: 6px; bottom: 6px; }
+  .previewRow .label { display: none; }
+  .previewRow { justify-content: center; padding: 8px 0 10px; }
 }
