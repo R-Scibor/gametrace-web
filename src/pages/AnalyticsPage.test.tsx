@@ -142,3 +142,36 @@ test('AnalyticsPage isolates panel errors', async () => {
     expect(screen.getByText('BŁĄD POŁĄCZENIA')).toBeInTheDocument();
   });
 });
+
+test('AnalyticsPage shows the sample banner and disables day pills when the account has no stats', async () => {
+  server.use(
+    http.get('/api/v1/stats/summary', () =>
+      HttpResponse.json({
+        days: 7,
+        window_start: null,
+        window_end: '2026-07-23T00:00:00.000Z',
+        total_seconds: 0,
+        avg_session_seconds: 0,
+        longest_session_seconds: 0,
+        longest_session_game_id: null,
+        longest_session_game_name: null,
+        previous_total_seconds: 0,
+        new_games_count: 0,
+        per_game: [],
+        pending_errors: [],
+      }),
+    ),
+  );
+
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+
+  expect(await screen.findByText(/to są przykładowe dane/i)).toBeInTheDocument();
+  expect(periodButton('7 DNI')).toBeDisabled();
+});
+
+test('AnalyticsPage does not show the sample banner when stats have real data', async () => {
+  renderPage(<AnalyticsPage />, { route: '/analytics' });
+  await screen.findByRole('group', { name: 'Okres' });
+  expect(screen.queryByText(/to są przykładowe dane/i)).not.toBeInTheDocument();
+  expect(periodButton('7 DNI')).not.toBeDisabled();
+});
