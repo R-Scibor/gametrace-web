@@ -7,9 +7,10 @@ import styles from './GameCard.module.css';
 interface GameCardProps {
   game: Game;
   sort?: GameSort;
+  disabled?: boolean;
 }
 
-export function GameCard({ game, sort = 'name' }: GameCardProps) {
+export function GameCard({ game, sort = 'name', disabled }: GameCardProps) {
   const { formatDuration, formatRecency } = useFormat();
   const needsReview =
     game.enrichment_status === 'NEEDS_REVIEW' && game.is_accepted !== true && !game.is_ignored;
@@ -21,8 +22,8 @@ export function GameCard({ game, sort = 'name' }: GameCardProps) {
         ? formatRecency(game.last_played)
         : null;
 
-  return (
-    <Link to={`/library/${game.id}`} state={{ game }} className={styles.card}>
+  const body = (
+    <>
       <div
         className={[
           styles.coverWrapper,
@@ -44,6 +45,16 @@ export function GameCard({ game, sort = 'name' }: GameCardProps) {
         {game.primary_name}
       </div>
       {meta && <div className={styles.meta}>{meta}</div>}
+    </>
+  );
+
+  if (disabled) {
+    return <div className={styles.card}>{body}</div>;
+  }
+
+  return (
+    <Link to={`/library/${game.id}`} state={{ game }} className={styles.card}>
+      {body}
     </Link>
   );
 }
