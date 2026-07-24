@@ -35,6 +35,7 @@ export function AnalyticsPage() {
   const days = parseAnalyticsDays(searchParams.get('days'));
   const { data: summary } = useStatsSummary(days);
   const previewDismissed = useAuthStore((s) => s.previewDismissed);
+  const setPreviewDismissed = useAuthStore((s) => s.setPreviewDismissed);
 
   const pageIsEmpty = summary != null && summary.per_game.length === 0;
   const showPreview = pageIsEmpty && !previewDismissed;
@@ -54,7 +55,7 @@ export function AnalyticsPage() {
     <div className={styles.container}>
       <div className={styles.ambient} aria-hidden />
 
-      {showPreview && <SampleDataBanner />}
+      {showPreview && <SampleDataBanner onDismiss={() => setPreviewDismissed(true)} />}
 
       <div className={styles.toolbar}>
         <span className={styles.statusLine}>

@@ -54,6 +54,7 @@ export function DashboardPage() {
   const activeId = data?.active_session?.id ?? null;
   const { data: recents, isLoading: recentsLoading } = useRecentSessions(activeId);
   const previewDismissed = useAuthStore((s) => s.previewDismissed);
+  const setPreviewDismissed = useAuthStore((s) => s.setPreviewDismissed);
 
   const lastPlayed = !data?.active_session
     ? recents?.find((s) => s.status === 'COMPLETED') ?? null
@@ -107,7 +108,7 @@ export function DashboardPage() {
         </div>
       </header>
 
-      {showPreview && <SampleDataBanner />}
+      {showPreview && <SampleDataBanner onDismiss={() => setPreviewDismissed(true)} />}
 
       {data.pending_errors.length > 0 && (
         <PendingErrorsBanner errors={data.pending_errors} />

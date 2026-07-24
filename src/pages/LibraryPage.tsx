@@ -92,6 +92,7 @@ export function LibraryPage() {
   const totalCount = data?.pages[0]?.total;
 
   const previewDismissed = useAuthStore((s) => s.previewDismissed);
+  const setPreviewDismissed = useAuthStore((s) => s.setPreviewDismissed);
   const isDefaultUnfilteredView = activeTab === 'all' && !facet && !debouncedQuery;
   const showPreview =
     !isLoading && !isError && games.length === 0 && isDefaultUnfilteredView && !previewDismissed;
@@ -196,7 +197,7 @@ export function LibraryPage() {
 
       {showPreview && (
         <>
-          <SampleDataBanner />
+          <SampleDataBanner onDismiss={() => setPreviewDismissed(true)} />
           <div className={styles.grid}>
             {SAMPLE_GAMES.map((game) => (
               <GameCard key={game.id} game={game} disabled />

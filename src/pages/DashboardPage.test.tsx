@@ -1,4 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 import { DashboardPage } from './DashboardPage';
@@ -84,4 +85,23 @@ test('DashboardPage shows the sample preview for a brand-new empty account', asy
   expect(
     screen.queryByRole('link', { name: new RegExp(SAMPLE_LAST_SESSION.game.primary_name, 'i') }),
   ).not.toBeInTheDocument();
+});
+
+test('DashboardPage hides the sample preview after dismissing the banner', async () => {
+  const user = userEvent.setup();
+  server.use(
+    http.get('/api/v1/stats/dashboard', () => HttpResponse.json(fixtures.dashboardNoActive)),
+    http.get('/api/v1/sessions', () => HttpResponse.json([])),
+  );
+
+  renderPage(<DashboardPage />, { route: '/' });
+
+  expect(await screen.findByText(/to są przykładowe dane/i)).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /ukryj podgląd/i }));
+
+  expect(screen.queryByText(/to są przykładowe dane/i)).not.toBeInTheDocument();
+  expect(
+    screen.queryAllByText(SAMPLE_LAST_SESSION.game.primary_name).length,
+  ).toBe(0);
 });

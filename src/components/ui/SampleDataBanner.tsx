@@ -3,9 +3,10 @@ import styles from './SampleDataBanner.module.css';
 
 export interface SampleDataBannerProps {
   className?: string;
+  onDismiss?: () => void;
 }
 
-export function SampleDataBanner({ className }: SampleDataBannerProps) {
+export function SampleDataBanner({ className, onDismiss }: SampleDataBannerProps) {
   return (
     <div className={[styles.banner, className].filter(Boolean).join(' ')}>
       <div className={styles.bar} />
@@ -21,6 +22,16 @@ export function SampleDataBanner({ className }: SampleDataBannerProps) {
           →
         </span>
       </Link>
+      {onDismiss && (
+        <button
+          type="button"
+          className={styles.dismiss}
+          onClick={onDismiss}
+          aria-label="Ukryj podgląd"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      )}
     </div>
   );
 }
