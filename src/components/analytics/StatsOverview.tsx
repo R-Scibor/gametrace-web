@@ -74,7 +74,7 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
           <span className={styles.totalValue}>{formatDuration(data.total_seconds)}</span>
           <div className={styles.totalMeta}>
             {delta && <span className={styles.totalDelta}>{delta}</span>}
-            <span className={styles.totalSubtitle}>{formatAnalyticsPeriodSubtitle(days)}</span>
+            <span className={styles.totalSubtitle}>{formatAnalyticsPeriodSubtitle(data.days)}</span>
           </div>
         </section>
 
