@@ -1,3 +1,5 @@
+import i18n from '../i18n';
+
 export function formatUptime(s: number | null): string {
   if (s == null) return '—';
   const d = Math.floor(s / 86400);
@@ -8,14 +10,11 @@ export function formatUptime(s: number | null): string {
   return `${m}m`;
 }
 
-const BOT_STATUS_LABEL: Record<string, string> = {
-  online: 'ONLINE',
-  offline: 'OFFLINE',
-  unknown: 'NIEZNANY',
-};
-
 export function formatBotStatus(status: string): string {
-  return BOT_STATUS_LABEL[status] ?? status.toUpperCase();
+  if (status === 'online' || status === 'offline' || status === 'unknown') {
+    return i18n.t(`common:bot.status.${status}`);
+  }
+  return status.toUpperCase();
 }
 
 export function botColor(status: string) {

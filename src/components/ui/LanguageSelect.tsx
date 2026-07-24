@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Language } from '../../i18n/resolve';
 import styles from './LanguageSelect.module.css';
 
@@ -18,15 +19,16 @@ export function LanguageSelect({
   value,
   onChange,
   disabled,
-  'aria-label': ariaLabel = 'Język',
+  'aria-label': ariaLabel,
 }: LanguageSelectProps) {
+  const { t } = useTranslation('common');
   return (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value as Language)}
       className={styles.select}
       disabled={disabled}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t('language.label')}
     >
       {OPTIONS.map((opt) => (
         <option key={opt.value} value={opt.value}>

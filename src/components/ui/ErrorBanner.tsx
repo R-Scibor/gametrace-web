@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styles from './ErrorBanner.module.css';
 
 export interface ErrorBannerProps {
@@ -7,16 +8,20 @@ export interface ErrorBannerProps {
 }
 
 export function ErrorBanner({
-  message = 'Nie udało się pobrać danych. Sprawdź połączenie.',
-  label = 'BŁĄD POŁĄCZENIA',
+  message,
+  label,
   className
 }: ErrorBannerProps) {
+  const { t } = useTranslation('common');
+  const resolvedLabel = label ?? t('errors.connectionLabel');
+  const resolvedMessage = message ?? t('errors.connectionMessage');
+
   return (
     <div role="alert" className={[styles.container, className].filter(Boolean).join(' ')}>
       <div className={styles.bar} />
       <div className={styles.body}>
-        <div className={styles.label}>{label}</div>
-        <div className={styles.message}>{message}</div>
+        <div className={styles.label}>{resolvedLabel}</div>
+        <div className={styles.message}>{resolvedMessage}</div>
       </div>
     </div>
   );

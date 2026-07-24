@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Button.module.css';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -7,6 +8,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export function Button({ variant = 'primary', loading, disabled, children, className, ...props }: ButtonProps) {
+  const { t } = useTranslation('common');
   const cn = [
     styles.button,
     styles[variant],
@@ -15,7 +17,7 @@ export function Button({ variant = 'primary', loading, disabled, children, class
 
   return (
     <button className={cn} disabled={disabled || loading} {...props}>
-      {loading ? 'ŁADOWANIE...' : children}
+      {loading ? t('actions.loading') : children}
     </button>
   );
 }

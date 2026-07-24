@@ -1,3 +1,5 @@
+import i18n from '../i18n';
+
 /**
  * Polish plural selection. Polish nouns have three count forms:
  *  - "one": exactly 1 (e.g. "1 sesja")
@@ -5,6 +7,9 @@
  *  - "many": everything else, including 0 and the 12-14 exception (e.g. "0 sesji", "5 sesji", "12 sesji")
  *
  * `forms` is `[one, few, many]`. Returns the matching form for `count`.
+ *
+ * Prefer i18next plural keys for user-facing copy; this helper remains for tests
+ * and any non-i18n call sites that still need pure Polish forms.
  */
 export function plPlural(count: number, forms: [string, string, string]): string {
   const [one, few, many] = forms;
@@ -16,7 +21,7 @@ export function plPlural(count: number, forms: [string, string, string]): string
   return many;
 }
 
-/** Polish plural for "sesja/sesje/sesji", formatted as "<count> <form>". */
+/** Plural label for sessions via i18next (`common:sessions`). */
 export function sessionsLabel(count: number): string {
-  return `${count} ${plPlural(count, ['sesja', 'sesje', 'sesji'])}`;
+  return i18n.t('common:sessions', { count });
 }

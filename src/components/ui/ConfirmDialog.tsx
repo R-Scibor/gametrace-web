@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from './Button';
 import { Modal } from './Modal';
 import styles from './ConfirmDialog.module.css';
@@ -19,13 +20,17 @@ export function ConfirmDialog({
   open,
   title,
   message,
-  confirmLabel = 'POTWIERDŹ',
-  cancelLabel = 'ANULUJ',
+  confirmLabel,
+  cancelLabel,
   variant = 'default',
   loading = false,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const { t } = useTranslation('common');
+  const resolvedConfirm = confirmLabel ?? t('actions.confirm');
+  const resolvedCancel = cancelLabel ?? t('actions.cancel');
+
   return (
     <Modal open={open} onClose={onCancel} labelledBy="confirm-title" role="alertdialog">
       <h2 id="confirm-title" className={styles.title}>
@@ -34,7 +39,7 @@ export function ConfirmDialog({
       <div className={styles.message}>{message}</div>
       <div className={styles.actions}>
         <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
-          {cancelLabel}
+          {resolvedCancel}
         </Button>
         <Button
           type="button"
@@ -43,7 +48,7 @@ export function ConfirmDialog({
           onClick={onConfirm}
           loading={loading}
         >
-          {confirmLabel}
+          {resolvedConfirm}
         </Button>
       </div>
     </Modal>

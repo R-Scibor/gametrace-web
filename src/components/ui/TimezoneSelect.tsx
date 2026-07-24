@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styles from './TimezoneSelect.module.css';
 
 function getTimezones(): string[] {
@@ -25,14 +26,15 @@ interface TimezoneSelectProps {
   'aria-label'?: string;
 }
 
-export function TimezoneSelect({ value, onChange, disabled, 'aria-label': ariaLabel = 'Strefa czasowa' }: TimezoneSelectProps) {
+export function TimezoneSelect({ value, onChange, disabled, 'aria-label': ariaLabel }: TimezoneSelectProps) {
+  const { t } = useTranslation('common');
   return (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={styles.select}
       disabled={disabled}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? t('timezone.ariaLabel')}
     >
       {TIMEZONES.map((tz) => (
         <option key={tz} value={tz}>

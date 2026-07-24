@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { useAuthStore } from '../../store/authStore';
 import { useIsAccountEmpty } from '../../hooks/useIsAccountEmpty';
@@ -95,16 +96,16 @@ const LogoutIcon = icon(
   </>,
 );
 
-const mainNavItems = [
-  { path: '/', label: 'Dashboard', icon: DashboardIcon },
-  { path: '/library', label: 'Biblioteka', icon: LibraryIcon },
-  { path: '/analytics', label: 'Statystyki', icon: AnalyticsIcon },
-  { path: '/sessions/new', label: 'Dodaj sesję', icon: AddIcon },
-  { path: '/voice', label: 'Sesja głosowa', icon: VoiceIcon },
-  { path: '/trash', label: 'Kosz', icon: TrashIcon },
+const mainNavDefs = [
+  { path: '/', labelKey: 'nav.dashboard' as const, icon: DashboardIcon },
+  { path: '/library', labelKey: 'nav.library' as const, icon: LibraryIcon },
+  { path: '/analytics', labelKey: 'nav.analytics' as const, icon: AnalyticsIcon },
+  { path: '/sessions/new', labelKey: 'nav.addSession' as const, icon: AddIcon },
+  { path: '/voice', labelKey: 'nav.voice' as const, icon: VoiceIcon },
+  { path: '/trash', labelKey: 'nav.trash' as const, icon: TrashIcon },
 ];
 
-const bottomNavItems = [{ path: '/settings', label: 'Ustawienia', icon: SettingsIcon }];
+const bottomNavDefs = [{ path: '/settings', labelKey: 'nav.settings' as const, icon: SettingsIcon }];
 
 function NavItem({ path, label, icon }: { path: string; label: string; icon: ReactNode }) {
   return (
@@ -120,6 +121,7 @@ function NavItem({ path, label, icon }: { path: string; label: string; icon: Rea
 }
 
 export function Sidebar() {
+  const { t } = useTranslation('common');
   const isAdmin = useAuthStore((s) => s.isAdmin);
   const previewDismissed = useAuthStore((s) => s.previewDismissed);
   const setPreviewDismissed = useAuthStore((s) => s.setPreviewDismissed);
@@ -142,28 +144,28 @@ export function Sidebar() {
 
   return (
     <aside className={styles.sidebar}>
-      <Link to="/welcome" className={styles.brand} aria-label="Strona powitalna GameTrace">
+      <Link to="/welcome" className={styles.brand} aria-label={t('nav.homeAria')}>
         <img src="/splash-icon.png" alt="" className={styles.logoMark} width={64} height={64} />
         <span className={styles.wordmark}>GAMETRACE</span>
       </Link>
       <nav className={styles.nav}>
-        {mainNavItems.map((item) => (
-          <NavItem key={item.path} {...item} />
+        {mainNavDefs.map((item) => (
+          <NavItem key={item.path} path={item.path} label={t(item.labelKey)} icon={item.icon} />
         ))}
         <div className={styles.divider} />
-        {isAdmin && <NavItem path="/admin" label="Administracja" icon={AdminIcon} />}
-        {bottomNavItems.map((item) => (
-          <NavItem key={item.path} {...item} />
+        {isAdmin && <NavItem path="/admin" label={t('nav.admin')} icon={AdminIcon} />}
+        {bottomNavDefs.map((item) => (
+          <NavItem key={item.path} path={item.path} label={t(item.labelKey)} icon={item.icon} />
         ))}
       </nav>
       <div className={styles.footer}>
         {showPreviewToggle && (
           <div className={styles.previewRow}>
-            <span className={styles.label}>Podgląd przykładowy</span>
+            <span className={styles.label}>{t('nav.preview')}</span>
             <Switch
               id="preview-toggle"
               checked={!previewDismissed}
-              label="Podgląd przykładowy"
+              label={t('nav.preview')}
               onChange={(checked) => setPreviewDismissed(!checked)}
             />
           </div>
@@ -172,17 +174,17 @@ export function Sidebar() {
           type="button"
           className={styles.logoutBtn}
           onClick={() => setLogoutOpen(true)}
-          aria-label="Wyloguj się"
+          aria-label={t('nav.logoutAria')}
         >
           {LogoutIcon}
-          <span className={styles.label}>Wyloguj się</span>
+          <span className={styles.label}>{t('nav.logout')}</span>
         </button>
       </div>
       <ConfirmDialog
         open={logoutOpen}
-        title="WYLOGUJ SIĘ"
-        message="Na pewno chcesz się wylogować? Będziesz musiał ponownie wpisać kod z /login."
-        confirmLabel="WYLOGUJ SIĘ"
+        title={t('actions.logoutTitle')}
+        message={t('logout.message')}
+        confirmLabel={t('actions.logoutConfirm')}
         variant="danger"
         loading={logoutLoading}
         onConfirm={handleLogoutConfirm}

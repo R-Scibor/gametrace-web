@@ -1,4 +1,4 @@
-
+import { useTranslation } from 'react-i18next';
 import { useLocalCoversStore } from '../store/localCoversStore';
 import styles from './Cover.module.css';
 
@@ -10,6 +10,7 @@ export interface CoverProps {
 }
 
 export function Cover({ gameId, coverImageUrl, placeholderChar = '?', className }: CoverProps) {
+  const { t } = useTranslation('common');
   const localUri = useLocalCoversStore((s) => (gameId != null ? s.covers[gameId] : undefined));
   const src = localUri ?? coverImageUrl ?? null;
 
@@ -17,7 +18,7 @@ export function Cover({ gameId, coverImageUrl, placeholderChar = '?', className 
     return (
       <img
         src={src}
-        alt="Okładka"
+        alt={t('cover.alt')}
         className={[styles.cover, className].filter(Boolean).join(' ')}
       />
     );

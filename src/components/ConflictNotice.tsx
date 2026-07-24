@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { ConflictResponse } from '../types/api';
 import { Cover } from './Cover';
 import { useFormat } from '../hooks/useFormat';
@@ -9,6 +10,7 @@ interface ConflictNoticeProps {
 }
 
 export function ConflictNotice({ conflict }: ConflictNoticeProps) {
+  const { t } = useTranslation('common');
   const { formatDate } = useFormat();
   const session = conflict.conflicting_session;
   const range =
@@ -18,7 +20,7 @@ export function ConflictNotice({ conflict }: ConflictNoticeProps) {
 
   return (
     <div className={styles.notice} role="alert">
-      <h3 className={styles.heading}>Nakładające się sesje</h3>
+      <h3 className={styles.heading}>{t('conflict.heading')}</h3>
       <p className={styles.message}>{conflict.detail}</p>
       <Link to={`/sessions/${session.id}/edit`} className={styles.row}>
         <Cover
@@ -31,7 +33,7 @@ export function ConflictNotice({ conflict }: ConflictNoticeProps) {
           <span className={styles.gameName}>{session.game.primary_name}</span>
           <span className={styles.timeRange}>{range}</span>
         </div>
-        <span className={styles.action}>Edytuj →</span>
+        <span className={styles.action}>{t('conflict.edit')}</span>
       </Link>
     </div>
   );

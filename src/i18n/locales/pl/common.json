@@ -3,5 +3,86 @@
     "label": "Język",
     "pl": "Polski",
     "en": "English"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "library": "Biblioteka",
+    "analytics": "Statystyki",
+    "addSession": "Dodaj sesję",
+    "voice": "Sesja głosowa",
+    "trash": "Kosz",
+    "settings": "Ustawienia",
+    "admin": "Administracja",
+    "homeAria": "Strona powitalna GameTrace",
+    "logout": "Wyloguj się",
+    "logoutAria": "Wyloguj się",
+    "preview": "Podgląd przykładowy"
+  },
+  "pageTitle": {
+    "dashboard": "Dashboard",
+    "library": "Biblioteka",
+    "gameDetail": "Szczegóły gry",
+    "analytics": "Statystyki",
+    "addSession": "Dodaj sesję",
+    "editSession": "Edytuj sesję",
+    "voice": "Sesja głosowa",
+    "trash": "Kosz",
+    "admin": "Administracja",
+    "adminCatalog": "Katalog gier",
+    "settings": "Ustawienia"
+  },
+  "actions": {
+    "confirm": "POTWIERDŹ",
+    "cancel": "ANULUJ",
+    "loading": "ŁADOWANIE...",
+    "logoutTitle": "WYLOGUJ SIĘ",
+    "logoutConfirm": "WYLOGUJ SIĘ"
+  },
+  "logout": {
+    "message": "Na pewno chcesz się wylogować? Będziesz musiał ponownie wpisać kod z /login."
+  },
+  "errors": {
+    "connectionLabel": "BŁĄD POŁĄCZENIA",
+    "connectionMessage": "Nie udało się pobrać danych. Sprawdź połączenie."
+  },
+  "cover": {
+    "alt": "Okładka"
+  },
+  "timezone": {
+    "ariaLabel": "Strefa czasowa"
+  },
+  "sampleData": {
+    "tag": "PODGLĄD",
+    "text": "To są przykładowe dane — dodaj sesję, aby zobaczyć swoje statystyki.",
+    "cta": "Dodaj sesję",
+    "dismissAria": "Ukryj podgląd"
+  },
+  "conflict": {
+    "heading": "Nakładające się sesje",
+    "edit": "Edytuj →"
+  },
+  "session": {
+    "status": {
+      "ONGOING": "TRWA",
+      "ERROR": "BŁĄD"
+    },
+    "source": {
+      "BOT": "⬡ BOT",
+      "MANUAL": "✎ RĘCZNA"
+    }
+  },
+  "bot": {
+    "status": {
+      "online": "ONLINE",
+      "offline": "OFFLINE",
+      "unknown": "NIEZNANY"
+    }
+  },
+  "sessions_one": "{{count}} sesja",
+  "sessions_few": "{{count}} sesje",
+  "sessions_many": "{{count}} sesji",
+  "toast": {
+    "settingsSaved": "Ustawienia zapisane.",
+    "settingsSaveFailed": "Nie udało się zapisać ustawień."
   }
 }
