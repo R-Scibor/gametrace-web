@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
+import { useTranslation } from 'react-i18next';
 import { getDownloadPageUrl } from '../../lib/downloadPageUrl';
 import styles from './ApkQrCode.module.css';
 
@@ -16,8 +17,10 @@ export function ApkQrCode({
   visible = true,
   size = 128,
   url,
-  caption = 'Zeskanuj telefonem',
+  caption,
 }: ApkQrCodeProps) {
+  const { t } = useTranslation('welcome');
+  const resolvedCaption = caption ?? t('qr.defaultCaption');
   const [dataUrl, setDataUrl] = useState<string | null>(null);
   const targetUrl = url ?? getDownloadPageUrl();
 
@@ -48,7 +51,7 @@ export function ApkQrCode({
   return (
     <div className={styles.wrap}>
       <img src={dataUrl} alt="" className={styles.qr} width={size} height={size} />
-      {caption ? <p className={styles.caption}>{caption}</p> : null}
+      {resolvedCaption ? <p className={styles.caption}>{resolvedCaption}</p> : null}
     </div>
   );
 }

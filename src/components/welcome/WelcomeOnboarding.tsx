@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/Button';
 import { ApkQrCode } from './ApkQrCode';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../../lib/apkDownload';
@@ -10,13 +11,7 @@ import styles from './WelcomeOnboarding.module.css';
 const BOT_INVITE_URL = getDiscordBotInviteUrl();
 const SERVER_JOIN_URL = getDiscordServerJoinUrl();
 
-const STEPS = [
-  { id: 1, label: 'Discord' },
-  { id: 2, label: 'Rejestracja' },
-  { id: 3, label: 'Klient' },
-] as const;
-
-type StepId = (typeof STEPS)[number]['id'];
+type StepId = 1 | 2 | 3;
 
 interface WelcomeOnboardingProps {
   open: boolean;
@@ -33,6 +28,7 @@ export function WelcomeOnboarding({
   isAuthenticated,
   onApkUnavailable,
 }: WelcomeOnboardingProps) {
+  const { t } = useTranslation('welcome');
   const navigate = useNavigate();
   const [step, setStep] = useState<StepId>(1);
   const [commandStatus, setCommandStatus] = useState<'idle' | 'selected' | 'copied'>('idle');
@@ -41,6 +37,12 @@ export function WelcomeOnboarding({
   const commandInputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
+
+  const steps = [
+    { id: 1 as const, label: t('onboarding.steps.discord') },
+    { id: 2 as const, label: t('onboarding.steps.register') },
+    { id: 3 as const, label: t('onboarding.steps.client') },
+  ];
 
   const discordPathOpened = botInviteOpened || serverJoinOpened;
 
@@ -91,6 +93,20 @@ export function WelcomeOnboarding({
     onApkUnavailable();
   };
 
+  const step1Body =
+    SERVER_JOIN_URL && BOT_INVITE_URL
+      ? t('onboarding.step1.bodyBoth')
+      : SERVER_JOIN_URL
+        ? t('onboarding.step1.bodyServerOnly')
+        : t('onboarding.step1.bodyBotOnly');
+
+  const commandHint =
+    commandStatus === 'copied'
+      ? t('onboarding.step2.hintCopied')
+      : commandStatus === 'selected'
+        ? t('onboarding.step2.hintSelected')
+        : t('onboarding.step2.hintIdle');
+
   return (
     <div className={styles.overlay} onClick={resetAndClose} role="presentation">
       <div
@@ -102,19 +118,24 @@ export function WelcomeOnboarding({
       >
         <header className={styles.header}>
           <div className={styles.headerCopy}>
-            <p className={styles.eyebrow}>KONFIGURACJA</p>
+            <p className={styles.eyebrow}>{t('onboarding.eyebrow')}</p>
             <h2 id="onboarding-title" className={styles.title}>
-              Uruchom GameTrace
+              {t('onboarding.title')}
             </h2>
-            <p className={styles.subtitle}>3 krótkie kroki — zajmie to chwilę.</p>
+            <p className={styles.subtitle}>{t('onboarding.subtitle')}</p>
           </div>
-          <button type="button" className={styles.closeBtn} onClick={resetAndClose} aria-label="Zamknij">
+          <button
+            type="button"
+            className={styles.closeBtn}
+            onClick={resetAndClose}
+            aria-label={t('onboarding.closeAria')}
+          >
             ×
           </button>
         </header>
 
-        <div className={styles.progress} aria-label="Postęp konfiguracji">
-          {STEPS.map((item, index) => (
+        <div className={styles.progress} aria-label={t('onboarding.progressAria')}>
+          {steps.map((item, index) => (
             <div key={item.id} className={styles.progressItem}>
               <span
                 className={[
@@ -129,7 +150,7 @@ export function WelcomeOnboarding({
               <span className={[styles.progressLabel, step === item.id ? styles.progressLabelActive : ''].join(' ')}>
                 {item.label}
               </span>
-              {index < STEPS.length - 1 && (
+              {index < steps.length - 1 && (
                 <span
                   className={[styles.progressLine, step > item.id ? styles.progressLineActive : ''].join(' ')}
                   aria-hidden
@@ -145,20 +166,14 @@ export function WelcomeOnboarding({
             className={styles.backStep}
             onClick={() => setStep((current) => (current - 1) as StepId)}
           >
-            ← Wstecz
+            {t('onboarding.back')}
           </button>
         )}
 
         {step === 1 && (
           <section className={styles.step}>
-            <h3 className={styles.stepTitle}>Zaproś bota albo dołącz na serwer</h3>
-            <p className={styles.stepBody}>
-              {SERVER_JOIN_URL && BOT_INVITE_URL
-                ? 'GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do publicznego serwera z botem — obie drogi działają tak samo.'
-                : SERVER_JOIN_URL
-                  ? 'GameTrace działa na Discordzie. Dołącz do publicznego serwera z botem albo użyj serwera, na którym bot już jest.'
-                  : 'GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do serwera, który już go ma.'}
-            </p>
+            <h3 className={styles.stepTitle}>{t('onboarding.step1.title')}</h3>
+            <p className={styles.stepBody}>{step1Body}</p>
             <div className={styles.stepActions}>
               {SERVER_JOIN_URL ? (
                 <button
@@ -169,7 +184,7 @@ export function WelcomeOnboarding({
                   ].join(' ')}
                   onClick={openServerJoin}
                 >
-                  DOŁĄCZ DO SERWERA Z BOTEM
+                  {t('onboarding.step1.joinServer')}
                 </button>
               ) : null}
               {BOT_INVITE_URL ? (
@@ -181,7 +196,7 @@ export function WelcomeOnboarding({
                   ].join(' ')}
                   onClick={openBotInvite}
                 >
-                  DODAJ BOTA DO SERWERA
+                  {t('onboarding.step1.addBot')}
                 </button>
               ) : null}
               <button
@@ -192,28 +207,22 @@ export function WelcomeOnboarding({
                 ].join(' ')}
                 onClick={() => setStep(2)}
               >
-                MAM JUŻ BOTA → DALEJ
+                {t('onboarding.step1.alreadyHaveBot')}
               </button>
             </div>
             {serverJoinOpened && (
-              <p className={styles.stepHint}>
-                Po dołączeniu do serwera wróć tutaj i kliknij dalej.
-              </p>
+              <p className={styles.stepHint}>{t('onboarding.step1.hintServer')}</p>
             )}
             {botInviteOpened && (
-              <p className={styles.stepHint}>
-                Po dodaniu bota do swojego serwera wróć tutaj i kliknij dalej.
-              </p>
+              <p className={styles.stepHint}>{t('onboarding.step1.hintBot')}</p>
             )}
           </section>
         )}
 
         {step === 2 && (
           <section className={styles.step}>
-            <h3 className={styles.stepTitle}>Przedstaw się botowi</h3>
-            <p className={styles.stepBody}>
-              Na kanale serwera wyślij komendę poniżej. Bot odpowie kodem do logowania — nie pisz na privie.
-            </p>
+            <h3 className={styles.stepTitle}>{t('onboarding.step2.title')}</h3>
+            <p className={styles.stepBody}>{t('onboarding.step2.body')}</p>
             <label
               className={[
                 styles.commandBlock,
@@ -229,7 +238,7 @@ export function WelcomeOnboarding({
                 readOnly
                 value="/login"
                 className={styles.commandInput}
-                aria-label="Komenda /login"
+                aria-label={t('onboarding.step2.commandAria')}
                 aria-describedby="onboarding-login-command-hint"
                 onFocus={(e) => {
                   e.target.select();
@@ -239,46 +248,40 @@ export function WelcomeOnboarding({
               />
             </label>
             <p id="onboarding-login-command-hint" className={styles.commandHint}>
-              {commandStatus === 'copied'
-                ? 'Skopiowano — wklej na Discordzie.'
-                : commandStatus === 'selected'
-                  ? 'Zaznaczono — Ctrl+C / Cmd+C, jeśli nie skopiowało się samo.'
-                  : 'Kliknij pole, aby zaznaczyć komendę /login.'}
+              {commandHint}
             </p>
             <div className={styles.stepActions}>
-              <Button onClick={() => setStep(3)}>MAM JUŻ KOD → DALEJ</Button>
+              <Button onClick={() => setStep(3)}>{t('onboarding.step2.haveCode')}</Button>
             </div>
           </section>
         )}
 
         {step === 3 && (
           <section className={styles.step}>
-            <h3 className={styles.stepTitle}>Wybierz klienta</h3>
-            <p className={styles.stepBody}>Jedno konto — te same sesje w przeglądarce i w aplikacji.</p>
+            <h3 className={styles.stepTitle}>{t('onboarding.step3.title')}</h3>
+            <p className={styles.stepBody}>{t('onboarding.step3.body')}</p>
             <div className={styles.clientGrid}>
               <article className={styles.clientCard}>
-                <p className={styles.clientLabel}>PRZEGLĄDARKA</p>
-                <p className={styles.clientBody}>
-                  Sesje, biblioteka i statystyki na dużym ekranie — ten sam pulpit co w aplikacji.
-                </p>
+                <p className={styles.clientLabel}>{t('onboarding.step3.webLabel')}</p>
+                <p className={styles.clientBody}>{t('onboarding.step3.webBody')}</p>
                 <div className={styles.clientGrow} aria-hidden />
                 <div className={styles.clientFooter}>
                   <Button onClick={isAuthenticated ? goToDashboard : goToLogin}>
-                    {isAuthenticated ? 'OTWÓRZ W PRZEGLĄDARCE' : 'ZALOGUJ W PRZEGLĄDARCE'}
+                    {isAuthenticated ? t('onboarding.step3.openWeb') : t('onboarding.step3.loginWeb')}
                   </Button>
                 </div>
               </article>
               <article className={styles.clientCard}>
-                <p className={styles.clientLabel}>APLIKACJA</p>
-                <p className={styles.clientBody}>
-                  Sesje, biblioteka i statystyki w kieszeni — ten sam pulpit co w przeglądarce.
-                </p>
+                <p className={styles.clientLabel}>{t('onboarding.step3.appLabel')}</p>
+                <p className={styles.clientBody}>{t('onboarding.step3.appBody')}</p>
                 <div className={styles.clientGrow}>
                   <ApkQrCode visible={apkAvailable === true} />
                 </div>
                 <div className={styles.clientFooter}>
                   <Button disabled={apkAvailable !== true} onClick={handleApkDownload}>
-                    {apkAvailable === null ? 'SPRAWDZANIE…' : 'POBIERZ APK'}
+                    {apkAvailable === null
+                      ? t('onboarding.step3.checking')
+                      : t('onboarding.step3.downloadApk')}
                   </Button>
                 </div>
               </article>
@@ -288,7 +291,7 @@ export function WelcomeOnboarding({
 
         <footer className={styles.footer}>
           <button type="button" className={styles.footerLink} onClick={goToLogin}>
-            Mam już konto → Zaloguj się
+            {t('onboarding.footerLogin')}
           </button>
         </footer>
       </div>

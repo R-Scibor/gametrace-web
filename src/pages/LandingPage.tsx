@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
@@ -93,109 +94,8 @@ const MicIcon = () =>
 const PulseIcon = () =>
   lineIcon(<polyline points="2 12 7 12 10 5 14 19 17 12 22 12" />);
 
-type Platform = {
-  id: string;
-  icon: ReactNode;
-  label: string;
-  status: string;
-  body: string;
-  points: string[];
-};
-
-const PLATFORMS: Platform[] = [
-  {
-    id: 'bot',
-    icon: <DiscordIcon />,
-    label: 'BOT',
-    status: 'Fundament',
-    body: 'Wykrywa granie w tle i prowadzi Twój dziennik sesji bez ręcznego pilnowania czasu.',
-    points: ['Auto-wykrywanie uruchomionych gier', 'Rejestracja komendą /login', 'Działa na serwerze z botem'],
-  },
-  {
-    id: 'app',
-    icon: <PhoneIcon />,
-    label: 'APLIKACJA',
-    status: 'Android',
-    body: 'Sesje, biblioteka i statystyki w kieszeni — ten sam pulpit co w przeglądarce.',
-    points: ['Pulpit i ostatnie sesje', 'Dodawanie sesji i głos', 'Biblioteka i kosz na telefonie'],
-  },
-  {
-    id: 'web',
-    icon: <MonitorIcon />,
-    label: 'PRZEGLĄDARKA',
-    status: 'Desktop',
-    body: 'Sesje, biblioteka i statystyki na dużym ekranie — ten sam pulpit co w aplikacji.',
-    points: ['Mapa aktywności, passa i trendy', 'Biblioteka, okładki i łączenie gier', 'Sesja głosowa z komputera'],
-  },
-];
-
-const FEATURES = [
-  {
-    icon: <HeatmapIcon />,
-    title: 'Mapa aktywności',
-    body: 'Cały rok grania jako mapa ciepła. Serie i martwe tygodnie widać na pierwszy rzut oka.',
-  },
-  {
-    icon: <TrendIcon />,
-    title: 'Passy i trendy',
-    body: 'Aktualna passa, rekordy i trend tydzień do tygodnia. Wiesz, czy grasz więcej, czy mniej.',
-  },
-  {
-    icon: <LibraryIcon />,
-    title: 'Biblioteka gier',
-    body: 'Okładki, łączenie duplikatów, ignorowanie i kosz. Kolekcja zawsze uporządkowana.',
-  },
-  {
-    icon: <BarsIcon />,
-    title: 'Rozbicia i rankingi',
-    body: 'Ranking gier, gatunki, motywy, studia i dekady premier. Analiza z każdej strony.',
-  },
-  {
-    icon: <MicIcon />,
-    title: 'Sesja głosowa',
-    body: 'Nagraj, w co grałeś, a GameTrace zamieni to w gotową sesję do zatwierdzenia.',
-  },
-  {
-    icon: <PulseIcon />,
-    title: 'Auto-wykrywanie',
-    body: 'Bot sam widzi, kiedy grasz, i zapisuje czas. Ty tylko poprawiasz drobiazgi.',
-  },
-] as const;
-
-const METRICS = [
-  { value: '247h', label: 'ŁĄCZNY CZAS' },
-  { value: '12 dni', label: 'PASSA' },
-  { value: '6h 20m', label: 'REKORD SESJI' },
-  { value: '1h 48m', label: 'ŚR. SESJA' },
-  { value: '84', label: 'GIER W BIBLIOTECE' },
-  { value: '1 320', label: 'SESJI' },
-] as const;
-
-const STEPS = [
-  {
-    n: '01',
-    title: 'Serwer z botem',
-    body: 'Zaproś bota na swój serwer albo dołącz na serwer, który go już ma.',
-  },
-  {
-    n: '02',
-    title: '/login na kanale',
-    body: 'Wyślij komendę na czacie serwera — nie na privie. Bot poda kod do logowania.',
-  },
-  {
-    n: '03',
-    title: 'Przeglądarka lub aplikacja',
-    body: 'Zaloguj się kodem tutaj albo pobierz APK. Jedno konto wszędzie.',
-  },
-] as const;
-
-const FEED = [
-  { game: 'Baldur’s Gate 3', meta: '2h 14m', live: true },
-  { game: 'Helldivers 2', meta: 'wczoraj · 48m', live: false },
-  { game: 'Factorio', meta: 'wczoraj · 3h 02m', live: false },
-] as const;
-
 export function LandingPage() {
+  const { t } = useTranslation('welcome');
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -229,6 +129,111 @@ export function LandingPage() {
     };
   }, []);
 
+  const platforms = [
+    {
+      id: 'bot',
+      icon: <DiscordIcon />,
+      label: t('platforms.bot.label'),
+      status: t('platforms.bot.status'),
+      body: t('platforms.bot.body'),
+      points: [
+        t('platforms.bot.point1'),
+        t('platforms.bot.point2'),
+        t('platforms.bot.point3'),
+      ],
+    },
+    {
+      id: 'app',
+      icon: <PhoneIcon />,
+      label: t('platforms.app.label'),
+      status: t('platforms.app.status'),
+      body: t('platforms.app.body'),
+      points: [
+        t('platforms.app.point1'),
+        t('platforms.app.point2'),
+        t('platforms.app.point3'),
+      ],
+    },
+    {
+      id: 'web',
+      icon: <MonitorIcon />,
+      label: t('platforms.web.label'),
+      status: t('platforms.web.status'),
+      body: t('platforms.web.body'),
+      points: [
+        t('platforms.web.point1'),
+        t('platforms.web.point2'),
+        t('platforms.web.point3'),
+      ],
+    },
+  ];
+
+  const features = [
+    {
+      icon: <HeatmapIcon />,
+      title: t('features.heatmap.title'),
+      body: t('features.heatmap.body'),
+    },
+    {
+      icon: <TrendIcon />,
+      title: t('features.trends.title'),
+      body: t('features.trends.body'),
+    },
+    {
+      icon: <LibraryIcon />,
+      title: t('features.library.title'),
+      body: t('features.library.body'),
+    },
+    {
+      icon: <BarsIcon />,
+      title: t('features.rankings.title'),
+      body: t('features.rankings.body'),
+    },
+    {
+      icon: <MicIcon />,
+      title: t('features.voice.title'),
+      body: t('features.voice.body'),
+    },
+    {
+      icon: <PulseIcon />,
+      title: t('features.autoDetect.title'),
+      body: t('features.autoDetect.body'),
+    },
+  ];
+
+  const metrics = [
+    { value: '247h', label: t('metrics.totalTime') },
+    { value: '12 dni', label: t('metrics.streak') },
+    { value: '6h 20m', label: t('metrics.recordSession') },
+    { value: '1h 48m', label: t('metrics.avgSession') },
+    { value: '84', label: t('metrics.gamesInLibrary') },
+    { value: '1 320', label: t('metrics.sessions') },
+  ];
+
+  const steps = [
+    {
+      n: '01',
+      title: t('steps.server.title'),
+      body: t('steps.server.body'),
+    },
+    {
+      n: '02',
+      title: t('steps.login.title'),
+      body: t('steps.login.body'),
+    },
+    {
+      n: '03',
+      title: t('steps.client.title'),
+      body: t('steps.client.body'),
+    },
+  ];
+
+  const feed = [
+    { game: 'Baldur’s Gate 3', meta: '2h 14m', live: true },
+    { game: 'Helldivers 2', meta: t('feed.metaYesterday48'), live: false },
+    { game: 'Factorio', meta: t('feed.metaYesterday3h'), live: false },
+  ];
+
   return (
     <div className={styles.page}>
       <div className={styles.grain} aria-hidden />
@@ -238,14 +243,14 @@ export function LandingPage() {
         <div className={styles.topBar}>
           <span className={styles.topBarBrand}>
             <span className={styles.topBarMark} aria-hidden />
-            GAMETRACE<span className={styles.topBarSubtitle}> · SYSTEM ŚLEDZENIA SESJI</span>
+            GAMETRACE<span className={styles.topBarSubtitle}>{t('topBar.subtitle')}</span>
           </span>
           <button
             type="button"
             className={styles.topBarLogin}
             onClick={() => navigate(isAuthenticated ? '/' : '/login')}
           >
-            {isAuthenticated ? 'PULPIT' : 'ZALOGUJ SIĘ'}
+            {isAuthenticated ? t('topBar.dashboard') : t('topBar.login')}
             <span className={styles.topBarLoginArrow} aria-hidden>→</span>
           </button>
         </div>
@@ -253,17 +258,14 @@ export function LandingPage() {
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
             <h1 className={styles.title}>
-              Twój dziennik rozgrywek<span className={styles.titleAccent}>.</span>
+              {t('hero.titleLine1')}<span className={styles.titleAccent}>.</span>
               <br />
-              Prowadzony automatycznie<span className={styles.titleAccent}>.</span>
+              {t('hero.titleLine2')}<span className={styles.titleAccent}>.</span>
             </h1>
-            <p className={styles.lead}>
-              Bot na Discordzie wykrywa, w co i jak długo grasz. Ty przeglądasz statystyki i
-              porządkujesz bibliotekę w przeglądarce albo w aplikacji.
-            </p>
+            <p className={styles.lead}>{t('hero.lead')}</p>
             <div className={styles.heroActions}>
               <Button className={styles.ctaGlow} onClick={() => setOnboardingOpen(true)}>
-                ROZPOCZNIJ
+                {t('hero.start')}
               </Button>
               {isAuthenticated ? (
                 <a
@@ -274,7 +276,7 @@ export function LandingPage() {
                     navigate('/');
                   }}
                 >
-                  PRZEJDŹ DO PULPITU →
+                  {t('hero.goToDashboard')}
                 </a>
               ) : (
                 <a
@@ -285,7 +287,7 @@ export function LandingPage() {
                     navigate('/login');
                   }}
                 >
-                  MAM JUŻ KONTO → ZALOGUJ SIĘ
+                  {t('hero.haveAccount')}
                 </a>
               )}
               <button
@@ -293,7 +295,7 @@ export function LandingPage() {
                 className={styles.learnMoreLink}
                 onClick={() => document.getElementById('funkcje')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Dowiedz się więcej ↓
+                {t('hero.learnMore')}
               </button>
             </div>
           </div>
@@ -301,11 +303,11 @@ export function LandingPage() {
           <aside className={styles.feed} aria-hidden>
             <div className={styles.feedBar}>
               <span className={styles.feedDot} />
-              <span className={styles.feedTitle}>AUTO-DETECT</span>
-              <span className={styles.feedLive}>● LIVE</span>
+              <span className={styles.feedTitle}>{t('feed.title')}</span>
+              <span className={styles.feedLive}>{t('feed.live')}</span>
             </div>
             <ul className={styles.feedList}>
-              {FEED.map((row) => (
+              {feed.map((row) => (
                 <li key={row.game} className={styles.feedRow}>
                   <span className={styles.feedGame}>
                     {row.live && <span className={styles.feedRowDot} />}
@@ -324,11 +326,11 @@ export function LandingPage() {
 
         <section className={styles.section} id="funkcje">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Co potrafi GameTrace</h2>
+            <h2 className={styles.sectionTitle}>{t('sections.features')}</h2>
             <span className={styles.sectionRule} />
           </div>
           <div className={styles.featureGrid}>
-            {FEATURES.map((f) => (
+            {features.map((f) => (
               <article key={f.title} className={styles.featureCard}>
                 <span className={styles.featureIcon}>{f.icon}</span>
                 <h3 className={styles.featureTitle}>{f.title}</h3>
@@ -340,12 +342,12 @@ export function LandingPage() {
 
         <section className={styles.section} id="statystyki">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Statystyki, które dostajesz</h2>
-            <span className={styles.metricTag}>PRZYKŁAD</span>
+            <h2 className={styles.sectionTitle}>{t('sections.metrics')}</h2>
+            <span className={styles.metricTag}>{t('sections.metricsTag')}</span>
             <span className={styles.sectionRule} />
           </div>
           <div className={styles.metricGrid} aria-hidden>
-            {METRICS.map((m) => (
+            {metrics.map((m) => (
               <div key={m.label} className={styles.metricTile}>
                 <span className={styles.metricValue}>{m.value}</span>
                 <span className={styles.metricLabel}>{m.label}</span>
@@ -356,11 +358,11 @@ export function LandingPage() {
 
         <section className={styles.section} id="jak-zaczac">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Jak zacząć</h2>
+            <h2 className={styles.sectionTitle}>{t('sections.howToStart')}</h2>
             <span className={styles.sectionRule} />
           </div>
           <ol className={styles.steps}>
-            {STEPS.map((step) => (
+            {steps.map((step) => (
               <li key={step.n} className={styles.step}>
                 <span className={styles.stepNum}>{step.n}</span>
                 <h3 className={styles.stepTitle}>{step.title}</h3>
@@ -370,18 +372,18 @@ export function LandingPage() {
           </ol>
           <div className={styles.stepsCta}>
             <Button className={styles.ctaGlow} onClick={() => setOnboardingOpen(true)}>
-              ROZPOCZNIJ
+              {t('hero.start')}
             </Button>
           </div>
         </section>
 
         <section className={styles.section} id="platformy">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Bot, aplikacja, przeglądarka</h2>
+            <h2 className={styles.sectionTitle}>{t('sections.platforms')}</h2>
             <span className={styles.sectionRule} />
           </div>
           <div className={styles.platformGrid}>
-            {PLATFORMS.map((p) => (
+            {platforms.map((p) => (
               <article key={p.id} className={styles.platformCard}>
                 <div className={styles.platformHead}>
                   <span className={styles.platformIcon}>{p.icon}</span>
@@ -399,7 +401,7 @@ export function LandingPage() {
                     variant="secondary"
                     onClick={() => window.open(BOT_INVITE_URL, '_blank', 'noopener,noreferrer')}
                   >
-                    DODAJ BOTA DO SERWERA
+                    {t('platforms.addBot')}
                   </Button>
                 ) : null}
                 {p.id === 'app' && (
@@ -413,12 +415,12 @@ export function LandingPage() {
                       }
                     }}
                   >
-                    {apkAvailable === null ? 'SPRAWDZANIE…' : 'POBIERZ APK'}
+                    {apkAvailable === null ? t('platforms.checking') : t('platforms.downloadApk')}
                   </Button>
                 )}
                 {p.id === 'web' && (
                   <Button onClick={() => navigate(isAuthenticated ? '/' : '/login')}>
-                    {isAuthenticated ? 'OTWÓRZ W PRZEGLĄDARCE' : 'ZALOGUJ W PRZEGLĄDARCE'}
+                    {isAuthenticated ? t('platforms.openWeb') : t('platforms.loginWeb')}
                   </Button>
                 )}
               </article>
