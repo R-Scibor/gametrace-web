@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { TrashSession } from '../types/api';
 import type { ConflictResponse } from '../types/api';
 import { useTrash } from '../hooks/useTrash';
@@ -29,6 +30,7 @@ function sessionSummary(session: TrashSession, formatDuration: (s: number | null
 }
 
 export function TrashPage() {
+  const { t } = useTranslation('trash');
   const { formatDate, formatDaysUntil, formatDuration, formatSessionWindow } = useFormat();
   const { data: trash, isLoading } = useTrash();
   const [restoreConflict, setRestoreConflict] = useState<ConflictResponse | null>(null);
@@ -51,24 +53,24 @@ export function TrashPage() {
 
   return (
     <div className={styles.container}>
-      <SectionHeader title="Kosz" />
+      <SectionHeader title={t('title')} />
 
       {restoreConflict && <ConflictNotice conflict={restoreConflict} />}
 
       {isLoading && <TrashSkeleton />}
 
       {!isLoading && (!trash || trash.length === 0) && (
-        <EmptyState message="Kosz jest pusty." />
+        <EmptyState message={t('empty')} />
       )}
 
       {!isLoading && trash && trash.length > 0 && (
         <div className={styles.table}>
           <div className={styles.tableHeader}>
-            <span>Gra</span>
-            <span>Sesja</span>
-            <span>Usunięto</span>
-            <span>Wygasa za</span>
-            <span>Akcje</span>
+            <span>{t('columns.game')}</span>
+            <span>{t('columns.session')}</span>
+            <span>{t('columns.deleted')}</span>
+            <span>{t('columns.expires')}</span>
+            <span>{t('columns.actions')}</span>
           </div>
           {trash.map((session) => {
             const statusLabel = SESSION_STATUS_LABEL[session.status];
@@ -86,7 +88,7 @@ export function TrashPage() {
                     className={styles.cover}
                   />
                   <span className={styles.gameName}>
-                    {session.game?.primary_name || 'Nieznana gra'}
+                    {session.game?.primary_name || t('unknownGame')}
                   </span>
                 </div>
                 <div className={styles.sessionCell}>
@@ -125,14 +127,14 @@ export function TrashPage() {
                     disabled={restoreMut.isPending || deleteMut.isPending}
                     variant="primary"
                   >
-                    PRZYWRÓĆ
+                    {t('actions.restore')}
                   </Button>
                   <Button
                     onClick={() => setDeleteTarget(session.id)}
                     disabled={restoreMut.isPending || deleteMut.isPending}
                     variant="secondary"
                   >
-                    USUŃ TRWALE
+                    {t('actions.hardDelete')}
                   </Button>
                 </div>
               </div>
@@ -143,44 +145,45 @@ export function TrashPage() {
 
       <ConfirmDialog
         open={deleteTarget != null}
-        title="USUŃ TRWALE"
+        title={t('confirm.title')}
         message={
           deleteSession ? (
             <div className={styles.confirmBody}>
               <p>
-                Czy na pewno chcesz trwale usunąć sesję „
-                {deleteSession.game?.primary_name ?? 'nieznana'}”? Tej operacji nie można cofnąć.
+                {t('confirm.messageNamed', {
+                  name: deleteSession.game?.primary_name ?? t('confirm.unknownName'),
+                })}
               </p>
               <dl className={styles.confirmDetails}>
                 <div>
-                  <dt>Okno</dt>
+                  <dt>{t('confirm.window')}</dt>
                   <dd>
                     {formatSessionWindow(deleteSession.start_time, deleteSession.end_time)}
                   </dd>
                 </div>
                 <div>
-                  <dt>Czas</dt>
+                  <dt>{t('confirm.duration')}</dt>
                   <dd>{formatDuration(deleteSession.duration_seconds)}</dd>
                 </div>
                 {SESSION_STATUS_LABEL[deleteSession.status] && (
                   <div>
-                    <dt>Status</dt>
+                    <dt>{t('confirm.status')}</dt>
                     <dd>{SESSION_STATUS_LABEL[deleteSession.status]}</dd>
                   </div>
                 )}
                 {deleteSession.notes && (
                   <div>
-                    <dt>Notatka</dt>
+                    <dt>{t('confirm.note')}</dt>
                     <dd>{deleteSession.notes}</dd>
                   </div>
                 )}
               </dl>
             </div>
           ) : (
-            'Czy na pewno chcesz trwale usunąć tę sesję?'
+            t('confirm.messageGeneric')
           )
         }
-        confirmLabel="USUŃ TRWALE"
+        confirmLabel={t('confirm.confirm')}
         variant="danger"
         loading={deleteMut.isPending}
         onConfirm={() => {

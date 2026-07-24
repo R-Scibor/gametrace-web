@@ -1,0 +1,31 @@
+{
+  "title": "Kosz",
+  "empty": "Kosz jest pusty.",
+  "columns": {
+    "game": "Gra",
+    "session": "Sesja",
+    "deleted": "Usunięto",
+    "expires": "Wygasa za",
+    "actions": "Akcje"
+  },
+  "unknownGame": "Nieznana gra",
+  "actions": {
+    "restore": "PRZYWRÓĆ",
+    "hardDelete": "USUŃ TRWALE"
+  },
+  "confirm": {
+    "title": "USUŃ TRWALE",
+    "messageNamed": "Czy na pewno chcesz trwale usunąć sesję „{{name}}”? Tej operacji nie można cofnąć.",
+    "messageGeneric": "Czy na pewno chcesz trwale usunąć tę sesję?",
+    "unknownName": "nieznana",
+    "window": "Okno",
+    "duration": "Czas",
+    "status": "Status",
+    "note": "Notatka",
+    "confirm": "USUŃ TRWALE"
+  },
+  "toast": {
+    "hardDeleted": "Sesja trwale usunięta.",
+    "hardDeleteFailed": "Nie udało się usunąć sesji."
+  }
+}
