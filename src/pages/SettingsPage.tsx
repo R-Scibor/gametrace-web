@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useProfile, useUpdateSettings } from '../hooks/useProfile';
 import { useHealth } from '../hooks/useHealth';
@@ -29,6 +30,8 @@ function SettingsRow({
 }
 
 export function SettingsPage() {
+  const { t } = useTranslation('settings');
+  const { t: tCommon } = useTranslation('common');
   const { user } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { data: health } = useHealth();
@@ -50,7 +53,7 @@ export function SettingsPage() {
   if (profileLoading) {
     return (
       <div className={styles.container}>
-        <SectionHeader title="Ustawienia" />
+        <SectionHeader title={t('title')} />
         <Skeleton height={300} />
       </div>
     );
@@ -61,36 +64,49 @@ export function SettingsPage() {
 
   return (
     <div className={styles.container}>
-      <SectionHeader title="Ustawienia" />
+      <SectionHeader title={t('title')} />
 
       <div className={styles.panel}>
-        <h3 className={styles.sectionTitle}>Konto</h3>
-        <SettingsRow label="Użytkownik" subtext={profile?.discord_id ? `ID: ${profile.discord_id}` : undefined}>
+        <h3 className={styles.sectionTitle}>{t('sections.account')}</h3>
+        <SettingsRow
+          label={t('account.user')}
+          subtext={
+            profile?.discord_id
+              ? t('account.discordId', { id: profile.discord_id })
+              : undefined
+          }
+        >
           <span className={styles.value}>{profile?.username ?? user?.username ?? '—'}</span>
         </SettingsRow>
       </div>
 
       <div className={styles.panel}>
-        <h3 className={styles.sectionTitle}>Preferencje</h3>
-        <SettingsRow label="Język" subtext={language === 'pl' ? 'Polski' : 'English'}>
+        <h3 className={styles.sectionTitle}>{t('sections.preferences')}</h3>
+        <SettingsRow
+          label={t('preferences.language')}
+          subtext={language === 'pl' ? tCommon('language.pl') : tCommon('language.en')}
+        >
           <LanguageSelect
             value={language}
             onChange={selectLanguage}
             disabled={languagePending}
           />
         </SettingsRow>
-        <SettingsRow label="Strefa czasowa" subtext={timezone}>
+        <SettingsRow label={t('preferences.timezone')} subtext={timezone}>
           <TimezoneSelect
             value={timezone}
             onChange={handleTimezone}
             disabled={updateSettings.isPending}
           />
         </SettingsRow>
-        <SettingsRow label="Raport tygodniowy" subtext="Wysyłany przez bota na Discord">
+        <SettingsRow
+          label={t('preferences.weeklyReport')}
+          subtext={t('preferences.weeklyReportSub')}
+        >
           <label className={styles.toggle}>
             <input
               type="checkbox"
-              aria-label="Raport tygodniowy"
+              aria-label={t('preferences.weeklyReport')}
               checked={profile?.weekly_report_enabled ?? false}
               onChange={(e) => handleWeeklyReport(e.target.checked)}
               disabled={updateSettings.isPending}
@@ -98,11 +114,11 @@ export function SettingsPage() {
             <span className={styles.toggleSlider} />
           </label>
         </SettingsRow>
-        <SettingsRow label="Powiadomienia push" subtext="Alerty na urządzeniu mobilnym">
+        <SettingsRow label={t('preferences.push')} subtext={t('preferences.pushSub')}>
           <label className={styles.toggle}>
             <input
               type="checkbox"
-              aria-label="Powiadomienia push"
+              aria-label={t('preferences.push')}
               checked={profile?.push_enabled ?? false}
               onChange={(e) => handlePushEnabled(e.target.checked)}
               disabled={updateSettings.isPending}
@@ -113,8 +129,8 @@ export function SettingsPage() {
       </div>
 
       <div className={styles.panel}>
-        <h3 className={styles.sectionTitle}>Status</h3>
-        <SettingsRow label="Bot">
+        <h3 className={styles.sectionTitle}>{t('sections.status')}</h3>
+        <SettingsRow label={t('status.bot')}>
           <span
             className={styles.statusValue}
             style={{ color: health ? botColor(health.bot.status) : undefined }}
@@ -123,11 +139,11 @@ export function SettingsPage() {
           </span>
         </SettingsRow>
         {health?.bot.uptime_seconds != null && (
-          <SettingsRow label="Bot aktywny od">
+          <SettingsRow label={t('status.botUptime')}>
             <span className={styles.statusValue}>{formatUptime(health.bot.uptime_seconds)}</span>
           </SettingsRow>
         )}
-        <SettingsRow label="Wersja API">
+        <SettingsRow label={t('status.apiVersion')}>
           <span className={styles.statusValue}>{health?.version ?? '—'}</span>
         </SettingsRow>
       </div>
