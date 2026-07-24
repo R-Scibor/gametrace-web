@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useFormat } from '../../hooks/useFormat';
 import styles from './DashboardStatTiles.module.css';
 
@@ -25,6 +26,7 @@ export function DashboardStatTiles({
   streakDays = null,
   layout = 'rail',
 }: DashboardStatTilesProps) {
+  const { t } = useTranslation('dashboard');
   const { formatHours } = useFormat();
 
   const avgValue =
@@ -32,19 +34,19 @@ export function DashboardStatTiles({
   const streakValue = streakDays == null ? '—' : String(streakDays);
 
   const tiles: Tile[] = [
-    { key: 'today', label: 'DZIŚ', value: formatHours(todaySeconds), unit: 'h' },
-    { key: 'week', label: '7 DNI', value: formatHours(weekSeconds), unit: 'h' },
+    { key: 'today', label: t('tiles.today'), value: formatHours(todaySeconds), unit: 'h' },
+    { key: 'week', label: t('tiles.week'), value: formatHours(weekSeconds), unit: 'h' },
     {
       key: 'avg',
-      label: 'ŚR. SESJA',
+      label: t('tiles.avgSession'),
       value: avgValue,
       unit: avgValue === '—' ? undefined : 'h',
     },
     {
       key: 'streak',
-      label: 'PASSA',
+      label: t('tiles.streak'),
       value: streakValue,
-      unit: streakValue === '—' ? undefined : 'dni',
+      unit: streakValue === '—' ? undefined : t('tiles.daysUnit'),
     },
   ];
 

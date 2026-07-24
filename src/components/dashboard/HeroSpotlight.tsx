@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { GameStats, Session } from '../../types/api';
 import { Cover } from '../Cover';
 import { useFormat } from '../../hooks/useFormat';
@@ -11,6 +12,7 @@ interface HeroSpotlightProps {
 }
 
 export function HeroSpotlight({ session, stats, disabled }: HeroSpotlightProps) {
+  const { t } = useTranslation('dashboard');
   const { formatHours, formatRecency } = useFormat();
 
   const avgSeconds =
@@ -28,14 +30,14 @@ export function HeroSpotlight({ session, stats, disabled }: HeroSpotlightProps) 
           />
         </div>
         <div className={styles.meta}>
-          <span className={styles.eyebrow}>OSTATNIO GRANE</span>
+          <span className={styles.eyebrow}>{t('hero.lastPlayed')}</span>
           <span className={styles.name}>{session.game.primary_name}</span>
           <span className={styles.recency}>
             {formatRecency(session.end_time ?? session.start_time)}
           </span>
           <div className={styles.bottom}>
             <div>
-              <span className={styles.statLabel}>ŁĄCZNIE</span>
+              <span className={styles.statLabel}>{t('hero.total')}</span>
               <div className={styles.bigRow}>
                 <span className={styles.big}>{stats ? formatHours(stats.total_seconds) : '—'}</span>
                 <span className={styles.bigUnit}>h</span>
@@ -43,11 +45,11 @@ export function HeroSpotlight({ session, stats, disabled }: HeroSpotlightProps) 
             </div>
             <div className={styles.sideStats}>
               <div>
-                <span className={styles.statLabel}>SESJE</span>
+                <span className={styles.statLabel}>{t('hero.sessions')}</span>
                 <span className={styles.statValue}>{stats ? stats.session_count : '—'}</span>
               </div>
               <div>
-                <span className={styles.statLabel}>ŚR. SESJA</span>
+                <span className={styles.statLabel}>{t('hero.avgSession')}</span>
                 <span className={styles.statValue}>
                   {avgSeconds != null ? `${formatHours(avgSeconds)}h` : '—'}
                 </span>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { ActiveSessionBrief } from '../../types/api';
 import { Cover } from '../Cover';
 import { LiveTimer } from '../LiveTimer';
@@ -10,14 +11,15 @@ interface ActiveSessionCardProps {
 }
 
 export function ActiveSessionCard({ session }: ActiveSessionCardProps) {
+  const { t } = useTranslation('dashboard');
   const { formatTimeShort } = useFormat();
 
   return (
     <Link to={`/library/${session.game_id}`} className={styles.card}>
       <div className={styles.topBar}>
         <span className={styles.liveDot} />
-        <span className={styles.liveLabel}>AKTYWNA SESJA</span>
-        <span className={styles.liveBadge}>● LIVE</span>
+        <span className={styles.liveLabel}>{t('active.label')}</span>
+        <span className={styles.liveBadge}>{t('active.live')}</span>
       </div>
       <div className={styles.row}>
         <div className={styles.coverWrap}>
@@ -31,11 +33,13 @@ export function ActiveSessionCard({ session }: ActiveSessionCardProps) {
         <div className={styles.meta}>
           <span className={styles.name}>{session.game_name}</span>
           <LiveTimer startIso={session.start_time} className={styles.timer} />
-          <span className={styles.startedAt}>od {formatTimeShort(session.start_time)}</span>
+          <span className={styles.startedAt}>
+            {t('active.startedAt', { time: formatTimeShort(session.start_time) })}
+          </span>
         </div>
       </div>
       <div className={styles.footer}>
-        <span className={styles.footerAction}>szczegóły →</span>
+        <span className={styles.footerAction}>{t('active.details')}</span>
       </div>
     </Link>
   );

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDashboard } from '../hooks/useDashboard';
 import { useRecentSessions } from '../hooks/useSessions';
 import { useStatsSummary, useStreak } from '../hooks/useStats';
@@ -47,6 +48,7 @@ function DashboardSkeleton() {
 }
 
 export function DashboardPage() {
+  const { t } = useTranslation('dashboard');
   const { formatHeaderDate, formatHours } = useFormat();
   const { data, isLoading, isError, refetch } = useDashboard();
   const { data: weekStats, isLoading: weekStatsLoading } = useStatsSummary(7);
@@ -67,9 +69,9 @@ export function DashboardPage() {
   if (isError || !data) {
     return (
       <div className={styles.container}>
-        <ErrorBanner message="Nie udało się pobrać danych panelu." />
+        <ErrorBanner message={t('error.load')} />
         <button type="button" onClick={() => refetch()} className={styles.retry}>
-          SPRÓBUJ PONOWNIE
+          {t('error.retry')}
         </button>
       </div>
     );
@@ -92,15 +94,13 @@ export function DashboardPage() {
               data-live={isLive ? 'true' : 'false'}
               aria-hidden
             />
-            {isLive
-              ? 'SYSTEM AKTYWNY · SESJA W TOKU'
-              : 'SYSTEM GOTOWY · BRAK AKTYWNEJ SESJI'}
+            {isLive ? t('status.active') : t('status.idle')}
           </span>
         </div>
         <div className={styles.headRight}>
           <span className={styles.headDate}>{formatHeaderDate()}</span>
           <span className={styles.headMetric}>
-            <span className={styles.headMetricLabel}>TEN TYDZIEŃ</span>
+            <span className={styles.headMetricLabel}>{t('header.thisWeek')}</span>
             <span className={styles.headMetricValue}>
               {formatHours(showPreview ? SAMPLE_DASHBOARD.total_seconds_7d : data.total_seconds_7d)}h
             </span>
@@ -133,7 +133,7 @@ export function DashboardPage() {
         />
       </div>
 
-      <SectionHeader title="Ostatnie sesje" />
+      <SectionHeader title={t('recentSessions')} />
       {showPreview ? (
         <RecentSessionsList sessions={SAMPLE_SESSIONS.slice(0, 8)} disabled />
       ) : (

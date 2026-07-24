@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Session } from '../../types/api';
 import { Cover } from '../Cover';
 import { EmptyState, Skeleton } from '../ui';
@@ -12,6 +13,8 @@ interface RecentSessionsListProps {
 }
 
 export function RecentSessionsList({ sessions, loading, disabled }: RecentSessionsListProps) {
+  const { t } = useTranslation('dashboard');
+  const { t: tCommon } = useTranslation('common');
   const { formatDuration, formatSessionWindow } = useFormat();
 
   if (loading) {
@@ -25,7 +28,7 @@ export function RecentSessionsList({ sessions, loading, disabled }: RecentSessio
   }
 
   if (sessions.length === 0) {
-    return <EmptyState message="Brak sesji do wyświetlenia" />;
+    return <EmptyState message={t('empty')} />;
   }
 
   return (
@@ -54,7 +57,7 @@ export function RecentSessionsList({ sessions, loading, disabled }: RecentSessio
                 </span>
               </div>
               {isError ? (
-                <span className={styles.errorBadge}>BŁĄD</span>
+                <span className={styles.errorBadge}>{tCommon('session.status.ERROR')}</span>
               ) : (
                 <span className={styles.duration}>{formatDuration(session.duration_seconds)}</span>
               )}
