@@ -1,0 +1,43 @@
+{
+  "title": {
+    "edit": "Edytuj sesję",
+    "add": "Dodaj sesję"
+  },
+  "ongoing": {
+    "message": "Nie można edytować aktywnej sesji.",
+    "back": "← Wróć do gry"
+  },
+  "fields": {
+    "game": "Gra",
+    "start": "Rozpoczęcie",
+    "end": "Zakończenie",
+    "systemNote": "Notatka systemowa",
+    "transcriptPreview": "Podgląd transkrypcji",
+    "transcriptHint": "Tylko podgląd — nie zapisuje się w sesji."
+  },
+  "actions": {
+    "saving": "ZAPISYWANIE...",
+    "saveChanges": "ZAPISZ ZMIANY",
+    "saveSession": "ZAPISZ SESJĘ",
+    "recordVoice": "NAGRAJ GŁOSOWO",
+    "discard": "ODRZUĆ SESJĘ",
+    "delete": "USUŃ SESJĘ"
+  },
+  "deleteConfirm": {
+    "title": "USUŃ SESJĘ",
+    "message": "Przenieść sesję do kosza? Możesz ją później przywrócić.",
+    "confirm": "USUŃ SESJĘ"
+  },
+  "toast": {
+    "saved": "Sesja zapisana.",
+    "saveFailed": "Nie udało się zapisać sesji.",
+    "changesSaved": "Zmiany zapisane.",
+    "changesFailed": "Nie udało się zapisać zmian.",
+    "discarded": "Sesja odrzucona.",
+    "discardFailed": "Nie udało się odrzucić sesji.",
+    "restored": "Sesja przywrócona.",
+    "restoreFailed": "Nie udało się przywrócić sesji.",
+    "movedToTrash": "Sesja przeniesiona do kosza.",
+    "deleteFailed": "Nie udało się usunąć sesji."
+  }
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { FormEvent } from 'react';
 import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useSession } from '../hooks/useSession';
 import { ConflictNotice } from '../components/ConflictNotice';
 import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
@@ -33,6 +34,7 @@ function SessionFormSkeleton() {
 }
 
 export function SessionFormPage() {
+  const { t } = useTranslation('sessions');
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -94,10 +96,10 @@ export function SessionFormPage() {
   if (isEditing && session?.status === 'ONGOING') {
     return (
       <div className={styles.container}>
-        <SectionHeader title="Edytuj sesję" />
-        <EmptyState message="Nie można edytować aktywnej sesji." />
+        <SectionHeader title={t('title.edit')} />
+        <EmptyState message={t('ongoing.message')} />
         <Link to={`/library/${session.game_id}`} className={styles.backLink}>
-          ← Wróć do gry
+          {t('ongoing.back')}
         </Link>
       </div>
     );
@@ -132,24 +134,24 @@ export function SessionFormPage() {
 
   return (
     <div className={styles.container}>
-      <SectionHeader title={isEditing ? 'Edytuj sesję' : 'Dodaj sesję'} />
+      <SectionHeader title={isEditing ? t('title.edit') : t('title.add')} />
 
       {conflict && <ConflictNotice conflict={conflict} />}
 
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputGroup}>
-          <label htmlFor="session-game" className={styles.label}>Gra</label>
+          <label htmlFor="session-game" className={styles.label}>{t('fields.game')}</label>
           <GameSelect
             id="session-game"
             value={gameId}
             onChange={(v) => { setGameId(v); clearConflict(); }}
             disabled={isEditing || pending}
-            aria-label="Gra"
+            aria-label={t('fields.game')}
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="session-start" className={styles.label}>Rozpoczęcie</label>
+          <label htmlFor="session-start" className={styles.label}>{t('fields.start')}</label>
           <input
             id="session-start"
             type="datetime-local"
@@ -162,7 +164,7 @@ export function SessionFormPage() {
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="session-end" className={styles.label}>Zakończenie</label>
+          <label htmlFor="session-end" className={styles.label}>{t('fields.end')}</label>
           <input
             id="session-end"
             type="datetime-local"
@@ -176,26 +178,30 @@ export function SessionFormPage() {
 
         {isEditing && session?.notes && (
           <div className={styles.inputGroup}>
-            <span className={styles.label}>Notatka systemowa</span>
+            <span className={styles.label}>{t('fields.systemNote')}</span>
             <p className={styles.notesReadonly}>{session.notes}</p>
           </div>
         )}
 
         {!isEditing && voiceNote && (
           <div className={styles.inputGroup}>
-            <span className={styles.label}>Podgląd transkrypcji</span>
-            <p className={styles.notesHint}>Tylko podgląd — nie zapisuje się w sesji.</p>
+            <span className={styles.label}>{t('fields.transcriptPreview')}</span>
+            <p className={styles.notesHint}>{t('fields.transcriptHint')}</p>
             <p className={styles.notesReadonly}>{voiceNote}</p>
           </div>
         )}
 
         <div className={styles.actions}>
           <Button type="submit" variant="primary" disabled={pending}>
-            {pending ? 'ZAPISYWANIE...' : isEditing ? 'ZAPISZ ZMIANY' : 'ZAPISZ SESJĘ'}
+            {pending
+              ? t('actions.saving')
+              : isEditing
+                ? t('actions.saveChanges')
+                : t('actions.saveSession')}
           </Button>
           {!isEditing && (
             <Button type="button" variant="secondary" disabled={pending} onClick={() => navigate('/voice')}>
-              NAGRAJ GŁOSOWO
+              {t('actions.recordVoice')}
             </Button>
           )}
           {isEditing && session?.status === 'ERROR' && (
@@ -205,7 +211,7 @@ export function SessionFormPage() {
               disabled={pending}
               onClick={() => discardMut.mutate(undefined, { onSuccess: () => navigate(-1) })}
             >
-              ODRZUĆ SESJĘ
+              {t('actions.discard')}
             </Button>
           )}
           {isEditing && session?.status === 'COMPLETED' && (
@@ -215,7 +221,7 @@ export function SessionFormPage() {
               disabled={pending}
               onClick={() => setDeleteConfirmOpen(true)}
             >
-              USUŃ SESJĘ
+              {t('actions.delete')}
             </Button>
           )}
         </div>
@@ -223,9 +229,9 @@ export function SessionFormPage() {
 
       <ConfirmDialog
         open={deleteConfirmOpen}
-        title="USUŃ SESJĘ"
-        message="Przenieść sesję do kosza? Możesz ją później przywrócić."
-        confirmLabel="USUŃ SESJĘ"
+        title={t('deleteConfirm.title')}
+        message={t('deleteConfirm.message')}
+        confirmLabel={t('deleteConfirm.confirm')}
         variant="danger"
         loading={deleteMut.isPending}
         onConfirm={() =>

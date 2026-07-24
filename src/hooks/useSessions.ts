@@ -7,6 +7,7 @@ import {
   deleteSession,
   restoreSession,
 } from '../api/sessions';
+import i18n from '../i18n';
 import { qk } from '../lib/queryKeys';
 import { useToastStore } from '../store/toastStore';
 import type { SessionCreate, SessionPatch } from '../types/api';
@@ -38,11 +39,11 @@ export function useCreateSession() {
     mutationFn: createSession,
     onSuccess: (_data, vars: SessionCreate) => {
       invalidateAfterSessionChange(queryClient, vars.game_id);
-      pushToast({ type: 'success', message: 'Sesja zapisana.' });
+      pushToast({ type: 'success', message: i18n.t('sessions:toast.saved') });
     },
     onError: (err) => {
       if (axios.isAxiosError(err) && err.response?.status === 409) return;
-      pushToast({ type: 'error', message: 'Nie udało się zapisać sesji.' });
+      pushToast({ type: 'error', message: i18n.t('sessions:toast.saveFailed') });
     },
   });
 }
@@ -56,10 +57,10 @@ export function usePatchSession(sessionId: number, gameId?: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: qk.session(sessionId) });
       invalidateAfterSessionChange(queryClient, gameId);
-      pushToast({ type: 'success', message: 'Zmiany zapisane.' });
+      pushToast({ type: 'success', message: i18n.t('sessions:toast.changesSaved') });
     },
     onError: () => {
-      pushToast({ type: 'error', message: 'Nie udało się zapisać zmian.' });
+      pushToast({ type: 'error', message: i18n.t('sessions:toast.changesFailed') });
     },
   });
 }
@@ -74,10 +75,10 @@ export function useDiscardSession(sessionId: number, gameId?: number) {
     mutationFn: () => deleteSession(sessionId),
     onSuccess: () => {
       invalidateAfterSessionChange(queryClient, gameId);
-      pushToast({ type: 'success', message: 'Sesja odrzucona.' });
+      pushToast({ type: 'success', message: i18n.t('sessions:toast.discarded') });
     },
     onError: () => {
-      pushToast({ type: 'error', message: 'Nie udało się odrzucić sesji.' });
+      pushToast({ type: 'error', message: i18n.t('sessions:toast.discardFailed') });
     },
   });
 }
@@ -91,11 +92,11 @@ export function useRestoreSession() {
     onSuccess: (session) => {
       queryClient.invalidateQueries({ queryKey: qk.trash });
       invalidateAfterSessionChange(queryClient, session.game_id);
-      pushToast({ type: 'success', message: 'Sesja przywrócona.' });
+      pushToast({ type: 'success', message: i18n.t('sessions:toast.restored') });
     },
     onError: (err) => {
       if (axios.isAxiosError(err) && err.response?.status === 409) return;
-      pushToast({ type: 'error', message: 'Nie udało się przywrócić sesji.' });
+      pushToast({ type: 'error', message: i18n.t('sessions:toast.restoreFailed') });
     },
   });
 }
@@ -109,10 +110,10 @@ export function useDeleteSession(gameId?: number) {
     onSuccess: () => {
       invalidateAfterSessionChange(queryClient, gameId);
       queryClient.invalidateQueries({ queryKey: qk.trash });
-      pushToast({ type: 'success', message: 'Sesja przeniesiona do kosza.' });
+      pushToast({ type: 'success', message: i18n.t('sessions:toast.movedToTrash') });
     },
     onError: () => {
-      pushToast({ type: 'error', message: 'Nie udało się usunąć sesji.' });
+      pushToast({ type: 'error', message: i18n.t('sessions:toast.deleteFailed') });
     },
   });
 }
