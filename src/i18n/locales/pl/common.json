@@ -84,5 +84,16 @@
   "toast": {
     "settingsSaved": "Ustawienia zapisane.",
     "settingsSaveFailed": "Nie udało się zapisać ustawień."
+  },
+  "relative": {
+    "soon": "wkrótce",
+    "oneDay": "1 dzień",
+    "days": "{{days}} dni"
+  },
+  "recency": {
+    "today": "grano dziś",
+    "yesterday": "grano wczoraj",
+    "daysAgo": "grano {{days}} dni temu",
+    "onDate": "grano {{date}}"
   }
 }

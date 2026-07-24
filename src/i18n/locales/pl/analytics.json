@@ -4,7 +4,9 @@
     "lastDays": "OSTATNIE {{days}} DNI",
     "ariaLabel": "Okres",
     "pillMax": "MAX",
-    "pillDays": "{{days}} DNI"
+    "pillDays": "{{days}} DNI",
+    "subtitleAll": "w całym okresie",
+    "subtitleDays": "w ciągu ostatnich {{days}} dni"
   },
   "sections": {
     "whenYouPlay": "Kiedy grasz",

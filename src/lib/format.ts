@@ -1,3 +1,5 @@
+import i18n from '../i18n';
+
 export interface FormatOptions {
   timeZone?: string;
 }
@@ -56,9 +58,9 @@ export function formatHeaderDate(options?: FormatOptions): string {
 
 export function formatDaysUntil(iso: string): string {
   const days = Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000);
-  if (days <= 0) return 'wkrótce';
-  if (days === 1) return '1 dzień';
-  return `${days} dni`;
+  if (days <= 0) return i18n.t('common:relative.soon');
+  if (days === 1) return i18n.t('common:relative.oneDay');
+  return i18n.t('common:relative.days', { days });
 }
 
 const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
@@ -66,10 +68,12 @@ const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDat
 export function formatRecency(iso: string): string {
   const then = new Date(iso);
   const days = Math.round((startOfDay(new Date()) - startOfDay(then)) / 86_400_000);
-  if (days <= 0) return 'grano dziś';
-  if (days === 1) return 'grano wczoraj';
-  if (days < 7) return `grano ${days} dni temu`;
-  return `grano ${then.toLocaleDateString(LOCALE, { day: '2-digit', month: 'short' })}`;
+  if (days <= 0) return i18n.t('common:recency.today');
+  if (days === 1) return i18n.t('common:recency.yesterday');
+  if (days < 7) return i18n.t('common:recency.daysAgo', { days });
+  return i18n.t('common:recency.onDate', {
+    date: then.toLocaleDateString(LOCALE, { day: '2-digit', month: 'short' }),
+  });
 }
 
 export function formatSessionWindow(
@@ -94,9 +98,7 @@ export function formatPeriodDelta(total: number, previous: number): string | nul
 }
 
 export function formatAnalyticsPeriodSubtitle(days: number): string {
-  return days === 0 ? 'w całym okresie' : `w ciągu ostatnich ${days} dni`;
-}
-
-export function analyticsPeriodLabel(days: number): string {
-  return days === 0 ? 'Cały okres' : `Ostatnie ${days} dni`;
+  return days === 0
+    ? i18n.t('analytics:period.subtitleAll')
+    : i18n.t('analytics:period.subtitleDays', { days });
 }
