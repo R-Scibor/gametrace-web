@@ -1,0 +1,39 @@
+{
+  "eyebrow": "GAMETRACE · APLIKACJA ANDROID",
+  "titleLine1": "Pobierz aplikację",
+  "titleLine2": "Ten sam dziennik, w kieszeni",
+  "lead": "Oficjalny APK GameTrace — sesje, biblioteka i statystyki jak w przeglądarce. Konto zakładasz przez Discorda.",
+  "unavailable": "Plik APK jest chwilowo niedostępny. Spróbuj później albo skorzystaj z wersji w przeglądarce.",
+  "primary": {
+    "checking": "SPRAWDZANIE…",
+    "download": "POBIERZ APK",
+    "unavailable": "APK NIEDOSTĘPNE"
+  },
+  "status": {
+    "checking": "SPRAWDZANIE",
+    "ready": "APK GOTOWY",
+    "unavailable": "NIEDOSTĘPNE"
+  },
+  "goToDashboard": "PRZEJDŹ DO PULPITU →",
+  "seeInBrowser": "ZOBACZ GAMETRACE W PRZEGLĄDARCE →",
+  "handoff": {
+    "ariaLabel": "Przenieś link na telefon",
+    "title": "PRZENIEŚ NA TELEFON",
+    "hint": "Skan otwiera tę stronę na telefonie — potem stuknij Pobierz APK."
+  },
+  "install": {
+    "summary": "Jak zainstalować",
+    "step1": {
+      "title": "Pobierz plik",
+      "body": "Stuknij Pobierz APK i zapisz plik na telefonie."
+    },
+    "step2": {
+      "title": "Otwórz gametrace.apk",
+      "body": "Znajdź plik w powiadomieniach albo w menedżerze plików i otwórz go."
+    },
+    "step3": {
+      "title": "Zezwól na instalację",
+      "body": "Jeśli system zapyta — zezwól na instalację z tej przeglądarki lub nieznanych źródeł."
+    }
+  }
+}

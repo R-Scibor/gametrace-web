@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../components/ui';
 import { ApkQrCode } from '../components/welcome/ApkQrCode';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
@@ -7,25 +8,8 @@ import { useHealth } from '../hooks/useHealth';
 import { useAuthStore } from '../store/authStore';
 import styles from './DownloadPage.module.css';
 
-const INSTALL_STEPS = [
-  {
-    n: '01',
-    title: 'Pobierz plik',
-    body: 'Stuknij Pobierz APK i zapisz plik na telefonie.',
-  },
-  {
-    n: '02',
-    title: 'Otwórz gametrace.apk',
-    body: 'Znajdź plik w powiadomieniach albo w menedżerze plików i otwórz go.',
-  },
-  {
-    n: '03',
-    title: 'Zezwól na instalację',
-    body: 'Jeśli system zapyta — zezwól na instalację z tej przeglądarki lub nieznanych źródeł.',
-  },
-] as const;
-
 export function DownloadPage() {
+  const { t } = useTranslation('download');
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { data: health } = useHealth();
@@ -56,10 +40,36 @@ export function DownloadPage() {
   };
 
   const primaryLabel =
-    apkAvailable === null ? 'SPRAWDZANIE…' : apkAvailable ? 'POBIERZ APK' : 'APK NIEDOSTĘPNE';
+    apkAvailable === null
+      ? t('primary.checking')
+      : apkAvailable
+        ? t('primary.download')
+        : t('primary.unavailable');
 
   const statusLabel =
-    apkAvailable === null ? 'SPRAWDZANIE' : apkAvailable ? 'APK GOTOWY' : 'NIEDOSTĘPNE';
+    apkAvailable === null
+      ? t('status.checking')
+      : apkAvailable
+        ? t('status.ready')
+        : t('status.unavailable');
+
+  const installSteps = [
+    {
+      n: '01',
+      title: t('install.step1.title'),
+      body: t('install.step1.body'),
+    },
+    {
+      n: '02',
+      title: t('install.step2.title'),
+      body: t('install.step2.body'),
+    },
+    {
+      n: '03',
+      title: t('install.step3.title'),
+      body: t('install.step3.body'),
+    },
+  ];
 
   return (
     <div className={styles.page}>
@@ -71,22 +81,18 @@ export function DownloadPage() {
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}>
               <span className={styles.eyebrowPulse} />
-              GAMETRACE · APLIKACJA ANDROID
+              {t('eyebrow')}
             </p>
             <h1 className={styles.title}>
-              Pobierz aplikację<span className={styles.titleAccent}>.</span>
+              {t('titleLine1')}<span className={styles.titleAccent}>.</span>
               <br />
-              Ten sam dziennik, w kieszeni<span className={styles.titleAccent}>.</span>
+              {t('titleLine2')}<span className={styles.titleAccent}>.</span>
             </h1>
-            <p className={styles.lead}>
-              Oficjalny APK GameTrace — sesje, biblioteka i statystyki jak w przeglądarce. Konto
-              zakładasz przez Discorda.
-            </p>
+            <p className={styles.lead}>{t('lead')}</p>
 
             {apkAvailable === false && (
               <p className={styles.unavailable} role="status">
-                Plik APK jest chwilowo niedostępny. Spróbuj później albo skorzystaj z wersji w
-                przeglądarce.
+                {t('unavailable')}
               </p>
             )}
 
@@ -107,7 +113,7 @@ export function DownloadPage() {
                     navigate('/');
                   }}
                 >
-                  PRZEJDŹ DO PULPITU →
+                  {t('goToDashboard')}
                 </a>
               ) : (
                 <a
@@ -118,7 +124,7 @@ export function DownloadPage() {
                     navigate('/welcome');
                   }}
                 >
-                  ZOBACZ GAMETRACE W PRZEGLĄDARCE →
+                  {t('seeInBrowser')}
                 </a>
               )}
             </div>
@@ -126,11 +132,11 @@ export function DownloadPage() {
 
           <aside
             className={[styles.handoff, apkAvailable === true ? styles.handoffReady : ''].join(' ')}
-            aria-label="Przenieś link na telefon"
+            aria-label={t('handoff.ariaLabel')}
           >
             <div className={styles.handoffBar}>
               <span className={styles.handoffDot} />
-              <span className={styles.handoffTitle}>PRZENIEŚ NA TELEFON</span>
+              <span className={styles.handoffTitle}>{t('handoff.title')}</span>
               <span
                 className={[
                   styles.handoffStatus,
@@ -145,9 +151,7 @@ export function DownloadPage() {
             </div>
             <div className={styles.handoffBody}>
               <ApkQrCode size={176} visible />
-              <p className={styles.handoffHint}>
-                Skan otwiera tę stronę na telefonie — potem stuknij Pobierz APK.
-              </p>
+              <p className={styles.handoffHint}>{t('handoff.hint')}</p>
             </div>
             <div className={styles.handoffFoot}>
               <span>gametrace · download</span>
@@ -158,9 +162,9 @@ export function DownloadPage() {
 
         <section className={styles.installSection}>
           <details className={styles.installDetails}>
-            <summary className={styles.installSummary}>Jak zainstalować</summary>
+            <summary className={styles.installSummary}>{t('install.summary')}</summary>
             <ol className={styles.installSteps}>
-              {INSTALL_STEPS.map((step) => (
+              {installSteps.map((step) => (
                 <li key={step.n} className={styles.installStep}>
                   <span className={styles.installNum}>{step.n}</span>
                   <div>
