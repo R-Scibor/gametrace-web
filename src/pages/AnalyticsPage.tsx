@@ -1,4 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { PendingErrorsBanner } from '../components/dashboard/PendingErrorsBanner';
 import { SampleDataBanner } from '../components/ui';
 import { StatsOverview } from '../components/analytics/StatsOverview';
@@ -26,11 +27,8 @@ import {
 import { ANALYTICS_DAY_PRESETS, analyticsPeriodPillLabel, parseAnalyticsDays } from '../lib/analyticsDays';
 import styles from './AnalyticsPage.module.css';
 
-function periodContextLabel(days: number): string {
-  return days === 0 ? 'CAŁY OKRES' : `OSTATNIE ${days} DNI`;
-}
-
 export function AnalyticsPage() {
+  const { t } = useTranslation('analytics');
   const [searchParams, setSearchParams] = useSearchParams();
   const days = parseAnalyticsDays(searchParams.get('days'));
   const { data: summary } = useStatsSummary(days);
@@ -51,6 +49,9 @@ export function AnalyticsPage() {
     );
   };
 
+  const periodContextLabel =
+    days === 0 ? t('period.all') : t('period.lastDays', { days });
+
   return (
     <div className={styles.container}>
       <div className={styles.ambient} aria-hidden />
@@ -60,9 +61,9 @@ export function AnalyticsPage() {
       <div className={styles.toolbar}>
         <span className={styles.statusLine}>
           <span className={styles.statusDot} aria-hidden />
-          {periodContextLabel(days)}
+          {periodContextLabel}
         </span>
-        <div className={styles.periodRow} role="group" aria-label="Okres">
+        <div className={styles.periodRow} role="group" aria-label={t('period.ariaLabel')}>
           {ANALYTICS_DAY_PRESETS.map((preset) => (
             <button
               key={preset}
@@ -96,7 +97,7 @@ export function AnalyticsPage() {
         />
 
         <div className={styles.sectionLabel}>
-          <span className={styles.sectionText}>Kiedy grasz</span>
+          <span className={styles.sectionText}>{t('sections.whenYouPlay')}</span>
           <span className={styles.sectionRule} />
         </div>
 
@@ -113,7 +114,7 @@ export function AnalyticsPage() {
         </div>
 
         <div className={styles.sectionLabel}>
-          <span className={styles.sectionText}>Twój gust</span>
+          <span className={styles.sectionText}>{t('sections.yourTaste')}</span>
           <span className={styles.sectionRule} />
         </div>
 
@@ -126,7 +127,7 @@ export function AnalyticsPage() {
         />
 
         <div className={styles.sectionLabel}>
-          <span className={styles.sectionText}>Twórcy</span>
+          <span className={styles.sectionText}>{t('sections.creators')}</span>
           <span className={styles.sectionRule} />
         </div>
 

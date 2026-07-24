@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { GameStatEntry } from '../../types/api';
 import { formatDuration } from '../../lib/format';
 import styles from './GameRankingTable.module.css';
@@ -18,6 +19,7 @@ function sortIndicator(active: boolean, dir: SortDir): string {
 }
 
 export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
+  const { t } = useTranslation('analytics');
   const [sortKey, setSortKey] = useState<SortKey>('time');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
 
@@ -45,7 +47,7 @@ export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
   };
 
   if (games.length === 0) {
-    return <p className={styles.empty}>Brak danych.</p>;
+    return <p className={styles.empty}>{t('ranking.empty')}</p>;
   }
 
   return (
@@ -57,7 +59,8 @@ export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
           onClick={() => toggleSort('name')}
           aria-sort={sortKey === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
-          Gra{sortIndicator(sortKey === 'name', sortDir)}
+          {t('ranking.game')}
+          {sortIndicator(sortKey === 'name', sortDir)}
         </button>
         <button
           type="button"
@@ -65,7 +68,8 @@ export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
           onClick={() => toggleSort('time')}
           aria-sort={sortKey === 'time' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
-          Czas{sortIndicator(sortKey === 'time', sortDir)}
+          {t('ranking.time')}
+          {sortIndicator(sortKey === 'time', sortDir)}
         </button>
       </div>
       {sorted.map((game) => {

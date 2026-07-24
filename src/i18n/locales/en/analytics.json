@@ -1,0 +1,54 @@
+{
+  "period": {
+    "all": "CAŁY OKRES",
+    "lastDays": "OSTATNIE {{days}} DNI",
+    "ariaLabel": "Okres",
+    "pillMax": "MAX",
+    "pillDays": "{{days}} DNI"
+  },
+  "sections": {
+    "whenYouPlay": "Kiedy grasz",
+    "yourTaste": "Twój gust",
+    "creators": "Twórcy"
+  },
+  "overview": {
+    "title": "Przegląd",
+    "eyebrow": "podsumowanie okresu",
+    "totalAria": "Łączny czas",
+    "total": "Łącznie",
+    "avgSession": "ŚR. SESJA",
+    "newGames": "NOWE GRY",
+    "recordLabel": "Rekord · najdłuższa sesja",
+    "recordAria": "Rekord: {{name}}",
+    "recordFallback": "najdłuższa sesja"
+  },
+  "panels": {
+    "ranking": "Ranking gier",
+    "heatmap": "Mapa aktywności",
+    "trend": "Trend",
+    "trendDaily": "Trend dzienny",
+    "trendWeekly": "Trend tygodniowy",
+    "trendMonthly": "Trend miesięczny",
+    "genres": "Gatunki",
+    "themes": "Motywy",
+    "tagsEyebrow": "ekspozycja tagów, nie podział",
+    "companies": "Studia / Wydawcy",
+    "developer": "TWÓRCA",
+    "publisher": "WYDAWCA",
+    "decades": "Dekady premier",
+    "gameCount": "{{count}} gier"
+  },
+  "heatmap": {
+    "daysShort": ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nied"],
+    "daysFull": ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
+    "selectedField": "Wybrane pole",
+    "noActivity": "Brak aktywności",
+    "hint": "Wybierz pole na mapie, aby zobaczyć szczegóły",
+    "tooltip": "{{day}} {{hour}}:00 — {{duration}}"
+  },
+  "ranking": {
+    "empty": "Brak danych.",
+    "game": "Gra",
+    "time": "Czas"
+  }
+}

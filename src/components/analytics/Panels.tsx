@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 import { libraryDrillUrl } from '../../lib/libraryParams';
 import type { LibraryFilter } from '../../types/api';
 import {
@@ -45,20 +47,21 @@ export function RankingPanel({
   className?: string;
   sampleData?: GameStatEntry[];
 }) {
+  const { t } = useTranslation('analytics');
   const { data, isLoading, isError } = useStatsSummary(days, { enabled: sampleData == null });
   if (sampleData != null) {
     return (
-      <Panel title="Ranking gier" className={className}>
+      <Panel title={t('panels.ranking')} className={className}>
         <div className={panelStyles.rankScroll}>
           <GameRankingTable games={sampleData} disabled />
         </div>
       </Panel>
     );
   }
-  if (isLoading) return <Panel title="Ranking gier" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Ranking gier" className={className}><ErrorBanner /></Panel>;
+  if (isLoading) return <Panel title={t('panels.ranking')} className={className}><Skeleton height={200} /></Panel>;
+  if (isError || !data) return <Panel title={t('panels.ranking')} className={className}><ErrorBanner /></Panel>;
   return (
-    <Panel title="Ranking gier" className={className}>
+    <Panel title={t('panels.ranking')} className={className}>
       <div className={panelStyles.rankScroll}>
         <GameRankingTable games={data.per_game} />
       </div>
@@ -75,27 +78,28 @@ export function HeatmapPanel({
   className?: string;
   sampleData?: HeatmapCell[];
 }) {
+  const { t } = useTranslation('analytics');
   const { data, isLoading, isError } = useHeatmap(days, { enabled: sampleData == null });
   if (sampleData != null) {
     return (
-      <Panel title="Mapa aktywności" className={className}>
+      <Panel title={t('panels.heatmap')} className={className}>
         <Heatmap data={sampleData} />
       </Panel>
     );
   }
-  if (isLoading) return <Panel title="Mapa aktywności" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Mapa aktywności" className={className}><ErrorBanner /></Panel>;
+  if (isLoading) return <Panel title={t('panels.heatmap')} className={className}><Skeleton height={200} /></Panel>;
+  if (isError || !data) return <Panel title={t('panels.heatmap')} className={className}><ErrorBanner /></Panel>;
   return (
-    <Panel title="Mapa aktywności" className={className}>
+    <Panel title={t('panels.heatmap')} className={className}>
       <Heatmap data={data.cells} />
     </Panel>
   );
 }
 
 function trendPanelTitle(granularity?: TrendGranularity): string {
-  if (granularity === 'day') return 'Trend dzienny';
-  if (granularity === 'month') return 'Trend miesięczny';
-  return 'Trend tygodniowy';
+  if (granularity === 'day') return i18n.t('analytics:panels.trendDaily');
+  if (granularity === 'month') return i18n.t('analytics:panels.trendMonthly');
+  return i18n.t('analytics:panels.trendWeekly');
 }
 
 function formatTrendLabel(bucketStart: string, granularity: TrendGranularity): string {
@@ -119,6 +123,7 @@ export function TrendPanel({
   className?: string;
   sampleData?: TrendResponse;
 }) {
+  const { t } = useTranslation('analytics');
   const { data, isLoading, isError } = useTrend(days, { enabled: sampleData == null });
   if (sampleData != null) {
     return (
@@ -128,8 +133,8 @@ export function TrendPanel({
     );
   }
   const title = trendPanelTitle(data?.granularity);
-  if (isLoading) return <Panel title="Trend" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Trend" className={className}><ErrorBanner /></Panel>;
+  if (isLoading) return <Panel title={t('panels.trend')} className={className}><Skeleton height={200} /></Panel>;
+  if (isError || !data) return <Panel title={t('panels.trend')} className={className}><ErrorBanner /></Panel>;
   return (
     <Panel title={title} className={className}>
       <TrendChart data={trendChartData(data)} />
@@ -146,12 +151,13 @@ export function GenresPanel({
   className?: string;
   sampleData?: GenresResponse;
 }) {
+  const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
   const { data: liveData, isLoading, isError } = useGenres(days, { enabled: sampleData == null });
 
   if (sampleData == null) {
-    if (isLoading) return <Panel title="Gatunki" className={className}><Skeleton height={200} /></Panel>;
-    if (isError || !liveData) return <Panel title="Gatunki" className={className}><ErrorBanner /></Panel>;
+    if (isLoading) return <Panel title={t('panels.genres')} className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title={t('panels.genres')} className={className}><ErrorBanner /></Panel>;
   }
 
   const data = sampleData ?? liveData!;
@@ -163,7 +169,7 @@ export function GenresPanel({
     ratio: i.total_seconds / max,
   }));
   return (
-    <Panel title="Gatunki" eyebrow="ekspozycja tagów, nie podział" className={className}>
+    <Panel title={t('panels.genres')} eyebrow={t('panels.tagsEyebrow')} className={className}>
       <BarList items={items} onItemClick={sampleData == null ? (item) => drill('genre', item.label) : undefined} />
     </Panel>
   );
@@ -178,12 +184,13 @@ export function ThemesPanel({
   className?: string;
   sampleData?: ThemesResponse;
 }) {
+  const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
   const { data: liveData, isLoading, isError } = useThemes(days, { enabled: sampleData == null });
 
   if (sampleData == null) {
-    if (isLoading) return <Panel title="Motywy" className={className}><Skeleton height={200} /></Panel>;
-    if (isError || !liveData) return <Panel title="Motywy" className={className}><ErrorBanner /></Panel>;
+    if (isLoading) return <Panel title={t('panels.themes')} className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title={t('panels.themes')} className={className}><ErrorBanner /></Panel>;
   }
 
   const data = sampleData ?? liveData!;
@@ -195,7 +202,7 @@ export function ThemesPanel({
     ratio: i.total_seconds / max,
   }));
   return (
-    <Panel title="Motywy" eyebrow="ekspozycja tagów, nie podział" className={className}>
+    <Panel title={t('panels.themes')} eyebrow={t('panels.tagsEyebrow')} className={className}>
       <BarList items={items} onItemClick={sampleData == null ? (item) => drill('theme', item.label) : undefined} />
     </Panel>
   );
@@ -210,6 +217,7 @@ export function CompaniesPanel({
   className?: string;
   sampleData?: { developer: CompaniesResponse; publisher: CompaniesResponse };
 }) {
+  const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
   const [role, setRole] = useState<'developer' | 'publisher'>('developer');
   const { data: liveData, isLoading, isError } = useCompanies(role, 10, days, { enabled: sampleData == null });
@@ -223,7 +231,7 @@ export function CompaniesPanel({
           .join(' ')}
         onClick={() => setRole('developer')}
       >
-        TWÓRCA
+        {t('panels.developer')}
       </button>
       <button
         type="button"
@@ -232,7 +240,7 @@ export function CompaniesPanel({
           .join(' ')}
         onClick={() => setRole('publisher')}
       >
-        WYDAWCA
+        {t('panels.publisher')}
       </button>
     </div>
   );
@@ -240,14 +248,14 @@ export function CompaniesPanel({
   if (sampleData == null) {
     if (isLoading) {
       return (
-        <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
+        <Panel title={t('panels.companies')} headerExtra={roleToggle} className={className}>
           <Skeleton height={200} />
         </Panel>
       );
     }
     if (isError || !liveData) {
       return (
-        <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
+        <Panel title={t('panels.companies')} headerExtra={roleToggle} className={className}>
           <ErrorBanner />
         </Panel>
       );
@@ -260,12 +268,12 @@ export function CompaniesPanel({
     id: i.name,
     label: i.name,
     value: formatDuration(i.total_seconds),
-    secondary: `${i.game_count} gier`,
+    secondary: t('panels.gameCount', { count: i.game_count }),
     ratio: i.total_seconds / max,
   }));
 
   return (
-    <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
+    <Panel title={t('panels.companies')} headerExtra={roleToggle} className={className}>
       <BarList items={items} onItemClick={sampleData == null ? (item) => drill(role, item.label) : undefined} />
     </Panel>
   );
@@ -280,12 +288,13 @@ export function ReleaseYearsPanel({
   className?: string;
   sampleData?: ReleaseYearsResponse;
 }) {
+  const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
   const { data: liveData, isLoading, isError } = useReleaseYears(days, { enabled: sampleData == null });
 
   if (sampleData == null) {
-    if (isLoading) return <Panel title="Dekady premier" className={className}><Skeleton height={200} /></Panel>;
-    if (isError || !liveData) return <Panel title="Dekady premier" className={className}><ErrorBanner /></Panel>;
+    if (isLoading) return <Panel title={t('panels.decades')} className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title={t('panels.decades')} className={className}><ErrorBanner /></Panel>;
   }
 
   const data = sampleData ?? liveData!;
@@ -297,7 +306,7 @@ export function ReleaseYearsPanel({
     ratio: i.total_seconds / max,
   }));
   return (
-    <Panel title="Dekady premier" className={className}>
+    <Panel title={t('panels.decades')} className={className}>
       <BarList items={items} onItemClick={sampleData == null ? (item) => drill('release_decade', item.label) : undefined} />
     </Panel>
   );

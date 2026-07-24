@@ -1,3 +1,5 @@
+import i18n from '../i18n';
+
 export const ANALYTICS_DAY_PRESETS = [7, 30, 90, 365, 0] as const;
 export type AnalyticsDays = (typeof ANALYTICS_DAY_PRESETS)[number];
 
@@ -11,5 +13,7 @@ export function parseAnalyticsDays(value: string | null): AnalyticsDays {
 }
 
 export function analyticsPeriodPillLabel(days: AnalyticsDays): string {
-  return days === 0 ? 'MAX' : `${days} DNI`;
+  return days === 0
+    ? i18n.t('analytics:period.pillMax')
+    : i18n.t('analytics:period.pillDays', { days });
 }

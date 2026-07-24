@@ -1,10 +1,8 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { HeatmapCell } from '../../types/api';
 import { formatDuration } from '../../lib/format';
 import styles from './Heatmap.module.css';
-
-const DAY_LABELS = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nied'];
-const DAY_FULL = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
 
 interface HeatmapProps {
   data: HeatmapCell[];
@@ -16,8 +14,12 @@ interface Selected {
 }
 
 export function Heatmap({ data }: HeatmapProps) {
+  const { t } = useTranslation('analytics');
   const [selected, setSelected] = useState<Selected | null>(null);
   const max = Math.max(...data.map((d) => d.seconds), 1);
+
+  const dayLabels = t('heatmap.daysShort', { returnObjects: true }) as string[];
+  const dayFull = t('heatmap.daysFull', { returnObjects: true }) as string[];
 
   const cellMap = new Map<string, HeatmapCell>();
   for (const cell of data) {
@@ -39,7 +41,7 @@ export function Heatmap({ data }: HeatmapProps) {
             </span>
           ))}
         </div>
-        {DAY_LABELS.map((dayLabel, dow) => (
+        {dayLabels.map((dayLabel, dow) => (
           <div key={dayLabel} className={styles.row}>
             <span className={styles.dayLabel}>{dayLabel}</span>
             {Array.from({ length: 24 }, (_, hour) => {
@@ -47,7 +49,11 @@ export function Heatmap({ data }: HeatmapProps) {
               const seconds = cell?.seconds ?? 0;
               const intensity = seconds / max;
               const opacity = seconds > 0 ? Math.max(0.25, intensity) : 0.08;
-              const tooltip = `${dayLabel} ${hour}:00 — ${formatDuration(seconds)}`;
+              const tooltip = t('heatmap.tooltip', {
+                day: dayLabel,
+                hour,
+                duration: formatDuration(seconds),
+              });
               const isSelected = selected?.dow === dow && selected?.hour === hour;
 
               return (
@@ -82,19 +88,19 @@ export function Heatmap({ data }: HeatmapProps) {
               aria-hidden
             />
             <div className={styles.readoutText}>
-              <span className={styles.readoutEyebrow}>Wybrane pole</span>
+              <span className={styles.readoutEyebrow}>{t('heatmap.selectedField')}</span>
               <span className={styles.readoutSlot}>
-                {DAY_FULL[selected.dow]} · {selected.hour}:00–{selected.hour + 1}:00
+                {dayFull[selected.dow]} · {selected.hour}:00–{selected.hour + 1}:00
               </span>
             </div>
             <span className={styles.readoutValue}>
-              {selectedSeconds > 0 ? formatDuration(selectedSeconds) : 'Brak aktywności'}
+              {selectedSeconds > 0 ? formatDuration(selectedSeconds) : t('heatmap.noActivity')}
             </span>
           </>
         ) : (
           <span className={styles.readoutHint}>
             <span className={styles.readoutHintDot} aria-hidden />
-            Wybierz pole na mapie, aby zobaczyć szczegóły
+            {t('heatmap.hint')}
           </span>
         )}
       </div>
