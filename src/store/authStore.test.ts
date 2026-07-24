@@ -22,3 +22,25 @@ describe('authStore admin persistence', () => {
     expect(useAuthStore.getState().isAdmin).toBe(false);
   });
 });
+
+describe('authStore previewDismissed', () => {
+  beforeEach(() => {
+    localStorage.removeItem('auth-storage');
+    useAuthStore.getState().logout();
+  });
+
+  it('previewDismissed defaults to false', () => {
+    expect(useAuthStore.getState().previewDismissed).toBe(false);
+  });
+
+  it('setPreviewDismissed updates the flag', () => {
+    useAuthStore.getState().setPreviewDismissed(true);
+    expect(useAuthStore.getState().previewDismissed).toBe(true);
+  });
+
+  it('logout resets previewDismissed to false', () => {
+    useAuthStore.getState().setPreviewDismissed(true);
+    useAuthStore.getState().logout();
+    expect(useAuthStore.getState().previewDismissed).toBe(false);
+  });
+});

@@ -7,6 +7,7 @@ import { test, expect, beforeEach } from 'vitest';
 import { LibraryPage } from './LibraryPage';
 import { createTestQueryClient, renderPage, resetStores, seedAuth } from '../../test/utils';
 import { server } from '../../test/server';
+import { SAMPLE_GAMES } from '../lib/sampleData';
 
 beforeEach(() => {
   resetStores();
@@ -128,4 +129,48 @@ test('LibraryPage other tab shows out-of-library games', async () => {
     expect(screen.getByText('Stara Gra')).toBeInTheDocument();
   });
   expect(screen.queryByText('Wiedźmin 3')).not.toBeInTheDocument();
+});
+
+test('LibraryPage shows sample games for an empty unfiltered library', async () => {
+  server.use(
+    http.get('/api/v1/games', () => HttpResponse.json({ total: 0, items: [] })),
+  );
+
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  expect(await screen.findByText(/to są przykładowe dane/i)).toBeInTheDocument();
+  expect(screen.getByText(SAMPLE_GAMES[0].primary_name)).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: new RegExp(SAMPLE_GAMES[0].primary_name) })).not.toBeInTheDocument();
+});
+
+test('LibraryPage hides the sample preview after dismissing the banner', async () => {
+  const user = userEvent.setup();
+  server.use(
+    http.get('/api/v1/games', () => HttpResponse.json({ total: 0, items: [] })),
+  );
+
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  expect(await screen.findByText(/to są przykładowe dane/i)).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /ukryj podgląd/i }));
+
+  expect(screen.queryByText(/to są przykładowe dane/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(SAMPLE_GAMES[0].primary_name)).not.toBeInTheDocument();
+});
+
+test('LibraryPage keeps the plain empty state for a filtered search with no results', async () => {
+  server.use(
+    http.get('/api/v1/games', () => HttpResponse.json({ total: 0, items: [] })),
+  );
+
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  const search = await screen.findByPlaceholderText('Szukaj gry...');
+  await import('@testing-library/user-event').then(({ default: userEvent }) =>
+    userEvent.type(search, 'nieistniejąca gra'),
+  );
+
+  expect(await screen.findByText(/brak wyników dla/i)).toBeInTheDocument();
+  expect(screen.queryByText(/to są przykładowe dane/i)).not.toBeInTheDocument();
 });

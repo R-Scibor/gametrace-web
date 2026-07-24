@@ -8,9 +8,10 @@ import styles from './RecentSessionsList.module.css';
 interface RecentSessionsListProps {
   sessions: Session[];
   loading?: boolean;
+  disabled?: boolean;
 }
 
-export function RecentSessionsList({ sessions, loading }: RecentSessionsListProps) {
+export function RecentSessionsList({ sessions, loading, disabled }: RecentSessionsListProps) {
   const { formatDuration, formatSessionWindow } = useFormat();
 
   if (loading) {
@@ -32,13 +33,10 @@ export function RecentSessionsList({ sessions, loading }: RecentSessionsListProp
       {sessions.map((session) => {
         const isError = session.status === 'ERROR';
         const to = isError ? `/sessions/${session.id}/edit` : `/library/${session.game_id}`;
+        const rowClassName = [styles.row, isError ? styles.rowError : ''].filter(Boolean).join(' ');
 
-        return (
-          <Link
-            key={session.id}
-            to={to}
-            className={[styles.row, isError ? styles.rowError : ''].filter(Boolean).join(' ')}
-          >
+        const content = (
+          <>
             <div className={styles.coverWrap}>
               <Cover
                 gameId={session.game.id}
@@ -61,6 +59,20 @@ export function RecentSessionsList({ sessions, loading }: RecentSessionsListProp
                 <span className={styles.duration}>{formatDuration(session.duration_seconds)}</span>
               )}
             </div>
+          </>
+        );
+
+        if (disabled) {
+          return (
+            <div key={session.id} className={rowClassName}>
+              {content}
+            </div>
+          );
+        }
+
+        return (
+          <Link key={session.id} to={to} className={rowClassName}>
+            {content}
           </Link>
         );
       })}

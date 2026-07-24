@@ -2,7 +2,9 @@ import { useState, type ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useAuthStore } from '../../store/authStore';
+import { useIsAccountEmpty } from '../../hooks/useIsAccountEmpty';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
+import { Switch } from '../ui/Switch';
 import styles from './Sidebar.module.css';
 
 const icon = (paths: ReactNode) => (
@@ -119,6 +121,9 @@ function NavItem({ path, label, icon }: { path: string; label: string; icon: Rea
 
 export function Sidebar() {
   const isAdmin = useAuthStore((s) => s.isAdmin);
+  const previewDismissed = useAuthStore((s) => s.previewDismissed);
+  const setPreviewDismissed = useAuthStore((s) => s.setPreviewDismissed);
+  const { isEmpty: showPreviewToggle } = useIsAccountEmpty();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [logoutOpen, setLogoutOpen] = useState(false);
@@ -152,6 +157,17 @@ export function Sidebar() {
         ))}
       </nav>
       <div className={styles.footer}>
+        {showPreviewToggle && (
+          <div className={styles.previewRow}>
+            <span className={styles.label}>Podgląd przykładowy</span>
+            <Switch
+              id="preview-toggle"
+              checked={!previewDismissed}
+              label="Podgląd przykładowy"
+              onChange={(checked) => setPreviewDismissed(!checked)}
+            />
+          </div>
+        )}
         <button
           type="button"
           className={styles.logoutBtn}

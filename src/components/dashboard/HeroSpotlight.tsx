@@ -7,16 +7,17 @@ import styles from './HeroSpotlight.module.css';
 interface HeroSpotlightProps {
   session: Session;
   stats: GameStats | null | undefined;
+  disabled?: boolean;
 }
 
-export function HeroSpotlight({ session, stats }: HeroSpotlightProps) {
+export function HeroSpotlight({ session, stats, disabled }: HeroSpotlightProps) {
   const { formatHours, formatRecency } = useFormat();
 
   const avgSeconds =
     stats && stats.session_count > 0 ? stats.total_seconds / stats.session_count : null;
 
-  return (
-    <Link to={`/library/${session.game_id}`} className={styles.card}>
+  const body = (
+    <>
       <div className={styles.row}>
         <div className={styles.coverWrap}>
           <Cover
@@ -55,6 +56,16 @@ export function HeroSpotlight({ session, stats }: HeroSpotlightProps) {
           </div>
         </div>
       </div>
+    </>
+  );
+
+  if (disabled) {
+    return <div className={styles.card}>{body}</div>;
+  }
+
+  return (
+    <Link to={`/library/${session.game_id}`} className={styles.card}>
+      {body}
     </Link>
   );
 }

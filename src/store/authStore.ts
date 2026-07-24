@@ -11,8 +11,10 @@ type AuthState = {
   user: User | null;
   isAdmin: boolean;
   isAuthenticated: boolean;
+  previewDismissed: boolean;
   login: (token: string, user: User, isAdmin?: boolean) => void;
   setIsAdmin: (isAdmin: boolean) => void;
+  setPreviewDismissed: (dismissed: boolean) => void;
   logout: () => void;
 };
 
@@ -23,11 +25,14 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAdmin: false,
       isAuthenticated: false,
+      previewDismissed: false,
 
       login: (token, user, isAdmin = false) =>
         set({ token, user, isAdmin, isAuthenticated: true }),
       setIsAdmin: (isAdmin) => set({ isAdmin }),
-      logout: () => set({ token: null, user: null, isAdmin: false, isAuthenticated: false }),
+      setPreviewDismissed: (previewDismissed) => set({ previewDismissed }),
+      logout: () =>
+        set({ token: null, user: null, isAdmin: false, isAuthenticated: false, previewDismissed: false }),
     }),
     {
       name: 'auth-storage',
@@ -36,6 +41,7 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         isAdmin: state.isAdmin,
         isAuthenticated: state.isAuthenticated,
+        previewDismissed: state.previewDismissed,
       }),
       onRehydrateStorage: () => (_state, error) => {
         if (error) {

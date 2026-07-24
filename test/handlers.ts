@@ -293,7 +293,8 @@ export const handlers = [
   http.get('/api/v1/stats/summary', ({ request }) => {
     const days = Number(new URL(request.url).searchParams.get('days') ?? '30');
     if (days === 7) return HttpResponse.json(fixtures.statsSummary7d);
-    return HttpResponse.json(fixtures.statsSummary);
+    if (days === 30) return HttpResponse.json(fixtures.statsSummary);
+    return HttpResponse.json({ ...fixtures.statsSummary, days });
   }),
 
   http.get('/api/v1/stats/heatmap', () => HttpResponse.json(fixtures.heatmap)),

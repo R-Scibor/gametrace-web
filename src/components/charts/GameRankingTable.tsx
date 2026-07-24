@@ -9,6 +9,7 @@ type SortDir = 'asc' | 'desc';
 
 interface GameRankingTableProps {
   games: GameStatEntry[];
+  disabled?: boolean;
 }
 
 function sortIndicator(active: boolean, dir: SortDir): string {
@@ -16,7 +17,7 @@ function sortIndicator(active: boolean, dir: SortDir): string {
   return dir === 'asc' ? ' ↑' : ' ↓';
 }
 
-export function GameRankingTable({ games }: GameRankingTableProps) {
+export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>('time');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
 
@@ -69,12 +70,8 @@ export function GameRankingTable({ games }: GameRankingTableProps) {
       </div>
       {sorted.map((game) => {
         const ratio = game.total_seconds / max;
-        return (
-          <Link
-            key={game.game_id}
-            to={`/library/${game.game_id}`}
-            className={styles.row}
-          >
+        const content = (
+          <>
             <span className={styles.name}>{game.game_name}</span>
             <div className={styles.timeCell}>
               <div className={styles.track}>
@@ -85,6 +82,20 @@ export function GameRankingTable({ games }: GameRankingTableProps) {
               </div>
               <span className={styles.time}>{formatDuration(game.total_seconds)}</span>
             </div>
+          </>
+        );
+
+        if (disabled) {
+          return (
+            <div key={game.game_id} className={styles.row}>
+              {content}
+            </div>
+          );
+        }
+
+        return (
+          <Link key={game.game_id} to={`/library/${game.game_id}`} className={styles.row}>
+            {content}
           </Link>
         );
       })}

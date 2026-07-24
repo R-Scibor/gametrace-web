@@ -11,7 +11,16 @@ import {
   useCompanies,
   useReleaseYears,
 } from '../../hooks/useStats';
-import type { TrendGranularity } from '../../types/api';
+import type {
+  GameStatEntry,
+  HeatmapCell,
+  TrendResponse,
+  TrendGranularity,
+  GenresResponse,
+  ThemesResponse,
+  CompaniesResponse,
+  ReleaseYearsResponse,
+} from '../../types/api';
 import { Heatmap } from './Heatmap';
 import { BarList } from '../charts/BarList';
 import { GameRankingTable } from '../charts/GameRankingTable';
@@ -27,8 +36,25 @@ function useLibraryDrill() {
   };
 }
 
-export function RankingPanel({ days, className }: { days: number; className?: string }) {
-  const { data, isLoading, isError } = useStatsSummary(days);
+export function RankingPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: GameStatEntry[];
+}) {
+  const { data, isLoading, isError } = useStatsSummary(days, { enabled: sampleData == null });
+  if (sampleData != null) {
+    return (
+      <Panel title="Ranking gier" className={className}>
+        <div className={panelStyles.rankScroll}>
+          <GameRankingTable games={sampleData} disabled />
+        </div>
+      </Panel>
+    );
+  }
   if (isLoading) return <Panel title="Ranking gier" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Ranking gier" className={className}><ErrorBanner /></Panel>;
   return (
@@ -40,8 +66,23 @@ export function RankingPanel({ days, className }: { days: number; className?: st
   );
 }
 
-export function HeatmapPanel({ days, className }: { days: number; className?: string }) {
-  const { data, isLoading, isError } = useHeatmap(days);
+export function HeatmapPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: HeatmapCell[];
+}) {
+  const { data, isLoading, isError } = useHeatmap(days, { enabled: sampleData == null });
+  if (sampleData != null) {
+    return (
+      <Panel title="Mapa aktywności" className={className}>
+        <Heatmap data={sampleData} />
+      </Panel>
+    );
+  }
   if (isLoading) return <Panel title="Mapa aktywności" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Mapa aktywności" className={className}><ErrorBanner /></Panel>;
   return (
@@ -62,27 +103,58 @@ function formatTrendLabel(bucketStart: string, granularity: TrendGranularity): s
   return bucketStart.slice(5, 10);
 }
 
-export function TrendPanel({ days, className }: { days: number; className?: string }) {
-  const { data, isLoading, isError } = useTrend(days);
+function trendChartData(trend: TrendResponse) {
+  return trend.buckets.map((b) => ({
+    label: formatTrendLabel(b.bucket_start, trend.granularity),
+    value: Math.round((b.total_seconds / 3600) * 10) / 10,
+  }));
+}
+
+export function TrendPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: TrendResponse;
+}) {
+  const { data, isLoading, isError } = useTrend(days, { enabled: sampleData == null });
+  if (sampleData != null) {
+    return (
+      <Panel title={trendPanelTitle(sampleData.granularity)} className={className}>
+        <TrendChart data={trendChartData(sampleData)} />
+      </Panel>
+    );
+  }
   const title = trendPanelTitle(data?.granularity);
   if (isLoading) return <Panel title="Trend" className={className}><Skeleton height={200} /></Panel>;
   if (isError || !data) return <Panel title="Trend" className={className}><ErrorBanner /></Panel>;
-  const chartData = data.buckets.map((b) => ({
-    label: formatTrendLabel(b.bucket_start, data.granularity),
-    value: Math.round((b.total_seconds / 3600) * 10) / 10,
-  }));
   return (
     <Panel title={title} className={className}>
-      <TrendChart data={chartData} />
+      <TrendChart data={trendChartData(data)} />
     </Panel>
   );
 }
 
-export function GenresPanel({ days, className }: { days: number; className?: string }) {
+export function GenresPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: GenresResponse;
+}) {
   const drill = useLibraryDrill();
-  const { data, isLoading, isError } = useGenres(days);
-  if (isLoading) return <Panel title="Gatunki" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Gatunki" className={className}><ErrorBanner /></Panel>;
+  const { data: liveData, isLoading, isError } = useGenres(days, { enabled: sampleData == null });
+
+  if (sampleData == null) {
+    if (isLoading) return <Panel title="Gatunki" className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title="Gatunki" className={className}><ErrorBanner /></Panel>;
+  }
+
+  const data = sampleData ?? liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.genre,
@@ -92,16 +164,29 @@ export function GenresPanel({ days, className }: { days: number; className?: str
   }));
   return (
     <Panel title="Gatunki" eyebrow="ekspozycja tagów, nie podział" className={className}>
-      <BarList items={items} onItemClick={(item) => drill('genre', item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill('genre', item.label) : undefined} />
     </Panel>
   );
 }
 
-export function ThemesPanel({ days, className }: { days: number; className?: string }) {
+export function ThemesPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: ThemesResponse;
+}) {
   const drill = useLibraryDrill();
-  const { data, isLoading, isError } = useThemes(days);
-  if (isLoading) return <Panel title="Motywy" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Motywy" className={className}><ErrorBanner /></Panel>;
+  const { data: liveData, isLoading, isError } = useThemes(days, { enabled: sampleData == null });
+
+  if (sampleData == null) {
+    if (isLoading) return <Panel title="Motywy" className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title="Motywy" className={className}><ErrorBanner /></Panel>;
+  }
+
+  const data = sampleData ?? liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.theme,
@@ -111,15 +196,23 @@ export function ThemesPanel({ days, className }: { days: number; className?: str
   }));
   return (
     <Panel title="Motywy" eyebrow="ekspozycja tagów, nie podział" className={className}>
-      <BarList items={items} onItemClick={(item) => drill('theme', item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill('theme', item.label) : undefined} />
     </Panel>
   );
 }
 
-export function CompaniesPanel({ days, className }: { days: number; className?: string }) {
+export function CompaniesPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: { developer: CompaniesResponse; publisher: CompaniesResponse };
+}) {
   const drill = useLibraryDrill();
   const [role, setRole] = useState<'developer' | 'publisher'>('developer');
-  const { data, isLoading, isError } = useCompanies(role, 10, days);
+  const { data: liveData, isLoading, isError } = useCompanies(role, 10, days, { enabled: sampleData == null });
 
   const roleToggle = (
     <div className={panelStyles.roleToggle}>
@@ -144,21 +237,24 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
     </div>
   );
 
-  if (isLoading) {
-    return (
-      <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
-        <Skeleton height={200} />
-      </Panel>
-    );
-  }
-  if (isError || !data) {
-    return (
-      <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
-        <ErrorBanner />
-      </Panel>
-    );
+  if (sampleData == null) {
+    if (isLoading) {
+      return (
+        <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
+          <Skeleton height={200} />
+        </Panel>
+      );
+    }
+    if (isError || !liveData) {
+      return (
+        <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
+          <ErrorBanner />
+        </Panel>
+      );
+    }
   }
 
+  const data = sampleData ? sampleData[role] : liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.name,
@@ -170,16 +266,29 @@ export function CompaniesPanel({ days, className }: { days: number; className?: 
 
   return (
     <Panel title="Studia / Wydawcy" headerExtra={roleToggle} className={className}>
-      <BarList items={items} onItemClick={(item) => drill(role, item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill(role, item.label) : undefined} />
     </Panel>
   );
 }
 
-export function ReleaseYearsPanel({ days, className }: { days: number; className?: string }) {
+export function ReleaseYearsPanel({
+  days,
+  className,
+  sampleData,
+}: {
+  days: number;
+  className?: string;
+  sampleData?: ReleaseYearsResponse;
+}) {
   const drill = useLibraryDrill();
-  const { data, isLoading, isError } = useReleaseYears(days);
-  if (isLoading) return <Panel title="Dekady premier" className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title="Dekady premier" className={className}><ErrorBanner /></Panel>;
+  const { data: liveData, isLoading, isError } = useReleaseYears(days, { enabled: sampleData == null });
+
+  if (sampleData == null) {
+    if (isLoading) return <Panel title="Dekady premier" className={className}><Skeleton height={200} /></Panel>;
+    if (isError || !liveData) return <Panel title="Dekady premier" className={className}><ErrorBanner /></Panel>;
+  }
+
+  const data = sampleData ?? liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.decade,
@@ -189,7 +298,7 @@ export function ReleaseYearsPanel({ days, className }: { days: number; className
   }));
   return (
     <Panel title="Dekady premier" className={className}>
-      <BarList items={items} onItemClick={(item) => drill('release_decade', item.label)} />
+      <BarList items={items} onItemClick={sampleData == null ? (item) => drill('release_decade', item.label) : undefined} />
     </Panel>
   );
 }
