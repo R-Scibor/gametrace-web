@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useGame, useUpdateGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
 import { useGameStats } from '../hooks/useGameStats';
@@ -35,6 +36,7 @@ function GameDetailSkeleton() {
 }
 
 export function GameDetailPage() {
+  const { t } = useTranslation('gameDetail');
   const { gameId } = useParams();
   const id = Number(gameId);
   const location = useLocation();
@@ -63,17 +65,20 @@ export function GameDetailPage() {
   const lastPlayed = stats?.last_played ?? game.last_played ?? null;
 
   const metrics = [
-    { label: 'SESJE', value: String(sessionCount) },
-    { label: 'ŁĄCZNIE', value: formatDuration(totalSeconds) },
-    { label: 'ŚREDNIO', value: sessionCount ? formatDuration(avgSeconds) : '—' },
-    { label: 'PIERWSZY RAZ', value: stats?.first_played ? formatDateShort(stats.first_played) : '—' },
-    { label: 'OSTATNIO', value: lastPlayed ? formatDateShort(lastPlayed) : '—' },
+    { label: t('metrics.sessions'), value: String(sessionCount) },
+    { label: t('metrics.total'), value: formatDuration(totalSeconds) },
+    { label: t('metrics.avg'), value: sessionCount ? formatDuration(avgSeconds) : '—' },
+    {
+      label: t('metrics.firstPlayed'),
+      value: stats?.first_played ? formatDateShort(stats.first_played) : '—',
+    },
+    { label: t('metrics.lastPlayed'), value: lastPlayed ? formatDateShort(lastPlayed) : '—' },
   ];
 
   return (
     <div className={styles.container}>
       <Link to="/library" className={styles.backLink}>
-        ← Biblioteka
+        {t('back')}
       </Link>
 
       <section className={styles.hero}>
@@ -96,13 +101,15 @@ export function GameDetailPage() {
           </div>
           <div className={styles.info}>
             <span className={styles.eyebrow}>
-              {lastPlayed ? `OSTATNIO GRANE · ${formatRecency(lastPlayed)}` : 'W BIBLIOTECE'}
+              {lastPlayed
+                ? t('eyebrow.lastPlayed', { recency: formatRecency(lastPlayed) })
+                : t('eyebrow.inLibrary')}
             </span>
             <h1 className={styles.title}>{game.primary_name}</h1>
             {(canAccept || game.is_ignored) && (
               <div className={styles.badges}>
-                {canAccept && <span className={styles.reviewBadge}>DO SPRAWDZENIA</span>}
-                {game.is_ignored && <span className={styles.ignoredBadge}>IGNOROWANA</span>}
+                {canAccept && <span className={styles.reviewBadge}>{t('badges.needsReview')}</span>}
+                {game.is_ignored && <span className={styles.ignoredBadge}>{t('badges.ignored')}</span>}
               </div>
             )}
             <div className={styles.metrics}>
@@ -118,14 +125,14 @@ export function GameDetailPage() {
       </section>
 
       <div className={styles.actionsPanel}>
-        <SectionHeader title="Akcje" />
+        <SectionHeader title={t('actions.title')} />
         <div className={styles.actionsGrid}>
           <div className={styles.coverSection}>
-            <p className={styles.coverSectionLabel}>Okładka lokalna</p>
+            <p className={styles.coverSectionLabel}>{t('actions.localCover')}</p>
             <CoverUpload gameId={id} coverUrl={game.cover_image_url} gameName={game.primary_name} />
           </div>
           <div className={styles.coverSection}>
-            <p className={styles.coverSectionLabel}>Okładka globalna</p>
+            <p className={styles.coverSectionLabel}>{t('actions.globalCover')}</p>
             <div className={styles.readonlyPreview}>
               <Cover
                 coverImageUrl={game.cover_image_url}
@@ -135,7 +142,7 @@ export function GameDetailPage() {
             </div>
           </div>
           <div className={styles.actionButtons}>
-            <p className={styles.coverSectionLabel}>Zarządzanie</p>
+            <p className={styles.coverSectionLabel}>{t('actions.manage')}</p>
             {canAccept && (
               <div className={styles.actionItem}>
                 <Button
@@ -143,9 +150,9 @@ export function GameDetailPage() {
                   disabled={prefMut.isPending}
                   onClick={() => prefMut.mutate({ is_ignored: false, is_accepted: true })}
                 >
-                  ZAAKCEPTUJ GRĘ
+                  {t('actions.accept')}
                 </Button>
-                <p className={styles.actionHint}>Dodaj rozpoznaną grę do biblioteki i statystyk.</p>
+                <p className={styles.actionHint}>{t('actions.acceptHint')}</p>
               </div>
             )}
             <div className={styles.actionItem}>
@@ -155,12 +162,10 @@ export function GameDetailPage() {
                 disabled={prefMut.isPending}
                 onClick={() => prefMut.mutate({ is_ignored: !game.is_ignored })}
               >
-                {game.is_ignored ? 'PRZYWRÓĆ DO BIBLIOTEKI' : 'IGNORUJ GRĘ'}
+                {game.is_ignored ? t('actions.restore') : t('actions.ignore')}
               </Button>
               <p className={styles.actionHint}>
-                {game.is_ignored
-                  ? 'Przywróć grę do biblioteki i wliczaj ją do statystyk.'
-                  : 'Ukryj grę w bibliotece i pomiń ją w statystykach.'}
+                {game.is_ignored ? t('actions.restoreHint') : t('actions.ignoreHint')}
               </p>
             </div>
           </div>
@@ -168,7 +173,7 @@ export function GameDetailPage() {
       </div>
 
       <div>
-        <SectionHeader title="Historia sesji" />
+        <SectionHeader title={t('history.title')} />
         <SessionList sessions={sessions} />
         {hasNextPage && (
           <div className={styles.loadMore}>
@@ -177,7 +182,7 @@ export function GameDetailPage() {
               loading={isFetchingNextPage}
               onClick={() => fetchNextPage()}
             >
-              ZAŁADUJ WIĘCEJ
+              {t('history.loadMore')}
             </Button>
           </div>
         )}

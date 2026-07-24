@@ -1,0 +1,42 @@
+{
+  "back": "← Biblioteka",
+  "eyebrow": {
+    "lastPlayed": "OSTATNIO GRANE · {{recency}}",
+    "inLibrary": "W BIBLIOTECE"
+  },
+  "badges": {
+    "needsReview": "DO SPRAWDZENIA",
+    "ignored": "IGNOROWANA"
+  },
+  "metrics": {
+    "sessions": "SESJE",
+    "total": "ŁĄCZNIE",
+    "avg": "ŚREDNIO",
+    "firstPlayed": "PIERWSZY RAZ",
+    "lastPlayed": "OSTATNIO"
+  },
+  "actions": {
+    "title": "Akcje",
+    "localCover": "Okładka lokalna",
+    "globalCover": "Okładka globalna",
+    "manage": "Zarządzanie",
+    "accept": "ZAAKCEPTUJ GRĘ",
+    "acceptHint": "Dodaj rozpoznaną grę do biblioteki i statystyk.",
+    "restore": "PRZYWRÓĆ DO BIBLIOTEKI",
+    "ignore": "IGNORUJ GRĘ",
+    "restoreHint": "Przywróć grę do biblioteki i wliczaj ją do statystyk.",
+    "ignoreHint": "Ukryj grę w bibliotece i pomiń ją w statystykach."
+  },
+  "history": {
+    "title": "Historia sesji",
+    "loadMore": "ZAŁADUJ WIĘCEJ",
+    "empty": "Brak historii sesji dla tej gry.",
+    "colDate": "Data",
+    "colTime": "Godzina",
+    "colDuration": "Czas",
+    "colStatus": "Status",
+    "colSource": "Źródło",
+    "sourceBot": "Bot Discord",
+    "sourceManual": "Ręczna"
+  }
+}

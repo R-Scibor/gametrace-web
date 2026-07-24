@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Session } from '../../types/api';
 import { SESSION_SOURCE_LABEL, SESSION_STATUS_LABEL } from '../../lib/sessionLabels';
 import { useFormat } from '../../hooks/useFormat';
@@ -10,20 +11,21 @@ interface SessionListProps {
 }
 
 export function SessionList({ sessions }: SessionListProps) {
+  const { t } = useTranslation('gameDetail');
   const { formatDuration, formatDateShort, formatTimeShort } = useFormat();
 
   if (sessions.length === 0) {
-    return <EmptyState message="Brak historii sesji dla tej gry." />;
+    return <EmptyState message={t('history.empty')} />;
   }
 
   return (
     <div className={styles.table}>
       <div className={styles.header}>
-        <span>Data</span>
-        <span>Godzina</span>
-        <span>Czas</span>
-        <span>Status</span>
-        <span>Źródło</span>
+        <span>{t('history.colDate')}</span>
+        <span>{t('history.colTime')}</span>
+        <span>{t('history.colDuration')}</span>
+        <span>{t('history.colStatus')}</span>
+        <span>{t('history.colSource')}</span>
       </div>
       {sessions.map((session) => {
         const statusLabel = SESSION_STATUS_LABEL[session.status];
@@ -56,7 +58,12 @@ export function SessionList({ sessions }: SessionListProps) {
                 <span className={styles.statusMuted}>—</span>
               )}
             </span>
-            <span className={styles.source} title={session.source === 'BOT' ? 'Bot Discord' : 'Ręczna'}>
+            <span
+              className={styles.source}
+              title={
+                session.source === 'BOT' ? t('history.sourceBot') : t('history.sourceManual')
+              }
+            >
               {SESSION_SOURCE_LABEL[session.source]}
             </span>
           </Link>
