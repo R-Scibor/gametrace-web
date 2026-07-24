@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "ariaLabel": "Sekcje administracji",
+    "overview": "Przegląd",
+    "reports": "Zgłoszenia",
+    "catalog": "Katalog"
+  },
+  "common": {
+    "retry": "Spróbuj ponownie",
+    "forbidden": "Brak uprawnień.",
+    "status": "Status",
+    "close": "Zamknij",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "search": "Szukaj",
+    "showGame": "Pokaż grę"
+  },
+  "overview": {
+    "homelab": "Homelab",
+    "attention": "Wymaga uwagi",
+    "errorLoad": "Nie udało się wczytać przeglądu.",
+    "users": "Użytkownicy",
+    "sessions": "Sesje",
+    "playtime": "Czas gry",
+    "games": "Gry",
+    "needsReview": "Do sprawdzenia",
+    "pending": "W kolejce",
+    "openReports": "Otwarte zgłoszenia",
+    "open": "Otwórz"
+  },
+  "reports": {
+    "errorLoad": "Nie udało się wczytać zgłoszeń.",
+    "empty": "Brak zgłoszeń w tym widoku.",
+    "selectPrompt": "Wybierz zgłoszenie z listy.",
+    "diagnostics": "Diagnostyka",
+    "noDiagnostics": "Brak danych diagnostycznych.",
+    "markTriaged": "Oznacz jako obsłużone",
+    "close": "Zamknij",
+    "status": {
+      "open": "Otwarte",
+      "triaged": "Obsłużone",
+      "closed": "Zamknięte"
+    },
+    "toast": {
+      "closed": "Zgłoszenie zamknięte.",
+      "triaged": "Zgłoszenie oznaczone.",
+      "updateFailed": "Nie udało się zaktualizować zgłoszenia."
+    }
+  },
+  "catalog": {
+    "errorLoad": "Nie udało się wczytać katalogu.",
+    "selectPrompt": "Wybierz grę z tabeli.",
+    "missingFiltered": "Gra #{{id}} nie jest widoczna przy tym filtrze.",
+    "showAll": "Pokaż wszystkie",
+    "searchAria": "Szukaj gry",
+    "searchPlaceholder": "Szukaj nazwy lub aliasu",
+    "sortLabel": "Sortowanie",
+    "sort": {
+      "sessions_desc": "Najwięcej sesji",
+      "name_asc": "Nazwa A-Z",
+      "id_asc": "Najstarsze ID"
+    },
+    "enrichment": {
+      "all": "Wszystkie",
+      "NEEDS_REVIEW": "Do sprawdzenia",
+      "PENDING": "Oczekuje",
+      "ENRICHED": "Wzbogacona"
+    },
+    "columns": {
+      "cover": "Okładka",
+      "name": "Nazwa",
+      "id": "ID",
+      "status": "Status",
+      "sessions": "Sesje",
+      "aliases": "Aliasy"
+    },
+    "emptyFilter": "Brak gier dla wybranego filtra.",
+    "prevPage": "Poprzednia",
+    "nextPage": "Następna",
+    "sections": {
+      "aliases": "Aliasy",
+      "actions": "Akcje",
+      "merge": "Scal"
+    },
+    "aliases": {
+      "empty": "Brak aliasów.",
+      "newAria": "Nowy alias",
+      "placeholder": "nazwa procesu",
+      "add": "Dodaj"
+    },
+    "actions": {
+      "linkIgdb": "Powiąż z IGDB",
+      "requeue": "Wzbogać ponownie",
+      "changeCover": "Zmień okładkę"
+    },
+    "igdb": {
+      "title": "Powiąż z IGDB",
+      "queryAria": "Zapytanie IGDB",
+      "noResults": "Brak wyników.",
+      "link": "Powiąż"
+    },
+    "cover": {
+      "title": "Globalna okładka",
+      "fileAria": "Plik okładki"
+    },
+    "merge": {
+      "searchAria": "Szukaj gry docelowej",
+      "placeholder": "nazwa gry docelowej",
+      "here": "Scal tutaj",
+      "hint": "Ta gra zostanie połączona z wybraną pozycją. Operacji nie można cofnąć.",
+      "title": "Scal gry",
+      "message": "Połączyć tę grę z „{{name}}”? Sesje i aliasy zostaną przeniesione, a ta pozycja zniknie z katalogu. Tej operacji nie można cofnąć.",
+      "confirm": "Scal"
+    },
+    "toast": {
+      "requeueSuccess": "Wzbogacanie dodane do kolejki.",
+      "requeueFailed": "Nie udało się dodać do kolejki.",
+      "igdbUnavailable": "Baza gier tymczasowo niedostępna.",
+      "igdbSearchFailed": "Nie udało się wyszukać w IGDB.",
+      "igdbLinked": "Gra powiązana z IGDB.",
+      "igdbConflict": "Ta gra IGDB jest już powiązana z inną pozycją.",
+      "igdbLinkFailed": "Nie udało się powiązać z IGDB.",
+      "aliasAdded": "Alias dodany.",
+      "aliasConflict": "Alias należy do innej gry.",
+      "aliasEmpty": "Nazwa procesu nie może być pusta.",
+      "aliasFailed": "Nie udało się dodać aliasu.",
+      "coverSaved": "Globalna okładka zapisana.",
+      "coverInvalid": "Nieprawidłowy plik obrazu.",
+      "coverFailed": "Nie udało się zapisać okładki.",
+      "merged": "Gry połączone.",
+      "mergeForbidden": "Brak uprawnień do łączenia gier.",
+      "mergeFailed": "Nie udało się połączyć gier."
+    }
+  }
+}

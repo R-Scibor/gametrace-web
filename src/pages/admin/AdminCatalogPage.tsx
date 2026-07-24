@@ -1,4 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MasterDetail } from '../../components/admin/MasterDetail';
 import { CatalogFilters, type CatalogFilterChange } from '../../components/admin/catalog/CatalogFilters';
 import { CatalogInspector } from '../../components/admin/catalog/CatalogInspector';
@@ -12,6 +13,7 @@ import styles from './AdminCatalogPage.module.css';
 const LIMIT = 50;
 
 export function AdminCatalogPage() {
+  const { t } = useTranslation('admin');
   const [params, setParams] = useSearchParams();
 
   const q = params.get('q') ?? '';
@@ -66,9 +68,9 @@ export function AdminCatalogPage() {
 
             {isError && (
               <div className={styles.state}>
-                <ErrorBanner message="Nie udało się wczytać katalogu." />
+                <ErrorBanner message={t('catalog.errorLoad')} />
                 <Button type="button" variant="secondary" onClick={() => refetch()}>
-                  Spróbuj ponownie
+                  {t('common.retry')}
                 </Button>
               </div>
             )}

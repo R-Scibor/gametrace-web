@@ -9,6 +9,7 @@ import {
   requeueEnrichment,
 } from '../api/admin';
 import { adminMergeGame } from '../api/games';
+import i18n from '../i18n';
 import { fileToBase64 } from '../lib/files';
 import { qk } from '../lib/queryKeys';
 import { useGamesStore } from '../store/gamesStore';
@@ -61,13 +62,13 @@ export function useRequeueEnrichment() {
     mutationFn: (gameId: number) => requeueEnrichment(gameId),
     onSuccess: () => {
       invalidateCatalog(queryClient);
-      pushToast({ type: 'success', message: 'Wzbogacanie dodane do kolejki.' });
+      pushToast({ type: 'success', message: i18n.t('admin:catalog.toast.requeueSuccess') });
     },
     onError: (err) => {
       const status = axios.isAxiosError(err) ? err.response?.status : undefined;
       pushToast({
         type: 'error',
-        message: status === 403 ? 'Brak uprawnień.' : 'Nie udało się dodać do kolejki.',
+        message: status === 403 ? i18n.t('admin:common.forbidden') : i18n.t('admin:catalog.toast.requeueFailed'),
       });
     },
   });
@@ -84,8 +85,8 @@ export function useAdminMatch() {
         type: 'error',
         message:
           status === 502 || status === 503
-            ? 'Baza gier tymczasowo niedostępna.'
-            : 'Nie udało się wyszukać w IGDB.',
+            ? i18n.t('admin:catalog.toast.igdbUnavailable')
+            : i18n.t('admin:catalog.toast.igdbSearchFailed'),
       });
     },
   });
@@ -100,7 +101,7 @@ export function useLinkIgdb(gameId: number) {
     onSuccess: (game) => {
       queryClient.setQueryData(qk.game(gameId), game);
       invalidateCatalog(queryClient);
-      pushToast({ type: 'success', message: 'Gra powiązana z IGDB.' });
+      pushToast({ type: 'success', message: i18n.t('admin:catalog.toast.igdbLinked') });
     },
     onError: (err) => {
       const status = axios.isAxiosError(err) ? err.response?.status : undefined;
@@ -108,8 +109,8 @@ export function useLinkIgdb(gameId: number) {
       if (status === 409 && conflictId) {
         pushToast({
           type: 'error',
-          message: 'Ta gra IGDB jest już powiązana z inną pozycją.',
-          action: { label: 'Pokaż grę', to: `/admin/catalog?game=${conflictId}` },
+          message: i18n.t('admin:catalog.toast.igdbConflict'),
+          action: { label: i18n.t('admin:common.showGame'), to: `/admin/catalog?game=${conflictId}` },
         });
         return;
       }
@@ -117,10 +118,10 @@ export function useLinkIgdb(gameId: number) {
         type: 'error',
         message:
           status === 502 || status === 503
-            ? 'Baza gier tymczasowo niedostępna.'
+            ? i18n.t('admin:catalog.toast.igdbUnavailable')
             : status === 403
-              ? 'Brak uprawnień.'
-              : 'Nie udało się powiązać z IGDB.',
+              ? i18n.t('admin:common.forbidden')
+              : i18n.t('admin:catalog.toast.igdbLinkFailed'),
       });
     },
   });
@@ -134,7 +135,7 @@ export function useAddAlias(gameId: number) {
     mutationFn: (discordProcessName: string) => addGameAlias(gameId, discordProcessName),
     onSuccess: () => {
       invalidateCatalog(queryClient);
-      pushToast({ type: 'success', message: 'Alias dodany.' });
+      pushToast({ type: 'success', message: i18n.t('admin:catalog.toast.aliasAdded') });
     },
     onError: (err) => {
       const status = axios.isAxiosError(err) ? err.response?.status : undefined;
@@ -142,8 +143,8 @@ export function useAddAlias(gameId: number) {
       if (status === 409 && conflictId) {
         pushToast({
           type: 'error',
-          message: 'Alias należy do innej gry.',
-          action: { label: 'Pokaż grę', to: `/admin/catalog?game=${conflictId}` },
+          message: i18n.t('admin:catalog.toast.aliasConflict'),
+          action: { label: i18n.t('admin:common.showGame'), to: `/admin/catalog?game=${conflictId}` },
         });
         return;
       }
@@ -151,10 +152,10 @@ export function useAddAlias(gameId: number) {
         type: 'error',
         message:
           status === 422
-            ? 'Nazwa procesu nie może być pusta.'
+            ? i18n.t('admin:catalog.toast.aliasEmpty')
             : status === 403
-              ? 'Brak uprawnień.'
-              : 'Nie udało się dodać aliasu.',
+              ? i18n.t('admin:common.forbidden')
+              : i18n.t('admin:catalog.toast.aliasFailed'),
       });
     },
   });
@@ -174,7 +175,7 @@ export function useAdminUploadCover(gameId: number) {
       queryClient.setQueryData(qk.game(gameId), game);
       invalidateCatalog(queryClient);
       invalidateGames();
-      pushToast({ type: 'success', message: 'Globalna okładka zapisana.' });
+      pushToast({ type: 'success', message: i18n.t('admin:catalog.toast.coverSaved') });
     },
     onError: (err) => {
       const status = axios.isAxiosError(err) ? err.response?.status : undefined;
@@ -182,10 +183,10 @@ export function useAdminUploadCover(gameId: number) {
         type: 'error',
         message:
           status === 403
-            ? 'Brak uprawnień.'
+            ? i18n.t('admin:common.forbidden')
             : status === 422
-              ? 'Nieprawidłowy plik obrazu.'
-              : 'Nie udało się zapisać okładki.',
+              ? i18n.t('admin:catalog.toast.coverInvalid')
+              : i18n.t('admin:catalog.toast.coverFailed'),
       });
     },
   });
@@ -207,14 +208,14 @@ export function useAdminMergeGame(sourceId: number, onMerged: (targetId: number)
       queryClient.invalidateQueries({ queryKey: qk.gamesPrefix });
       queryClient.invalidateQueries({ queryKey: qk.statsPrefix });
       invalidateGames();
-      pushToast({ type: 'success', message: 'Gry połączone.' });
+      pushToast({ type: 'success', message: i18n.t('admin:catalog.toast.merged') });
       onMerged(targetId);
     },
     onError: (err) => {
       const forbidden = axios.isAxiosError(err) && err.response?.status === 403;
       pushToast({
         type: 'error',
-        message: forbidden ? 'Brak uprawnień do łączenia gier.' : 'Nie udało się połączyć gier.',
+        message: forbidden ? i18n.t('admin:catalog.toast.mergeForbidden') : i18n.t('admin:catalog.toast.mergeFailed'),
       });
     },
   });

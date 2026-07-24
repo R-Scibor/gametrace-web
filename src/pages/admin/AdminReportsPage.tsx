@@ -1,15 +1,17 @@
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MasterDetail } from '../../components/admin/MasterDetail';
 import { ReportInspector } from '../../components/admin/reports/ReportInspector';
 import { ReportList } from '../../components/admin/reports/ReportList';
 import { Button, EmptyState, ErrorBanner, Select, Skeleton } from '../../components/ui';
 import { useAdminReports, useTriageReport } from '../../hooks/useAdminReports';
 import { parseIntParamOrNull } from '../../lib/urlParams';
-import { REPORT_STATUS_OPTIONS } from '../../lib/reportStatus';
+import { getReportStatusOptions } from '../../lib/reportStatus';
 import type { ReportStatus } from '../../types/api';
 import styles from './AdminReportsPage.module.css';
 
 export function AdminReportsPage() {
+  const { t } = useTranslation('admin');
   const [params, setParams] = useSearchParams();
 
   const status = (params.get('status') as ReportStatus | null) ?? 'open';
@@ -44,11 +46,11 @@ export function AdminReportsPage() {
     <div className={styles.container}>
       <div className={styles.filters}>
         <Select
-          label="Status"
+          label={t('common.status')}
           value={status}
           onChange={(e) => setStatus(e.target.value as ReportStatus)}
         >
-          {REPORT_STATUS_OPTIONS.map((opt) => (
+          {getReportStatusOptions().map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
             </option>
@@ -60,16 +62,16 @@ export function AdminReportsPage() {
 
       {isError && (
         <div className={styles.state}>
-          <ErrorBanner message="Nie udało się wczytać zgłoszeń." />
+          <ErrorBanner message={t('reports.errorLoad')} />
           <Button type="button" variant="secondary" onClick={() => refetch()}>
-            Spróbuj ponownie
+            {t('common.retry')}
           </Button>
         </div>
       )}
 
       {!isLoading && !isError && items.length === 0 && (
         <div className={styles.state}>
-          <EmptyState message="Brak zgłoszeń w tym widoku." />
+          <EmptyState message={t('reports.empty')} />
         </div>
       )}
 

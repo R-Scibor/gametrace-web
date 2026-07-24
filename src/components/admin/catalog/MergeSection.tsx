@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAdminGameSearch, useAdminMergeGame } from '../../../hooks/useAdminCatalog';
 import type { AdminGameItem } from '../../../types/api';
 import { Button, ConfirmDialog, Input } from '../../ui';
@@ -10,6 +11,7 @@ interface MergeSectionProps {
 }
 
 export function MergeSection({ gameId, onMerged }: MergeSectionProps) {
+  const { t } = useTranslation('admin');
   const [query, setQuery] = useState('');
   const [target, setTarget] = useState<AdminGameItem | null>(null);
   const { data: candidates = [] } = useAdminGameSearch(query, gameId);
@@ -24,8 +26,8 @@ export function MergeSection({ gameId, onMerged }: MergeSectionProps) {
     <div className={styles.zone}>
       <Input
         className={styles.input}
-        aria-label="Szukaj gry docelowej"
-        placeholder="nazwa gry docelowej"
+        aria-label={t('catalog.merge.searchAria')}
+        placeholder={t('catalog.merge.placeholder')}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
@@ -42,28 +44,21 @@ export function MergeSection({ gameId, onMerged }: MergeSectionProps) {
               disabled={merge.isPending}
               onClick={() => setTarget(candidate)}
             >
-              Scal tutaj
+              {t('catalog.merge.here')}
             </Button>
           </div>
         ))}
       </div>
 
-      <p className={styles.hint}>
-        Ta gra zostanie połączona z wybraną pozycją. Operacji nie można cofnąć.
-      </p>
+      <p className={styles.hint}>{t('catalog.merge.hint')}</p>
 
       <ConfirmDialog
         open={target != null}
-        title="Scal gry"
+        title={t('catalog.merge.title')}
         message={
-          target ? (
-            <>
-              Połączyć tę grę z „{target.primary_name}”? Sesje i aliasy zostaną przeniesione, a ta
-              pozycja zniknie z katalogu. Tej operacji nie można cofnąć.
-            </>
-          ) : null
+          target ? t('catalog.merge.message', { name: target.primary_name }) : null
         }
-        confirmLabel="Scal"
+        confirmLabel={t('catalog.merge.confirm')}
         variant="danger"
         loading={merge.isPending}
         onConfirm={confirmMerge}

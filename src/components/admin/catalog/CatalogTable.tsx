@@ -1,4 +1,5 @@
 import type { KeyboardEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { AdminGameItem } from '../../../types/api';
 import { ENRICHMENT_STATUS_LABELS } from '../../../lib/enrichmentStatus';
 import { Button, EmptyState } from '../../ui';
@@ -23,6 +24,7 @@ export function CatalogTable({
   onSelect,
   onPage,
 }: CatalogTableProps) {
+  const { t } = useTranslation('admin');
   const page = Math.floor(skip / limit) + 1;
   const pages = Math.max(1, Math.ceil(total / limit));
 
@@ -38,12 +40,12 @@ export function CatalogTable({
       <table className={styles.table}>
         <thead>
           <tr>
-            <th scope="col">Okładka</th>
-            <th scope="col">Nazwa</th>
-            <th scope="col">ID</th>
-            <th scope="col">Status</th>
-            <th scope="col">Sesje</th>
-            <th scope="col">Aliasy</th>
+            <th scope="col">{t('catalog.columns.cover')}</th>
+            <th scope="col">{t('catalog.columns.name')}</th>
+            <th scope="col">{t('catalog.columns.id')}</th>
+            <th scope="col">{t('catalog.columns.status')}</th>
+            <th scope="col">{t('catalog.columns.sessions')}</th>
+            <th scope="col">{t('catalog.columns.aliases')}</th>
           </tr>
         </thead>
         <tbody>
@@ -75,7 +77,7 @@ export function CatalogTable({
         </tbody>
       </table>
 
-      {items.length === 0 && <EmptyState message="Brak gier dla wybranego filtra." />}
+      {items.length === 0 && <EmptyState message={t('catalog.emptyFilter')} />}
 
       <div className={styles.pagination}>
         <Button
@@ -85,7 +87,7 @@ export function CatalogTable({
           disabled={skip === 0}
           onClick={() => onPage(Math.max(0, skip - limit))}
         >
-          Poprzednia
+          {t('catalog.prevPage')}
         </Button>
         <span>
           {page} / {pages}
@@ -97,7 +99,7 @@ export function CatalogTable({
           disabled={skip + limit >= total}
           onClick={() => onPage(skip + limit)}
         >
-          Następna
+          {t('catalog.nextPage')}
         </Button>
       </div>
     </div>

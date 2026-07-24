@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { AdminCatalogSort, EnrichmentStatus } from '../../../types/api';
-import { ENRICHMENT_STATUS_OPTIONS } from '../../../lib/enrichmentStatus';
+import { getEnrichmentStatusOptions } from '../../../lib/enrichmentStatus';
+import i18n from '../../../i18n';
 import { Input, Select } from '../../ui';
 import styles from './CatalogFilters.module.css';
 
@@ -17,15 +19,19 @@ interface CatalogFiltersProps {
   onChange: (patch: CatalogFilterChange) => void;
 }
 
-const SORT_OPTIONS: { value: AdminCatalogSort; label: string }[] = [
-  { value: 'sessions_desc', label: 'Najwięcej sesji' },
-  { value: 'name_asc', label: 'Nazwa A-Z' },
-  { value: 'id_asc', label: 'Najstarsze ID' },
-];
+const SORT_KEYS: AdminCatalogSort[] = ['sessions_desc', 'name_asc', 'id_asc'];
+
+function getSortOptions(): { value: AdminCatalogSort; label: string }[] {
+  return SORT_KEYS.map((value) => ({
+    value,
+    label: i18n.t(`admin:catalog.sort.${value}`),
+  }));
+}
 
 const SEARCH_DEBOUNCE_MS = 300;
 
 export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProps) {
+  const { t } = useTranslation('admin');
   const [searchInput, setSearchInput] = useState(q);
   const [syncedQ, setSyncedQ] = useState(q);
 
@@ -49,20 +55,20 @@ export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProp
       <Input
         className={styles.search}
         type="search"
-        aria-label="Szukaj gry"
-        placeholder="Szukaj nazwy lub aliasu"
+        aria-label={t('catalog.searchAria')}
+        placeholder={t('catalog.searchPlaceholder')}
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
       />
 
       <Select
-        label="Status"
+        label={t('common.status')}
         value={status ?? ''}
         onChange={(e) =>
           onChange({ status: (e.target.value || undefined) as EnrichmentStatus | undefined })
         }
       >
-        {ENRICHMENT_STATUS_OPTIONS.map((opt) => (
+        {getEnrichmentStatusOptions().map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
@@ -70,11 +76,11 @@ export function CatalogFilters({ q, status, sort, onChange }: CatalogFiltersProp
       </Select>
 
       <Select
-        label="Sortowanie"
+        label={t('catalog.sortLabel')}
         value={sort}
         onChange={(e) => onChange({ sort: e.target.value as AdminCatalogSort })}
       >
-        {SORT_OPTIONS.map((opt) => (
+        {getSortOptions().map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>

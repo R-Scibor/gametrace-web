@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { AdminGameItem } from '../../../types/api';
 import { ENRICHMENT_STATUS_LABELS } from '../../../lib/enrichmentStatus';
 import { sessionsLabel } from '../../../lib/pluralize';
@@ -21,20 +22,21 @@ interface CatalogInspectorProps {
 }
 
 export function CatalogInspector({ item, missingId, onShowAll, onMerged }: CatalogInspectorProps) {
+  const { t } = useTranslation('admin');
   if (!item) {
     if (missingId != null) {
       return (
         <div className={styles.missing}>
-          <EmptyState message={`Gra #${missingId} nie jest widoczna przy tym filtrze.`} />
+          <EmptyState message={t('catalog.missingFiltered', { id: missingId })} />
           {onShowAll && (
             <Button type="button" variant="secondary" onClick={onShowAll}>
-              Pokaż wszystkie
+              {t('catalog.showAll')}
             </Button>
           )}
         </div>
       );
     }
-    return <EmptyState message="Wybierz grę z tabeli." />;
+    return <EmptyState message={t('catalog.selectPrompt')} />;
   }
 
   return (
@@ -50,17 +52,17 @@ export function CatalogInspector({ item, missingId, onShowAll, onMerged }: Catal
       }
     >
       <section>
-        <SectionHeader label="Aliasy" />
+        <SectionHeader label={t('catalog.sections.aliases')} />
         <AliasSection gameId={item.id} aliases={item.aliases} />
       </section>
 
       <section>
-        <SectionHeader label="Akcje" />
+        <SectionHeader label={t('catalog.sections.actions')} />
         <ActionsSection gameId={item.id} gameName={item.primary_name} />
       </section>
 
       <section className={styles.danger}>
-        <SectionHeader label="Scal" />
+        <SectionHeader label={t('catalog.sections.merge')} />
         <MergeSection gameId={item.id} onMerged={onMerged} />
       </section>
     </Panel>

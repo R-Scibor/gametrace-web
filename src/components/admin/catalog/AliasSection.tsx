@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAddAlias } from '../../../hooks/useAdminCatalog';
 import { Button, Input } from '../../ui';
 import styles from './AliasSection.module.css';
@@ -9,6 +10,7 @@ interface AliasSectionProps {
 }
 
 export function AliasSection({ gameId, aliases }: AliasSectionProps) {
+  const { t } = useTranslation('admin');
   const [value, setValue] = useState('');
   const addAlias = useAddAlias(gameId);
 
@@ -30,19 +32,19 @@ export function AliasSection({ gameId, aliases }: AliasSectionProps) {
           ))}
         </div>
       ) : (
-        <p className={styles.empty}>Brak aliasów.</p>
+        <p className={styles.empty}>{t('catalog.aliases.empty')}</p>
       )}
 
       <form className={styles.form} onSubmit={submit}>
         <Input
           className={styles.input}
-          aria-label="Nowy alias"
-          placeholder="nazwa procesu"
+          aria-label={t('catalog.aliases.newAria')}
+          placeholder={t('catalog.aliases.placeholder')}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
         <Button type="submit" loading={addAlias.isPending}>
-          Dodaj
+          {t('catalog.aliases.add')}
         </Button>
       </form>
     </div>

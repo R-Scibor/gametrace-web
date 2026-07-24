@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { getAdminReports, patchAdminReport } from '../api/admin';
+import i18n from '../i18n';
 import { qk } from '../lib/queryKeys';
 import { useToastStore } from '../store/toastStore';
 import type { AdminReportsQuery } from '../types/api';
@@ -25,7 +26,7 @@ export function useTriageReport() {
       queryClient.invalidateQueries({ queryKey: qk.adminOverview });
       pushToast({
         type: 'success',
-        message: status === 'closed' ? 'Zgłoszenie zamknięte.' : 'Zgłoszenie oznaczone.',
+        message: status === 'closed' ? i18n.t('admin:reports.toast.closed') : i18n.t('admin:reports.toast.triaged'),
       });
     },
     onError: (err) => {
@@ -33,7 +34,7 @@ export function useTriageReport() {
       pushToast({
         type: 'error',
         message:
-          httpStatus === 403 ? 'Brak uprawnień.' : 'Nie udało się zaktualizować zgłoszenia.',
+          httpStatus === 403 ? i18n.t('admin:common.forbidden') : i18n.t('admin:reports.toast.updateFailed'),
       });
     },
   });

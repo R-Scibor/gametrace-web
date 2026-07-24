@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, ErrorBanner, Skeleton, StatTile } from '../../components/ui';
 import { AttentionTile } from '../../components/admin/overview/AttentionTile';
 import { useAdminOverview } from '../../hooks/useAdminOverview';
@@ -5,6 +6,7 @@ import { formatHours } from '../../lib/format';
 import styles from './AdminOverviewPage.module.css';
 
 export function AdminOverviewPage() {
+  const { t } = useTranslation('admin');
   const { data, isLoading, isError, refetch } = useAdminOverview();
 
   if (isLoading) {
@@ -12,7 +14,7 @@ export function AdminOverviewPage() {
     return (
       <div className={styles.container}>
         <section>
-          <h2 className={styles.sectionLabel}>Homelab</h2>
+          <h2 className={styles.sectionLabel}>{t('overview.homelab')}</h2>
           <div className={styles.grid}>
             {[0, 1, 2, 3].map((i) => (
               <Skeleton key={i} height={78} />
@@ -20,7 +22,7 @@ export function AdminOverviewPage() {
           </div>
         </section>
         <section>
-          <h2 className={styles.sectionLabel}>Wymaga uwagi</h2>
+          <h2 className={styles.sectionLabel}>{t('overview.attention')}</h2>
           <div className={styles.grid}>
             {[0, 1, 2].map((i) => (
               <Skeleton key={i} height={78} />
@@ -34,9 +36,9 @@ export function AdminOverviewPage() {
   if (isError || !data) {
     return (
       <div className={styles.state}>
-        <ErrorBanner message="Nie udało się wczytać przeglądu." />
+        <ErrorBanner message={t('overview.errorLoad')} />
         <Button type="button" variant="secondary" onClick={() => refetch()}>
-          Spróbuj ponownie
+          {t('common.retry')}
         </Button>
       </div>
     );
@@ -45,30 +47,30 @@ export function AdminOverviewPage() {
   return (
     <div className={styles.container}>
       <section>
-        <h2 className={styles.sectionLabel}>Homelab</h2>
+        <h2 className={styles.sectionLabel}>{t('overview.homelab')}</h2>
         <div className={styles.grid}>
-          <StatTile label="Użytkownicy" value={data.user_count} />
-          <StatTile label="Sesje" value={data.session_count} />
-          <StatTile label="Czas gry" value={formatHours(data.total_seconds)} unit="h" />
-          <StatTile label="Gry" value={data.game_count} />
+          <StatTile label={t('overview.users')} value={data.user_count} />
+          <StatTile label={t('overview.sessions')} value={data.session_count} />
+          <StatTile label={t('overview.playtime')} value={formatHours(data.total_seconds)} unit="h" />
+          <StatTile label={t('overview.games')} value={data.game_count} />
         </div>
       </section>
 
       <section>
-        <h2 className={styles.sectionLabel}>Wymaga uwagi</h2>
+        <h2 className={styles.sectionLabel}>{t('overview.attention')}</h2>
         <div className={styles.grid}>
           <AttentionTile
-            label="Do sprawdzenia"
+            label={t('overview.needsReview')}
             value={data.needs_review_count}
             to="/admin/catalog?status=NEEDS_REVIEW"
           />
           <AttentionTile
-            label="W kolejce"
+            label={t('overview.pending')}
             value={data.pending_enrichment_count}
             to="/admin/catalog?status=PENDING"
           />
           <AttentionTile
-            label="Otwarte zgłoszenia"
+            label={t('overview.openReports')}
             value={data.open_reports_count}
             to="/admin/reports?status=open"
           />

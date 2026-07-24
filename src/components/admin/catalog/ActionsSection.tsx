@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRequeueEnrichment } from '../../../hooks/useAdminCatalog';
 import { Button } from '../../ui';
 import { CoverUploadDialog } from './CoverUploadDialog';
@@ -11,13 +12,14 @@ interface ActionsSectionProps {
 }
 
 export function ActionsSection({ gameId, gameName }: ActionsSectionProps) {
+  const { t } = useTranslation('admin');
   const [dialog, setDialog] = useState<'igdb' | 'cover' | null>(null);
   const requeue = useRequeueEnrichment();
 
   return (
     <div className={styles.actions}>
       <Button type="button" variant="secondary" onClick={() => setDialog('igdb')}>
-        Powiąż z IGDB
+        {t('catalog.actions.linkIgdb')}
       </Button>
       <Button
         type="button"
@@ -25,10 +27,10 @@ export function ActionsSection({ gameId, gameName }: ActionsSectionProps) {
         loading={requeue.isPending}
         onClick={() => requeue.mutate(gameId)}
       >
-        Wzbogać ponownie
+        {t('catalog.actions.requeue')}
       </Button>
       <Button type="button" variant="secondary" onClick={() => setDialog('cover')}>
-        Zmień okładkę
+        {t('catalog.actions.changeCover')}
       </Button>
 
       {dialog === 'igdb' && (

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAdminMatch, useLinkIgdb } from '../../../hooks/useAdminCatalog';
 import type { IGDBCandidate } from '../../../types/api';
 import { Button, EmptyState, Input, Modal } from '../../ui';
@@ -11,6 +12,7 @@ interface IgdbLinkDialogProps {
 }
 
 export function IgdbLinkDialog({ gameId, gameName, onClose }: IgdbLinkDialogProps) {
+  const { t } = useTranslation('admin');
   const [query, setQuery] = useState(gameName);
   const [candidates, setCandidates] = useState<IGDBCandidate[]>([]);
   const [searched, setSearched] = useState(false);
@@ -29,23 +31,23 @@ export function IgdbLinkDialog({ gameId, gameName, onClose }: IgdbLinkDialogProp
   return (
     <Modal open onClose={onClose} labelledBy="igdb-link-title" className={styles.dialog}>
       <h2 id="igdb-link-title" className={styles.title}>
-        Powiąż z IGDB
+        {t('catalog.igdb.title')}
       </h2>
 
       <div className={styles.search}>
         <Input
           className={styles.input}
-          aria-label="Zapytanie IGDB"
+          aria-label={t('catalog.igdb.queryAria')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
         <Button type="button" onClick={search} loading={match.isPending}>
-          Szukaj
+          {t('common.search')}
         </Button>
       </div>
 
       {searched && candidates.length === 0 && !match.isPending && (
-        <EmptyState message="Brak wyników." />
+        <EmptyState message={t('catalog.igdb.noResults')} />
       )}
 
       {candidates.length > 0 && (
@@ -62,7 +64,7 @@ export function IgdbLinkDialog({ gameId, gameName, onClose }: IgdbLinkDialogProp
                 loading={link.isPending}
                 onClick={() => link.mutate(candidate.igdb_id, { onSuccess: onClose })}
               >
-                Powiąż
+                {t('catalog.igdb.link')}
               </Button>
             </div>
           ))}
@@ -71,7 +73,7 @@ export function IgdbLinkDialog({ gameId, gameName, onClose }: IgdbLinkDialogProp
 
       <div className={styles.actions}>
         <Button type="button" variant="secondary" onClick={onClose}>
-          Zamknij
+          {t('common.close')}
         </Button>
       </div>
     </Modal>

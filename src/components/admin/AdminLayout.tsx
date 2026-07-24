@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAdminOverview } from '../../hooks/useAdminOverview';
 import styles from './AdminLayout.module.css';
 
@@ -7,6 +8,7 @@ function tabClass({ isActive }: { isActive: boolean }) {
 }
 
 export function AdminLayout() {
+  const { t } = useTranslation('admin');
   const { data } = useAdminOverview();
 
   const reviewCount = data?.needs_review_count ?? 0;
@@ -14,16 +16,16 @@ export function AdminLayout() {
 
   return (
     <div className={styles.container}>
-      <nav className={styles.tabs} aria-label="Sekcje administracji">
+      <nav className={styles.tabs} aria-label={t('nav.ariaLabel')}>
         <NavLink to="/admin" end className={tabClass}>
-          Przegląd
+          {t('nav.overview')}
         </NavLink>
         <NavLink to="/admin/reports" className={tabClass}>
-          Zgłoszenia
+          {t('nav.reports')}
           {reportsCount > 0 && <span className={styles.count}>{reportsCount}</span>}
         </NavLink>
         <NavLink to="/admin/catalog" className={tabClass}>
-          Katalog
+          {t('nav.catalog')}
           {reviewCount > 0 && <span className={styles.count}>{reviewCount}</span>}
         </NavLink>
       </nav>

@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { formatDate } from '../../../lib/format';
 import type { AdminReportItem } from '../../../types/api';
 import { Button, EmptyState } from '../../ui';
@@ -17,8 +18,9 @@ function renderContextValue(value: unknown): string {
 }
 
 export function ReportInspector({ item, onTriage, isPending }: ReportInspectorProps) {
+  const { t } = useTranslation('admin');
   if (!item) {
-    return <EmptyState message="Wybierz zgłoszenie z listy." />;
+    return <EmptyState message={t('reports.selectPrompt')} />;
   }
 
   const contextEntries = Object.entries(item.context ?? {});
@@ -33,9 +35,9 @@ export function ReportInspector({ item, onTriage, isPending }: ReportInspectorPr
       </div>
 
       <div>
-        <p className={styles.label}>Diagnostyka</p>
+        <p className={styles.label}>{t('reports.diagnostics')}</p>
         {contextEntries.length === 0 ? (
-          <p className={styles.key}>Brak danych diagnostycznych.</p>
+          <p className={styles.key}>{t('reports.noDiagnostics')}</p>
         ) : (
           <div className={styles.context}>
             {contextEntries.map(([key, value]) => (
@@ -51,10 +53,10 @@ export function ReportInspector({ item, onTriage, isPending }: ReportInspectorPr
       {item.status === 'open' && (
         <div className={styles.actions}>
           <Button variant="primary" disabled={isPending} onClick={() => onTriage('triaged')}>
-            Oznacz jako obsłużone
+            {t('reports.markTriaged')}
           </Button>
           <Button variant="secondary" disabled={isPending} onClick={() => onTriage('closed')}>
-            Zamknij
+            {t('reports.close')}
           </Button>
         </div>
       )}
