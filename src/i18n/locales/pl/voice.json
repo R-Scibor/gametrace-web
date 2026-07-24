@@ -1,0 +1,22 @@
+{
+  "title": "Sesja głosowa",
+  "status": {
+    "recording": "NAGRYWANIE",
+    "processing": "PRZETWARZANIE",
+    "ready": "GOTOWY"
+  },
+  "hint": "Przykład: „Grałem w Wiedźmina dzisiaj od 18 do 20”. Naciśnij, aby nagrać, i ponownie aby zakończyć.",
+  "permission": {
+    "label": "BRAK DOSTĘPU",
+    "message": "Zezwól na mikrofon w ustawieniach przeglądarki."
+  },
+  "errors": {
+    "recordFailed": "Nagrywanie nie powiodło się.",
+    "transcribeFailed": "Nie udało się przetworzyć nagrania. Spróbuj ponownie."
+  },
+  "actions": {
+    "processing": "PRZETWARZANIE...",
+    "stop": "ZAKOŃCZ I PRZETWÓRZ",
+    "start": "ROZPOCZNIJ NAGRYWANIE"
+  }
+}

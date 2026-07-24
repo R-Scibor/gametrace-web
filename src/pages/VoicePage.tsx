@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { SectionHeader, Button, ErrorBanner } from '../components/ui';
 import { useTranscribeVoice } from '../hooks/useTranscribeVoice';
@@ -14,6 +15,7 @@ function formatElapsed(seconds: number): string {
 }
 
 export function VoicePage() {
+  const { t } = useTranslation('voice');
   const { isRecording, start, stop } = useVoiceRecord();
   const [elapsed, setElapsed] = useState(0);
   const [permissionError, setPermissionError] = useState(false);
@@ -29,8 +31,8 @@ export function VoicePage() {
 
   useEffect(() => {
     if (!isRecording) return;
-    const t = setInterval(() => setElapsed((e) => e + 1), 1000);
-    return () => clearInterval(t);
+    const timer = setInterval(() => setElapsed((e) => e + 1), 1000);
+    return () => clearInterval(timer);
   }, [isRecording]);
 
   const handleRecordToggle = async () => {
@@ -45,7 +47,7 @@ export function VoicePage() {
         if (err instanceof VoicePermissionError) {
           setPermissionError(true);
         } else {
-          setRecordError('Nagrywanie nie powiodło się.');
+          setRecordError(t('errors.recordFailed'));
         }
       }
       return;
@@ -55,16 +57,20 @@ export function VoicePage() {
       const blob = await stop();
       transcribeMut.mutate(blob);
     } catch {
-      setRecordError('Nagrywanie nie powiodło się.');
+      setRecordError(t('errors.recordFailed'));
     }
   };
 
   const statusLabel =
-    state === 'recording' ? 'NAGRYWANIE' : state === 'processing' ? 'PRZETWARZANIE' : 'GOTOWY';
+    state === 'recording'
+      ? t('status.recording')
+      : state === 'processing'
+        ? t('status.processing')
+        : t('status.ready');
 
   return (
     <div className={styles.container}>
-      <SectionHeader title="Sesja głosowa" />
+      <SectionHeader title={t('title')} />
 
       <div className={styles.panel}>
         <div className={styles.statusStrip}>
@@ -87,28 +93,25 @@ export function VoicePage() {
           ))}
         </div>
 
-        <p className={styles.hint}>
-          Przykład: „Grałem w Wiedźmina dzisiaj od 18 do 20”. Naciśnij, aby nagrać, i ponownie aby
-          zakończyć.
-        </p>
+        <p className={styles.hint}>{t('hint')}</p>
 
         {permissionError && (
           <ErrorBanner
-            label="BRAK DOSTĘPU"
-            message="Zezwól na mikrofon w ustawieniach przeglądarki."
+            label={t('permission.label')}
+            message={t('permission.message')}
           />
         )}
         {recordError && <ErrorBanner message={recordError} />}
         {transcribeMut.isError && (
-          <ErrorBanner message="Nie udało się przetworzyć nagrania. Spróbuj ponownie." />
+          <ErrorBanner message={t('errors.transcribeFailed')} />
         )}
 
         <Button onClick={handleRecordToggle} disabled={state === 'processing'} variant="primary">
           {state === 'processing'
-            ? 'PRZETWARZANIE...'
+            ? t('actions.processing')
             : isRecording
-              ? 'ZAKOŃCZ I PRZETWÓRZ'
-              : 'ROZPOCZNIJ NAGRYWANIE'}
+              ? t('actions.stop')
+              : t('actions.start')}
         </Button>
       </div>
     </div>
