@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocalCoversStore } from '../../store/localCoversStore';
 import { Cover } from '../Cover';
 import { Button } from '../ui';
@@ -12,6 +13,7 @@ interface CoverUploadProps {
 }
 
 export function CoverUpload({ gameId, coverUrl, gameName }: CoverUploadProps) {
+  const { t } = useTranslation('library');
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -29,9 +31,9 @@ export function CoverUpload({ gameId, coverUrl, gameName }: CoverUploadProps) {
     setPending(true);
     try {
       await setCover(gameId, file);
-      pushToast({ type: 'success', message: 'Okładka zapisana lokalnie.' });
+      pushToast({ type: 'success', message: t('cover.saved') });
     } catch {
-      pushToast({ type: 'error', message: 'Nie udało się zapisać okładki.' });
+      pushToast({ type: 'error', message: t('cover.saveFailed') });
     } finally {
       URL.revokeObjectURL(objectUrl);
       setPreview(null);
@@ -41,7 +43,7 @@ export function CoverUpload({ gameId, coverUrl, gameName }: CoverUploadProps) {
 
   const handleClear = () => {
     clearCover(gameId);
-    pushToast({ type: 'success', message: 'Przywrócono oryginalną okładkę.' });
+    pushToast({ type: 'success', message: t('cover.restored') });
   };
 
   return (
@@ -62,14 +64,14 @@ export function CoverUpload({ gameId, coverUrl, gameName }: CoverUploadProps) {
         disabled={pending}
         onClick={() => inputRef.current?.click()}
       >
-        {pending ? 'ZAPISYWANIE...' : 'WYBIERZ ZDJĘCIE'}
+        {pending ? t('cover.saving') : t('cover.choose')}
       </Button>
       {localCover && (
         <Button type="button" variant="secondary" disabled={pending} onClick={handleClear}>
-          PRZYWRÓĆ ORYGINALNĄ
+          {t('cover.restore')}
         </Button>
       )}
-      <p className={styles.hint}>Okładka zapisywana lokalnie w przeglądarce (JPEG, PNG, WebP)</p>
+      <p className={styles.hint}>{t('cover.hint')}</p>
     </div>
   );
 }

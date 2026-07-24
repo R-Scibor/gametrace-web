@@ -1,0 +1,71 @@
+{
+  "title": "Biblioteka",
+  "tabs": {
+    "all": "Wszystkie",
+    "review": "Do sprawdzenia",
+    "other": "Inne"
+  },
+  "search": {
+    "placeholder": "Szukaj gry...",
+    "ariaLabel": "Szukaj gry"
+  },
+  "filter": {
+    "clearAria": "Wyczyść filtr"
+  },
+  "filterPrefix": {
+    "genre": "Gatunek",
+    "theme": "Motyw",
+    "developer": "Deweloper",
+    "publisher": "Wydawca",
+    "release_decade": "Dekada"
+  },
+  "sort": {
+    "name": "NAZWA",
+    "playtime": "CZAS GRY",
+    "last_played": "OSTATNIO GRANE"
+  },
+  "empty": {
+    "review": "Brak gier wymagających sprawdzenia.",
+    "other": "Brak gier poza biblioteką.",
+    "facet": "Brak gier dla filtra „{{value}}\".",
+    "query": "Brak wyników dla „{{query}}\".",
+    "default": "Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!"
+  },
+  "error": {
+    "load": "Błąd ładowania biblioteki.",
+    "retry": "SPRÓBUJ PONOWNIE"
+  },
+  "count": {
+    "one": "gra",
+    "many": "gier"
+  },
+  "loadMore": "ZAŁADUJ WIĘCEJ",
+  "card": {
+    "needsReviewAria": "Do sprawdzenia",
+    "ignored": "UKRYTE"
+  },
+  "select": {
+    "changeAria": "Wybrana gra — zmień",
+    "change": "zmień",
+    "placeholder": "Szukaj gry...",
+    "noResults": "Brak wyników"
+  },
+  "cover": {
+    "saved": "Okładka zapisana lokalnie.",
+    "saveFailed": "Nie udało się zapisać okładki.",
+    "restored": "Przywrócono oryginalną okładkę.",
+    "saving": "ZAPISYWANIE...",
+    "choose": "WYBIERZ ZDJĘCIE",
+    "restore": "PRZYWRÓĆ ORYGINALNĄ",
+    "hint": "Okładka zapisywana lokalnie w przeglądarce (JPEG, PNG, WebP)"
+  },
+  "toast": {
+    "merged": "Gry połączone.",
+    "mergeForbidden": "Brak uprawnień do łączenia gier.",
+    "mergeFailed": "Nie udało się połączyć gier.",
+    "accepted": "Gra zaakceptowana do biblioteki.",
+    "ignored": "Gra ignorowana w statystykach.",
+    "restored": "Gra przywrócona do biblioteki.",
+    "prefFailed": "Nie udało się zaktualizować preferencji."
+  }
+}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Game } from '../../types/api';
 import { useGamesPicker } from '../../hooks/useGames';
 import { Skeleton } from '../ui';
@@ -16,6 +17,7 @@ interface GameSelectProps {
 const MAX_RESULTS = 50;
 
 export function GameSelect({ id, value, onChange, disabled, 'aria-label': ariaLabel }: GameSelectProps) {
+  const { t } = useTranslation('library');
   const { data: games, isLoading } = useGamesPicker();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
@@ -91,11 +93,11 @@ export function GameSelect({ id, value, onChange, disabled, 'aria-label': ariaLa
           className={styles.chip}
           onClick={startEditing}
           disabled={disabled}
-          aria-label={ariaLabel ?? 'Wybrana gra — zmień'}
+          aria-label={ariaLabel ?? t('select.changeAria')}
         >
           <span className={styles.chipRule} aria-hidden />
           <span className={styles.chipName}>{selected.primary_name}</span>
-          <span className={styles.chipAction}>zmień</span>
+          <span className={styles.chipAction}>{t('select.change')}</span>
         </button>
       </div>
     );
@@ -113,7 +115,7 @@ export function GameSelect({ id, value, onChange, disabled, 'aria-label': ariaLa
         aria-autocomplete="list"
         aria-label={ariaLabel}
         className={styles.input}
-        placeholder="Szukaj gry..."
+        placeholder={t('select.placeholder')}
         value={query}
         disabled={disabled}
         autoComplete="off"
@@ -128,7 +130,7 @@ export function GameSelect({ id, value, onChange, disabled, 'aria-label': ariaLa
       {open && (
         <ul className={styles.dropdown} id={listId} role="listbox">
           {filtered.length === 0 ? (
-            <li className={styles.empty}>Brak wyników</li>
+            <li className={styles.empty}>{t('select.noResults')}</li>
           ) : (
             filtered.map((game, i) => (
               <li

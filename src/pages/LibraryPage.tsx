@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useGamesPaginated } from '../hooks/useGames';
 import { SectionHeader, EmptyState, ErrorBanner, Skeleton, Button, SampleDataBanner } from '../components/ui';
 import { GameCard } from '../components/games/GameCard';
@@ -9,8 +10,8 @@ import { useAuthStore } from '../store/authStore';
 import { SAMPLE_GAMES } from '../lib/sampleData';
 import {
   clearFacetParams,
-  FILTER_PREFIX,
-  GAME_SORTS,
+  getFilterPrefix,
+  getGameSorts,
   parseFacetFilter,
   parseLibrarySort,
   persistLibrarySort,
@@ -39,6 +40,7 @@ function tabToFilter(tab: LibraryTab, q?: string, sort?: GameSort, facet?: Retur
 }
 
 export function LibraryPage() {
+  const { t } = useTranslation('library');
   const [tab, setTab] = useState<LibraryTab>('all');
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -50,6 +52,7 @@ export function LibraryPage() {
   const facet = useMemo(() => parseFacetFilter(searchParams), [searchParams]);
   const sort = useMemo(() => parseLibrarySort(searchParams), [searchParams]);
   const activeTab: LibraryTab = facet ? 'all' : tab;
+  const gameSorts = getGameSorts();
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
@@ -99,40 +102,42 @@ export function LibraryPage() {
 
   const emptyMessage =
     activeTab === 'review'
-      ? 'Brak gier wymagających sprawdzenia.'
+      ? t('empty.review')
       : activeTab === 'other'
-        ? 'Brak gier poza biblioteką.'
+        ? t('empty.other')
         : facet
-          ? `Brak gier dla filtra „${facet.value}".`
+          ? t('empty.facet', { value: facet.value })
           : debouncedQuery
-            ? `Brak wyników dla „${debouncedQuery}".`
-            : 'Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!';
+            ? t('empty.query', { query: debouncedQuery })
+            : t('empty.default');
+
+  const count = totalCount ?? games.length;
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <SectionHeader title="Biblioteka" style={{ margin: 0 }} />
+        <SectionHeader title={t('title')} style={{ margin: 0 }} />
         <div className={styles.tabs}>
           <button
             type="button"
             className={[styles.tab, activeTab === 'all' ? styles.tabActive : ''].filter(Boolean).join(' ')}
             onClick={() => selectTab('all')}
           >
-            Wszystkie
+            {t('tabs.all')}
           </button>
           <button
             type="button"
             className={[styles.tab, activeTab === 'review' ? styles.tabActive : ''].filter(Boolean).join(' ')}
             onClick={() => selectTab('review')}
           >
-            Do sprawdzenia
+            {t('tabs.review')}
           </button>
           <button
             type="button"
             className={[styles.tab, activeTab === 'other' ? styles.tabActive : ''].filter(Boolean).join(' ')}
             onClick={() => selectTab('other')}
           >
-            Inne
+            {t('tabs.other')}
           </button>
         </div>
       </div>
@@ -144,8 +149,8 @@ export function LibraryPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className={styles.search}
-          placeholder="Szukaj gry..."
-          aria-label="Szukaj gry"
+          placeholder={t('search.placeholder')}
+          aria-label={t('search.ariaLabel')}
         />
       </div>
 
@@ -153,13 +158,13 @@ export function LibraryPage() {
         <div className={styles.chipRow}>
           <span className={styles.chip}>
             <span className={styles.chipText}>
-              {FILTER_PREFIX[facet.type]}: {facet.value}
+              {getFilterPrefix(facet.type)}: {facet.value}
             </span>
             <button
               type="button"
               className={styles.chipClear}
               onClick={clearFacet}
-              aria-label="Wyczyść filtr"
+              aria-label={t('filter.clearAria')}
             >
               ✕
             </button>
@@ -168,7 +173,7 @@ export function LibraryPage() {
       )}
 
       <div className={styles.sortRow}>
-        {GAME_SORTS.map(({ key, label }) => (
+        {gameSorts.map(({ key, label }) => (
           <button
             key={key}
             type="button"
@@ -184,9 +189,9 @@ export function LibraryPage() {
 
       {!isLoading && (isError || !data) && (
         <div className={styles.errorWrap}>
-          <ErrorBanner message="Błąd ładowania biblioteki." />
+          <ErrorBanner message={t('error.load')} />
           <Button variant="secondary" onClick={() => refetch()}>
-            SPRÓBUJ PONOWNIE
+            {t('error.retry')}
           </Button>
         </div>
       )}
@@ -209,8 +214,8 @@ export function LibraryPage() {
       {!isLoading && games.length > 0 && (
         <>
           <p className={styles.count}>
-            {totalCount ?? games.length}
-            {hasNextPage ? '+' : ''} {(totalCount ?? games.length) === 1 ? 'gra' : 'gier'}
+            {count}
+            {hasNextPage ? '+' : ''} {count === 1 ? t('count.one') : t('count.many')}
           </p>
           <div className={styles.grid}>
             {games.map((game) => (
@@ -224,7 +229,7 @@ export function LibraryPage() {
                 loading={isFetchingNextPage}
                 onClick={() => fetchNextPage()}
               >
-                ZAŁADUJ WIĘCEJ
+                {t('loadMore')}
               </Button>
             </div>
           )}

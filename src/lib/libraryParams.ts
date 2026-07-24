@@ -1,20 +1,21 @@
 import type { GameSort, LibraryFilter } from '../types/api';
+import i18n from '../i18n';
 
 export const LIBRARY_SORT_KEY = 'library-sort';
 
-export const GAME_SORTS: { key: GameSort; label: string }[] = [
-  { key: 'name', label: 'NAZWA' },
-  { key: 'playtime', label: 'CZAS GRY' },
-  { key: 'last_played', label: 'OSTATNIO GRANE' },
-];
+export const GAME_SORT_KEYS: GameSort[] = ['name', 'playtime', 'last_played'];
 
-export const FILTER_PREFIX: Record<LibraryFilter['type'], string> = {
-  genre: 'Gatunek',
-  theme: 'Motyw',
-  developer: 'Deweloper',
-  publisher: 'Wydawca',
-  release_decade: 'Dekada',
-};
+/** Runtime labels so language switches apply without a frozen module map. */
+export function getGameSorts(): { key: GameSort; label: string }[] {
+  return GAME_SORT_KEYS.map((key) => ({
+    key,
+    label: i18n.t(`library:sort.${key}`),
+  }));
+}
+
+export function getFilterPrefix(type: LibraryFilter['type']): string {
+  return i18n.t(`library:filterPrefix.${type}`);
+}
 
 const FACET_KEYS: LibraryFilter['type'][] = [
   'genre',

@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getGame, getGames, adminMergeGame } from '../api/games';
 import { upsertPreference } from '../api/preferences';
+import i18n from '../i18n';
 import { qk } from '../lib/queryKeys';
 import { useGamesStore } from '../store/gamesStore';
 import { useToastStore } from '../store/toastStore';
@@ -145,14 +146,16 @@ export function useMergeGame(sourceId: number) {
       queryClient.invalidateQueries({ queryKey: qk.gamesPrefix });
       queryClient.invalidateQueries({ queryKey: qk.statsPrefix });
       invalidateGames();
-      pushToast({ type: 'success', message: 'Gry połączone.' });
+      pushToast({ type: 'success', message: i18n.t('library:toast.merged') });
       navigate(`/library/${targetId}`);
     },
     onError: (err) => {
       const forbidden = axios.isAxiosError(err) && err.response?.status === 403;
       pushToast({
         type: 'error',
-        message: forbidden ? 'Brak uprawnień do łączenia gier.' : 'Nie udało się połączyć gier.',
+        message: forbidden
+          ? i18n.t('library:toast.mergeForbidden')
+          : i18n.t('library:toast.mergeFailed'),
       });
     },
   });
@@ -187,15 +190,15 @@ export function useUpdateGamePreference(gameId: number) {
       invalidateGames();
 
       if (pref.is_accepted) {
-        pushToast({ type: 'success', message: 'Gra zaakceptowana do biblioteki.' });
+        pushToast({ type: 'success', message: i18n.t('library:toast.accepted') });
       } else if (pref.is_ignored) {
-        pushToast({ type: 'success', message: 'Gra ignorowana w statystykach.' });
+        pushToast({ type: 'success', message: i18n.t('library:toast.ignored') });
       } else {
-        pushToast({ type: 'success', message: 'Gra przywrócona do biblioteki.' });
+        pushToast({ type: 'success', message: i18n.t('library:toast.restored') });
       }
     },
     onError: () => {
-      pushToast({ type: 'error', message: 'Nie udało się zaktualizować preferencji.' });
+      pushToast({ type: 'error', message: i18n.t('library:toast.prefFailed') });
     },
   });
 }

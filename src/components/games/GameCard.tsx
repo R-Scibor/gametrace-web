@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Game, GameSort } from '../../types/api';
 import { useFormat } from '../../hooks/useFormat';
 import { Cover } from '../Cover';
@@ -11,6 +12,7 @@ interface GameCardProps {
 }
 
 export function GameCard({ game, sort = 'name', disabled }: GameCardProps) {
+  const { t } = useTranslation('library');
   const { formatDuration, formatRecency } = useFormat();
   const needsReview =
     game.enrichment_status === 'NEEDS_REVIEW' && game.is_accepted !== true && !game.is_ignored;
@@ -38,8 +40,12 @@ export function GameCard({ game, sort = 'name', disabled }: GameCardProps) {
           coverImageUrl={game.cover_image_url}
           placeholderChar={game.primary_name}
         />
-        {needsReview && <span className={styles.reviewBadge} aria-label="Do sprawdzenia">⚠</span>}
-        {game.is_ignored && <span className={styles.ignoredBadge}>UKRYTE</span>}
+        {needsReview && (
+          <span className={styles.reviewBadge} aria-label={t('card.needsReviewAria')}>
+            ⚠
+          </span>
+        )}
+        {game.is_ignored && <span className={styles.ignoredBadge}>{t('card.ignored')}</span>}
       </div>
       <div className={styles.title} title={game.primary_name}>
         {game.primary_name}
