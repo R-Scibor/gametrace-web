@@ -1,3 +1,5 @@
+import type { Language } from '../i18n/resolve';
+
 // Auth
 export interface LoginRequest { username: string; timezone?: string; }
 export interface LoginResponse {
@@ -119,9 +121,11 @@ export interface ProfileMe {
   weekly_report_enabled: boolean;
   push_enabled: boolean;
   is_admin: boolean;
+  language: Language;
 }
 export interface ProfileSettingsUpdate {
   timezone?: string; weekly_report_enabled?: boolean; push_enabled?: boolean;
+  language?: Language;
 }
 
 // Stats

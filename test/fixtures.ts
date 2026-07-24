@@ -135,6 +135,7 @@ export const profileMe: ProfileMe = {
   weekly_report_enabled: true,
   push_enabled: false,
   is_admin: true,
+  language: 'pl',
 };
 
 export const trashSession: TrashSession = {
