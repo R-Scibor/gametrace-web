@@ -3,29 +3,30 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { linkLogin as linkLoginApi, logout as logoutApi } from '../api/auth';
 import { teardownAuth } from '../lib/authTeardown';
+import i18n from '../i18n';
 
 const linkErrorMessage = (err: unknown): string => {
   if (!axios.isAxiosError(err)) {
-    return err instanceof Error ? err.message : 'Wystąpił błąd';
+    return err instanceof Error ? err.message : i18n.t('auth:errors.generic');
   }
   const status = err.response?.status;
   switch (status) {
     case 401:
-      return 'Nieprawidłowy lub wygasły kod. Uruchom /login na Discordzie ponownie.';
+      return i18n.t('auth:errors.invalidCode');
     case 422:
-      return 'Kod musi mieć 6 cyfr.';
+      return i18n.t('auth:errors.codeFormat');
     case 429: {
       const retryAfter = err.response?.headers?.['retry-after'];
       return retryAfter
-        ? `Zbyt wiele prób. Spróbuj ponownie za ${retryAfter} s.`
-        : 'Zbyt wiele prób. Spróbuj ponownie później.';
+        ? i18n.t('auth:errors.rateLimitedRetry', { seconds: retryAfter })
+        : i18n.t('auth:errors.rateLimited');
     }
     case 503:
-      return 'Logowanie kodem jest chwilowo niedostępne. Spróbuj później.';
+      return i18n.t('auth:errors.unavailable');
     default:
       return err.response
-        ? 'Nie udało się zalogować. Spróbuj ponownie.'
-        : 'Błąd połączenia z serwerem';
+        ? i18n.t('auth:errors.loginFailed')
+        : i18n.t('auth:errors.connection');
   }
 };
 
