@@ -37,3 +37,17 @@ test('isEmpty is false once settled with real recent sessions', async () => {
   });
   expect(result.current.isEmpty).toBe(false);
 });
+
+test('isEmpty is true once settled with only ERROR-status recent sessions', async () => {
+  server.use(
+    http.get('/api/v1/stats/dashboard', () => HttpResponse.json(fixtures.dashboardNoActive)),
+    http.get('/api/v1/sessions', () => HttpResponse.json([fixtures.sessionError])),
+  );
+
+  const { result } = renderHookWithProviders(() => useIsAccountEmpty());
+
+  await waitFor(() => {
+    expect(result.current.isLoading).toBe(false);
+  });
+  expect(result.current.isEmpty).toBe(true);
+});

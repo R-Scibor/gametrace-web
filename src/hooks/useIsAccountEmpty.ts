@@ -8,7 +8,7 @@ export function useIsAccountEmpty(): { isEmpty: boolean; isLoading: boolean } {
 
   const isLoading = dashLoading || recentsLoading || !dashSuccess;
   const hasHero = !!data?.active_session || !!recents?.some((s) => s.status === 'COMPLETED');
-  const isEmpty = !isLoading && !data?.active_session && !hasHero && (recents?.length ?? 0) === 0;
+  const isEmpty = !isLoading && !hasHero;
 
   return { isEmpty, isLoading };
 }
