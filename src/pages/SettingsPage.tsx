@@ -1,8 +1,10 @@
 import { useAuth } from '../hooks/useAuth';
 import { useProfile, useUpdateSettings } from '../hooks/useProfile';
 import { useHealth } from '../hooks/useHealth';
+import { useLanguage } from '../hooks/useLanguage';
 import { SectionHeader, Skeleton } from '../components/ui';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
+import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
 
@@ -31,6 +33,7 @@ export function SettingsPage() {
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { data: health } = useHealth();
   const updateSettings = useUpdateSettings();
+  const { select: selectLanguage, isPending: languagePending } = useLanguage();
 
   const handleTimezone = (tz: string) => {
     updateSettings.mutate({ timezone: tz });
@@ -54,6 +57,7 @@ export function SettingsPage() {
   }
 
   const timezone = profile?.timezone ?? 'Europe/Warsaw';
+  const language = profile?.language ?? 'pl';
 
   return (
     <div className={styles.container}>
@@ -68,6 +72,13 @@ export function SettingsPage() {
 
       <div className={styles.panel}>
         <h3 className={styles.sectionTitle}>Preferencje</h3>
+        <SettingsRow label="Język" subtext={language === 'pl' ? 'Polski' : 'English'}>
+          <LanguageSelect
+            value={language}
+            onChange={selectLanguage}
+            disabled={languagePending}
+          />
+        </SettingsRow>
         <SettingsRow label="Strefa czasowa" subtext={timezone}>
           <TimezoneSelect
             value={timezone}
