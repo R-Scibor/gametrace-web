@@ -27,8 +27,8 @@
   "empty": {
     "review": "Brak gier wymagających sprawdzenia.",
     "other": "Brak gier poza biblioteką.",
-    "facet": "Brak gier dla filtra „{{value}}\".",
-    "query": "Brak wyników dla „{{query}}\".",
+    "facet": "Brak gier dla filtra „{{value}}”.",
+    "query": "Brak wyników dla „{{query}}”.",
     "default": "Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!"
   },
   "error": {

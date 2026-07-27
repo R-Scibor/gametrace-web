@@ -19,7 +19,7 @@
     "saving": "SAVING...",
     "saveChanges": "SAVE CHANGES",
     "saveSession": "SAVE SESSION",
-    "recordVoice": "RECORD VOICE SESSION",
+    "recordVoice": "RECORD VOICE",
     "discard": "DISCARD SESSION",
     "delete": "DELETE SESSION"
   },

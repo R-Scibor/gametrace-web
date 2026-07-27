@@ -27,8 +27,8 @@
   "empty": {
     "review": "No games need review.",
     "other": "No games outside your library.",
-    "facet": "No games for the \"{{value}}\" filter.",
-    "query": "No results for \"{{query}}\".",
+    "facet": "No games for the “{{value}}” filter.",
+    "query": "No results for “{{query}}”.",
     "default": "No games in your library. Add a new session to start tracking!"
   },
   "error": {
