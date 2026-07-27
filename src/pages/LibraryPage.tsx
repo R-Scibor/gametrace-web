@@ -215,7 +215,7 @@ export function LibraryPage() {
         <>
           <p className={styles.count}>
             {count}
-            {hasNextPage ? '+' : ''} {count === 1 ? t('count.one') : t('count.many')}
+            {hasNextPage ? '+' : ''} {t('count', { count })}
           </p>
           <div className={styles.grid}>
             {games.map((game) => (

@@ -35,10 +35,9 @@
     "load": "Błąd ładowania biblioteki.",
     "retry": "SPRÓBUJ PONOWNIE"
   },
-  "count": {
-    "one": "gra",
-    "many": "gier"
-  },
+  "count_one": "gra",
+  "count_few": "gry",
+  "count_many": "gier",
   "loadMore": "ZAŁADUJ WIĘCEJ",
   "card": {
     "needsReviewAria": "Do sprawdzenia",

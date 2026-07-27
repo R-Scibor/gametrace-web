@@ -31,8 +31,8 @@
     "details": "details →"
   },
   "errors": {
-    "one": "1 failed session needs attention",
-    "many": "{{count}} failed sessions need attention",
+    "count_one": "{{count}} failed session needs attention",
+    "count_other": "{{count}} failed sessions need attention",
     "sub": "The bot may have left sessions open",
     "fix": "FIX →"
   },

@@ -39,7 +39,9 @@
     "publisher": "WYDAWCA",
     "decades": "Dekady premier",
     "timeSeries": "Czas",
-    "gameCount": "{{count}} gier"
+    "gameCount_one": "{{count}} gra",
+    "gameCount_few": "{{count}} gry",
+    "gameCount_many": "{{count}} gier"
   },
   "heatmap": {
     "daysShort": ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nied"],

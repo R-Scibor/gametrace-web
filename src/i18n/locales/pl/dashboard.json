@@ -31,8 +31,9 @@
     "details": "szczegóły →"
   },
   "errors": {
-    "one": "1 nieudana sesja wymaga uwagi",
-    "many": "{{count}} nieudane sesje wymagają uwagi",
+    "count_one": "{{count}} nieudana sesja wymaga uwagi",
+    "count_few": "{{count}} nieudane sesje wymagają uwagi",
+    "count_many": "{{count}} nieudanych sesji wymaga uwagi",
     "sub": "Bot mógł zostawić otwarte sesje",
     "fix": "NAPRAW →"
   },

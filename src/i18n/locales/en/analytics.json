@@ -39,7 +39,8 @@
     "publisher": "PUBLISHER",
     "decades": "Release decades",
     "timeSeries": "Time",
-    "gameCount": "{{count}} games"
+    "gameCount_one": "{{count}} game",
+    "gameCount_other": "{{count}} games"
   },
   "heatmap": {
     "daysShort": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],

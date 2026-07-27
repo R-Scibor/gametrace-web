@@ -35,10 +35,8 @@
     "load": "Error loading the library.",
     "retry": "TRY AGAIN"
   },
-  "count": {
-    "one": "game",
-    "many": "games"
-  },
+  "count_one": "game",
+  "count_other": "games",
   "loadMore": "LOAD MORE",
   "card": {
     "needsReviewAria": "Needs review",

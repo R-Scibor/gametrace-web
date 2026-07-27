@@ -11,8 +11,7 @@ export function PendingErrorsBanner({ errors }: PendingErrorsBannerProps) {
   const { t } = useTranslation('dashboard');
   const first = errors[0];
   const count = errors.length;
-  const title =
-    count === 1 ? t('errors.one') : t('errors.many', { count });
+  const title = t('errors.count', { count });
 
   return (
     <Link to={`/sessions/${first.id}/edit`} className={styles.banner}>
