@@ -1,42 +1,42 @@
 {
-  "back": "← Biblioteka",
+  "back": "← Library",
   "eyebrow": {
-    "lastPlayed": "OSTATNIO GRANE · {{recency}}",
-    "inLibrary": "W BIBLIOTECE"
+    "lastPlayed": "LAST PLAYED · {{recency}}",
+    "inLibrary": "IN LIBRARY"
   },
   "badges": {
-    "needsReview": "DO SPRAWDZENIA",
-    "ignored": "IGNOROWANA"
+    "needsReview": "NEEDS REVIEW",
+    "ignored": "IGNORED"
   },
   "metrics": {
-    "sessions": "SESJE",
-    "total": "ŁĄCZNIE",
-    "avg": "ŚREDNIO",
-    "firstPlayed": "PIERWSZY RAZ",
-    "lastPlayed": "OSTATNIO"
+    "sessions": "SESSIONS",
+    "total": "TOTAL",
+    "avg": "AVERAGE",
+    "firstPlayed": "FIRST PLAYED",
+    "lastPlayed": "LAST PLAYED"
   },
   "actions": {
-    "title": "Akcje",
-    "localCover": "Okładka lokalna",
-    "globalCover": "Okładka globalna",
-    "manage": "Zarządzanie",
-    "accept": "ZAAKCEPTUJ GRĘ",
-    "acceptHint": "Dodaj rozpoznaną grę do biblioteki i statystyk.",
-    "restore": "PRZYWRÓĆ DO BIBLIOTEKI",
-    "ignore": "IGNORUJ GRĘ",
-    "restoreHint": "Przywróć grę do biblioteki i wliczaj ją do statystyk.",
-    "ignoreHint": "Ukryj grę w bibliotece i pomiń ją w statystykach."
+    "title": "Actions",
+    "localCover": "Local cover",
+    "globalCover": "Global cover",
+    "manage": "Manage",
+    "accept": "ACCEPT GAME",
+    "acceptHint": "Add the detected game to your library and stats.",
+    "restore": "RESTORE TO LIBRARY",
+    "ignore": "IGNORE GAME",
+    "restoreHint": "Restore the game to your library and count it in your stats.",
+    "ignoreHint": "Hide the game in your library and skip it in your stats."
   },
   "history": {
-    "title": "Historia sesji",
-    "loadMore": "ZAŁADUJ WIĘCEJ",
-    "empty": "Brak historii sesji dla tej gry.",
-    "colDate": "Data",
-    "colTime": "Godzina",
-    "colDuration": "Czas",
+    "title": "Session history",
+    "loadMore": "LOAD MORE",
+    "empty": "No session history for this game.",
+    "colDate": "Date",
+    "colTime": "Time",
+    "colDuration": "Duration",
     "colStatus": "Status",
-    "colSource": "Źródło",
-    "sourceBot": "Bot Discord",
-    "sourceManual": "Ręczna"
+    "colSource": "Source",
+    "sourceBot": "Discord bot",
+    "sourceManual": "Manual"
   }
 }

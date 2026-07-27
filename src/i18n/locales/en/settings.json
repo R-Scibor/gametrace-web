@@ -1,25 +1,25 @@
 {
-  "title": "Ustawienia",
+  "title": "Settings",
   "sections": {
-    "account": "Konto",
-    "preferences": "Preferencje",
+    "account": "Account",
+    "preferences": "Preferences",
     "status": "Status"
   },
   "account": {
-    "user": "Użytkownik",
+    "user": "User",
     "discordId": "ID: {{id}}"
   },
   "preferences": {
-    "language": "Język",
-    "timezone": "Strefa czasowa",
-    "weeklyReport": "Raport tygodniowy",
-    "weeklyReportSub": "Wysyłany przez bota na Discord",
-    "push": "Powiadomienia push",
-    "pushSub": "Alerty na urządzeniu mobilnym"
+    "language": "Language",
+    "timezone": "Timezone",
+    "weeklyReport": "Weekly report",
+    "weeklyReportSub": "Sent by the bot on Discord",
+    "push": "Push notifications",
+    "pushSub": "Alerts on your mobile device"
   },
   "status": {
     "bot": "Bot",
-    "botUptime": "Bot aktywny od",
-    "apiVersion": "Wersja API"
+    "botUptime": "Bot up since",
+    "apiVersion": "API version"
   }
 }

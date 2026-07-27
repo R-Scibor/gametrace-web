@@ -6,93 +6,93 @@
   },
   "nav": {
     "dashboard": "Dashboard",
-    "library": "Biblioteka",
-    "analytics": "Statystyki",
-    "addSession": "Dodaj sesję",
-    "voice": "Sesja głosowa",
-    "trash": "Kosz",
-    "settings": "Ustawienia",
-    "admin": "Administracja",
-    "homeAria": "Strona powitalna GameTrace",
-    "logout": "Wyloguj się",
-    "logoutAria": "Wyloguj się",
-    "preview": "Podgląd przykładowy"
+    "library": "Library",
+    "analytics": "Analytics",
+    "addSession": "Add session",
+    "voice": "Voice session",
+    "trash": "Trash",
+    "settings": "Settings",
+    "admin": "Admin",
+    "homeAria": "GameTrace welcome page",
+    "logout": "Log out",
+    "logoutAria": "Log out",
+    "preview": "Sample preview"
   },
   "pageTitle": {
     "dashboard": "Dashboard",
-    "library": "Biblioteka",
-    "gameDetail": "Szczegóły gry",
-    "analytics": "Statystyki",
-    "addSession": "Dodaj sesję",
-    "editSession": "Edytuj sesję",
-    "voice": "Sesja głosowa",
-    "trash": "Kosz",
-    "admin": "Administracja",
-    "adminCatalog": "Katalog gier",
-    "settings": "Ustawienia"
+    "library": "Library",
+    "gameDetail": "Game details",
+    "analytics": "Analytics",
+    "addSession": "Add session",
+    "editSession": "Edit session",
+    "voice": "Voice session",
+    "trash": "Trash",
+    "admin": "Admin",
+    "adminCatalog": "Game catalog",
+    "settings": "Settings"
   },
   "actions": {
-    "confirm": "POTWIERDŹ",
-    "cancel": "ANULUJ",
-    "loading": "ŁADOWANIE...",
-    "logoutTitle": "WYLOGUJ SIĘ",
-    "logoutConfirm": "WYLOGUJ SIĘ"
+    "confirm": "CONFIRM",
+    "cancel": "CANCEL",
+    "loading": "LOADING...",
+    "logoutTitle": "LOG OUT",
+    "logoutConfirm": "LOG OUT"
   },
   "logout": {
-    "message": "Na pewno chcesz się wylogować? Będziesz musiał ponownie wpisać kod z /login."
+    "message": "Are you sure you want to log out? You'll need to enter a code from /login again."
   },
   "errors": {
-    "connectionLabel": "BŁĄD POŁĄCZENIA",
-    "connectionMessage": "Nie udało się pobrać danych. Sprawdź połączenie."
+    "connectionLabel": "CONNECTION ERROR",
+    "connectionMessage": "Couldn't load data. Check your connection."
   },
   "cover": {
-    "alt": "Okładka"
+    "alt": "Cover"
   },
   "timezone": {
-    "ariaLabel": "Strefa czasowa"
+    "ariaLabel": "Timezone"
   },
   "sampleData": {
-    "tag": "PODGLĄD",
-    "text": "To są przykładowe dane — dodaj sesję, aby zobaczyć swoje statystyki.",
-    "cta": "Dodaj sesję",
-    "dismissAria": "Ukryj podgląd"
+    "tag": "PREVIEW",
+    "text": "This is sample data — add a session to see your own stats.",
+    "cta": "Add session",
+    "dismissAria": "Hide preview"
   },
   "conflict": {
-    "heading": "Nakładające się sesje",
-    "edit": "Edytuj →"
+    "heading": "Overlapping sessions",
+    "edit": "Edit →"
   },
   "session": {
     "status": {
-      "ONGOING": "TRWA",
-      "ERROR": "BŁĄD"
+      "ONGOING": "ONGOING",
+      "ERROR": "ERROR"
     },
     "source": {
       "BOT": "⬡ BOT",
-      "MANUAL": "✎ RĘCZNA"
+      "MANUAL": "✎ MANUAL"
     }
   },
   "bot": {
     "status": {
       "online": "ONLINE",
       "offline": "OFFLINE",
-      "unknown": "NIEZNANY"
+      "unknown": "UNKNOWN"
     }
   },
-  "sessions_one": "{{count}} sesja",
-  "sessions_other": "{{count}} sesji",
+  "sessions_one": "{{count}} session",
+  "sessions_other": "{{count}} sessions",
   "toast": {
-    "settingsSaved": "Ustawienia zapisane.",
-    "settingsSaveFailed": "Nie udało się zapisać ustawień."
+    "settingsSaved": "Settings saved.",
+    "settingsSaveFailed": "Couldn't save settings."
   },
   "relative": {
-    "soon": "wkrótce",
-    "oneDay": "1 dzień",
-    "days": "{{days}} dni"
+    "soon": "soon",
+    "oneDay": "1 day",
+    "days": "{{days}} days"
   },
   "recency": {
-    "today": "grano dziś",
-    "yesterday": "grano wczoraj",
-    "daysAgo": "grano {{days}} dni temu",
-    "onDate": "grano {{date}}"
+    "today": "played today",
+    "yesterday": "played yesterday",
+    "daysAgo": "played {{days}} days ago",
+    "onDate": "played {{date}}"
   }
 }

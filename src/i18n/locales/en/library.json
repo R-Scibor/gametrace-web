@@ -1,71 +1,71 @@
 {
-  "title": "Biblioteka",
+  "title": "Library",
   "tabs": {
-    "all": "Wszystkie",
-    "review": "Do sprawdzenia",
-    "other": "Inne"
+    "all": "All",
+    "review": "Needs review",
+    "other": "Other"
   },
   "search": {
-    "placeholder": "Szukaj gry...",
-    "ariaLabel": "Szukaj gry"
+    "placeholder": "Search game...",
+    "ariaLabel": "Search game"
   },
   "filter": {
-    "clearAria": "Wyczyść filtr"
+    "clearAria": "Clear filter"
   },
   "filterPrefix": {
-    "genre": "Gatunek",
-    "theme": "Motyw",
-    "developer": "Deweloper",
-    "publisher": "Wydawca",
-    "release_decade": "Dekada"
+    "genre": "Genre",
+    "theme": "Theme",
+    "developer": "Developer",
+    "publisher": "Publisher",
+    "release_decade": "Decade"
   },
   "sort": {
-    "name": "NAZWA",
-    "playtime": "CZAS GRY",
-    "last_played": "OSTATNIO GRANE"
+    "name": "NAME",
+    "playtime": "PLAYTIME",
+    "last_played": "LAST PLAYED"
   },
   "empty": {
-    "review": "Brak gier wymagających sprawdzenia.",
-    "other": "Brak gier poza biblioteką.",
-    "facet": "Brak gier dla filtra „{{value}}\".",
-    "query": "Brak wyników dla „{{query}}\".",
-    "default": "Brak gier w bibliotece. Dodaj nową sesję, aby zacząć śledzić!"
+    "review": "No games need review.",
+    "other": "No games outside your library.",
+    "facet": "No games for the \"{{value}}\" filter.",
+    "query": "No results for \"{{query}}\".",
+    "default": "No games in your library. Add a new session to start tracking!"
   },
   "error": {
-    "load": "Błąd ładowania biblioteki.",
-    "retry": "SPRÓBUJ PONOWNIE"
+    "load": "Error loading the library.",
+    "retry": "TRY AGAIN"
   },
   "count": {
-    "one": "gra",
-    "many": "gier"
+    "one": "game",
+    "many": "games"
   },
-  "loadMore": "ZAŁADUJ WIĘCEJ",
+  "loadMore": "LOAD MORE",
   "card": {
-    "needsReviewAria": "Do sprawdzenia",
-    "ignored": "UKRYTE"
+    "needsReviewAria": "Needs review",
+    "ignored": "HIDDEN"
   },
   "select": {
-    "changeAria": "Wybrana gra — zmień",
-    "change": "zmień",
-    "placeholder": "Szukaj gry...",
-    "noResults": "Brak wyników"
+    "changeAria": "Selected game — change",
+    "change": "change",
+    "placeholder": "Search game...",
+    "noResults": "No results"
   },
   "cover": {
-    "saved": "Okładka zapisana lokalnie.",
-    "saveFailed": "Nie udało się zapisać okładki.",
-    "restored": "Przywrócono oryginalną okładkę.",
-    "saving": "ZAPISYWANIE...",
-    "choose": "WYBIERZ ZDJĘCIE",
-    "restore": "PRZYWRÓĆ ORYGINALNĄ",
-    "hint": "Okładka zapisywana lokalnie w przeglądarce (JPEG, PNG, WebP)"
+    "saved": "Cover saved locally.",
+    "saveFailed": "Couldn't save the cover.",
+    "restored": "Original cover restored.",
+    "saving": "SAVING...",
+    "choose": "CHOOSE IMAGE",
+    "restore": "RESTORE ORIGINAL",
+    "hint": "Cover saved locally in your browser (JPEG, PNG, WebP)"
   },
   "toast": {
-    "merged": "Gry połączone.",
-    "mergeForbidden": "Brak uprawnień do łączenia gier.",
-    "mergeFailed": "Nie udało się połączyć gier.",
-    "accepted": "Gra zaakceptowana do biblioteki.",
-    "ignored": "Gra ignorowana w statystykach.",
-    "restored": "Gra przywrócona do biblioteki.",
-    "prefFailed": "Nie udało się zaktualizować preferencji."
+    "merged": "Games merged.",
+    "mergeForbidden": "You don't have permission to merge games.",
+    "mergeFailed": "Couldn't merge the games.",
+    "accepted": "Game accepted into your library.",
+    "ignored": "Game ignored in your stats.",
+    "restored": "Game restored to your library.",
+    "prefFailed": "Couldn't update preferences."
   }
 }

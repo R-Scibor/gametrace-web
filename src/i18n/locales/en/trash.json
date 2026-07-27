@@ -1,31 +1,31 @@
 {
-  "title": "Kosz",
-  "empty": "Kosz jest pusty.",
+  "title": "Trash",
+  "empty": "Trash is empty.",
   "columns": {
-    "game": "Gra",
-    "session": "Sesja",
-    "deleted": "Usunięto",
-    "expires": "Wygasa za",
-    "actions": "Akcje"
+    "game": "Game",
+    "session": "Session",
+    "deleted": "Deleted",
+    "expires": "Expires in",
+    "actions": "Actions"
   },
-  "unknownGame": "Nieznana gra",
+  "unknownGame": "Unknown game",
   "actions": {
-    "restore": "PRZYWRÓĆ",
-    "hardDelete": "USUŃ TRWALE"
+    "restore": "RESTORE",
+    "hardDelete": "DELETE PERMANENTLY"
   },
   "confirm": {
-    "title": "USUŃ TRWALE",
-    "messageNamed": "Czy na pewno chcesz trwale usunąć sesję „{{name}}”? Tej operacji nie można cofnąć.",
-    "messageGeneric": "Czy na pewno chcesz trwale usunąć tę sesję?",
-    "unknownName": "nieznana",
-    "window": "Okno",
-    "duration": "Czas",
+    "title": "DELETE PERMANENTLY",
+    "messageNamed": "Are you sure you want to permanently delete the “{{name}}” session? This operation can't be undone.",
+    "messageGeneric": "Are you sure you want to permanently delete this session?",
+    "unknownName": "unknown",
+    "window": "Window",
+    "duration": "Duration",
     "status": "Status",
-    "note": "Notatka",
-    "confirm": "USUŃ TRWALE"
+    "note": "Note",
+    "confirm": "DELETE PERMANENTLY"
   },
   "toast": {
-    "hardDeleted": "Sesja trwale usunięta.",
-    "hardDeleteFailed": "Nie udało się usunąć sesji."
+    "hardDeleted": "Session permanently deleted.",
+    "hardDeleteFailed": "Couldn't delete the session."
   }
 }

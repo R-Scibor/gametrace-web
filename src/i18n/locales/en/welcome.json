@@ -1,157 +1,157 @@
 {
   "topBar": {
-    "subtitle": " · SYSTEM ŚLEDZENIA SESJI",
-    "dashboard": "PULPIT",
-    "login": "ZALOGUJ SIĘ"
+    "subtitle": " · SESSION TRACKING SYSTEM",
+    "dashboard": "DASHBOARD",
+    "login": "LOG IN"
   },
   "hero": {
-    "titleLine1": "Twój dziennik rozgrywek",
-    "titleLine2": "Prowadzony automatycznie",
-    "lead": "Bot na Discordzie wykrywa, w co i jak długo grasz. Ty przeglądasz statystyki i porządkujesz bibliotekę w przeglądarce albo w aplikacji.",
-    "start": "ROZPOCZNIJ",
-    "goToDashboard": "PRZEJDŹ DO PULPITU →",
-    "haveAccount": "MAM JUŻ KONTO → ZALOGUJ SIĘ",
-    "learnMore": "Dowiedz się więcej ↓"
+    "titleLine1": "Your gameplay journal",
+    "titleLine2": "Kept automatically",
+    "lead": "A Discord bot detects what you play and for how long. You review your stats and organize your library in the browser or the app.",
+    "start": "GET STARTED",
+    "goToDashboard": "GO TO DASHBOARD →",
+    "haveAccount": "ALREADY HAVE AN ACCOUNT → LOG IN",
+    "learnMore": "Learn more ↓"
   },
   "feed": {
     "title": "AUTO-DETECT",
     "live": "● LIVE",
-    "metaYesterday48": "wczoraj · 48m",
-    "metaYesterday3h": "wczoraj · 3h 02m"
+    "metaYesterday48": "yesterday · 48m",
+    "metaYesterday3h": "yesterday · 3h 02m"
   },
   "sections": {
-    "features": "Co potrafi GameTrace",
-    "metrics": "Statystyki, które dostajesz",
-    "metricsTag": "PRZYKŁAD",
-    "howToStart": "Jak zacząć",
-    "platforms": "Bot, aplikacja, przeglądarka"
+    "features": "What GameTrace can do",
+    "metrics": "The stats you get",
+    "metricsTag": "EXAMPLE",
+    "howToStart": "How to start",
+    "platforms": "Bot, app, browser"
   },
   "features": {
     "heatmap": {
-      "title": "Mapa aktywności",
-      "body": "Cały rok grania jako mapa ciepła. Serie i martwe tygodnie widać na pierwszy rzut oka."
+      "title": "Activity map",
+      "body": "A whole year of playing as a heat map. Streaks and dead weeks are visible at a glance."
     },
     "trends": {
-      "title": "Passy i trendy",
-      "body": "Aktualna passa, rekordy i trend tydzień do tygodnia. Wiesz, czy grasz więcej, czy mniej."
+      "title": "Streaks and trends",
+      "body": "Your current streak, records, and week-over-week trend. You know whether you're playing more or less."
     },
     "library": {
-      "title": "Biblioteka gier",
-      "body": "Okładki, łączenie duplikatów, ignorowanie i kosz. Kolekcja zawsze uporządkowana."
+      "title": "Game library",
+      "body": "Covers, merging duplicates, ignoring, and trash. Your collection always tidy."
     },
     "rankings": {
-      "title": "Rozbicia i rankingi",
-      "body": "Ranking gier, gatunki, motywy, studia i dekady premier. Analiza z każdej strony."
+      "title": "Breakdowns and rankings",
+      "body": "Game ranking, genres, themes, studios, and release decades. Analysis from every angle."
     },
     "voice": {
-      "title": "Sesja głosowa",
-      "body": "Nagraj, w co grałeś, a GameTrace zamieni to w gotową sesję do zatwierdzenia."
+      "title": "Voice session",
+      "body": "Record what you played, and GameTrace turns it into a ready session to approve."
     },
     "autoDetect": {
-      "title": "Auto-wykrywanie",
-      "body": "Bot sam widzi, kiedy grasz, i zapisuje czas. Ty tylko poprawiasz drobiazgi."
+      "title": "Auto-detect",
+      "body": "The bot sees when you play and logs the time. You just fix the small details."
     }
   },
   "metrics": {
-    "totalTime": "ŁĄCZNY CZAS",
-    "streak": "PASSA",
-    "recordSession": "REKORD SESJI",
-    "avgSession": "ŚR. SESJA",
-    "gamesInLibrary": "GIER W BIBLIOTECE",
-    "sessions": "SESJI"
+    "totalTime": "TOTAL TIME",
+    "streak": "STREAK",
+    "recordSession": "RECORD SESSION",
+    "avgSession": "AVG. SESSION",
+    "gamesInLibrary": "GAMES IN LIBRARY",
+    "sessions": "SESSIONS"
   },
   "steps": {
     "server": {
-      "title": "Serwer z botem",
-      "body": "Zaproś bota na swój serwer albo dołącz na serwer, który go już ma."
+      "title": "Server with the bot",
+      "body": "Invite the bot to your server or join a server that already has it."
     },
     "login": {
-      "title": "/login na kanale",
-      "body": "Wyślij komendę na czacie serwera — nie na privie. Bot poda kod do logowania."
+      "title": "/login in a channel",
+      "body": "Send the command in a server chat — not in a DM. The bot gives you a login code."
     },
     "client": {
-      "title": "Przeglądarka lub aplikacja",
-      "body": "Zaloguj się kodem tutaj albo pobierz APK. Jedno konto wszędzie."
+      "title": "Browser or app",
+      "body": "Log in with the code here or download the APK. One account everywhere."
     }
   },
   "platforms": {
     "bot": {
       "label": "BOT",
-      "status": "Fundament",
-      "body": "Wykrywa granie w tle i prowadzi Twój dziennik sesji bez ręcznego pilnowania czasu.",
-      "point1": "Auto-wykrywanie uruchomionych gier",
-      "point2": "Rejestracja komendą /login",
-      "point3": "Działa na serwerze z botem"
+      "status": "Foundation",
+      "body": "It detects gaming in the background and keeps your session journal without you watching the clock manually.",
+      "point1": "Auto-detects running games",
+      "point2": "Registration via the /login command",
+      "point3": "Works on a server with the bot"
     },
     "app": {
-      "label": "APLIKACJA",
+      "label": "APP",
       "status": "Android",
-      "body": "Sesje, biblioteka i statystyki w kieszeni — ten sam pulpit co w przeglądarce.",
-      "point1": "Pulpit i ostatnie sesje",
-      "point2": "Dodawanie sesji i głos",
-      "point3": "Biblioteka i kosz na telefonie"
+      "body": "Sessions, library, and stats in your pocket — the same dashboard as in the browser.",
+      "point1": "Dashboard and recent sessions",
+      "point2": "Adding sessions and voice",
+      "point3": "Library and trash on your phone"
     },
     "web": {
-      "label": "PRZEGLĄDARKA",
+      "label": "BROWSER",
       "status": "Desktop",
-      "body": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam pulpit co w aplikacji.",
-      "point1": "Mapa aktywności, passa i trendy",
-      "point2": "Biblioteka, okładki i łączenie gier",
-      "point3": "Sesja głosowa z komputera"
+      "body": "Sessions, library, and stats on a big screen — the same dashboard as in the app.",
+      "point1": "Activity map, streak, and trends",
+      "point2": "Library, covers, and merging games",
+      "point3": "Voice session from your computer"
     },
-    "addBot": "DODAJ BOTA DO SERWERA",
-    "checking": "SPRAWDZANIE…",
-    "downloadApk": "POBIERZ APK",
-    "openWeb": "OTWÓRZ W PRZEGLĄDARCE",
-    "loginWeb": "ZALOGUJ W PRZEGLĄDARCE"
+    "addBot": "ADD BOT TO SERVER",
+    "checking": "CHECKING…",
+    "downloadApk": "DOWNLOAD APK",
+    "openWeb": "OPEN IN BROWSER",
+    "loginWeb": "LOG IN VIA BROWSER"
   },
   "qr": {
-    "defaultCaption": "Zeskanuj telefonem"
+    "defaultCaption": "Scan with your phone"
   },
   "onboarding": {
-    "eyebrow": "KONFIGURACJA",
-    "title": "Uruchom GameTrace",
-    "subtitle": "3 krótkie kroki — zajmie to chwilę.",
-    "closeAria": "Zamknij",
-    "progressAria": "Postęp konfiguracji",
-    "back": "← Wstecz",
+    "eyebrow": "SETUP",
+    "title": "Set up GameTrace",
+    "subtitle": "3 short steps — it only takes a moment.",
+    "closeAria": "Close",
+    "progressAria": "Setup progress",
+    "back": "← Back",
     "steps": {
       "discord": "Discord",
-      "register": "Rejestracja",
-      "client": "Klient"
+      "register": "Register",
+      "client": "Client"
     },
     "step1": {
-      "title": "Zaproś bota albo dołącz na serwer",
-      "bodyBoth": "GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do publicznego serwera z botem — obie drogi działają tak samo.",
-      "bodyServerOnly": "GameTrace działa na Discordzie. Dołącz do publicznego serwera z botem albo użyj serwera, na którym bot już jest.",
-      "bodyBotOnly": "GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do serwera, który już go ma.",
-      "joinServer": "DOŁĄCZ DO SERWERA Z BOTEM",
-      "addBot": "DODAJ BOTA DO SERWERA",
-      "alreadyHaveBot": "MAM JUŻ BOTA → DALEJ",
-      "hintServer": "Po dołączeniu do serwera wróć tutaj i kliknij dalej.",
-      "hintBot": "Po dodaniu bota do swojego serwera wróć tutaj i kliknij dalej."
+      "title": "Invite the bot or join a server",
+      "bodyBoth": "GameTrace runs on Discord. Invite the bot to your server or join a public server with the bot — both paths work the same.",
+      "bodyServerOnly": "GameTrace runs on Discord. Join a public server with the bot, or use a server that already has it.",
+      "bodyBotOnly": "GameTrace runs on Discord. Invite the bot to your server or join a server that already has it.",
+      "joinServer": "JOIN A SERVER WITH THE BOT",
+      "addBot": "ADD BOT TO SERVER",
+      "alreadyHaveBot": "ALREADY HAVE THE BOT → NEXT",
+      "hintServer": "Once you've joined the server, come back here and click next.",
+      "hintBot": "Once you've added the bot to your server, come back here and click next."
     },
     "step2": {
-      "title": "Przedstaw się botowi",
-      "body": "Na kanale serwera wyślij komendę poniżej. Bot odpowie kodem do logowania — nie pisz na privie.",
-      "commandAria": "Komenda /login",
-      "hintCopied": "Skopiowano — wklej na Discordzie.",
-      "hintSelected": "Zaznaczono — Ctrl+C / Cmd+C, jeśli nie skopiowało się samo.",
-      "hintIdle": "Kliknij pole, aby zaznaczyć komendę /login.",
-      "haveCode": "MAM JUŻ KOD → DALEJ"
+      "title": "Introduce yourself to the bot",
+      "body": "In a server channel, send the command below. The bot will reply with a login code — don't message in a DM.",
+      "commandAria": "/login command",
+      "hintCopied": "Copied — paste it on Discord.",
+      "hintSelected": "Selected — press Ctrl+C / Cmd+C if it didn't copy automatically.",
+      "hintIdle": "Click the field to select the /login command.",
+      "haveCode": "ALREADY HAVE A CODE → NEXT"
     },
     "step3": {
-      "title": "Wybierz klienta",
-      "body": "Jedno konto — te same sesje w przeglądarce i w aplikacji.",
-      "webLabel": "PRZEGLĄDARKA",
-      "webBody": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam pulpit co w aplikacji.",
-      "appLabel": "APLIKACJA",
-      "appBody": "Sesje, biblioteka i statystyki w kieszeni — ten sam pulpit co w przeglądarce.",
-      "openWeb": "OTWÓRZ W PRZEGLĄDARCE",
-      "loginWeb": "ZALOGUJ W PRZEGLĄDARCE",
-      "checking": "SPRAWDZANIE…",
-      "downloadApk": "POBIERZ APK"
+      "title": "Choose a client",
+      "body": "One account — the same sessions in the browser and in the app.",
+      "webLabel": "BROWSER",
+      "webBody": "Sessions, library, and stats on a big screen — the same dashboard as in the app.",
+      "appLabel": "APP",
+      "appBody": "Sessions, library, and stats in your pocket — the same dashboard as in the browser.",
+      "openWeb": "OPEN IN BROWSER",
+      "loginWeb": "LOG IN VIA BROWSER",
+      "checking": "CHECKING…",
+      "downloadApk": "DOWNLOAD APK"
     },
-    "footerLogin": "Mam już konto → Zaloguj się"
+    "footerLogin": "Already have an account → Log in"
   }
 }

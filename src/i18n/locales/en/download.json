@@ -1,39 +1,39 @@
 {
-  "eyebrow": "GAMETRACE · APLIKACJA ANDROID",
-  "titleLine1": "Pobierz aplikację",
-  "titleLine2": "Ten sam dziennik, w kieszeni",
-  "lead": "Oficjalny APK GameTrace — sesje, biblioteka i statystyki jak w przeglądarce. Konto zakładasz przez Discorda.",
-  "unavailable": "Plik APK jest chwilowo niedostępny. Spróbuj później albo skorzystaj z wersji w przeglądarce.",
+  "eyebrow": "GAMETRACE · ANDROID APP",
+  "titleLine1": "Download the app",
+  "titleLine2": "The same journal, in your pocket",
+  "lead": "The official GameTrace APK — sessions, library, and stats just like in the browser. You create your account through Discord.",
+  "unavailable": "The APK file is temporarily unavailable. Try again later or use the browser version.",
   "primary": {
-    "checking": "SPRAWDZANIE…",
-    "download": "POBIERZ APK",
-    "unavailable": "APK NIEDOSTĘPNE"
+    "checking": "CHECKING…",
+    "download": "DOWNLOAD APK",
+    "unavailable": "APK UNAVAILABLE"
   },
   "status": {
-    "checking": "SPRAWDZANIE",
-    "ready": "APK GOTOWY",
-    "unavailable": "NIEDOSTĘPNE"
+    "checking": "CHECKING",
+    "ready": "APK READY",
+    "unavailable": "UNAVAILABLE"
   },
-  "goToDashboard": "PRZEJDŹ DO PULPITU →",
-  "seeInBrowser": "ZOBACZ GAMETRACE W PRZEGLĄDARCE →",
+  "goToDashboard": "GO TO DASHBOARD →",
+  "seeInBrowser": "SEE GAMETRACE IN THE BROWSER →",
   "handoff": {
-    "ariaLabel": "Przenieś link na telefon",
-    "title": "PRZENIEŚ NA TELEFON",
-    "hint": "Skan otwiera tę stronę na telefonie — potem stuknij Pobierz APK."
+    "ariaLabel": "Send the link to your phone",
+    "title": "SEND TO PHONE",
+    "hint": "Scanning opens this page on your phone — then tap Download APK."
   },
   "install": {
-    "summary": "Jak zainstalować",
+    "summary": "How to install",
     "step1": {
-      "title": "Pobierz plik",
-      "body": "Stuknij Pobierz APK i zapisz plik na telefonie."
+      "title": "Download the file",
+      "body": "Tap Download APK and save the file on your phone."
     },
     "step2": {
-      "title": "Otwórz gametrace.apk",
-      "body": "Znajdź plik w powiadomieniach albo w menedżerze plików i otwórz go."
+      "title": "Open gametrace.apk",
+      "body": "Find the file in your notifications or file manager and open it."
     },
     "step3": {
-      "title": "Zezwól na instalację",
-      "body": "Jeśli system zapyta — zezwól na instalację z tej przeglądarki lub nieznanych źródeł."
+      "title": "Allow the installation",
+      "body": "If prompted, allow installs from this browser or from unknown sources."
     }
   }
 }

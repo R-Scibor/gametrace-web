@@ -1,56 +1,56 @@
 {
   "period": {
-    "all": "CAŁY OKRES",
-    "lastDays": "OSTATNIE {{days}} DNI",
-    "ariaLabel": "Okres",
+    "all": "ALL TIME",
+    "lastDays": "LAST {{days}} DAYS",
+    "ariaLabel": "Period",
     "pillMax": "MAX",
-    "pillDays": "{{days}} DNI",
-    "subtitleAll": "w całym okresie",
-    "subtitleDays": "w ciągu ostatnich {{days}} dni"
+    "pillDays": "{{days}} DAYS",
+    "subtitleAll": "over all time",
+    "subtitleDays": "over the last {{days}} days"
   },
   "sections": {
-    "whenYouPlay": "Kiedy grasz",
-    "yourTaste": "Twój gust",
-    "creators": "Twórcy"
+    "whenYouPlay": "When you play",
+    "yourTaste": "Your taste",
+    "creators": "Creators"
   },
   "overview": {
-    "title": "Przegląd",
-    "eyebrow": "podsumowanie okresu",
-    "totalAria": "Łączny czas",
-    "total": "Łącznie",
-    "avgSession": "ŚR. SESJA",
-    "newGames": "NOWE GRY",
-    "recordLabel": "Rekord · najdłuższa sesja",
-    "recordAria": "Rekord: {{name}}",
-    "recordFallback": "najdłuższa sesja"
+    "title": "Overview",
+    "eyebrow": "period summary",
+    "totalAria": "Total time",
+    "total": "Total",
+    "avgSession": "AVG. SESSION",
+    "newGames": "NEW GAMES",
+    "recordLabel": "Record · longest session",
+    "recordAria": "Record: {{name}}",
+    "recordFallback": "longest session"
   },
   "panels": {
-    "ranking": "Ranking gier",
-    "heatmap": "Mapa aktywności",
+    "ranking": "Game ranking",
+    "heatmap": "Activity map",
     "trend": "Trend",
-    "trendDaily": "Trend dzienny",
-    "trendWeekly": "Trend tygodniowy",
-    "trendMonthly": "Trend miesięczny",
-    "genres": "Gatunki",
-    "themes": "Motywy",
-    "tagsEyebrow": "ekspozycja tagów, nie podział",
-    "companies": "Studia / Wydawcy",
-    "developer": "TWÓRCA",
-    "publisher": "WYDAWCA",
-    "decades": "Dekady premier",
-    "gameCount": "{{count}} gier"
+    "trendDaily": "Daily trend",
+    "trendWeekly": "Weekly trend",
+    "trendMonthly": "Monthly trend",
+    "genres": "Genres",
+    "themes": "Themes",
+    "tagsEyebrow": "tag exposure, not a breakdown",
+    "companies": "Studios / Publishers",
+    "developer": "DEVELOPER",
+    "publisher": "PUBLISHER",
+    "decades": "Release decades",
+    "gameCount": "{{count}} games"
   },
   "heatmap": {
-    "daysShort": ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nied"],
-    "daysFull": ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
-    "selectedField": "Wybrane pole",
-    "noActivity": "Brak aktywności",
-    "hint": "Wybierz pole na mapie, aby zobaczyć szczegóły",
+    "daysShort": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "daysFull": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "selectedField": "Selected cell",
+    "noActivity": "No activity",
+    "hint": "Select a cell on the map to see details",
     "tooltip": "{{day}} {{hour}}:00 — {{duration}}"
   },
   "ranking": {
-    "empty": "Brak danych.",
-    "game": "Gra",
-    "time": "Czas"
+    "empty": "No data.",
+    "game": "Game",
+    "time": "Time"
   }
 }

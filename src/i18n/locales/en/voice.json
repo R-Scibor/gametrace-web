@@ -1,22 +1,22 @@
 {
-  "title": "Sesja głosowa",
+  "title": "Voice session",
   "status": {
-    "recording": "NAGRYWANIE",
-    "processing": "PRZETWARZANIE",
-    "ready": "GOTOWY"
+    "recording": "RECORDING",
+    "processing": "PROCESSING",
+    "ready": "READY"
   },
-  "hint": "Przykład: „Grałem w Wiedźmina dzisiaj od 18 do 20”. Naciśnij, aby nagrać, i ponownie aby zakończyć.",
+  "hint": "For example: “I played The Witcher today from 6 to 8 pm.” Press to record, and press again to finish.",
   "permission": {
-    "label": "BRAK DOSTĘPU",
-    "message": "Zezwól na mikrofon w ustawieniach przeglądarki."
+    "label": "NO ACCESS",
+    "message": "Allow microphone access in your browser settings."
   },
   "errors": {
-    "recordFailed": "Nagrywanie nie powiodło się.",
-    "transcribeFailed": "Nie udało się przetworzyć nagrania. Spróbuj ponownie."
+    "recordFailed": "Recording failed.",
+    "transcribeFailed": "Couldn't process the recording. Try again."
   },
   "actions": {
-    "processing": "PRZETWARZANIE...",
-    "stop": "ZAKOŃCZ I PRZETWÓRZ",
-    "start": "ROZPOCZNIJ NAGRYWANIE"
+    "processing": "PROCESSING...",
+    "stop": "FINISH AND PROCESS",
+    "start": "START RECORDING"
   }
 }

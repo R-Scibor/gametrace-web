@@ -1,40 +1,40 @@
 {
   "error": {
-    "load": "Nie udało się pobrać danych panelu.",
-    "retry": "SPRÓBUJ PONOWNIE"
+    "load": "Couldn't load dashboard data.",
+    "retry": "TRY AGAIN"
   },
   "status": {
-    "active": "SYSTEM AKTYWNY · SESJA W TOKU",
-    "idle": "SYSTEM GOTOWY · BRAK AKTYWNEJ SESJI"
+    "active": "SYSTEM ACTIVE · SESSION IN PROGRESS",
+    "idle": "SYSTEM READY · NO ACTIVE SESSION"
   },
   "header": {
-    "thisWeek": "TEN TYDZIEŃ"
+    "thisWeek": "THIS WEEK"
   },
-  "recentSessions": "Ostatnie sesje",
+  "recentSessions": "Recent sessions",
   "tiles": {
-    "today": "DZIŚ",
-    "week": "7 DNI",
-    "avgSession": "ŚR. SESJA",
-    "streak": "PASSA",
-    "daysUnit": "dni"
+    "today": "TODAY",
+    "week": "7 DAYS",
+    "avgSession": "AVG. SESSION",
+    "streak": "STREAK",
+    "daysUnit": "days"
   },
   "hero": {
-    "lastPlayed": "OSTATNIO GRANE",
-    "total": "ŁĄCZNIE",
-    "sessions": "SESJE",
-    "avgSession": "ŚR. SESJA"
+    "lastPlayed": "LAST PLAYED",
+    "total": "TOTAL",
+    "sessions": "SESSIONS",
+    "avgSession": "AVG. SESSION"
   },
   "active": {
-    "label": "AKTYWNA SESJA",
+    "label": "ACTIVE SESSION",
     "live": "● LIVE",
-    "startedAt": "od {{time}}",
-    "details": "szczegóły →"
+    "startedAt": "since {{time}}",
+    "details": "details →"
   },
   "errors": {
-    "one": "1 nieudana sesja wymaga uwagi",
-    "many": "{{count}} nieudane sesje wymagają uwagi",
-    "sub": "Bot mógł zostawić otwarte sesje",
-    "fix": "NAPRAW →"
+    "one": "1 failed session needs attention",
+    "many": "{{count}} failed sessions need attention",
+    "sub": "The bot may have left sessions open",
+    "fix": "FIX →"
   },
-  "empty": "Brak sesji do wyświetlenia"
+  "empty": "No sessions to display"
 }
