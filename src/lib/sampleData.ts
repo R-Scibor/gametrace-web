@@ -36,13 +36,13 @@ interface SampleGameSeed {
 
 const GAME_SEEDS: SampleGameSeed[] = [
   { id: -1, name: 'Baldur\'s Gate 3', facets: { genre: 'RPG', theme: 'Fantasy', developer: 'Larian Studios', publisher: 'Larian Studios', decade: '2020s' } },
-  { id: -2, name: 'Helldivers 2', facets: { genre: 'Strzelanka', theme: 'Sci-Fi', developer: 'Arrowhead Game Studios', publisher: 'Sony Interactive Entertainment', decade: '2020s' } },
-  { id: -3, name: 'Factorio', facets: { genre: 'Symulacja', theme: 'Sci-Fi', developer: 'Wube Software', publisher: 'Wube Software', decade: '2020s' } },
-  { id: -4, name: 'Hades', facets: { genre: 'Akcja', theme: 'Fantasy', developer: 'Supergiant Games', publisher: 'Supergiant Games', decade: '2020s' } },
+  { id: -2, name: 'Helldivers 2', facets: { genre: 'Shooter', theme: 'Sci-Fi', developer: 'Arrowhead Game Studios', publisher: 'Sony Interactive Entertainment', decade: '2020s' } },
+  { id: -3, name: 'Factorio', facets: { genre: 'Simulator', theme: 'Sci-Fi', developer: 'Wube Software', publisher: 'Wube Software', decade: '2020s' } },
+  { id: -4, name: 'Hades', facets: { genre: 'Hack and slash', theme: 'Fantasy', developer: 'Supergiant Games', publisher: 'Supergiant Games', decade: '2020s' } },
   { id: -5, name: 'Wiedźmin 3', facets: { genre: 'RPG', theme: 'Fantasy', developer: 'CD Projekt Red', publisher: 'CD Projekt', decade: '2010s' } },
-  { id: -6, name: 'Celeste', facets: { genre: 'Platformówka', theme: 'Dramat', developer: 'Maddy Makes Games', publisher: 'Maddy Makes Games', decade: '2010s' } },
-  { id: -7, name: 'Stardew Valley', facets: { genre: 'Symulacja', theme: 'Życie codzienne', developer: 'ConcernedApe', publisher: 'ConcernedApe', decade: '2010s' } },
-  { id: -8, name: 'Return of the Obra Dinn', facets: { genre: 'Zagadki', theme: 'Detektywistyczny', developer: 'Lucas Pope', publisher: 'Lucas Pope', decade: '2010s' } },
+  { id: -6, name: 'Celeste', facets: { genre: 'Platform', theme: 'Drama', developer: 'Maddy Makes Games', publisher: 'Maddy Makes Games', decade: '2010s' } },
+  { id: -7, name: 'Stardew Valley', facets: { genre: 'Simulator', theme: 'Slice of life', developer: 'ConcernedApe', publisher: 'ConcernedApe', decade: '2010s' } },
+  { id: -8, name: 'Return of the Obra Dinn', facets: { genre: 'Puzzle', theme: 'Mystery', developer: 'Lucas Pope', publisher: 'Lucas Pope', decade: '2010s' } },
 ];
 
 interface SessionSeed {

@@ -98,13 +98,13 @@ test('GenresPanel renders sampleData rows as non-interactive', async () => {
   renderWithProviders(<GenresPanel days={30} sampleData={SAMPLE_GENRES} />);
   expect(screen.getByText('Gatunki')).toBeInTheDocument();
 
-  // 'Strzelanka' only appears in SAMPLE_GENRES, never in the MSW-mocked live
-  // response (fixtures.genres only has 'RPG') -- so this could not come from a
-  // loading skeleton or a mistakenly-rendered live fetch.
+  // 'Shooter' only appears in SAMPLE_GENRES, never in the MSW-mocked live
+  // response (fixtures.genres has 'RPG' and 'Adventure') -- so this could not
+  // come from a loading skeleton or a mistakenly-rendered live fetch.
   await waitFor(() => {
-    expect(screen.getByText('Strzelanka')).toBeInTheDocument();
+    expect(screen.getByText('Shooter')).toBeInTheDocument();
   });
-  expect(screen.queryByRole('button', { name: /strzelanka/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /shooter/i })).not.toBeInTheDocument();
 });
 
 test('ThemesPanel renders sampleData rows as non-interactive', async () => {
