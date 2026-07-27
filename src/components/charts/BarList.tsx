@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styles from './BarList.module.css';
 
 interface BarListItem {
@@ -47,7 +48,8 @@ function BarRow({
 }
 
 export function BarList({ items, onItemClick }: BarListProps) {
-  if (items.length === 0) return <p className={styles.empty}>Brak danych.</p>;
+  const { t } = useTranslation('common');
+  if (items.length === 0) return <p className={styles.empty}>{t('noData')}</p>;
 
   return (
     <div className={styles.list}>

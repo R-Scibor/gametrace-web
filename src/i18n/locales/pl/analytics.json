@@ -38,6 +38,7 @@
     "developer": "TWÓRCA",
     "publisher": "WYDAWCA",
     "decades": "Dekady premier",
+    "timeSeries": "Czas",
     "gameCount": "{{count}} gier"
   },
   "heatmap": {

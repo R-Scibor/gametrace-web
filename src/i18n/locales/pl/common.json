@@ -78,6 +78,8 @@
       "unknown": "NIEZNANY"
     }
   },
+  "noData": "Brak danych.",
+  "activeSession": "AKTYWNA SESJA: {{game}}",
   "sessions_one": "{{count}} sesja",
   "sessions_few": "{{count}} sesje",
   "sessions_many": "{{count}} sesji",

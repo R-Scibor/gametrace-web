@@ -1,11 +1,14 @@
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 interface TrendChartProps {
   data: { label: string; value: number }[];
 }
 
 export function TrendChart({ data }: TrendChartProps) {
-  if (data.length === 0) return <p style={{ color: 'var(--text3)', fontSize: 14, margin: 0 }}>Brak danych.</p>;
+  const { t } = useTranslation();
+  if (data.length === 0)
+    return <p style={{ color: 'var(--text3)', fontSize: 14, margin: 0 }}>{t('common:noData')}</p>;
 
   return (
     <div style={{ width: '100%', height: 200 }}>
@@ -22,7 +25,7 @@ export function TrendChart({ data }: TrendChartProps) {
           <Tooltip 
             contentStyle={{ backgroundColor: 'var(--bg2)', border: '1px solid var(--border)' }}
             itemStyle={{ color: 'var(--orange)' }}
-            formatter={(value) => [`${value ?? 0} h`, 'Czas']}
+            formatter={(value) => [`${value ?? 0} h`, t('analytics:panels.timeSeries')]}
           />
           <Area type="monotone" dataKey="value" stroke="var(--orange)" fillOpacity={1} fill="url(#colorOrange)" />
         </AreaChart>

@@ -38,6 +38,7 @@
     "developer": "DEVELOPER",
     "publisher": "PUBLISHER",
     "decades": "Release decades",
+    "timeSeries": "Time",
     "gameCount": "{{count}} games"
   },
   "heatmap": {

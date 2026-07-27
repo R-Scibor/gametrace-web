@@ -78,6 +78,8 @@
       "unknown": "UNKNOWN"
     }
   },
+  "noData": "No data.",
+  "activeSession": "ACTIVE SESSION: {{game}}",
   "sessions_one": "{{count}} session",
   "sessions_other": "{{count}} sessions",
   "toast": {
