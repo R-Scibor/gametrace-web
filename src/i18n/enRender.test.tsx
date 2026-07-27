@@ -1,15 +1,13 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { screen } from '@testing-library/react';
 import { renderPage } from '../../test/utils';
 import { SettingsPage } from '../pages/SettingsPage';
 import i18n from './index';
 
 describe('English rendering', () => {
+  // `test/setup.ts` resets back to `pl` before every test, so no teardown is needed.
   beforeEach(() => {
     void i18n.changeLanguage('en');
-  });
-  afterEach(() => {
-    void i18n.changeLanguage('pl');
   });
 
   it('renders the settings screen in English', async () => {
