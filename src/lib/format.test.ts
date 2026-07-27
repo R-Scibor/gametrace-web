@@ -8,6 +8,7 @@ import {
   formatDaysUntil,
   formatRecency,
 } from './format';
+import i18n from '../i18n';
 
 afterEach(() => {
   vi.useRealTimers();
@@ -56,4 +57,24 @@ test('formatRecency returns Polish relative play labels', () => {
   expect(formatRecency('2026-06-14T08:00:00Z')).toBe('grano wczoraj');
   expect(formatRecency('2026-06-12T08:00:00Z')).toBe('grano 3 dni temu');
   expect(formatRecency('2026-05-20T08:00:00Z')).toMatch(/grano \d{2}/);
+});
+
+test('dates follow the active language, keeping day-first order and a 24h clock', async () => {
+  const iso = '2026-06-15T14:30:00Z';
+  expect(formatDateShort(iso, { timeZone: 'UTC' })).toBe('15 cze');
+
+  await i18n.changeLanguage('en');
+  expect(formatDateShort(iso, { timeZone: 'UTC' })).toBe('15 Jun');
+  // en-GB, not en-US: day before month, and no AM/PM.
+  expect(formatDate(iso, { timeZone: 'UTC' })).toMatch(/15\/06\/2026/);
+  expect(formatTimeShort(iso, { timeZone: 'UTC' })).toBe('14:30');
+});
+
+test('relative labels follow the active language', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date('2026-06-15T12:00:00Z'));
+
+  await i18n.changeLanguage('en');
+  expect(formatDaysUntil('2026-06-18T12:00:00Z')).toBe('3 days');
+  expect(formatRecency('2026-06-15T08:00:00Z')).toBe('played today');
 });

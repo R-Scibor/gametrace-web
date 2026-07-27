@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { GameStatEntry } from '../../types/api';
 import { formatDuration } from '../../lib/format';
+import { intlLocale } from '../../i18n/resolve';
 import styles from './GameRankingTable.module.css';
 
 type SortKey = 'name' | 'time';
@@ -19,23 +20,24 @@ function sortIndicator(active: boolean, dir: SortDir): string {
 }
 
 export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
-  const { t } = useTranslation('analytics');
+  const { t, i18n } = useTranslation('analytics');
   const [sortKey, setSortKey] = useState<SortKey>('time');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
 
   const max = Math.max(...games.map((g) => g.total_seconds), 1);
 
   const sorted = useMemo(() => {
+    const collator = new Intl.Collator(intlLocale(i18n.language));
     const copy = [...games];
     copy.sort((a, b) => {
       const cmp =
         sortKey === 'time'
           ? a.total_seconds - b.total_seconds
-          : a.game_name.localeCompare(b.game_name, 'pl');
+          : collator.compare(a.game_name, b.game_name);
       return sortDir === 'asc' ? cmp : -cmp;
     });
     return copy;
-  }, [games, sortKey, sortDir]);
+  }, [games, sortKey, sortDir, i18n.language]);
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {

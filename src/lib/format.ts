@@ -1,10 +1,15 @@
 import i18n from '../i18n';
+import { intlLocale } from '../i18n/resolve';
 
 export interface FormatOptions {
   timeZone?: string;
 }
 
-const LOCALE = 'pl-PL';
+/**
+ * Resolved per call rather than captured at module load, so a language switch
+ * applies to dates already on screen without reloading.
+ */
+const locale = () => intlLocale(i18n.language);
 
 export function formatDuration(seconds: number | null | undefined): string {
   if (!seconds) return '—';
@@ -19,7 +24,7 @@ export function formatHours(seconds: number): string {
 }
 
 export function formatDate(iso: string, options?: FormatOptions): string {
-  return new Date(iso).toLocaleString(LOCALE, {
+  return new Date(iso).toLocaleString(locale(), {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -30,7 +35,7 @@ export function formatDate(iso: string, options?: FormatOptions): string {
 }
 
 export function formatTimeShort(iso: string, options?: FormatOptions): string {
-  return new Date(iso).toLocaleTimeString(LOCALE, {
+  return new Date(iso).toLocaleTimeString(locale(), {
     hour: '2-digit',
     minute: '2-digit',
     timeZone: options?.timeZone,
@@ -38,7 +43,7 @@ export function formatTimeShort(iso: string, options?: FormatOptions): string {
 }
 
 export function formatDateShort(iso: string, options?: FormatOptions): string {
-  return new Date(iso).toLocaleDateString(LOCALE, {
+  return new Date(iso).toLocaleDateString(locale(), {
     day: '2-digit',
     month: 'short',
     timeZone: options?.timeZone,
@@ -47,7 +52,7 @@ export function formatDateShort(iso: string, options?: FormatOptions): string {
 
 export function formatHeaderDate(options?: FormatOptions): string {
   return new Date()
-    .toLocaleDateString(LOCALE, {
+    .toLocaleDateString(locale(), {
       weekday: 'short',
       day: '2-digit',
       month: 'short',
@@ -72,7 +77,7 @@ export function formatRecency(iso: string): string {
   if (days === 1) return i18n.t('common:recency.yesterday');
   if (days < 7) return i18n.t('common:recency.daysAgo', { days });
   return i18n.t('common:recency.onDate', {
-    date: then.toLocaleDateString(LOCALE, { day: '2-digit', month: 'short' }),
+    date: then.toLocaleDateString(locale(), { day: '2-digit', month: 'short' }),
   });
 }
 
