@@ -1,12 +1,12 @@
 import { useLocation } from 'react-router-dom';
-import { getPageTitle } from '../../lib/pageTitles';
+import { usePageTitle } from '../../hooks/usePageTitle';
 import { BotStatusPill } from './BotStatusPill';
 import { ActiveSessionPill } from './ActiveSessionPill';
 import styles from './TopBar.module.css';
 
 export function TopBar() {
   const { pathname } = useLocation();
-  const page = getPageTitle(pathname);
+  const page = usePageTitle(pathname);
 
   return (
     <header className={styles.topbar}>
