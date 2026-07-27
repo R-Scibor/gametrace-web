@@ -3,11 +3,11 @@ import i18n from '../i18n';
 
 export const LIBRARY_SORT_KEY = 'library-sort';
 
-export const GAME_SORT_KEYS: GameSort[] = ['name', 'playtime', 'last_played'];
+const SORT_VALUES: GameSort[] = ['name', 'playtime', 'last_played'];
 
 /** Runtime labels so language switches apply without a frozen module map. */
 export function getGameSorts(): { key: GameSort; label: string }[] {
-  return GAME_SORT_KEYS.map((key) => ({
+  return SORT_VALUES.map((key) => ({
     key,
     label: i18n.t(`library:sort.${key}`),
   }));
@@ -24,8 +24,6 @@ const FACET_KEYS: LibraryFilter['type'][] = [
   'publisher',
   'release_decade',
 ];
-
-const SORT_VALUES: GameSort[] = ['name', 'playtime', 'last_played'];
 
 export function parseFacetFilter(params: URLSearchParams): LibraryFilter | null {
   for (const type of FACET_KEYS) {
