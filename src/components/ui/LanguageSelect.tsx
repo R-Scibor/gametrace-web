@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import type { Language } from '../../i18n/resolve';
-import styles from './LanguageSelect.module.css';
+import styles from './selectField.module.css';
 
 interface LanguageSelectProps {
   value: Language;

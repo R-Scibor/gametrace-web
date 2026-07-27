@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import styles from './TimezoneSelect.module.css';
+import styles from './selectField.module.css';
 
 function getTimezones(): string[] {
   try {
