@@ -15,6 +15,7 @@ const TITLE_KEYS: [test: (pathname: string) => boolean, key: string][] = [
   [(p) => p === '/voice', 'voice'],
   [(p) => p === '/trash', 'trash'],
   [(p) => p === '/admin', 'admin'],
+  [(p) => p === '/admin/reports', 'adminReports'],
   [(p) => p === '/admin/catalog', 'adminCatalog'],
   [(p) => p === '/settings', 'settings'],
 ];

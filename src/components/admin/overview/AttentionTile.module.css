@@ -7,6 +7,12 @@
   flex-direction: column;
   gap: 4px;
   text-decoration: none;
+  min-height: 100%;
+}
+
+.hero {
+  padding: 18px 20px;
+  gap: 6px;
 }
 
 .active {
@@ -22,6 +28,11 @@
   font-size: 26px;
   line-height: 1.1;
   color: var(--text);
+}
+
+.hero .value {
+  font-size: 36px;
+  font-weight: 700;
 }
 
 .active .value {
@@ -45,4 +56,14 @@
 
 .idle {
   opacity: 0.55;
+}
+
+.idleMessage {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 4px;
+  line-height: 1.35;
+  opacity: 1;
+  text-transform: none;
+  letter-spacing: 0;
 }

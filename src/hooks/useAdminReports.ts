@@ -6,10 +6,14 @@ import { qk } from '../lib/queryKeys';
 import { useToastStore } from '../store/toastStore';
 import type { AdminReportsQuery } from '../types/api';
 
-export function useAdminReports(filter: AdminReportsQuery) {
+export function useAdminReports(
+  filter: AdminReportsQuery,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: qk.adminReports(filter),
     queryFn: () => getAdminReports(filter),
+    enabled: options?.enabled,
   });
 }
 

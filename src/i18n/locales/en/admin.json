@@ -18,6 +18,7 @@
   "overview": {
     "homelab": "Homelab",
     "attention": "Needs attention",
+    "queue": "Queue",
     "errorLoad": "Couldn't load the overview.",
     "users": "Users",
     "sessions": "Sessions",
@@ -26,7 +27,18 @@
     "needsReview": "Needs review",
     "pending": "Pending",
     "openReports": "Open reports",
-    "open": "Open"
+    "open": "Open",
+    "viewAll": "View all",
+    "reportsPreview": "Open reports",
+    "reviewPreview": "Needs review",
+    "emptyReports": "No open reports.",
+    "emptyReview": "No games need review.",
+    "previewError": "Couldn't load the preview.",
+    "idle": {
+      "needsReview": "Catalog is clean",
+      "pending": "Queue is empty",
+      "openReports": "No open reports"
+    }
   },
   "reports": {
     "errorLoad": "Couldn't load reports.",

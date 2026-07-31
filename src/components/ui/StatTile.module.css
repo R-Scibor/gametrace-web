@@ -38,3 +38,12 @@
   font-size: 12px;
   color: var(--text2);
 }
+
+.compact .body {
+  padding: 10px 12px;
+  gap: 4px;
+}
+
+.compact .value {
+  font-size: 18px;
+}

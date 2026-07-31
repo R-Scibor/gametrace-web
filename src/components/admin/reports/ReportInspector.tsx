@@ -1,8 +1,9 @@
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from '../../../lib/format';
+import { reportStatusLabel } from '../../../lib/reportStatus';
 import type { AdminReportItem } from '../../../types/api';
-import { Button, EmptyState } from '../../ui';
+import { Button, EmptyState, Panel, SectionHeader } from '../../ui';
 import styles from './ReportInspector.module.css';
 
 interface ReportInspectorProps {
@@ -26,16 +27,14 @@ export function ReportInspector({ item, onTriage, isPending }: ReportInspectorPr
   const contextEntries = Object.entries(item.context ?? {});
 
   return (
-    <div className={styles.panel}>
-      <div>
-        <p className={styles.label}>
-          {item.username ?? item.user_id} · {formatDate(item.created_at)}
-        </p>
-        <p className={styles.message}>{item.message}</p>
-      </div>
+    <Panel
+      eyebrow={`#${item.id} · ${reportStatusLabel(item.status)} · ${formatDate(item.created_at)}`}
+      title={item.username ?? item.user_id}
+    >
+      <p className={styles.message}>{item.message}</p>
 
-      <div>
-        <p className={styles.label}>{t('reports.diagnostics')}</p>
+      <section>
+        <SectionHeader label={t('reports.diagnostics')} />
         {contextEntries.length === 0 ? (
           <p className={styles.key}>{t('reports.noDiagnostics')}</p>
         ) : (
@@ -48,7 +47,7 @@ export function ReportInspector({ item, onTriage, isPending }: ReportInspectorPr
             ))}
           </div>
         )}
-      </div>
+      </section>
 
       {item.status === 'open' && (
         <div className={styles.actions}>
@@ -60,6 +59,6 @@ export function ReportInspector({ item, onTriage, isPending }: ReportInspectorPr
           </Button>
         </div>
       )}
-    </div>
+    </Panel>
   );
 }

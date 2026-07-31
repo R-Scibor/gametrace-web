@@ -18,6 +18,7 @@
   "overview": {
     "homelab": "Homelab",
     "attention": "Wymaga uwagi",
+    "queue": "Kolejka",
     "errorLoad": "Nie udało się wczytać przeglądu.",
     "users": "Użytkownicy",
     "sessions": "Sesje",
@@ -26,7 +27,18 @@
     "needsReview": "Do sprawdzenia",
     "pending": "W kolejce",
     "openReports": "Otwarte zgłoszenia",
-    "open": "Otwórz"
+    "open": "Otwórz",
+    "viewAll": "Zobacz wszystkie",
+    "reportsPreview": "Otwarte zgłoszenia",
+    "reviewPreview": "Do sprawdzenia",
+    "emptyReports": "Brak otwartych zgłoszeń.",
+    "emptyReview": "Brak gier do sprawdzenia.",
+    "previewError": "Nie udało się wczytać podglądu.",
+    "idle": {
+      "needsReview": "Katalog czysty",
+      "pending": "Nic w kolejce",
+      "openReports": "Brak zgłoszeń"
+    }
   },
   "reports": {
     "errorLoad": "Nie udało się wczytać zgłoszeń.",

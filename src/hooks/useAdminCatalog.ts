@@ -33,10 +33,14 @@ function invalidateCatalog(queryClient: ReturnType<typeof useQueryClient>) {
   queryClient.invalidateQueries({ queryKey: qk.adminOverview });
 }
 
-export function useAdminGames(filter: AdminGamesQuery) {
+export function useAdminGames(
+  filter: AdminGamesQuery,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: qk.adminGames(filter),
     queryFn: () => getAdminGames(filter),
+    enabled: options?.enabled,
   });
 }
 

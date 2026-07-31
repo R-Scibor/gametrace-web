@@ -5,11 +5,17 @@ export interface StatTileProps {
   value: string | number;
   unit?: string;
   className?: string;
+  /** Denser padding/type for secondary rows (e.g. admin overview homelab strip). */
+  size?: 'default' | 'compact';
 }
 
-export function StatTile({ label, value, unit, className }: StatTileProps) {
+export function StatTile({ label, value, unit, className, size = 'default' }: StatTileProps) {
   return (
-    <div className={[styles.container, className].filter(Boolean).join(' ')}>
+    <div
+      className={[styles.container, size === 'compact' ? styles.compact : '', className]
+        .filter(Boolean)
+        .join(' ')}
+    >
       <div className={styles.bar} />
       <div className={styles.body}>
         <div className={styles.label}>{label}</div>

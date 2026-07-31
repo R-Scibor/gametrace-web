@@ -22,4 +22,18 @@ describe('AttentionTile', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
     expect(screen.getByText('0')).toBeInTheDocument();
   });
+
+  it('shows idle queue copy when provided and count is zero', () => {
+    renderWithProviders(
+      <AttentionTile
+        label="Do sprawdzenia"
+        value={0}
+        to="/admin/catalog?status=NEEDS_REVIEW"
+        idleMessage="Katalog czysty"
+      />,
+    );
+
+    expect(screen.getByText('Katalog czysty')).toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+  });
 });

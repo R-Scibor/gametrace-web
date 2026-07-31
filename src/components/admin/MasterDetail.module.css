@@ -35,10 +35,14 @@
   min-width: 0;
 }
 
+/*
+  Stick below the app TopBar (sticky, min-height 64px, z-index 10). Using a small
+  gap so the inspector chrome doesn't tuck under "Katalog gier" / page titles.
+*/
 .inspector {
   position: sticky;
-  top: 16px;
-  max-height: calc(100vh - 120px);
+  top: 80px;
+  max-height: calc(100vh - 104px);
   overflow-y: auto;
   min-width: 0;
 }
