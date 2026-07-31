@@ -37,11 +37,6 @@ export function AdminReportsPage() {
     setParams(draft);
   };
 
-  const handleTriage = (next: 'triaged' | 'closed') => {
-    if (!selected) return;
-    patch.mutate({ id: selected.id, status: next });
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.filters}>
@@ -81,7 +76,14 @@ export function AdminReportsPage() {
           inspector={
             <ReportInspector
               item={selected}
-              onTriage={handleTriage}
+              onPatch={(body) => {
+                if (!selected) return;
+                // Temporary until Task 6: only forward open→triaged|closed status patches.
+                if (body.status === 'triaged' || body.status === 'closed') {
+                  patch.mutate({ id: selected.id, status: body.status });
+                }
+              }}
+              onDelete={() => {}}
               isPending={patch.isPending}
             />
           }
