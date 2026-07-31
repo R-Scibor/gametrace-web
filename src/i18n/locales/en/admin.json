@@ -48,6 +48,21 @@
     "noDiagnostics": "No diagnostic data.",
     "markTriaged": "Mark as triaged",
     "close": "Close",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "deleteConfirmTitle": "Delete this report?",
+    "deleteConfirmMessage": "The report will be permanently removed. This cannot be undone.",
+    "deleteConfirm": "Delete permanently",
+    "noteLabel": "Admin note",
+    "notePlaceholder": "Why you triaged or closed this…",
+    "saveNote": "Save note",
+    "clearNote": "Clear note",
+    "searchAria": "Search report messages",
+    "searchPlaceholder": "Search message",
+    "screenFilter": "Screen",
+    "platformFilter": "Platform",
+    "allScreens": "All screens",
+    "allPlatforms": "All platforms",
     "status": {
       "open": "Open",
       "triaged": "Triaged",
@@ -56,7 +71,12 @@
     "toast": {
       "closed": "Report closed.",
       "triaged": "Report marked as triaged.",
-      "updateFailed": "Couldn't update the report."
+      "reopened": "Report reopened.",
+      "noteSaved": "Note saved.",
+      "deleted": "Report deleted.",
+      "notFound": "Report not found.",
+      "updateFailed": "Couldn't update the report.",
+      "deleteFailed": "Couldn't delete the report."
     }
   },
   "catalog": {

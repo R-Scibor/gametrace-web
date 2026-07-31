@@ -48,6 +48,21 @@
     "noDiagnostics": "Brak danych diagnostycznych.",
     "markTriaged": "Oznacz jako obsłużone",
     "close": "Zamknij",
+    "reopen": "Otwórz ponownie",
+    "delete": "Usuń",
+    "deleteConfirmTitle": "Usunąć to zgłoszenie?",
+    "deleteConfirmMessage": "Zgłoszenie zostanie trwale usunięte. Tej operacji nie można cofnąć.",
+    "deleteConfirm": "Usuń trwale",
+    "noteLabel": "Notatka admina",
+    "notePlaceholder": "Dlaczego oznaczyłeś lub zamknąłeś…",
+    "saveNote": "Zapisz notatkę",
+    "clearNote": "Wyczyść notatkę",
+    "searchAria": "Szukaj w treściach zgłoszeń",
+    "searchPlaceholder": "Szukaj treści",
+    "screenFilter": "Ekran",
+    "platformFilter": "Platforma",
+    "allScreens": "Wszystkie ekrany",
+    "allPlatforms": "Wszystkie platformy",
     "status": {
       "open": "Otwarte",
       "triaged": "Obsłużone",
@@ -56,7 +71,12 @@
     "toast": {
       "closed": "Zgłoszenie zamknięte.",
       "triaged": "Zgłoszenie oznaczone.",
-      "updateFailed": "Nie udało się zaktualizować zgłoszenia."
+      "reopened": "Zgłoszenie otwarte ponownie.",
+      "noteSaved": "Notatka zapisana.",
+      "deleted": "Zgłoszenie usunięte.",
+      "notFound": "Nie znaleziono zgłoszenia.",
+      "updateFailed": "Nie udało się zaktualizować zgłoszenia.",
+      "deleteFailed": "Nie udało się usunąć zgłoszenia."
     }
   },
   "catalog": {
