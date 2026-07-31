@@ -16,7 +16,11 @@ export function AppLayout() {
       <div className={styles.main}>
         <TopBar />
         <main className={styles.content}>
-          <Outlet />
+          {/* Shared full-bleed top wash — every authenticated page. */}
+          <div className={styles.ambient} aria-hidden />
+          <div className={styles.contentBody}>
+            <Outlet />
+          </div>
         </main>
       </div>
       <ToastViewport />

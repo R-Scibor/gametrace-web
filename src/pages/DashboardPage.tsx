@@ -84,8 +84,6 @@ export function DashboardPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.ambient} aria-hidden />
-
       <header className={styles.header}>
         <div className={styles.headLeft}>
           <span className={styles.statusLine}>

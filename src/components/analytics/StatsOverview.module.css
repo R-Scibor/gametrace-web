@@ -1,89 +1,96 @@
-/* One horizontal row: total | avg | new | record. The record cover stretches to
-   the row height set by the other cards, so it stays proportionate without making
-   the whole panel tall. Tiles carry big values so they read full, not empty. */
-.grid {
-  display: grid;
-  grid-template-columns:
-    minmax(150px, 1.4fr)
-    minmax(92px, 0.8fr)
-    minmax(92px, 0.8fr)
-    minmax(200px, 1.6fr);
-  grid-template-areas: "total avg new record";
-  gap: 12px;
-  align-items: stretch;
-}
-.gridNoRecord {
-  display: grid;
-  grid-template-columns: minmax(150px, 1.4fr) minmax(92px, 0.8fr) minmax(92px, 0.8fr);
-  grid-template-areas: "total avg new";
-  gap: 12px;
-  align-items: stretch;
-}
+/* Free-standing overview: section title + rule (like Analytics "Kiedy grasz"),
+   then metric tiles. Typography/colors match the earlier StatsOverview cards
+   (display labels, large values, solid fills — not dashboard mono/gradient). */
 
-.totalBlock {
-  grid-area: total;
+.root {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  padding: 12px 18px;
-  background-color: var(--bg3);
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--orange);
-  border-radius: 4px;
-}
-.totalLabel {
-  font-family: var(--display);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text3);
-}
-.totalValue {
-  font-family: var(--display);
-  font-size: clamp(30px, 3.4vw, 40px);
-  font-weight: 700;
-  letter-spacing: -0.8px;
-  color: var(--orange);
-  line-height: 1;
-}
-.totalMeta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px;
-  font-size: 13px;
-}
-.totalDelta {
-  font-family: var(--display);
-  font-weight: 700;
-  color: var(--orange);
-}
-.totalSubtitle {
-  color: var(--text3);
+  gap: 12px;
+  min-width: 0;
 }
 
-/* Tiles: orange left rule, caps label, big orange value — filled, not sparse. */
+/* Matches AnalyticsPage .sectionLabel / .sectionText / .sectionRule */
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sectionText {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.sectionRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+  opacity: 0.45;
+}
+
+.row,
+.rowThree {
+  display: grid;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.row {
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(0, 1.2fr);
+}
+
+.rowThree {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* Same surface as DashboardStatTiles; orange bar is a separate accent node so
+   hover border-color doesn't wipe it (border-left would die on hover). */
 .tile {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 6px;
-  padding: 12px 14px 12px 16px;
-  background-color: var(--bg2);
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--orange);
-  border-radius: 4px;
   min-width: 0;
+  padding: 12px 14px 12px 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  /* Dashboard tile hues (28,24,21 → 20,17,15), fully opaque so they don't
+     wash out over the analytics ambient backdrop the way 0.7 alpha does. */
+  background: linear-gradient(180deg, rgb(28, 24, 21), rgb(20, 17, 15));
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.22s ease, border-color 0.22s ease;
 }
-.avgTile {
-  grid-area: avg;
+
+.tile:first-child {
+  padding: 12px 18px;
+  gap: 5px;
 }
-.newTile {
-  grid-area: new;
+
+.tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-bright);
 }
-.tileLabel {
+
+.accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--orange);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.label {
   font-family: var(--display);
   font-size: 10px;
   font-weight: 700;
@@ -91,50 +98,80 @@
   text-transform: uppercase;
   color: var(--text3);
 }
-.tileValue {
+
+.tile:first-child .label {
+  letter-spacing: 1px;
+}
+
+.value {
   display: flex;
   align-items: baseline;
   gap: 4px;
   font-family: var(--display);
-  font-size: clamp(32px, 3.6vw, 42px);
   font-weight: 700;
+  font-size: clamp(32px, 3.6vw, 42px);
   letter-spacing: -1px;
-  color: var(--text);
   line-height: 1;
+  color: var(--text);
 }
-.tileUnit {
+
+.tile:first-child .value {
+  font-size: clamp(30px, 3.4vw, 40px);
+  letter-spacing: -0.8px;
+  color: var(--orange);
+}
+
+.unit {
   font-size: 18px;
   color: var(--text3);
 }
 
-/* Record: cover fills the card edge-to-edge (dashboard pattern) — the img is
-   absolutely positioned so its intrinsic size can't inflate the row. */
-.recordCard {
-  grid-area: record;
+.valueStack {
   display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.delta {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.subtitle {
+  color: var(--text3);
+}
+
+/* Record: cover strip + body */
+.recordTile {
+  flex-direction: row;
   align-items: stretch;
   gap: 0;
   padding: 0;
-  overflow: hidden;
-  background-color: var(--bg2);
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--orange);
-  border-radius: 4px;
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 0.15s, background-color 0.15s;
 }
-.recordCard:hover {
-  border-color: var(--orange);
-  background-color: var(--bg3);
+
+.recordTile:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-bright);
 }
+
 .recordCoverWrap {
   position: relative;
   width: 76px;
-  align-self: stretch;
   flex-shrink: 0;
   overflow: hidden;
+  align-self: stretch;
 }
+
 .recordCoverWrap .recordCover {
   position: absolute;
   inset: 0;
@@ -143,22 +180,22 @@
   object-fit: cover;
   border-radius: 0;
 }
-.recordMeta {
+
+.recordBody {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 3px;
   min-width: 0;
+  flex: 1;
   padding: 12px 16px;
 }
-.recordLabel {
-  font-family: var(--display);
-  font-size: 10px;
-  font-weight: 700;
+
+.recordBody .label {
   letter-spacing: 0.5px;
-  text-transform: uppercase;
   color: var(--orange);
 }
+
 .recordGame {
   font-size: 14px;
   font-weight: 600;
@@ -167,25 +204,27 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.recordValue {
-  font-family: var(--display);
+
+.recordBody .value {
   font-size: 22px;
-  font-weight: 700;
+  letter-spacing: 0;
   color: var(--text);
 }
 
-@media (max-width: 760px) {
-  .grid {
+.recordBody .unit {
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .row,
+  .rowThree {
     grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "total  total"
-      "avg    new"
-      "record record";
   }
-  .gridNoRecord {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "total total"
-      "avg   new";
+}
+
+@media (max-width: 520px) {
+  .row,
+  .rowThree {
+    grid-template-columns: 1fr;
   }
 }

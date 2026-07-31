@@ -54,8 +54,6 @@ export function AnalyticsPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.ambient} aria-hidden />
-
       {showPreview && <SampleDataBanner onDismiss={() => setPreviewDismissed(true)} />}
 
       <div className={styles.toolbar}>

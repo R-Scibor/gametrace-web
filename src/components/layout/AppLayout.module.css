@@ -11,6 +11,28 @@
   overflow-y: auto;
 }
 .content {
+  position: relative;
   padding: 24px;
   flex: 1;
+}
+
+/* Shared ambient — top-right orange wash only (no corner vignettes). */
+.ambient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 420px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 90% at 100% 0%, rgba(255, 122, 26, 0.12), transparent 65%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: auto, 32px 32px;
+  mask-image: linear-gradient(180deg, black, transparent 92%);
+}
+
+.contentBody {
+  position: relative;
+  z-index: 1;
 }
