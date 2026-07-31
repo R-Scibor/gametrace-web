@@ -273,21 +273,47 @@ export const handlers = [
   ),
 
   http.get('/api/v1/admin/reports', ({ request }) => {
-    const status = new URL(request.url).searchParams.get('status');
-    const items = status
-      ? fixtures.adminReports.items.filter((r) => r.status === status)
-      : fixtures.adminReports.items;
+    const url = new URL(request.url);
+    const status = url.searchParams.get('status');
+    const q = url.searchParams.get('q')?.toLowerCase();
+    const screen = url.searchParams.get('screen');
+    const platform = url.searchParams.get('platform');
+    let items = fixtures.adminReports.items;
+    if (status) items = items.filter((r) => r.status === status);
+    if (q) items = items.filter((r) => r.message.toLowerCase().includes(q));
+    if (screen) items = items.filter((r) => r.context.screen === screen);
+    if (platform) items = items.filter((r) => r.context.platform === platform);
     return HttpResponse.json({ total: items.length, items });
   }),
 
+  http.get('/api/v1/admin/reports/facets', () =>
+    HttpResponse.json(fixtures.adminReportFacets),
+  ),
+
   http.patch('/api/v1/admin/reports/:id', async ({ params, request }) => {
     const id = Number(params.id);
-    const body = (await request.json()) as { status: 'triaged' | 'closed' };
+    const body = (await request.json()) as {
+      status?: 'open' | 'triaged' | 'closed';
+      admin_note?: string | null;
+    };
     const item = fixtures.adminReports.items.find((r) => r.id === id);
     if (!item) {
       return HttpResponse.json({ detail: 'Not found' }, { status: 404 });
     }
-    return HttpResponse.json({ ...item, status: body.status });
+    return HttpResponse.json({
+      ...item,
+      ...(body.status !== undefined ? { status: body.status } : {}),
+      ...(body.admin_note !== undefined ? { admin_note: body.admin_note } : {}),
+    });
+  }),
+
+  http.delete('/api/v1/admin/reports/:id', ({ params }) => {
+    const id = Number(params.id);
+    const exists = fixtures.adminReports.items.some((r) => r.id === id);
+    if (!exists) {
+      return HttpResponse.json({ detail: 'Not found' }, { status: 404 });
+    }
+    return new HttpResponse(null, { status: 204 });
   }),
 
   http.get('/api/v1/stats/summary', ({ request }) => {

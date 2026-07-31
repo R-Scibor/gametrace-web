@@ -17,4 +17,5 @@ export const qk = {
   adminOverview: ['admin', 'overview'] as const,
   adminReports: (filter?: object) => ['admin', 'reports', filter ?? {}] as const,
   adminReportsPrefix: ['admin', 'reports'] as const,
+  adminReportFacets: (status?: string) => ['admin', 'reports', 'facets', status ?? ''] as const,
 };

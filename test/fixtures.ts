@@ -221,6 +221,7 @@ export const adminReports: AdminReportListResponse = {
       context: { screen: 'SessionForm', platform: 'android', app_version: '1.4.2' },
       status: 'open',
       created_at: '2026-07-18T10:00:00Z',
+      admin_note: null,
     },
     {
       id: 16,
@@ -230,6 +231,7 @@ export const adminReports: AdminReportListResponse = {
       context: { screen: 'GameDetail', platform: 'ios', app_version: '1.4.1' },
       status: 'open',
       created_at: '2026-07-16T09:00:00Z',
+      admin_note: null,
     },
     {
       id: 15,
@@ -239,11 +241,23 @@ export const adminReports: AdminReportListResponse = {
       context: {},
       status: 'open',
       created_at: '2026-07-14T08:00:00Z',
+      admin_note: null,
     },
   ],
 };
 
 export const adminReportsEmpty: AdminReportListResponse = { total: 0, items: [] };
+
+export const adminReportFacets = {
+  screens: [
+    { value: 'SessionForm', count: 1 },
+    { value: 'GameDetail', count: 1 },
+  ],
+  platforms: [
+    { value: 'android', count: 1 },
+    { value: 'ios', count: 1 },
+  ],
+};
 
 export const gameFacets: Record<
   number,
@@ -330,6 +344,7 @@ export const fixtures = {
   adminOverviewIdle,
   adminReports,
   adminReportsEmpty,
+  adminReportFacets,
   igdbCandidates: [
     {
       igdb_id: 11142,

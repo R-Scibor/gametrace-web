@@ -4,11 +4,14 @@ import type {
   AdminGameListResponse,
   AdminGamesQuery,
   AdminOverviewResponse,
+  AdminReportFacetsResponse,
   AdminReportItem,
   AdminReportListResponse,
+  AdminReportPatch,
   AdminReportsQuery,
   Game,
   IGDBCandidate,
+  ReportStatus,
 } from '../types/api';
 
 export interface AdminCoverUpload {
@@ -77,6 +80,9 @@ export const getAdminReports = async (
   const response = await client.get<AdminReportListResponse>('/admin/reports', {
     params: {
       status: query.status,
+      q: query.q || undefined,
+      screen: query.screen || undefined,
+      platform: query.platform || undefined,
       skip: query.skip ?? 0,
       limit: query.limit ?? 50,
     },
@@ -84,10 +90,23 @@ export const getAdminReports = async (
   return response.data;
 };
 
+export const getAdminReportFacets = async (
+  status?: ReportStatus,
+): Promise<AdminReportFacetsResponse> => {
+  const response = await client.get<AdminReportFacetsResponse>('/admin/reports/facets', {
+    params: { status: status || undefined },
+  });
+  return response.data;
+};
+
 export const patchAdminReport = async (
   reportId: number,
-  body: { status: 'triaged' | 'closed' },
+  body: AdminReportPatch,
 ): Promise<AdminReportItem> => {
   const response = await client.patch<AdminReportItem>(`/admin/reports/${reportId}`, body);
   return response.data;
+};
+
+export const deleteAdminReport = async (reportId: number): Promise<void> => {
+  await client.delete(`/admin/reports/${reportId}`);
 };

@@ -13,6 +13,7 @@ const items: AdminReportItem[] = [
     context: {},
     status: 'open',
     created_at: '2026-07-18T10:00:00Z',
+    admin_note: null,
   },
   {
     id: 15,
@@ -22,6 +23,7 @@ const items: AdminReportItem[] = [
     context: {},
     status: 'closed',
     created_at: '2026-07-14T08:00:00Z',
+    admin_note: null,
   },
 ];
 

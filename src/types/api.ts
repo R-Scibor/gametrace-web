@@ -200,6 +200,7 @@ export interface AdminReportItem {
   context: Record<string, unknown>;
   status: ReportStatus;
   created_at: string;
+  admin_note: string | null;
 }
 
 export interface AdminReportListResponse {
@@ -209,6 +210,24 @@ export interface AdminReportListResponse {
 
 export interface AdminReportsQuery {
   status?: ReportStatus;
+  q?: string;
+  screen?: string;
+  platform?: string;
   skip?: number;
   limit?: number;
 }
+
+export interface AdminReportFacet {
+  value: string;
+  count: number;
+}
+
+export interface AdminReportFacetsResponse {
+  screens: AdminReportFacet[];
+  platforms: AdminReportFacet[];
+}
+
+export type AdminReportPatch = {
+  status?: ReportStatus;
+  admin_note?: string | null;
+};
