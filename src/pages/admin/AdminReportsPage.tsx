@@ -4,7 +4,7 @@ import { MasterDetail } from '../../components/admin/MasterDetail';
 import { ReportInspector } from '../../components/admin/reports/ReportInspector';
 import { ReportList } from '../../components/admin/reports/ReportList';
 import { Button, EmptyState, ErrorBanner, Select, Skeleton } from '../../components/ui';
-import { useAdminReports, useTriageReport } from '../../hooks/useAdminReports';
+import { useAdminReports, usePatchAdminReport } from '../../hooks/useAdminReports';
 import { parseIntParamOrNull } from '../../lib/urlParams';
 import { getReportStatusOptions } from '../../lib/reportStatus';
 import type { ReportStatus } from '../../types/api';
@@ -18,7 +18,7 @@ export function AdminReportsPage() {
   const selectedId = parseIntParamOrNull(params, 'report');
 
   const { data, isLoading, isError, refetch } = useAdminReports({ status });
-  const triage = useTriageReport();
+  const patch = usePatchAdminReport();
 
   const items = data?.items ?? [];
   const selected = items.find((r) => r.id === selectedId) ?? null;
@@ -39,7 +39,7 @@ export function AdminReportsPage() {
 
   const handleTriage = (next: 'triaged' | 'closed') => {
     if (!selected) return;
-    triage.mutate({ id: selected.id, status: next });
+    patch.mutate({ id: selected.id, status: next });
   };
 
   return (
@@ -82,7 +82,7 @@ export function AdminReportsPage() {
             <ReportInspector
               item={selected}
               onTriage={handleTriage}
-              isPending={triage.isPending}
+              isPending={patch.isPending}
             />
           }
         />
