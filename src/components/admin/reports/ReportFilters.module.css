@@ -1,0 +1,11 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.search {
+  min-width: 180px;
+  flex: 1 1 180px;
+}
