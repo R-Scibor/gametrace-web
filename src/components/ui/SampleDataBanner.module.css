@@ -3,11 +3,12 @@
   align-items: stretch;
   gap: 14px;
   margin-bottom: 16px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, #ffcc00 55%, var(--border));
   border-radius: 4px;
-  background-color: var(--bg2);
+  background-color: color-mix(in srgb, #ffcc00 8%, var(--bg2));
   overflow: hidden;
   animation: reveal 0.3s ease-out;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #ffcc00 25%, transparent);
 }
 
 @keyframes reveal {
@@ -22,14 +23,14 @@
 }
 
 .bar {
-  width: 2px;
+  width: 6px;
   flex-shrink: 0;
   background: repeating-linear-gradient(
     -45deg,
-    var(--orange) 0,
-    var(--orange) 4px,
-    var(--orange-dim) 4px,
-    var(--orange-dim) 8px
+    #111 0,
+    #111 5px,
+    #ffcc00 5px,
+    #ffcc00 10px
   );
 }
 
@@ -37,27 +38,107 @@
   flex: 1;
   min-width: 0;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 6px 10px;
+  gap: 8px 12px;
   padding: 10px 0;
 }
 
+/* Bright yellow hazard label with sliding black text */
 .tag {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  color: var(--orange);
-  text-transform: uppercase;
+  --warn-yellow: #ffeb00;
+  --warn-black: #0a0a0a;
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
+  width: 7.5rem;
+  height: 1.55rem;
+  overflow: hidden;
+  border: 2px solid var(--warn-black);
+  border-radius: 2px;
+  background: var(--warn-yellow);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--warn-yellow) 80%, white),
+    0 0 14px color-mix(in srgb, var(--warn-yellow) 55%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 35%, transparent);
+  /* hazard-stripe ends so it reads as a warning tape clip */
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0,
+      transparent 6px,
+      color-mix(in srgb, var(--warn-black) 12%, transparent) 6px,
+      color-mix(in srgb, var(--warn-black) 12%, transparent) 12px
+    ),
+    linear-gradient(var(--warn-yellow), var(--warn-yellow));
+}
+
+.tagTrack {
+  display: flex;
+  width: max-content;
+  animation: tag-marquee 4.5s linear infinite;
+  will-change: transform;
+}
+
+.tagSegment {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-inline: 0.45rem;
+  white-space: nowrap;
+}
+
+.tagText {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 2.8px;
+  line-height: 1;
+  color: var(--warn-black);
+  text-transform: uppercase;
+  text-shadow: 0 0 0 transparent;
+}
+
+.tagSep {
+  font-size: 7px;
+  line-height: 1;
+  color: var(--warn-black);
+  opacity: 0.55;
+}
+
+@keyframes tag-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* four identical segments → shift by one segment (25%) for seamless loop */
+    transform: translateX(-25%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tagTrack {
+    animation: none;
+    /* center a single visible word when motion is off */
+    transform: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tagSegment:not(:first-child) {
+    display: none;
+  }
+
+  .tagSep {
+    display: none;
+  }
 }
 
 .text {
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.2px;
-  color: var(--text3);
+  color: var(--text2, var(--text3));
 }
 
 .cta {
@@ -67,13 +148,13 @@
   flex-shrink: 0;
   padding: 10px 16px;
   margin: -1px -1px -1px 0;
-  border-left: 1px solid var(--border);
+  border-left: 1px solid color-mix(in srgb, #ffcc00 40%, var(--border));
   font-family: var(--display);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--orange);
+  color: #ffcc00;
   text-decoration: none;
   white-space: nowrap;
   transition: color 0.15s ease, background-color 0.15s ease;
@@ -81,8 +162,8 @@
 
 .cta:hover,
 .cta:focus-visible {
-  color: var(--orange-dim);
-  background-color: var(--orange-glow);
+  color: #0a0a0a;
+  background-color: #ffeb00;
 }
 
 .arrow {
@@ -101,7 +182,7 @@
   flex-shrink: 0;
   width: 36px;
   border: none;
-  border-left: 1px solid var(--border);
+  border-left: 1px solid color-mix(in srgb, #ffcc00 40%, var(--border));
   background: none;
   padding: 0;
   font-family: var(--mono);
@@ -114,8 +195,8 @@
 
 .dismiss:hover,
 .dismiss:focus-visible {
-  color: var(--orange);
-  background-color: var(--orange-glow);
+  color: #0a0a0a;
+  background-color: #ffeb00;
 }
 
 @media (max-width: 520px) {
@@ -124,14 +205,14 @@
   }
   .cta {
     border-left: none;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid color-mix(in srgb, #ffcc00 40%, var(--border));
     width: 100%;
     justify-content: center;
     margin: 0;
   }
   .dismiss {
     border-left: none;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid color-mix(in srgb, #ffcc00 40%, var(--border));
     width: 100%;
   }
 }

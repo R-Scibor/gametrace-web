@@ -9,12 +9,34 @@ export interface SampleDataBannerProps {
 
 export function SampleDataBanner({ className, onDismiss }: SampleDataBannerProps) {
   const { t } = useTranslation('common');
+  const tag = t('sampleData.tag');
 
   return (
     <div className={[styles.banner, className].filter(Boolean).join(' ')}>
       <div className={styles.bar} />
       <div className={styles.body}>
-        <span className={styles.tag}>{t('sampleData.tag')}</span>
+        <span className={styles.tag} aria-label={tag}>
+          <span className={styles.tagTrack}>
+            <span className={styles.tagSegment}>
+              <span className={styles.tagText}>{tag}</span>
+              <span className={styles.tagSep} aria-hidden="true">
+                ◆
+              </span>
+            </span>
+            <span className={styles.tagSegment} aria-hidden="true">
+              <span className={styles.tagText}>{tag}</span>
+              <span className={styles.tagSep}>◆</span>
+            </span>
+            <span className={styles.tagSegment} aria-hidden="true">
+              <span className={styles.tagText}>{tag}</span>
+              <span className={styles.tagSep}>◆</span>
+            </span>
+            <span className={styles.tagSegment} aria-hidden="true">
+              <span className={styles.tagText}>{tag}</span>
+              <span className={styles.tagSep}>◆</span>
+            </span>
+          </span>
+        </span>
         <span className={styles.text}>{t('sampleData.text')}</span>
       </div>
       <Link to="/sessions/new" className={styles.cta}>

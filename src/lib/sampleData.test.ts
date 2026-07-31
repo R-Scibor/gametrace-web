@@ -9,10 +9,19 @@ import {
   SAMPLE_LAST_SESSION,
 } from './sampleData';
 
-test('all sample game ids are negative', () => {
+test('all sample game ids are negative and carry hardcoded IGDB covers', () => {
   for (const game of SAMPLE_GAMES) {
     expect(game.id).toBeLessThan(0);
-    expect(game.cover_image_url).toBeNull();
+    expect(game.cover_image_url).toMatch(
+      /^https:\/\/images\.igdb\.com\/igdb\/image\/upload\/t_cover_big\/.+\.jpg$/,
+    );
+  }
+});
+
+test('sample session briefs reuse the same cover urls as SAMPLE_GAMES', () => {
+  const covers = new Map(SAMPLE_GAMES.map((g) => [g.id, g.cover_image_url]));
+  for (const session of SAMPLE_SESSIONS) {
+    expect(session.game.cover_image_url).toBe(covers.get(session.game_id));
   }
 });
 

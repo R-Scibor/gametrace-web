@@ -31,18 +31,21 @@ interface GameFacets {
 interface SampleGameSeed {
   id: number;
   name: string;
+  /** Hardcoded IGDB CDN cover so sample data works offline / on GitHub clones. */
+  cover_image_url: string;
   facets: GameFacets;
 }
 
+// Cover URLs from IGDB (images.igdb.com t_cover_big). Do not depend on a local library.
 const GAME_SEEDS: SampleGameSeed[] = [
-  { id: -1, name: 'Baldur\'s Gate 3', facets: { genre: 'RPG', theme: 'Fantasy', developer: 'Larian Studios', publisher: 'Larian Studios', decade: '2020s' } },
-  { id: -2, name: 'Helldivers 2', facets: { genre: 'Shooter', theme: 'Sci-Fi', developer: 'Arrowhead Game Studios', publisher: 'Sony Interactive Entertainment', decade: '2020s' } },
-  { id: -3, name: 'Factorio', facets: { genre: 'Simulator', theme: 'Sci-Fi', developer: 'Wube Software', publisher: 'Wube Software', decade: '2020s' } },
-  { id: -4, name: 'Hades', facets: { genre: 'Hack and slash', theme: 'Fantasy', developer: 'Supergiant Games', publisher: 'Supergiant Games', decade: '2020s' } },
-  { id: -5, name: 'Wiedźmin 3', facets: { genre: 'RPG', theme: 'Fantasy', developer: 'CD Projekt Red', publisher: 'CD Projekt', decade: '2010s' } },
-  { id: -6, name: 'Celeste', facets: { genre: 'Platform', theme: 'Drama', developer: 'Maddy Makes Games', publisher: 'Maddy Makes Games', decade: '2010s' } },
-  { id: -7, name: 'Stardew Valley', facets: { genre: 'Simulator', theme: 'Slice of life', developer: 'ConcernedApe', publisher: 'ConcernedApe', decade: '2010s' } },
-  { id: -8, name: 'Return of the Obra Dinn', facets: { genre: 'Puzzle', theme: 'Mystery', developer: 'Lucas Pope', publisher: 'Lucas Pope', decade: '2010s' } },
+  { id: -1, name: "Baldur's Gate 3", cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co670h.jpg', facets: { genre: 'RPG', theme: 'Fantasy', developer: 'Larian Studios', publisher: 'Larian Studios', decade: '2020s' } },
+  { id: -2, name: 'Helldivers 2', cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/coabbf.jpg', facets: { genre: 'Shooter', theme: 'Sci-Fi', developer: 'Arrowhead Game Studios', publisher: 'Sony Interactive Entertainment', decade: '2020s' } },
+  { id: -3, name: 'Factorio', cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1tfy.jpg', facets: { genre: 'Simulator', theme: 'Sci-Fi', developer: 'Wube Software', publisher: 'Wube Software', decade: '2020s' } },
+  { id: -4, name: 'Hades', cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/cob9kr.jpg', facets: { genre: 'Hack and slash', theme: 'Fantasy', developer: 'Supergiant Games', publisher: 'Supergiant Games', decade: '2020s' } },
+  { id: -5, name: 'Wiedźmin 3', cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/coaarl.jpg', facets: { genre: 'RPG', theme: 'Fantasy', developer: 'CD Projekt Red', publisher: 'CD Projekt', decade: '2010s' } },
+  { id: -6, name: 'Celeste', cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/cob9dh.jpg', facets: { genre: 'Platform', theme: 'Drama', developer: 'Maddy Makes Games', publisher: 'Maddy Makes Games', decade: '2010s' } },
+  { id: -7, name: 'Stardew Valley', cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/coa93h.jpg', facets: { genre: 'Simulator', theme: 'Slice of life', developer: 'ConcernedApe', publisher: 'ConcernedApe', decade: '2010s' } },
+  { id: -8, name: 'Return of the Obra Dinn', cover_image_url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co27j9.jpg', facets: { genre: 'Puzzle', theme: 'Mystery', developer: 'Lucas Pope', publisher: 'Lucas Pope', decade: '2010s' } },
 ];
 
 interface SessionSeed {
@@ -99,7 +102,7 @@ function seedToSession(seed: SessionSeed, index: number, game: SampleGameSeed): 
   const start = new Date(NOW - seed.daysAgo * DAY_MS);
   start.setHours(seed.hour, 0, 0, 0);
   const end = new Date(start.getTime() + seed.durationHours * 60 * 60 * 1000);
-  const brief: GameBrief = { id: game.id, primary_name: game.name, cover_image_url: null };
+  const brief: GameBrief = { id: game.id, primary_name: game.name, cover_image_url: game.cover_image_url };
   return {
     id: -(100 + index),
     game_id: game.id,
@@ -133,7 +136,7 @@ export const SAMPLE_GAMES: Game[] = GAME_SEEDS.map((seed) => {
   return {
     id: seed.id,
     primary_name: seed.name,
-    cover_image_url: null,
+    cover_image_url: seed.cover_image_url,
     cover_source: 'EXTERNAL',
     enrichment_status: 'ENRICHED',
     is_ignored: false,
