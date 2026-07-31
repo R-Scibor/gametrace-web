@@ -55,7 +55,7 @@
     "tag": "PODGLĄD",
     "text": "To są przykładowe dane — dodaj sesję, aby zobaczyć swoje statystyki.",
     "cta": "Dodaj sesję",
-    "dismissAria": "Ukryj podgląd"
+    "dismiss": "Ukryj podgląd"
   },
   "conflict": {
     "heading": "Nakładające się sesje",

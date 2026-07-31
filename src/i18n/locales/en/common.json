@@ -55,7 +55,7 @@
     "tag": "PREVIEW",
     "text": "This is sample data — add a session to see your own stats.",
     "cta": "Add session",
-    "dismissAria": "Hide preview"
+    "dismiss": "Hide sample"
   },
   "conflict": {
     "heading": "Overlapping sessions",

@@ -39,22 +39,19 @@ export function SampleDataBanner({ className, onDismiss }: SampleDataBannerProps
         </span>
         <span className={styles.text}>{t('sampleData.text')}</span>
       </div>
-      <Link to="/sessions/new" className={styles.cta}>
-        <span>{t('sampleData.cta')}</span>
-        <span className={styles.arrow} aria-hidden="true">
-          →
-        </span>
-      </Link>
-      {onDismiss && (
-        <button
-          type="button"
-          className={styles.dismiss}
-          onClick={onDismiss}
-          aria-label={t('sampleData.dismissAria')}
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      )}
+      <div className={styles.actions}>
+        <Link to="/sessions/new" className={styles.cta}>
+          <span>{t('sampleData.cta')}</span>
+          <span className={styles.arrow} aria-hidden="true">
+            →
+          </span>
+        </Link>
+        {onDismiss && (
+          <button type="button" className={styles.dismiss} onClick={onDismiss}>
+            {t('sampleData.dismiss')}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
