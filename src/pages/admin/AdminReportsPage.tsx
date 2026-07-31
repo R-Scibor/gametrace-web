@@ -42,16 +42,20 @@ export function AdminReportsPage() {
     (patch.isPending && patch.variables?.id === selected?.id) ||
     (del.isPending && del.variables === selected?.id);
 
+  // Functional updater: debounced search must merge against the latest URL, not a
+  // stale closure, or a late q= write can wipe screen/platform/status set mid-type.
   const patchParams = (
     next: Record<string, string | undefined>,
     options?: { replace?: boolean },
   ) => {
-    const draft = new URLSearchParams(params);
-    Object.entries(next).forEach(([key, value]) => {
-      if (value === undefined || value === '') draft.delete(key);
-      else draft.set(key, value);
-    });
-    setParams(draft, options);
+    setParams((prev) => {
+      const draft = new URLSearchParams(prev);
+      Object.entries(next).forEach(([key, value]) => {
+        if (value === undefined || value === '') draft.delete(key);
+        else draft.set(key, value);
+      });
+      return draft;
+    }, options);
   };
 
   const handleFilterChange = (change: ReportFilterChange) => {

@@ -4,12 +4,6 @@
   gap: 12px;
 }
 
-.filters {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
 /* ErrorBanner and EmptyState each carry their own border and padding, so this
    wrapper stays bare and only stacks the retry button beneath the banner. */
 .state {
