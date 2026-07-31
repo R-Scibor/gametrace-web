@@ -72,5 +72,5 @@ test('DownloadPage shows dashboard link when authenticated', async () => {
     authenticated: true,
   });
 
-  expect(screen.getByRole('link', { name: /przejdź do pulpitu/i })).toHaveAttribute('href', '/');
+  expect(screen.getByRole('link', { name: /przejdź do dashboard/i })).toHaveAttribute('href', '/');
 });

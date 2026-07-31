@@ -13,7 +13,7 @@ test('SampleDataBanner shows the illustrative-data copy and links to /sessions/n
 
 test('SampleDataBanner does not render a dismiss control when onDismiss is omitted', () => {
   renderWithProviders(<SampleDataBanner />);
-  expect(screen.queryByRole('button', { name: /ukryj podgląd/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /ukryj przykładowe/i })).not.toBeInTheDocument();
 });
 
 test('SampleDataBanner calls onDismiss when the dismiss control is clicked', async () => {
@@ -21,7 +21,7 @@ test('SampleDataBanner calls onDismiss when the dismiss control is clicked', asy
   const onDismiss = vi.fn();
   renderWithProviders(<SampleDataBanner onDismiss={onDismiss} />);
 
-  await user.click(screen.getByRole('button', { name: /ukryj podgląd/i }));
+  await user.click(screen.getByRole('button', { name: /ukryj przykładowe/i }));
 
   expect(onDismiss).toHaveBeenCalledTimes(1);
 });

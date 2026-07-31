@@ -1,7 +1,7 @@
 {
   "topBar": {
     "subtitle": " · SYSTEM ŚLEDZENIA SESJI",
-    "dashboard": "PULPIT",
+    "dashboard": "DASHBOARD",
     "login": "ZALOGUJ SIĘ"
   },
   "hero": {
@@ -9,7 +9,7 @@
     "titleLine2": "Prowadzony automatycznie",
     "lead": "Bot na Discordzie wykrywa, w co i jak długo grasz. Ty przeglądasz statystyki i porządkujesz bibliotekę w przeglądarce albo w aplikacji.",
     "start": "ROZPOCZNIJ",
-    "goToDashboard": "PRZEJDŹ DO PULPITU →",
+    "goToDashboard": "PRZEJDŹ DO DASHBOARD →",
     "haveAccount": "MAM JUŻ KONTO → ZALOGUJ SIĘ",
     "learnMore": "Dowiedz się więcej ↓"
   },
@@ -86,15 +86,15 @@
     "app": {
       "label": "APLIKACJA",
       "status": "Android",
-      "body": "Sesje, biblioteka i statystyki w kieszeni — ten sam pulpit co w przeglądarce.",
-      "point1": "Pulpit i ostatnie sesje",
+      "body": "Sesje, biblioteka i statystyki w kieszeni — ten sam Dashboard co w przeglądarce.",
+      "point1": "Dashboard i ostatnie sesje",
       "point2": "Dodawanie sesji i głos",
       "point3": "Biblioteka i kosz na telefonie"
     },
     "web": {
       "label": "PRZEGLĄDARKA",
       "status": "Desktop",
-      "body": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam pulpit co w aplikacji.",
+      "body": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam Dashboard co w aplikacji.",
       "point1": "Mapa aktywności, passa i trendy",
       "point2": "Biblioteka, okładki i łączenie gier",
       "point3": "Sesja głosowa z komputera"
@@ -144,9 +144,9 @@
       "title": "Wybierz klienta",
       "body": "Jedno konto — te same sesje w przeglądarce i w aplikacji.",
       "webLabel": "PRZEGLĄDARKA",
-      "webBody": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam pulpit co w aplikacji.",
+      "webBody": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam Dashboard co w aplikacji.",
       "appLabel": "APLIKACJA",
-      "appBody": "Sesje, biblioteka i statystyki w kieszeni — ten sam pulpit co w przeglądarce.",
+      "appBody": "Sesje, biblioteka i statystyki w kieszeni — ten sam Dashboard co w przeglądarce.",
       "openWeb": "OTWÓRZ W PRZEGLĄDARCE",
       "loginWeb": "ZALOGUJ W PRZEGLĄDARCE",
       "checking": "SPRAWDZANIE…",

@@ -98,7 +98,7 @@ test('DashboardPage hides the sample preview after dismissing the banner', async
 
   expect(await screen.findByText(/to są przykładowe dane/i)).toBeInTheDocument();
 
-  await user.click(screen.getByRole('button', { name: /ukryj podgląd/i }));
+  await user.click(screen.getByRole('button', { name: /ukryj przykładowe/i }));
 
   expect(screen.queryByText(/to są przykładowe dane/i)).not.toBeInTheDocument();
   expect(

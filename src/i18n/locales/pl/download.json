@@ -14,7 +14,7 @@
     "ready": "APK GOTOWY",
     "unavailable": "NIEDOSTĘPNE"
   },
-  "goToDashboard": "PRZEJDŹ DO PULPITU →",
+  "goToDashboard": "PRZEJDŹ DO DASHBOARD →",
   "seeInBrowser": "ZOBACZ GAMETRACE W PRZEGLĄDARCE →",
   "handoff": {
     "ariaLabel": "Przenieś link na telefon",

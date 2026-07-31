@@ -106,6 +106,6 @@ test('LandingPage keeps wizard as primary CTA when authenticated', async () => {
   await user.click(screen.getAllByRole('button', { name: /^Rozpocznij$/i })[0]);
   expect(screen.getByRole('dialog')).toBeInTheDocument();
 
-  await user.click(screen.getByRole('link', { name: /Przejdź do pulpitu/i }));
+  await user.click(screen.getByRole('link', { name: /Przejdź do Dashboard/i }));
   expect(screen.getByText('Dashboard')).toBeInTheDocument();
 });

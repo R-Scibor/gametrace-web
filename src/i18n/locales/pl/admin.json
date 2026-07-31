@@ -63,7 +63,7 @@
     "enrichment": {
       "all": "Wszystkie",
       "NEEDS_REVIEW": "Do sprawdzenia",
-      "PENDING": "Oczekuje",
+      "PENDING": "Oczekiwanie",
       "ENRICHED": "Wzbogacona"
     },
     "columns": {
