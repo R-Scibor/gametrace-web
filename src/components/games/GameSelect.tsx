@@ -37,6 +37,7 @@ export function GameSelect({
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const listId = id ? `${id}-listbox` : undefined;
   const optionDomId = (key?: string | null) => (key && id ? `${id}-opt-${key}` : undefined);
 
@@ -177,6 +178,23 @@ export function GameSelect({
     .filter((v): v is string => Boolean(v))
     .join(' ');
 
+  // Follows the keyboard highlight into view. `block: 'nearest'` scrolls the
+  // minimum distance needed and is a no-op when the target is already visible,
+  // so the list doesn't jump on every keypress. Guarded to elements actually
+  // inside the `<ul>` scroll container: the three footer action buttons are
+  // activatable and have ids too, but they live outside it (in `styles.footer`)
+  // and are always visible anyway, so scrolling them would instead scroll
+  // whatever scrollable ancestor they DO have — potentially the page itself.
+  // jsdom has no `scrollIntoView`, hence the optional call.
+  useEffect(() => {
+    const domId = optionDomId(activeKey);
+    if (!domId) return;
+    const el = document.getElementById(domId);
+    if (!el || !listRef.current?.contains(el)) return;
+    el.scrollIntoView?.({ block: 'nearest' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeKey, id]);
+
   if (ladder.isPickerLoading) return <Skeleton height={46} />;
 
   const selectedName =
@@ -284,6 +302,7 @@ export function GameSelect({
       {open && (
         <div className={styles.dropdown}>
           <ul
+            ref={listRef}
             id={listId}
             role="listbox"
             className={styles.list}

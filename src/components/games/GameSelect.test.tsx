@@ -522,3 +522,67 @@ test('aria-activedescendant does not dangle after activating a highlighted foote
 
   await screen.findByText('Kingdom Hearts HD 1.5 + 2.5 ReMIX');
 });
+
+test('scrolls a highlighted option into view', async () => {
+  // jsdom doesn't implement scrollIntoView at all, so the component calls it
+  // optionally (`el.scrollIntoView?.(...)`). Define a stub first, or the call
+  // is simply a no-op and this test can't observe anything.
+  const scrollIntoView = vi.fn();
+  Element.prototype.scrollIntoView = scrollIntoView;
+
+  try {
+    const user = userEvent.setup();
+    renderSelect();
+
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'Cyber');
+    const optionText = await screen.findByText('Cyberpunk 2077');
+    const optionEl = optionText.closest('[role="option"]') as HTMLElement;
+
+    await user.keyboard('{ArrowDown}');
+
+    expect(scrollIntoView).toHaveBeenCalledWith(
+      expect.objectContaining({ block: 'nearest' }),
+    );
+    expect(scrollIntoView.mock.instances[scrollIntoView.mock.instances.length - 1]).toBe(
+      optionEl,
+    );
+  } finally {
+    // @ts-expect-error -- deleting the stub restores jsdom's (lack of) default
+    delete Element.prototype.scrollIntoView;
+  }
+});
+
+test('does not scroll when the highlight lands on a footer action button', async () => {
+  // The footer buttons live outside the <ul> scroll container, so scrolling one
+  // would instead scroll its actual nearest scrollable ancestor (potentially the
+  // page). The effect must skip elements the listbox ref doesn't contain.
+  const scrollIntoView = vi.fn();
+  Element.prototype.scrollIntoView = scrollIntoView;
+
+  try {
+    const user = userEvent.setup();
+    renderSelect();
+
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'Cyber');
+    await screen.findByText('Cyberpunk 2077');
+
+    // First ArrowDown lands on the library row and does scroll it — expected,
+    // not what this test is guarding. Clear it so the assertion below is only
+    // about the footer-action landing.
+    await user.keyboard('{ArrowDown}');
+    scrollIntoView.mockClear();
+
+    await user.keyboard('{ArrowDown}');
+    expect(input).toHaveAttribute(
+      'aria-activedescendant',
+      'session-game-opt-search-online',
+    );
+
+    expect(scrollIntoView).not.toHaveBeenCalled();
+  } finally {
+    // @ts-expect-error -- deleting the stub restores jsdom's (lack of) default
+    delete Element.prototype.scrollIntoView;
+  }
+});
