@@ -241,6 +241,15 @@ export function GameSelect({
     }
   };
 
+  // Resolved the same way activation already is (`activatables.find`), rather
+  // than trusting `activeKey` to still point at something rendered. This is the
+  // single source of truth for "is anything actually highlighted right now" —
+  // self-healing across every cause of drift at once: a mode flip (e.g. into
+  // `searching`, where the footer button stops being owned), a list rebuild, or
+  // an activation site that (correctly) doesn't call closeAfterSelect (Enter /
+  // footer onClick while a mutation is in flight, e.g. searchOnline()).
+  const activeItem = activatables.find((a) => a.key === activeKey);
+
   return (
     <div className={styles.root} ref={rootRef}>
       <input
@@ -252,7 +261,7 @@ export function GameSelect({
         aria-controls={listId}
         aria-autocomplete="list"
         aria-label={ariaLabel}
-        aria-activedescendant={optionDomId(activeKey)}
+        aria-activedescendant={activeItem ? optionDomId(activeItem.key) : undefined}
         className={styles.input}
         placeholder={t('select.placeholder')}
         value={ladder.query}

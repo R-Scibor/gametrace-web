@@ -494,3 +494,31 @@ test('listbox aria-owns tracks only the footer actions currently rendered', asyn
   const addBtn = screen.getByRole('option', { name: /mimo to/ });
   expect(addBtn).toHaveAttribute('id', 'session-game-opt-add-unrecognized');
 });
+
+test('aria-activedescendant does not dangle after activating a highlighted footer action', async () => {
+  const user = userEvent.setup();
+  renderSelect();
+
+  const input = await screen.findByRole('combobox');
+  await user.type(input, 'kingdom hearts');
+  await screen.findByRole('option', { name: 'Szukaj online' });
+
+  await user.keyboard('{ArrowDown}');
+  expect(input).toHaveAttribute(
+    'aria-activedescendant',
+    'session-game-opt-search-online',
+  );
+
+  await user.keyboard('{Enter}');
+
+  // Activating via Enter (like the footer button's own onClick) does not route
+  // through closeAfterSelect() the way every `select(...)` path does, so
+  // activeKey itself is never explicitly cleared here. Once the mutation flips
+  // mode away from 'browse' (through 'searching' to 'online'), 'search-online'
+  // drops out of `activatables` entirely and stops being owned by the listbox
+  // (no id/role/aria-selected). aria-activedescendant must resolve through
+  // `activatables`, not just echo activeKey verbatim, or it dangles right here.
+  await waitFor(() => expect(input).not.toHaveAttribute('aria-activedescendant'));
+
+  await screen.findByText('Kingdom Hearts HD 1.5 + 2.5 ReMIX');
+});
