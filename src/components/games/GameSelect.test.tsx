@@ -5,6 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { GameSelect } from './GameSelect';
 import { createTestQueryClient, resetStores, seedAuth } from '../../../test/utils';
+import { server } from '../../../test/server';
 
 /**
  * GameSelect is controlled: the chip only renders when `value` is set. A fixed
@@ -164,6 +165,28 @@ test('create failure keeps the dropdown open and preserves the query', async () 
   expect(screen.getByRole('combobox')).toHaveValue('create-fails');
 });
 
+test('keeps the chip when the search query no longer matches the selected game', async () => {
+  const user = userEvent.setup();
+  render(
+    <QueryClientProvider client={createTestQueryClient()}>
+      <GameSelect id="session-game" value={1} onChange={vi.fn()} aria-label="Gra" />
+    </QueryClientProvider>,
+  );
+
+  // Arrived already-selected from the parent, so selectedMeta is null throughout.
+  const chip = await screen.findByRole('button', { name: 'Gra' });
+  expect(chip).toHaveTextContent('Wiedźmin 3');
+
+  await user.click(chip);
+  await user.type(await screen.findByRole('combobox'), 'zzz');
+  await user.click(document.body);
+
+  // The query is still 'zzz' and matches nothing. The chip must survive it.
+  await waitFor(() =>
+    expect(screen.getByRole('button', { name: 'Gra' })).toHaveTextContent('Wiedźmin 3'),
+  );
+});
+
 test('editing the query after an online search clears candidates', async () => {
   const user = userEvent.setup();
   renderSelect();
@@ -180,4 +203,29 @@ test('editing the query after an online search clears candidates', async () => {
       screen.queryByText('Kingdom Hearts HD 1.5 + 2.5 ReMIX'),
     ).not.toBeInTheDocument(),
   );
+});
+
+test('never calls POST /games/match while typing', async () => {
+  const user = userEvent.setup();
+  const matchRequests: string[] = [];
+  const onRequestStart = ({ request }: { request: Request }) => {
+    if (request.method === 'POST' && request.url.includes('/api/v1/games/match')) {
+      matchRequests.push(request.url);
+    }
+  };
+  server.events.on('request:start', onRequestStart);
+
+  try {
+    renderSelect();
+
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'kingdom hearts');
+    // Suggest substring-matches its fixture and finds nothing for this query, so
+    // the browse empty state settling is the deterministic signal that typing is done.
+    await screen.findByText('Brak wyników');
+
+    expect(matchRequests).toEqual([]);
+  } finally {
+    server.events.removeListener('request:start', onRequestStart);
+  }
 });

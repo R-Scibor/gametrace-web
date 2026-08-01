@@ -59,7 +59,7 @@ export function GameSelect({
     value === ''
       ? null
       : (ladder.selectedMeta?.id === value ? ladder.selectedMeta.primary_name : null) ??
-        ladder.libraryMatches.find((g) => g.id === value)?.primary_name ??
+        ladder.pickerGames.find((g) => g.id === value)?.primary_name ??
         null;
 
   const closeAfterSelect = () => {

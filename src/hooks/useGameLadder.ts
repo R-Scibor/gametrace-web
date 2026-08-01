@@ -36,6 +36,8 @@ export interface GameLadder {
   setQuery: (next: string) => void;
   libraryMatches: Game[];
   catalogMatches: GameSuggestion[];
+  /** The full, unfiltered picker list — not the dropdown's current (filtered, truncated) results. */
+  pickerGames: Game[];
   isPickerLoading: boolean;
   isSuggesting: boolean;
   reset: () => void;
@@ -206,6 +208,7 @@ export function useGameLadder(onResolved: (gameId: number) => void): GameLadder 
     setQuery,
     libraryMatches,
     catalogMatches,
+    pickerGames: pickerGames ?? [],
     isPickerLoading,
     isSuggesting: debounced.length > 0 && suggest.isFetching,
     reset,
