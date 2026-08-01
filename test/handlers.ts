@@ -174,6 +174,13 @@ export const handlers = [
     return HttpResponse.json({ total: items.length, items });
   }),
 
+  // MUST stay above '/api/v1/games/:id', which would otherwise capture this path.
+  http.get('/api/v1/games/resolve', ({ request }) => {
+    const name = new URL(request.url).searchParams.get('name') ?? '';
+    if (name.toLowerCase().includes('unknown')) return HttpResponse.json(null);
+    return HttpResponse.json({ game_id: 1, name: 'Wiedźmin 3' });
+  }),
+
   http.post('/api/v1/games/match', async ({ request }) => {
     const body = (await request.json()) as { query?: string };
     const query = body.query?.trim();
@@ -227,10 +234,6 @@ export const handlers = [
     const skip = Number(url.searchParams.get('skip') ?? 0);
     const limit = Number(url.searchParams.get('limit') ?? 100);
     return HttpResponse.json(fixtures.sessions.slice(skip, skip + limit));
-  }),
-
-  http.get('/api/v1/games/resolve', () => {
-    return HttpResponse.json({ game_id: 1, name: 'Wiedźmin 3' });
   }),
 
   http.put('/api/v1/games/:id/cover', () => {

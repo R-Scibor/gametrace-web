@@ -42,6 +42,7 @@ export function SessionFormPage() {
   const sessionId = Number(id);
 
   const [gameId, setGameId] = useState<number | ''>('');
+  const [gameName, setGameName] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [voiceNote, setVoiceNote] = useState<string | null>(null);
@@ -73,6 +74,8 @@ export function SessionFormPage() {
       const qStart = searchParams.get('startTime');
       const qEnd = searchParams.get('endTime');
       if (qGameId) setGameId(Number(qGameId));
+      const qGameName = searchParams.get('gameName');
+      if (qGameName) setGameName(qGameName);
       const transcript = consumeVoiceTranscriptPrefill();
       if (transcript) setVoiceNote(transcript);
       if (qStart) {
@@ -147,6 +150,7 @@ export function SessionFormPage() {
             onChange={(v) => { setGameId(v); clearConflict(); }}
             disabled={isEditing || pending}
             aria-label={t('fields.game')}
+            initialQuery={gameName || undefined}
           />
         </div>
 

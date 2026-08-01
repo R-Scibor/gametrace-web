@@ -49,6 +49,7 @@ export function GameSelect({
     if (seeded.current || !initialQuery) return;
     seeded.current = true;
     setQuery(initialQuery);
+    setOpen(true);
   }, [initialQuery, setQuery]);
 
   useEffect(() => {
