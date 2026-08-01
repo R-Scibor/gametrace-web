@@ -71,3 +71,80 @@ describe('useGameLadder browse rung', () => {
     expect(result.current.query).toBe('');
   });
 });
+
+describe('useGameLadder online rung', () => {
+  it('starts in browse mode and never matches on typing', async () => {
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('kingdom hearts'));
+    await waitFor(() => expect(result.current.isSuggesting).toBe(false));
+
+    expect(result.current.mode).toBe('browse');
+    expect(result.current.candidates).toEqual([]);
+  });
+
+  it('searchOnline enters online mode with candidates', async () => {
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('kingdom hearts'));
+    act(() => result.current.searchOnline());
+
+    await waitFor(() => expect(result.current.mode).toBe('online'));
+    expect(result.current.candidates[0].igdb_id).toBe(11142);
+  });
+
+  it('treats an empty match result as online, not error', async () => {
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('no-online-results'));
+    act(() => result.current.searchOnline());
+
+    await waitFor(() => expect(result.current.mode).toBe('online'));
+    expect(result.current.candidates).toEqual([]);
+    expect(result.current.error).toBeNull();
+  });
+
+  it('enters error mode on a match 503', async () => {
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('igdb-down'));
+    act(() => result.current.searchOnline());
+
+    await waitFor(() => expect(result.current.mode).toBe('error'));
+    expect(result.current.error).toEqual({
+      scope: 'match',
+      key: 'select.igdbUnavailable',
+    });
+  });
+
+  it('returns to browse and clears candidates when the query changes', async () => {
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('kingdom hearts'));
+    act(() => result.current.searchOnline());
+    await waitFor(() => expect(result.current.mode).toBe('online'));
+
+    act(() => result.current.setQuery('kingdom hearts 2'));
+
+    expect(result.current.mode).toBe('browse');
+    expect(result.current.candidates).toEqual([]);
+  });
+
+  it('does not leave online mode when only surrounding whitespace changes', async () => {
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('kingdom hearts'));
+    act(() => result.current.searchOnline());
+    await waitFor(() => expect(result.current.mode).toBe('online'));
+
+    act(() => result.current.setQuery('kingdom hearts '));
+
+    expect(result.current.mode).toBe('online');
+  });
+});

@@ -1,12 +1,21 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { suggestGames } from '../api/games';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { matchGames, suggestGames } from '../api/games';
 import { qk } from '../lib/queryKeys';
 import { useGamesPicker } from './useGames';
-import type { Game, GameSuggestion } from '../types/api';
+import type { Game, GameSuggestion, IGDBCandidate } from '../types/api';
 
 const MAX_LOCAL_RESULTS = 50;
 const SUGGEST_DEBOUNCE_MS = 250;
+
+export type LadderMode = 'browse' | 'searching' | 'online' | 'error';
+
+export interface LadderError {
+  /** 'match' drives error mode; 'create' renders inline while mode stays 'online'. */
+  scope: 'match' | 'create';
+  /** i18n key in the `library` namespace, resolved by the caller. */
+  key: string;
+}
 
 export interface GameLadder {
   query: string;
@@ -16,6 +25,10 @@ export interface GameLadder {
   isPickerLoading: boolean;
   isSuggesting: boolean;
   reset: () => void;
+  mode: LadderMode;
+  candidates: IGDBCandidate[];
+  error: LadderError | null;
+  searchOnline: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- _onResolved wired in Task 4
@@ -67,13 +80,55 @@ export function useGameLadder(_onResolved: (gameId: number) => void): GameLadder
     };
   }, [suggest.data, debounced, localMatches, pickerGames]);
 
-  const setQuery = useCallback((next: string) => {
-    setQueryState(next);
-  }, []);
+  const [mode, setMode] = useState<LadderMode>('browse');
+  const [candidates, setCandidates] = useState<IGDBCandidate[]>([]);
+  const [error, setError] = useState<LadderError | null>(null);
+
+  const matchMut = useMutation({
+    mutationFn: (q: string) => matchGames(q),
+    onMutate: () => {
+      setMode('searching');
+      setCandidates([]);
+      setError(null);
+    },
+    onSuccess: (list) => {
+      // An empty list is a legitimate outcome, not an error: it is precisely the
+      // case the unrecognized-create rung exists for.
+      setCandidates(list);
+      setMode('online');
+    },
+    onError: () => {
+      setCandidates([]);
+      setError({ scope: 'match', key: 'select.igdbUnavailable' });
+      setMode('error');
+    },
+  });
+
+  const searchOnline = useCallback(() => {
+    if (!trimmed) return;
+    matchMut.mutate(trimmed);
+  }, [trimmed, matchMut]);
+
+  const setQuery = useCallback(
+    (next: string) => {
+      // Only a change to the TRIMMED string invalidates an online search, so typing
+      // a trailing space does not throw away candidates the user just paid for.
+      if (next.trim() !== trimmed) {
+        setMode('browse');
+        setCandidates([]);
+        setError(null);
+      }
+      setQueryState(next);
+    },
+    [trimmed],
+  );
 
   const reset = useCallback(() => {
     setQueryState('');
     setDebounced('');
+    setCandidates([]);
+    setMode('browse');
+    setError(null);
   }, []);
 
   return {
@@ -84,5 +139,9 @@ export function useGameLadder(_onResolved: (gameId: number) => void): GameLadder
     isPickerLoading,
     isSuggesting: debounced.length > 0 && suggest.isFetching,
     reset,
+    mode,
+    candidates,
+    error,
+    searchOnline,
   };
 }
