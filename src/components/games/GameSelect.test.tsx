@@ -229,3 +229,52 @@ test('never calls POST /games/match while typing', async () => {
     server.events.removeListener('request:start', onRequestStart);
   }
 });
+
+test('arrow keys skip group headers and Enter selects an option', async () => {
+  const user = userEvent.setup();
+  const { onChange } = renderSelect();
+
+  const input = await screen.findByRole('combobox');
+  await user.type(input, 'Cyber');
+  await screen.findByText('Cyberpunk 2077');
+
+  await user.keyboard('{ArrowDown}{Enter}');
+
+  expect(onChange).toHaveBeenCalledWith(2);
+});
+
+test('arrow keys reach the online-search footer action', async () => {
+  const user = userEvent.setup();
+  renderSelect();
+
+  const input = await screen.findByRole('combobox');
+  await user.type(input, 'Cyber');
+  await screen.findByText('Cyberpunk 2077');
+
+  // One option, then the footer action.
+  await user.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+
+  expect(
+    await screen.findByText('Kingdom Hearts HD 1.5 + 2.5 ReMIX'),
+  ).toBeInTheDocument();
+});
+
+test('Escape closes the dropdown without clearing candidates', async () => {
+  const user = userEvent.setup();
+  renderSelect();
+
+  const input = await screen.findByRole('combobox');
+  await user.type(input, 'kingdom hearts');
+  await user.click(await screen.findByRole('button', { name: 'Szukaj online' }));
+  await screen.findByText('Kingdom Hearts HD 1.5 + 2.5 ReMIX');
+
+  await user.keyboard('{Escape}');
+  expect(
+    screen.queryByText('Kingdom Hearts HD 1.5 + 2.5 ReMIX'),
+  ).not.toBeInTheDocument();
+
+  await user.click(input);
+  expect(
+    await screen.findByText('Kingdom Hearts HD 1.5 + 2.5 ReMIX'),
+  ).toBeInTheDocument();
+});

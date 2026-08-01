@@ -95,6 +95,18 @@
   overflow-y: auto;
 }
 
+.group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.groupList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .groupHeader {
   padding: 8px 12px 4px;
   color: var(--text3);
