@@ -153,6 +153,57 @@ export const handlers = [
     return HttpResponse.json({ total: items.length, items: items.slice(skip, skip + limit) });
   }),
 
+  // MUST stay above the '/api/v1/games/:id' handler below, which would otherwise
+  // capture this path with params.id === 'suggest' and 404 it.
+  http.get('/api/v1/games/suggest', ({ request }) => {
+    const url = new URL(request.url);
+    const q = url.searchParams.get('q')?.trim();
+    if (!q) return HttpResponse.json({ detail: 'q required' }, { status: 422 });
+    // Substring-match the fixture so unrelated queries return nothing. Tests depend
+    // on this: a handler that returns Hades for every query makes the number of
+    // keyboard-reachable items unpredictable.
+    const items = fixtures.gameSuggest.items.filter((i) =>
+      i.primary_name.toLowerCase().includes(q.toLowerCase()),
+    );
+    return HttpResponse.json({ total: items.length, items });
+  }),
+
+  http.post('/api/v1/games/match', async ({ request }) => {
+    const body = (await request.json()) as { query?: string };
+    const query = body.query?.trim();
+    if (!query) return HttpResponse.json({ detail: 'query required' }, { status: 422 });
+    if (query === 'igdb-down') {
+      return HttpResponse.json({ detail: 'IGDB unavailable' }, { status: 503 });
+    }
+    if (query === 'no-online-results') return HttpResponse.json([]);
+    return HttpResponse.json(fixtures.igdbCandidates);
+  }),
+
+  http.post('/api/v1/games', async ({ request }) => {
+    const body = (await request.json()) as {
+      igdb_id?: number; name?: string; unrecognized?: boolean;
+    };
+    if (body.igdb_id != null && body.name != null) {
+      return HttpResponse.json({ detail: 'exactly one mode' }, { status: 422 });
+    }
+    if (body.igdb_id === 99999) {
+      return HttpResponse.json({ detail: 'IGDB id not found' }, { status: 404 });
+    }
+    if (body.name === 'create-fails') {
+      return HttpResponse.json({ detail: 'IGDB unavailable' }, { status: 503 });
+    }
+    if (body.igdb_id != null) {
+      return HttpResponse.json(fixtures.createdGameLinked, { status: 201 });
+    }
+    if (body.name) {
+      return HttpResponse.json(
+        { ...fixtures.createdGameUnrecognized, primary_name: body.name },
+        { status: 201 },
+      );
+    }
+    return HttpResponse.json({ detail: 'exactly one mode' }, { status: 422 });
+  }),
+
   http.get('/api/v1/games/:id', ({ params }) => {
     const id = Number(params.id);
     const all = [...fixtures.gamesList.items, ...fixtures.gamesReviewList.items, ...fixtures.gamesOtherList.items];

@@ -1,11 +1,15 @@
 import client from './client';
 import type {
+  CreatedGame,
+  CreateGamePayload,
   EnrichmentStatus,
   Game,
   GameListResponse,
   GameResolveResponse,
   GameSort,
   GameStats,
+  GameSuggestResponse,
+  IGDBCandidate,
   LibraryFilter,
   Session,
 } from '../types/api';
@@ -56,5 +60,27 @@ export const adminMergeGame = async (gameId: number, targetId: number): Promise<
 
 export const resolveGame = async (name: string): Promise<GameResolveResponse | null> => {
   const response = await client.get<GameResolveResponse | null>('/games/resolve', { params: { name } });
+  return response.data;
+};
+
+export const suggestGames = async (
+  q: string,
+  skip = 0,
+  limit = 20,
+): Promise<GameSuggestResponse> => {
+  const response = await client.get<GameSuggestResponse>('/games/suggest', {
+    params: { q, skip, limit },
+  });
+  return response.data;
+};
+
+/** POST /games/match returns a BARE LIST, not a {total, items} envelope. */
+export const matchGames = async (query: string): Promise<IGDBCandidate[]> => {
+  const response = await client.post<IGDBCandidate[]>('/games/match', { query });
+  return response.data;
+};
+
+export const createGame = async (payload: CreateGamePayload): Promise<CreatedGame> => {
+  const response = await client.post<CreatedGame>('/games', payload);
   return response.data;
 };

@@ -64,6 +64,40 @@ export interface IGDBCandidate {
   score: number;
 }
 
+export interface GameSuggestion {
+  game_id: number;
+  primary_name: string;
+  cover_image_url: string | null;
+  enrichment_status: EnrichmentStatus;
+  score: number;
+}
+
+export interface GameSuggestResponse {
+  total: number;
+  items: GameSuggestion[];
+}
+
+/**
+ * POST /games response. Deliberately NOT the web `Game` type: `Game` also carries
+ * `total_seconds` and `last_played`, which this endpoint does not return.
+ * `is_ignored` is always false and `is_accepted` always null here, even when the
+ * caller already owns the game. Never seed a games query cache from this.
+ */
+export interface CreatedGame {
+  id: number;
+  primary_name: string;
+  cover_image_url: string | null;
+  cover_source: CoverSource;
+  enrichment_status: EnrichmentStatus;
+  is_ignored: boolean;
+  is_accepted: boolean | null;
+}
+
+/** Exactly one mode. Sending both or neither is a 422 from the backend. */
+export type CreateGamePayload =
+  | { igdb_id: number; query?: string }
+  | { name: string; unrecognized: true };
+
 export interface AdminAliasResponse {
   game_id: number;
   discord_process_name: string;
