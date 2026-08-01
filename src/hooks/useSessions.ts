@@ -18,6 +18,10 @@ function invalidateAfterSessionChange(queryClient: ReturnType<typeof useQueryCli
   queryClient.invalidateQueries({ queryKey: qk.dashboard });
   queryClient.invalidateQueries({ queryKey: qk.sessions() });
   queryClient.invalidateQueries({ queryKey: qk.statsPrefix });
+  // Library membership is session-derived, so a session change can add a game to
+  // the library or shift its playtime totals. Without this, a game created via the
+  // picker ladder stays invisible for the picker query's 60s staleTime.
+  queryClient.invalidateQueries({ queryKey: qk.gamesPrefix });
   if (gameId != null) {
     queryClient.invalidateQueries({ queryKey: qk.gameSessions(gameId) });
   }
