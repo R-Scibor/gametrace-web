@@ -202,6 +202,7 @@
   color: var(--orange);
 }
 .empty {
+  margin: 0;
   padding: 12px;
   color: var(--text3);
   font-size: 13px;

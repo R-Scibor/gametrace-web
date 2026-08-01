@@ -26,13 +26,19 @@ export function GameSelect({
   const ladder = useGameLadder(onChange);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const [prevActiveResetKey, setPrevActiveResetKey] = useState(
-    `${ladder.mode}|${ladder.query}`,
-  );
+  // Tracks the highlighted activatable by KEY, not by array index. `activatables`
+  // is rebuilt on every mode/query change AND whenever the debounced catalog
+  // suggest resolves mid-query (same mode, same query, array grows/shrinks in the
+  // middle). An index survives that rebuild pointing at whatever now occupies that
+  // slot — including a footer action, which could fire an unintended POST
+  // /games/match. A key is self-healing: if the highlighted item is still present
+  // (anywhere in the rebuilt array) the highlight follows it; if it's gone, the
+  // lookup below naturally yields "nothing highlighted" instead of a wrong item.
+  const [activeKey, setActiveKey] = useState<string | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = id ? `${id}-listbox` : undefined;
+  const optionDomId = (key?: string | null) => (key && id ? `${id}-opt-${key}` : undefined);
 
   const { setQuery, reset } = ladder;
 
@@ -60,6 +66,7 @@ export function GameSelect({
   const closeAfterSelect = () => {
     setOpen(false);
     setEditing(false);
+    setActiveKey(null);
   };
 
   const trimmed = ladder.query.trim();
@@ -133,14 +140,15 @@ export function GameSelect({
     return out;
   }, [ladder, isBrowse, trimmed]);
 
-  // Reset the active index whenever the array it indexes into is rebuilt. Adjusted
-  // during render (React's documented pattern for this) rather than in a useEffect,
-  // since setState-in-effect triggers a lint error for the extra cascading render.
-  const activeResetKey = `${ladder.mode}|${ladder.query}`;
-  if (activeResetKey !== prevActiveResetKey) {
-    setPrevActiveResetKey(activeResetKey);
-    setActiveIndex(-1);
-  }
+  // Ids of the footer actions currently gated in for this mode, in render order.
+  // Kept in lockstep with the `kind: 'action'` entries above rather than
+  // re-deriving the gating conditions, so aria-owns can never reference an id
+  // that isn't actually in the DOM.
+  const footerOwnsIds = activatables
+    .filter((a) => a.kind === 'action')
+    .map((a) => optionDomId(a.key))
+    .filter((v): v is string => Boolean(v))
+    .join(' ');
 
   if (ladder.isPickerLoading) return <Skeleton height={46} />;
 
@@ -162,6 +170,7 @@ export function GameSelect({
             setEditing(true);
             reset();
             setOpen(true);
+            setActiveKey(null);
             requestAnimationFrame(() => inputRef.current?.focus());
           }}
           disabled={disabled}
@@ -176,15 +185,22 @@ export function GameSelect({
   }
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const currentIndex = activatables.findIndex((a) => a.key === activeKey);
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setOpen(true);
-      setActiveIndex((i) => Math.min(i + 1, activatables.length - 1));
+      const next = Math.min(currentIndex + 1, activatables.length - 1);
+      setActiveKey(activatables[next]?.key ?? null);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setActiveIndex((i) => Math.max(i - 1, 0));
+      setOpen(true);
+      // Floors at -1 (nothing highlighted), not 0 — otherwise once the user
+      // reaches the first item there is no way back to "nothing active", and a
+      // stray Enter would select a game they thought they'd backed away from.
+      const next = Math.max(currentIndex - 1, -1);
+      setActiveKey(next >= 0 ? (activatables[next]?.key ?? null) : null);
     } else if (e.key === 'Enter') {
-      const item = activatables[activeIndex];
+      const item = activatables.find((a) => a.key === activeKey);
       if (open && item) {
         e.preventDefault();
         item.run();
@@ -194,11 +210,9 @@ export function GameSelect({
       // discard IGDB candidates the user just paid a round trip for.
       setOpen(false);
       setEditing(false);
+      setActiveKey(null);
     }
   };
-
-  const optionDomId = (key?: string) => (key && id ? `${id}-opt-${key}` : undefined);
-  const activeKey = activeIndex >= 0 ? activatables[activeIndex]?.key : undefined;
 
   return (
     <div className={styles.root} ref={rootRef}>
@@ -228,7 +242,12 @@ export function GameSelect({
 
       {open && (
         <div className={styles.dropdown}>
-          <ul id={listId} role="listbox" className={styles.list}>
+          <ul
+            id={listId}
+            role="listbox"
+            className={styles.list}
+            aria-owns={footerOwnsIds || undefined}
+          >
             {isBrowse && ladder.libraryMatches.length > 0 && (
               <li role="group" aria-label={t('select.groupLibrary')} className={styles.group}>
                 <div className={styles.groupHeader} aria-hidden="true">
@@ -346,6 +365,8 @@ export function GameSelect({
               <button
                 type="button"
                 id={optionDomId('search-online')}
+                role="option"
+                aria-selected={activeKey === 'search-online'}
                 className={`${styles.footerAction} ${
                   activeKey === 'search-online' ? styles.optionActive : ''
                 }`}
@@ -361,6 +382,8 @@ export function GameSelect({
               <button
                 type="button"
                 id={optionDomId('retry')}
+                role="option"
+                aria-selected={activeKey === 'retry'}
                 className={`${styles.footerAction} ${
                   activeKey === 'retry' ? styles.optionActive : ''
                 }`}
@@ -375,6 +398,8 @@ export function GameSelect({
               <button
                 type="button"
                 id={optionDomId('add-unrecognized')}
+                role="option"
+                aria-selected={activeKey === 'add-unrecognized'}
                 className={`${styles.footerAction} ${
                   activeKey === 'add-unrecognized' ? styles.optionActive : ''
                 }`}
