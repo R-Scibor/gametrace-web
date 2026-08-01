@@ -46,9 +46,17 @@ function findGameInCache(queryClient: QueryClient, gameId: number): Game | undef
   const fromPicker = pickerList?.find((g) => g.id === gameId);
   if (fromPicker) return fromPicker;
 
-  const pages = queryClient.getQueriesData<InfiniteData<GameListResponse>>({ queryKey: qk.gamesPrefix });
-  for (const [, data] of pages) {
-    const found = data?.pages.flatMap((page) => page.items).find((g) => g.id === gameId);
+  // getQueriesData with the `games` prefix returns EVERY cache entry under it —
+  // the picker's flat Game[] (handled above), useGameSearch's GameListResponse,
+  // gameSuggest's GameSuggestResponse, AND useGamesPaginated's
+  // InfiniteData<GameListResponse>. Only the last shape has `.pages`; casting
+  // every entry to InfiniteData<GameListResponse> (the old code) lies about that
+  // and throws on `.flatMap` for any of the other shapes. Narrow instead of casting.
+  const entries = queryClient.getQueriesData({ queryKey: qk.gamesPrefix });
+  for (const [, data] of entries) {
+    const infinite = data as InfiniteData<GameListResponse> | undefined;
+    if (!infinite || !Array.isArray(infinite.pages)) continue;
+    const found = infinite.pages.flatMap((page) => page.items).find((g) => g.id === gameId);
     if (found) return found;
   }
   return undefined;
