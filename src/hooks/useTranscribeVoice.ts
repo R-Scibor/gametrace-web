@@ -11,6 +11,7 @@ export function useTranscribeVoice() {
     mutationFn: transcribeAudio,
     onSuccess: async (data) => {
       let gameId = '';
+      let gameName = '';
       if (data.game) {
         try {
           const resolved = await resolveGame(data.game);
@@ -18,10 +19,16 @@ export function useTranscribeVoice() {
         } catch {
           // ignore resolve failure
         }
+        // On a miss (or a failed resolve) carry the transcribed title forward so
+        // the picker can escalate instead of dead-ending on an empty field.
+        if (!gameId) gameName = data.game;
       }
 
       const params = new URLSearchParams();
       if (gameId) params.append('gameId', gameId);
+      // URLSearchParams.toString() percent-encodes; do NOT encodeURIComponent here
+      // or spaces and diacritics get double-encoded.
+      if (gameName) params.append('gameName', gameName);
 
       if (data.date && data.start_time) {
         params.append('startTime', `${data.date}T${data.start_time}`);

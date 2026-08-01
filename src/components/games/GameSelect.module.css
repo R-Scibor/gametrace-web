@@ -81,14 +81,111 @@
   z-index: 20;
   margin: 0;
   padding: 4px;
-  list-style: none;
-  max-height: 280px;
-  overflow-y: auto;
   background-color: var(--bg2);
   border: 1px solid var(--border-bright);
   border-radius: 4px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
 }
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.groupList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.groupHeader {
+  padding: 8px 12px 4px;
+  color: var(--text3);
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.candidate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 2px;
+  color: var(--text2);
+  font-family: var(--body);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.candidateCover {
+  flex-shrink: 0;
+  width: 28px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.candidateName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.candidateYear {
+  color: var(--text3);
+  font-size: 12px;
+}
+
+.error {
+  margin: 0;
+  padding: 8px 12px;
+  color: var(--warn);
+  font-family: var(--body);
+  font-size: 13px;
+}
+
+.footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 8px 4px 4px;
+  border-top: 1px solid var(--border);
+}
+
+.footerAction {
+  padding: 6px 10px;
+  background: none;
+  border: 1px solid var(--border-bright);
+  border-radius: 2px;
+  color: var(--orange);
+  font-family: var(--body);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.footerAction:hover:not(:disabled) {
+  border-color: var(--orange);
+  background-color: var(--orange-glow);
+}
+
+.footerAction:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .option {
   padding: 10px 12px;
   border-radius: 2px;
@@ -105,6 +202,7 @@
   color: var(--orange);
 }
 .empty {
+  margin: 0;
   padding: 12px;
   color: var(--text3);
   font-size: 13px;

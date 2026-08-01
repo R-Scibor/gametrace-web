@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 import { SessionFormPage } from './SessionFormPage';
-import { renderAppRoutes, resetStores } from '../../test/utils';
+import { renderAppRoutes, renderWithProviders, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
 import { fixtures } from '../../test/fixtures';
 import { setVoiceTranscriptPrefill } from '../lib/voicePrefill';
@@ -118,4 +118,14 @@ test('SessionFormPage discard sends DELETE not PATCH', async () => {
     expect(deleteCalled).toBe(true);
     expect(patchCalled).toBe(false);
   });
+});
+
+test('seeds the game picker from a voice gameName param', async () => {
+  renderWithProviders(<SessionFormPage />, {
+    route: '/sessions/new?gameName=hades',
+    authenticated: true,
+  });
+
+  expect(await screen.findByRole('combobox')).toHaveValue('hades');
+  expect(await screen.findByText('Hades')).toBeInTheDocument();
 });

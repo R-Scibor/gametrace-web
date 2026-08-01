@@ -354,4 +354,46 @@ export const fixtures = {
       score: 0.98,
     },
   ],
+  gameSuggest: {
+    total: 1,
+    items: [
+      {
+        game_id: 901,
+        primary_name: 'Hades',
+        cover_image_url: null,
+        enrichment_status: 'ENRICHED',
+        score: 0.97,
+      },
+    ],
+  },
+  gameSuggestAlias: {
+    total: 1,
+    items: [
+      {
+        game_id: 1,
+        primary_name: 'Wiedźmin 3',
+        cover_image_url: null,
+        enrichment_status: 'ENRICHED',
+        score: 0.88,
+      },
+    ],
+  },
+  createdGameLinked: {
+    id: 902,
+    primary_name: 'Kingdom Hearts HD 1.5 + 2.5 ReMIX',
+    cover_image_url: 'https://images.igdb.com/co1wyy.jpg',
+    cover_source: 'EXTERNAL',
+    enrichment_status: 'ENRICHED',
+    is_ignored: false,
+    is_accepted: null,
+  },
+  createdGameUnrecognized: {
+    id: 903,
+    primary_name: 'My Tiny Jam Game',
+    cover_image_url: null,
+    cover_source: 'EXTERNAL',
+    enrichment_status: 'NEEDS_REVIEW',
+    is_ignored: false,
+    is_accepted: null,
+  },
 };

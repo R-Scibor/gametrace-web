@@ -90,3 +90,21 @@ test('useRestoreSession invalidates trash and session-related caches on success'
   expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ['stats'] });
   expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: qk.gameSessions(1) });
 });
+
+test('invalidates the games lists after creating a session', async () => {
+  const queryClient = createTestQueryClient();
+  const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
+
+  const { result } = renderHookWithProviders(() => useCreateSession(), queryClient);
+
+  await act(async () => {
+    result.current.mutate({
+      game_id: 1,
+      start_time: '2026-08-01T10:00:00Z',
+      end_time: '2026-08-01T11:00:00Z',
+    });
+  });
+
+  await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: qk.gamesPrefix });
+});
