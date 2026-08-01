@@ -49,6 +49,21 @@ describe('useGameLadder browse rung', () => {
     expect(result.current.catalogMatches).toEqual([]);
   });
 
+  it('promotes an owned game the substring filter missed into libraryMatches', async () => {
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('witcher'));
+
+    // "witcher" substring-matches nothing in the library, so this game can only
+    // arrive via the promote branch.
+    await waitFor(() =>
+      expect(result.current.libraryMatches.map((g) => g.id)).toContain(1),
+    );
+    // And it must NOT be offered as a catalog suggestion — the user owns it.
+    expect(result.current.catalogMatches).toEqual([]);
+  });
+
   it('reset clears the query', async () => {
     const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
     act(() => result.current.setQuery('hades'));

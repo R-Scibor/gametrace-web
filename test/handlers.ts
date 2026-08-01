@@ -159,6 +159,12 @@ export const handlers = [
     const url = new URL(request.url);
     const q = url.searchParams.get('q')?.trim();
     if (!q) return HttpResponse.json({ detail: 'q required' }, { status: 422 });
+    // Alias hit: the catalog resolves "witcher" to a game the user already owns
+    // (game_id 1, "Wiedźmin 3"). The client's plain substring filter cannot find it,
+    // so this is the case the promote-into-library branch exists for.
+    if (q.toLowerCase().includes('witcher')) {
+      return HttpResponse.json(fixtures.gameSuggestAlias);
+    }
     // Substring-match the fixture so unrelated queries return nothing. Tests depend
     // on this: a handler that returns Hades for every query makes the number of
     // keyboard-reachable items unpredictable.
