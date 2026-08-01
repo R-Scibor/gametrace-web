@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { matchGames, suggestGames } from '../api/games';
+import { createGame, matchGames, suggestGames } from '../api/games';
 import { qk } from '../lib/queryKeys';
 import { useGamesPicker } from './useGames';
-import type { Game, GameSuggestion, IGDBCandidate } from '../types/api';
+import type {
+  CreateGamePayload, Game, GameSuggestion, IGDBCandidate,
+} from '../types/api';
 
 const MAX_LOCAL_RESULTS = 50;
 const SUGGEST_DEBOUNCE_MS = 250;
@@ -17,6 +19,18 @@ export interface LadderError {
   key: string;
 }
 
+export interface SelectedGameMeta {
+  id: number;
+  primary_name: string;
+  cover_image_url: string | null;
+}
+
+export type LadderPick =
+  | { kind: 'library'; game: Game }
+  | { kind: 'catalog'; suggestion: GameSuggestion }
+  | { kind: 'candidate'; candidate: IGDBCandidate }
+  | { kind: 'unrecognized' };
+
 export interface GameLadder {
   query: string;
   setQuery: (next: string) => void;
@@ -29,10 +43,13 @@ export interface GameLadder {
   candidates: IGDBCandidate[];
   error: LadderError | null;
   searchOnline: () => void;
+  selectedMeta: SelectedGameMeta | null;
+  isCreating: boolean;
+  /** Resolves to the selected game_id, or null if a create failed. */
+  select: (pick: LadderPick) => Promise<number | null>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- _onResolved wired in Task 4
-export function useGameLadder(_onResolved: (gameId: number) => void): GameLadder {
+export function useGameLadder(onResolved: (gameId: number) => void): GameLadder {
   const { data: pickerGames, isLoading: isPickerLoading } = useGamesPicker();
   const [query, setQueryState] = useState('');
   const [debounced, setDebounced] = useState('');
@@ -131,6 +148,59 @@ export function useGameLadder(_onResolved: (gameId: number) => void): GameLadder
     setError(null);
   }, []);
 
+  const [selectedMeta, setSelectedMeta] = useState<SelectedGameMeta | null>(null);
+
+  const createMut = useMutation({ mutationFn: createGame });
+
+  const select = useCallback(
+    async (pick: LadderPick): Promise<number | null> => {
+      setError(null);
+
+      let meta: SelectedGameMeta;
+      if (pick.kind === 'library') {
+        meta = {
+          id: pick.game.id,
+          primary_name: pick.game.primary_name,
+          cover_image_url: pick.game.cover_image_url,
+        };
+      } else if (pick.kind === 'catalog') {
+        meta = {
+          id: pick.suggestion.game_id,
+          primary_name: pick.suggestion.primary_name,
+          cover_image_url: pick.suggestion.cover_image_url,
+        };
+      } else {
+        if (!trimmed) return null;
+        const payload: CreateGamePayload =
+          pick.kind === 'candidate'
+            ? { igdb_id: pick.candidate.igdb_id, query: trimmed }
+            : { name: trimmed, unrecognized: true };
+        try {
+          const created = await createMut.mutateAsync(payload);
+          // id and name only. is_ignored/is_accepted on this response are always
+          // false/null regardless of the user's real prefs — never propagate them.
+          meta = {
+            id: created.id,
+            primary_name: created.primary_name,
+            cover_image_url: created.cover_image_url,
+          };
+        } catch {
+          setError({ scope: 'create', key: 'select.createFailed' });
+          return null;
+        }
+      }
+
+      setSelectedMeta(meta);
+      setQueryState('');
+      setDebounced('');
+      setCandidates([]);
+      setMode('browse');
+      onResolved(meta.id);
+      return meta.id;
+    },
+    [trimmed, createMut, onResolved],
+  );
+
   return {
     query,
     setQuery,
@@ -143,5 +213,8 @@ export function useGameLadder(_onResolved: (gameId: number) => void): GameLadder
     candidates,
     error,
     searchOnline,
+    selectedMeta,
+    isCreating: createMut.isPending,
+    select,
   };
 }

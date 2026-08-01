@@ -148,3 +148,93 @@ describe('useGameLadder online rung', () => {
     expect(result.current.mode).toBe('online');
   });
 });
+
+describe('useGameLadder selection', () => {
+  it('selects a library game and reports the id', async () => {
+    const onResolved = vi.fn();
+    const { result } = renderHook(() => useGameLadder(onResolved), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    const game = result.current.libraryMatches[0];
+    await act(async () => { await result.current.select({ kind: 'library', game }); });
+
+    expect(onResolved).toHaveBeenCalledWith(game.id);
+    expect(result.current.selectedMeta?.primary_name).toBe(game.primary_name);
+  });
+
+  it('records a catalog pick that is absent from the picker list', async () => {
+    const onResolved = vi.fn();
+    const { result } = renderHook(() => useGameLadder(onResolved), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('hades'));
+    await waitFor(() => expect(result.current.catalogMatches).toHaveLength(1));
+
+    const suggestion = result.current.catalogMatches[0];
+    await act(async () => {
+      await result.current.select({ kind: 'catalog', suggestion });
+    });
+
+    expect(onResolved).toHaveBeenCalledWith(901);
+    expect(result.current.selectedMeta).toEqual({
+      id: 901,
+      primary_name: 'Hades',
+      cover_image_url: null,
+    });
+  });
+
+  it('creates from an IGDB candidate and sends the original query as an alias', async () => {
+    const onResolved = vi.fn();
+    const { result } = renderHook(() => useGameLadder(onResolved), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('kingdom hearts'));
+    act(() => result.current.searchOnline());
+    await waitFor(() => expect(result.current.mode).toBe('online'));
+
+    const candidate = result.current.candidates[0];
+    await act(async () => {
+      await result.current.select({ kind: 'candidate', candidate });
+    });
+
+    expect(onResolved).toHaveBeenCalledWith(902);
+    expect(result.current.selectedMeta?.id).toBe(902);
+    expect(result.current.query).toBe('');
+    expect(result.current.mode).toBe('browse');
+  });
+
+  it('creates an unrecognized game from the trimmed query', async () => {
+    const onResolved = vi.fn();
+    const { result } = renderHook(() => useGameLadder(onResolved), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('  My Tiny Jam Game  '));
+    act(() => result.current.searchOnline());
+    await waitFor(() => expect(result.current.mode).toBe('online'));
+
+    await act(async () => { await result.current.select({ kind: 'unrecognized' }); });
+
+    expect(onResolved).toHaveBeenCalledWith(903);
+    expect(result.current.selectedMeta?.primary_name).toBe('My Tiny Jam Game');
+  });
+
+  it('reports a create failure inline and preserves the query', async () => {
+    const onResolved = vi.fn();
+    const { result } = renderHook(() => useGameLadder(onResolved), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    act(() => result.current.setQuery('create-fails'));
+    act(() => result.current.searchOnline());
+    await waitFor(() => expect(result.current.mode).toBe('online'));
+
+    await act(async () => { await result.current.select({ kind: 'unrecognized' }); });
+
+    expect(onResolved).not.toHaveBeenCalled();
+    expect(result.current.error).toEqual({
+      scope: 'create',
+      key: 'select.createFailed',
+    });
+    expect(result.current.query).toBe('create-fails');
+    expect(result.current.mode).toBe('online');
+  });
+});
