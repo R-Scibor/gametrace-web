@@ -119,7 +119,11 @@ export function GameSelect({
       }
     }
 
-    // Footer actions are activatable by the same index as options.
+    // Footer actions are activatable by key, same as options — see the activeKey
+    // comment above for why key (not index) is what survives a mid-query rebuild.
+    // Deliberately NOT gated on `mode === 'searching'` too: the button is disabled
+    // then, and making it keyboard-activatable would let Enter re-fire searchOnline()
+    // while a match request is already in flight.
     if (isBrowse && trimmed.length > 0) {
       out.push({ kind: 'action', key: 'search-online', run: () => ladder.searchOnline() });
     }
@@ -139,12 +143,34 @@ export function GameSelect({
     }
 
     return out;
-  }, [ladder, isBrowse, trimmed]);
+    // `ladder` is a fresh object literal every render (useGameLadder returns a new
+    // object each call), so listing it here would defeat the memo entirely. List
+    // only the specific fields this body actually reads.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isBrowse,
+    trimmed,
+    ladder.libraryMatches,
+    ladder.catalogMatches,
+    ladder.mode,
+    ladder.candidates,
+    ladder.select,
+    ladder.searchOnline,
+  ]);
 
   // Ids of the footer actions currently gated in for this mode, in render order.
   // Kept in lockstep with the `kind: 'action'` entries above rather than
   // re-deriving the gating conditions, so aria-owns can never reference an id
   // that isn't actually in the DOM.
+  // Mirrors the three gating conditions the footer's children render under —
+  // kept explicit rather than inferred so the footer never renders as a bare
+  // bordered strip (border-top + padding, no content) when none of them hold,
+  // e.g. an empty query in browse mode.
+  const hasFooterContent =
+    ((isBrowse || ladder.mode === 'searching') && trimmed.length > 0) ||
+    ladder.mode === 'error' ||
+    (ladder.mode === 'online' && trimmed.length > 0);
+
   const footerOwnsIds = activatables
     .filter((a) => a.kind === 'action')
     .map((a) => optionDomId(a.key))
@@ -235,6 +261,11 @@ export function GameSelect({
         onChange={(e) => {
           setQuery(e.target.value);
           setOpen(true);
+          // A highlight from before this keystroke may no longer resolve to a
+          // rendered element (dangling aria-activedescendant) or may point at a
+          // footer action like "Szukaj online" that would fire on the next Enter
+          // even though the user changed the query entirely. Typing always clears it.
+          setActiveKey(null);
         }}
         onFocus={() => setOpen(true)}
         onClick={() => setOpen(true)}
@@ -361,13 +392,19 @@ export function GameSelect({
             </p>
           )}
 
+          {hasFooterContent && (
           <div className={styles.footer}>
             {(isBrowse || ladder.mode === 'searching') && trimmed.length > 0 && (
               <button
                 type="button"
-                id={optionDomId('search-online')}
-                role="option"
-                aria-selected={activeKey === 'search-online'}
+                // Owned by the listbox (role="option", an id, aria-selected) only in
+                // browse mode, which is exactly when it's also in `activatables` /
+                // `footerOwnsIds`. While a search is in flight it's disabled and not
+                // keyboard-activatable, so it must not claim option semantics either
+                // — otherwise it's a role="option" belonging to no owning listbox.
+                id={isBrowse ? optionDomId('search-online') : undefined}
+                role={isBrowse ? 'option' : undefined}
+                aria-selected={isBrowse ? activeKey === 'search-online' : undefined}
                 className={`${styles.footerAction} ${
                   activeKey === 'search-online' ? styles.optionActive : ''
                 }`}
@@ -418,6 +455,7 @@ export function GameSelect({
               </button>
             )}
           </div>
+          )}
         </div>
       )}
     </div>

@@ -231,6 +231,88 @@ test('never calls POST /games/match while typing', async () => {
   }
 });
 
+test('typing past a highlighted option clears aria-activedescendant instead of leaving a dangling reference', async () => {
+  const user = userEvent.setup();
+  renderSelect();
+
+  const input = await screen.findByRole('combobox');
+  await user.type(input, 'Cyber');
+  await screen.findByText('Cyberpunk 2077');
+
+  await user.keyboard('{ArrowDown}');
+  expect(input).toHaveAttribute('aria-activedescendant', 'session-game-opt-lib-2');
+
+  // The highlighted option is about to fall out of the rebuilt activatables array
+  // entirely (no match for the new query). aria-activedescendant must not keep
+  // pointing at an id that is no longer in the DOM.
+  await user.type(input, 'punk zzz');
+  await screen.findByText('Brak wyników');
+
+  expect(input).not.toHaveAttribute('aria-activedescendant');
+});
+
+test('Enter after a full query change does not fire POST /games/match from a stale footer highlight', async () => {
+  const user = userEvent.setup();
+  const matchRequests: string[] = [];
+  const onRequestStart = ({ request }: { request: Request }) => {
+    if (request.method === 'POST' && request.url.includes('/api/v1/games/match')) {
+      matchRequests.push(request.url);
+    }
+  };
+  server.events.on('request:start', onRequestStart);
+
+  try {
+    renderSelect();
+
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'Cyber');
+    await screen.findByText('Cyberpunk 2077');
+
+    // Highlight "Szukaj online" — past the single library row.
+    await user.keyboard('{ArrowDown}{ArrowDown}');
+    expect(input).toHaveAttribute(
+      'aria-activedescendant',
+      'session-game-opt-search-online',
+    );
+
+    // Replace the ENTIRE query. The user changed their mind about what they're
+    // looking for; they did not ask to spend an IGDB round trip on "Cyber".
+    await user.keyboard('{Control>}a{/Control}');
+    await user.type(input, 'elden ring');
+    await waitFor(() => expect(input).not.toHaveAttribute('aria-activedescendant'));
+
+    await user.keyboard('{Enter}');
+
+    expect(matchRequests).toEqual([]);
+  } finally {
+    server.events.removeListener('request:start', onRequestStart);
+  }
+});
+
+test('ArrowUp floors at "nothing active" and still opens a closed dropdown', async () => {
+  const user = userEvent.setup();
+  renderSelect();
+
+  const input = await screen.findByRole('combobox');
+  await user.type(input, 'Cyber');
+  await screen.findByText('Cyberpunk 2077');
+
+  await user.keyboard('{ArrowDown}');
+  expect(input).toHaveAttribute('aria-activedescendant', 'session-game-opt-lib-2');
+
+  // One more ArrowUp than there are items must land on "nothing active", not
+  // clamp back to the first item — otherwise there is no way to back out of a
+  // highlight without an Escape (which would also discard IGDB candidates).
+  await user.keyboard('{ArrowUp}');
+  expect(input).not.toHaveAttribute('aria-activedescendant');
+
+  await user.keyboard('{Escape}');
+  expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+
+  await user.keyboard('{ArrowUp}');
+  expect(screen.getByRole('listbox')).toBeInTheDocument();
+});
+
 test('arrow keys skip group headers and Enter selects an option', async () => {
   const user = userEvent.setup();
   const { onChange } = renderSelect();
