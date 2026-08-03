@@ -103,7 +103,12 @@ export function LoginPage() {
           <span className={styles.footerDot} />
           <span>{t('connectionStable')}</span>
         </div>
-        <span>v{health?.version ?? '...'}</span>
+        <div className={styles.footerRight}>
+          <Link to="/privacy" className={styles.footerLink}>
+            {t('privacyLink')}
+          </Link>
+          <span>v{health?.version ?? '...'}</span>
+        </div>
       </footer>
     </div>
   );

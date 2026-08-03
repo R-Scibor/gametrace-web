@@ -1,0 +1,47 @@
+{
+  "documentTitle": "Polityka prywatności · GameTrace",
+  "eyebrow": "GAMETRACE · PROJEKT ROBOCZY",
+  "title": "Polityka prywatności",
+  "lastUpdated": "Ostatnia aktualizacja: 3 sierpnia 2026",
+  "stubBanner": "To jest skrócona wersja robocza. Pełna polityka zgodna z RODO (PL + EN) zostanie opublikowana wkrótce na tej stronie. Treść poniżej opisuje zamierzony zakres przetwarzania w sposób rzetelny, ale nie jest jeszcze pełnym zawiadomieniem prawnym.",
+  "backHome": "← Strona główna",
+  "languageLabel": "Język",
+  "sections": {
+    "about": {
+      "title": "Czym jest GameTrace",
+      "body": "GameTrace to dziennik sesji gier: bot Discord, aplikacja mobilna i panel w przeglądarce. Produkt jest projektowany przede wszystkim pod self-hosting; oficjalna chmura (np. ta instalacja pod gametrace.rscibor.dev) to wygodna opcja best-effort, bez SLA."
+    },
+    "controller": {
+      "title": "Administrator danych",
+      "body": "Na oficjalnym hoście GameTrace administratorem danych osobowych użytkowników tej instancji jest operator usługi (Rafał Ścibor — kontakt poniżej). Gdy łączysz klienta z własnym serwerem (self-host), administratorem danych na tej instancji jest zwykle operator Twojego serwera — my nie kontrolujemy praktyk prywatności cudzych instalacji."
+    },
+    "data": {
+      "title": "Jakie dane zamierzamy przetwarzać",
+      "intro": "Na oficjalnym hoście mogą być przetwarzane m.in.:",
+      "items": [
+        "Tożsamość Discord (m.in. identyfikator użytkownika, nazwa) powiązana z kontem GameTrace — logowanie kodem z bota / OAuth; nie przechowujemy hasła Discord.",
+        "Sesje gry i biblioteka (tytuły, czasy, notatki, preferencje, okładki przesłane przez użytkownika).",
+        "Ustawienia profilu (strefa czasowa, język, powiadomienia e-mail/push).",
+        "Tokeny urządzeń FCM (powiadomienia push w aplikacji mobilnej), gdy włączone.",
+        "Opcjonalnie nagrania głosowe wysłane do transkrypcji (np. w celu utworzenia sesji) — szczegóły podprocesorów i retencji w pełnej polityce."
+      ]
+    },
+    "noSale": {
+      "title": "Sprzedaż danych",
+      "body": "Nie sprzedajemy Twoich danych osobowych. Nie budujemy profili reklamowych z Twojej historii gier."
+    },
+    "deletion": {
+      "title": "Usuwanie konta",
+      "body": "Wkrótce: w ustawieniach aplikacji i panelu web będzie można zlecić usunięcie konta. Konto zostanie od razu wyłączone; dane osobowe mają być trwale usuwane z aktywnej bazy po okresie karencji 7 dni (możliwość zmiany zdania). Publiczna strona z instrukcją usuwania dla Google Play pojawi się osobno. Do tego czasu możesz napisać na adres kontaktowy poniżej."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": "Pytania o prywatność i prawa związane z danymi na oficjalnym hoście:",
+      "emailLabel": "E-mail"
+    },
+    "more": {
+      "title": "Co dalej",
+      "body": "Pełna polityka uzupełni m.in.: podstawy prawne, odbiorców i podprocesorów, transfery poza EOG, okresy retencji, zabezpieczenia oraz pełny katalog praw (dostęp, sprostowanie, usunięcie, ograniczenie, przenoszenie, sprzeciw, skarga do UODO)."
+    }
+  }
+}

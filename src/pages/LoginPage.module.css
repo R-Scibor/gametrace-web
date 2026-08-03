@@ -192,6 +192,30 @@
   align-items: center;
   gap: 8px;
 }
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.footerLink {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+.footerLink:hover,
+.footerLink:focus-visible {
+  color: var(--orange);
+}
+.footerLink:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
 .footerDot {
   width: 6px;
   height: 6px;

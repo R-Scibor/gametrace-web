@@ -29,6 +29,10 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   expect(screen.getByText(/Jedno konto wszędzie/i)).toBeInTheDocument();
   expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   expect(screen.getByText('GAMETRACE', { selector: 'footer span' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /polityka prywatności/i })).toHaveAttribute(
+    'href',
+    '/privacy',
+  );
 });
 
 test('LandingPage hides APK download when artifact is missing', async () => {

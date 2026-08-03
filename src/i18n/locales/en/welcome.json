@@ -153,5 +153,8 @@
       "downloadApk": "DOWNLOAD APK"
     },
     "footerLogin": "Already have an account → Log in"
+  },
+  "footer": {
+    "privacy": "Privacy policy"
   }
 }

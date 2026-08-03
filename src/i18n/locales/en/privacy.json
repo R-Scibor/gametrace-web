@@ -1,0 +1,47 @@
+{
+  "documentTitle": "Privacy policy · GameTrace",
+  "eyebrow": "GAMETRACE · DRAFT",
+  "title": "Privacy policy",
+  "lastUpdated": "Last updated: 3 August 2026",
+  "stubBanner": "This is a short working draft. A full GDPR-style notice (PL + EN) will be published here soon. The text below honestly summarises the intended scope of processing, but it is not yet a complete legal notice.",
+  "backHome": "← Home",
+  "languageLabel": "Language",
+  "sections": {
+    "about": {
+      "title": "What GameTrace is",
+      "body": "GameTrace is a game-session journal: a Discord bot, a mobile app, and a web dashboard. The product is designed primarily for self-hosting; the official cloud (for example this install at gametrace.rscibor.dev) is a convenience / best-effort option with no SLA."
+    },
+    "controller": {
+      "title": "Data controller",
+      "body": "On the official GameTrace host, the controller of personal data for users of that instance is the service operator (Rafał Ścibor — contact below). When you point a client at your own server (self-host), the controller for data on that instance is typically the operator of your server — we do not control other people’s privacy practices."
+    },
+    "data": {
+      "title": "What data we intend to process",
+      "intro": "On the official host we may process, among other things:",
+      "items": [
+        "Discord identity (e.g. user id, username) linked to a GameTrace account — login via bot link code / OAuth; we do not store Discord passwords.",
+        "Game sessions and library (titles, times, notes, preferences, user-uploaded covers).",
+        "Profile settings (timezone, language, email/push notification preferences).",
+        "FCM device tokens (mobile push) when enabled.",
+        "Optionally voice recordings sent for transcription (e.g. to create a session) — subprocessors and retention details will appear in the full policy."
+      ]
+    },
+    "noSale": {
+      "title": "Sale of data",
+      "body": "We do not sell your personal data. We do not build advertising profiles from your play history."
+    },
+    "deletion": {
+      "title": "Account deletion",
+      "body": "Coming soon: you will be able to request account deletion from app and web Settings. The account will be disabled immediately; personal data is planned to be permanently removed from the live database after a 7-day cooling-off period (time to change your mind). A public delete-account page for Google Play will ship separately. Until then, email the contact address below."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Privacy questions and data-rights requests for the official host:",
+      "emailLabel": "Email"
+    },
+    "more": {
+      "title": "What’s next",
+      "body": "The full policy will add, among other things: legal bases, recipients and subprocessors, transfers outside the EEA, retention periods, security measures, and the full catalogue of rights (access, rectification, erasure, restriction, portability, objection, complaint to a supervisory authority)."
+    }
+  }
+}

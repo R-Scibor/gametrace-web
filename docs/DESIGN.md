@@ -30,8 +30,8 @@ weekly trend, genres, themes, companies, release-years, trash/restore, game igno
 - No push notifications (FCM is mobile-only; the `/notifications/*` endpoints are out of scope).
 - No multi-tenant operator console. A thin **homelab admin panel** exists for `is_admin` users (catalog review, merge, global covers); regular users see one library per session.
 - No offline mode / PWA / service worker.
-- No i18n framework. UI is **Polish only** (matching mobile).
 - No SSR. Plain client-rendered SPA.
+- ~~No i18n~~ — **superseded**: UI uses `react-i18next` (PL default + EN). Product copy remains Polish-first; legal pages (e.g. `/privacy`) ship PL+EN.
 
 ## 3. Users & Auth
 
@@ -115,8 +115,10 @@ cache.
 
 | Route               | Page             | Contents |
 |---------------------|------------------|----------|
-| `/welcome`          | Landing          | Public onboarding — what GameTrace is, how to get started. |
-| `/login`            | Auth             | Link-code form (default); optional dev username mode. Redirects to `/` when already authed. |
+| `/welcome`          | Landing          | Public onboarding — what GameTrace is, how to get started. Footer links to privacy policy. |
+| `/download`         | Download hub     | Public APK download + install help (also `/download/`). |
+| `/login`            | Auth             | Link-code form (default); optional dev username mode. Redirects to `/` when already authed. Footer links to privacy policy. |
+| `/privacy`          | Privacy policy   | **Public** (no auth). PL/EN via `privacy` i18n namespace. Draft/stub legal notice for Play Console URL (`https://gametrace.rscibor.dev/privacy`); full GDPR copy is a follow-up. Language switcher on-page. Contact + planned 7-day account deletion note. |
 | `/`                 | Dashboard        | Active-session card (live timer, 30s poll) · today/7d/avg-session tiles · idle hero spotlight · pending-error banner · recent sessions (last 5, COMPLETED+ERROR). |
 | `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia / Inne**; server-side search; pagination; click → detail. |
 | `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · **local cover** (everyone) · **ignore toggle**. No admin controls here — merge and global cover live only in the admin catalog. |

@@ -684,6 +684,34 @@ button.secondaryLink {
   box-shadow: 0 0 8px var(--orange-glow);
 }
 
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.footerLink {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+
+.footerLink:hover,
+.footerLink:focus-visible {
+  color: var(--orange);
+}
+
+.footerLink:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 .footerMeta {
   font-family: var(--mono);
   font-size: 10px;

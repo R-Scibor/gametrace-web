@@ -16,6 +16,8 @@ React 19, TypeScript, Vite, React Router v7, TanStack Query, Zustand, axios, Rec
 |------|---------|
 | `/welcome` | Landing — what GameTrace is, onboarding, how to use |
 | `/login` | Sign in with 6-digit link code from Discord `/login` (dev username fallback when `VITE_DEV_LOGIN_SECRET` is set) |
+| `/download` | Android APK download hub (+ install help) |
+| `/privacy` | Privacy policy (public; PL/EN draft stub until full GDPR notice). Production: `https://gametrace.rscibor.dev/privacy` |
 
 Unauthenticated users hitting any protected route are redirected to `/welcome`.
 

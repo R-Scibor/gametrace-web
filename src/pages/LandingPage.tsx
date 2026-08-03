@@ -436,7 +436,19 @@ export function LandingPage() {
             <span className={styles.footerDot} aria-hidden />
             <span>GAMETRACE</span>
           </div>
-          <span className={styles.footerMeta}>v{health?.version ?? '…'}</span>
+          <div className={styles.footerRight}>
+            <a
+              href="/privacy"
+              className={styles.footerLink}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/privacy');
+              }}
+            >
+              {t('footer.privacy')}
+            </a>
+            <span className={styles.footerMeta}>v{health?.version ?? '…'}</span>
+          </div>
         </div>
       </footer>
 
