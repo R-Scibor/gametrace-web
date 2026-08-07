@@ -39,6 +39,19 @@
   color: var(--text2);
   line-height: 1.4;
 }
+.confirmField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+/* Normal case so the embedded username is not forced to ALL CAPS. */
+.confirmLabel {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text2);
+}
 .error {
   margin: 0;
   font-size: 13px;

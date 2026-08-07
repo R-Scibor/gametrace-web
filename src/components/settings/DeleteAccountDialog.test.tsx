@@ -36,6 +36,18 @@ describe('DeleteAccountDialog', () => {
     expect(confirm).toBeEnabled();
   });
 
+  it('shows the username in normal case, not ALL CAPS from the Input label style', () => {
+    renderWithProviders(<DeleteAccountDialog username="TestUser" onClose={onClose} />);
+    // Own <label> (not Input's): Input uppercases via CSS text-transform.
+    const label = screen.getByText('Wpisz TestUser, aby potwierdzić');
+    expect(label.tagName).toBe('LABEL');
+    expect(getComputedStyle(label).textTransform).not.toBe('uppercase');
+    expect(screen.getByLabelText('Wpisz TestUser, aby potwierdzić')).toHaveAttribute(
+      'id',
+      'delete-account-confirm',
+    );
+  });
+
   it('keeps confirm disabled for an empty username even after typing', async () => {
     const user = userEvent.setup();
     renderWithProviders(<DeleteAccountDialog username="" onClose={onClose} />);

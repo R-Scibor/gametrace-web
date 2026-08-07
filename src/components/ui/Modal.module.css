@@ -15,6 +15,11 @@
   padding: 24px;
   width: 100%;
   max-width: 420px;
+  /* Overlay padding is 24px each side — stay inside the viewport and scroll
+     tall bodies (e.g. account-deletion confirm) on short screens. */
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   gap: 16px;

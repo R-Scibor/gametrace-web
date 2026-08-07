@@ -70,6 +70,8 @@ export function DeleteAccountDialog({ username, onClose }: DeleteAccountDialogPr
     if (!schedule.isPending) onClose();
   };
 
+  // Own label (not Input's): Input uppercases its label via CSS, which would
+  // turn the username into ALL CAPS and mislead the type-to-confirm gate.
   const confirmLabel = t('dialog.confirmLabel', { username });
   const inventory = listOf(t('public.inventory', { returnObjects: true }));
   const consequences = listOf(
@@ -99,12 +101,17 @@ export function DeleteAccountDialog({ username, onClose }: DeleteAccountDialogPr
         {consequences.map((line) => <li key={line}>{line}</li>)}
       </ul>
 
-      <Input
-        label={confirmLabel}
-        value={typed}
-        autoComplete="off"
-        onChange={(e) => setTyped(e.target.value)}
-      />
+      <div className={styles.confirmField}>
+        <label htmlFor="delete-account-confirm" className={styles.confirmLabel}>
+          {confirmLabel}
+        </label>
+        <Input
+          id="delete-account-confirm"
+          value={typed}
+          autoComplete="off"
+          onChange={(e) => setTyped(e.target.value)}
+        />
+      </div>
 
       {schedule.isError && <p className={styles.error} role="alert">{t('dialog.error')}</p>}
 

@@ -11,6 +11,7 @@
 }
 .info {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -25,4 +26,17 @@
 }
 .control {
   flex-shrink: 0;
+}
+
+/* Sidebar still takes 64px under 1100px; long delete-row copy + control need
+   a vertical stack before the label column collapses. */
+@media (max-width: 700px) {
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .control {
+    align-self: flex-start;
+  }
 }
