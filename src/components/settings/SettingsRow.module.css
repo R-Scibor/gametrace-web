@@ -1,0 +1,28 @@
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.row:last-child {
+  border-bottom: none;
+}
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.label {
+  font-size: 14px;
+  color: var(--text);
+}
+.subtext {
+  font-size: 11px;
+  color: var(--text3);
+}
+.control {
+  flex-shrink: 0;
+}

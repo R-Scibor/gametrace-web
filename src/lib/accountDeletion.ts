@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { daysUntil } from './format';
 import type { DeletionStatus, PendingDeletion } from '../types/api';
 
 /**
@@ -10,6 +11,54 @@ import type { DeletionStatus, PendingDeletion } from '../types/api';
 export const ACCOUNT_DELETION_GRACE_DAYS = 7;
 
 const STORAGE_KEY = 'gt.deletionScheduled';
+const CONSUMED_KEY = 'gt.deletionScheduled.consumed';
+
+/**
+ * In-memory mirror of the one-shot flag below. sessionStorage is the durable
+ * copy (it has to survive a refresh); this keeps the flag working when storage
+ * is disabled, which is the case where getting it wrong signs a user out of a
+ * session they just started.
+ */
+let consumedInMemory = false;
+
+/**
+ * Records that the stored status has already driven an auth teardown. The entry
+ * outlives the tab's first visit to the scheduled screen, so without this a
+ * later mount — pressing Back after logging in again to cancel — would tear
+ * down the freshly issued token.
+ */
+export function markScheduledDeletionConsumed(): void {
+  consumedInMemory = true;
+  try {
+    sessionStorage.setItem(CONSUMED_KEY, '1');
+  } catch {
+    // Storage disabled — the in-memory flag covers this tab's lifetime.
+  }
+}
+
+export function isScheduledDeletionConsumed(): boolean {
+  if (consumedInMemory) return true;
+  try {
+    return sessionStorage.getItem(CONSUMED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Days remaining recomputed from the authoritative purge date. `days_left` is a
+ * snapshot taken when the payload was issued, and it is persisted (login
+ * response) or held in sessionStorage, so it can be read back days later. Ceil
+ * matches the backend's own rounding; the stored value is the fallback for an
+ * unparseable date.
+ */
+export function daysLeftUntil(purgeAt: string, fallback: number): number {
+  const days = daysUntil(purgeAt);
+  if (Number.isNaN(days)) return fallback;
+  // Floor of 1, matching the backend's own `max(1, ceil(...))`: it never
+  // reports 0 days while the account still exists, and neither should this.
+  return Math.max(1, days);
+}
 
 export const isDeletionStatus = (value: unknown): value is DeletionStatus =>
   typeof value === 'object' &&
@@ -47,8 +96,10 @@ export function readScheduledDeletion(): DeletionStatus | null {
 }
 
 export function clearScheduledDeletion(): void {
+  consumedInMemory = false;
   try {
     sessionStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(CONSUMED_KEY);
   } catch {
     // ignore
   }

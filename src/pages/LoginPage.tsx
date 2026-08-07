@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useHealth } from '../hooks/useHealth';
@@ -12,7 +12,6 @@ export function LoginPage() {
   const { t } = useTranslation('auth');
   const { isAuthenticated, handleLinkLogin, loading, error } = useAuth();
   const { data: health } = useHealth();
-  const navigate = useNavigate();
   const [code, setCode] = useState('');
   const pendingDeletion = useAuthStore((s) => s.pendingDeletion);
 
@@ -22,16 +21,12 @@ export function LoginPage() {
 
   const canSubmit = !loading && isCompleteLinkCode(code);
 
+  // No navigation on success: `handleLinkLogin` flips `isAuthenticated`, and the
+  // guard above then routes — one place decides where an authenticated user goes.
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    const ok = await handleLinkLogin(code);
-    if (ok) {
-      // Read from the store, not from `pendingDeletion` above: that binding is
-      // from the render before the login landed.
-      const pending = useAuthStore.getState().pendingDeletion;
-      navigate(pending ? '/account/pending-deletion' : '/', { replace: true });
-    }
+    await handleLinkLogin(code);
   };
 
   return (

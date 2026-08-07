@@ -1,23 +1,5 @@
-.row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 0;
-}
-.info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
 .label {
-  font-size: 14px;
   color: var(--warn);
-}
-.subtext {
-  font-size: 11px;
-  color: var(--text3);
 }
 .danger {
   border: 1px solid var(--warn-border) !important;

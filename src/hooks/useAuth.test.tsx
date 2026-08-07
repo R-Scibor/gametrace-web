@@ -6,10 +6,10 @@ import { useAuthStore } from '../store/authStore';
 import { saveScheduledDeletion, readScheduledDeletion } from '../lib/accountDeletion';
 import { renderHookWithProviders, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
+import { fixtures } from '../../test/fixtures';
 
 beforeEach(() => {
   resetStores();
-  sessionStorage.clear();
 });
 
 test('useAuth stores token on successful link login', async () => {
@@ -45,11 +45,7 @@ test('useAuth clears a stale scheduled-deletion flag on a login with no pending 
   // this tab. gt.deletionScheduled must not survive — otherwise the public,
   // unguarded /account/deletion-scheduled route would render a purge date for
   // an account that is not actually scheduled.
-  saveScheduledDeletion({
-    deletion_requested_at: '2026-08-07T12:00:00Z',
-    purge_at: '2026-08-14T12:00:00Z',
-    days_left: 7,
-  });
+  saveScheduledDeletion(fixtures.pendingDeletion);
   server.use(
     http.post('/api/v1/auth/link', () =>
       HttpResponse.json({

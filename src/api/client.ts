@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
-import { teardownAuth } from '../lib/authTeardown';
+import { isAuthTeardownSuspended, teardownAuth } from '../lib/authTeardown';
 import { pendingDeletionFromError } from '../lib/accountDeletion';
 
 const client = axios.create({
@@ -26,7 +26,13 @@ const isAuthEndpoint = (url?: string) =>
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && !isAuthEndpoint(error.config?.url)) {
+    // Flows that revoke the token themselves suspend teardown while they own
+    // the navigation — see `suspendAuthTeardown`.
+    if (
+      error.response?.status === 401 &&
+      !isAuthEndpoint(error.config?.url) &&
+      !isAuthTeardownSuspended()
+    ) {
       teardownAuth();
     }
 

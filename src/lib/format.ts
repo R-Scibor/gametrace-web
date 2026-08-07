@@ -72,8 +72,14 @@ export function formatHeaderDate(options?: FormatOptions): string {
     .toUpperCase();
 }
 
+/** Whole days from now until `iso`, rounded up (NaN for an unparseable date).
+ *  Shared by the countdown label below and by `daysLeftUntil` in accountDeletion. */
+export function daysUntil(iso: string): number {
+  return Math.ceil((Date.parse(iso) - Date.now()) / 86_400_000);
+}
+
 export function formatDaysUntil(iso: string): string {
-  const days = Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000);
+  const days = daysUntil(iso);
   if (days <= 0) return i18n.t('common:relative.soon');
   if (days === 1) return i18n.t('common:relative.oneDay');
   return i18n.t('common:relative.days', { days });

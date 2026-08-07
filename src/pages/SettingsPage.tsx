@@ -3,32 +3,14 @@ import { useAuth } from '../hooks/useAuth';
 import { useProfile, useUpdateSettings } from '../hooks/useProfile';
 import { useHealth } from '../hooks/useHealth';
 import { useLanguage } from '../hooks/useLanguage';
+import { useAuthStore } from '../store/authStore';
 import { SectionHeader, Skeleton } from '../components/ui';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { DeleteAccountRow } from '../components/settings/DeleteAccountRow';
+import { SettingsRow } from '../components/settings/SettingsRow';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
-
-function SettingsRow({
-  label,
-  subtext,
-  children,
-}: {
-  label: string;
-  subtext?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={styles.row}>
-      <div className={styles.rowInfo}>
-        <span className={styles.rowLabel}>{label}</span>
-        {subtext && <span className={styles.rowSubtext}>{subtext}</span>}
-      </div>
-      <div className={styles.rowControl}>{children}</div>
-    </div>
-  );
-}
 
 export function SettingsPage() {
   const { t } = useTranslation('settings');
@@ -36,6 +18,10 @@ export function SettingsPage() {
   const { user } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { data: health } = useHealth();
+  // Fallback for a failed /profile/me: defaulting to false would hand an admin
+  // an enabled Delete button and a retry-forever error, since the backend 403s
+  // admin self-deletion. This flag is known synchronously from login.
+  const storedIsAdmin = useAuthStore((s) => s.isAdmin);
   const updateSettings = useUpdateSettings();
   const { select: selectLanguage, isPending: languagePending } = useLanguage();
 
@@ -81,7 +67,7 @@ export function SettingsPage() {
         </SettingsRow>
         <DeleteAccountRow
           username={profile?.username ?? user?.username ?? ''}
-          isAdmin={profile?.is_admin ?? false}
+          isAdmin={profile?.is_admin ?? storedIsAdmin}
         />
       </div>
 

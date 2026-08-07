@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { daysLeftUntil } from '../../lib/accountDeletion';
 import { formatDateOnly } from '../../lib/format';
 import type { DeletionStatus } from '../../types/api';
 import styles from './DeletionStatusPanel.module.css';
@@ -11,6 +12,9 @@ import styles from './DeletionStatusPanel.module.css';
  */
 export function DeletionStatusPanel({ status }: { status: DeletionStatus }) {
   const { t } = useTranslation('account');
+  // Not status.days_left: that number is a snapshot from whenever the payload
+  // was issued, and both callers can be rendering a copy that is days old.
+  const daysLeft = daysLeftUntil(status.purge_at, status.days_left);
 
   return (
     <div className={styles.panel}>
@@ -22,7 +26,7 @@ export function DeletionStatusPanel({ status }: { status: DeletionStatus }) {
       </div>
       <div className={styles.item}>
         <p className={styles.label}>{t('status.daysLeftLabel')}</p>
-        <p className={styles.value}>{t('status.daysLeft', { count: status.days_left })}</p>
+        <p className={styles.value}>{t('status.daysLeft', { count: daysLeft })}</p>
       </div>
       <p className={styles.note}>{t('status.purgeNote')}</p>
     </div>

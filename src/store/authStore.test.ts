@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useAuthStore } from './authStore';
+import { fixtures } from '../../test/fixtures';
 
 describe('authStore admin persistence', () => {
   beforeEach(() => {
@@ -30,11 +31,9 @@ describe('authStore pendingDeletion', () => {
   });
 
   it('clears pendingDeletion on logout', () => {
-    useAuthStore.getState().login('t', { discordId: '1', username: 'u' }, false, {
-      deletion_requested_at: '2026-08-07T12:00:00Z',
-      purge_at: '2026-08-14T12:00:00Z',
-      days_left: 7,
-    });
+    useAuthStore
+      .getState()
+      .login('t', { discordId: '1', username: 'u' }, false, fixtures.pendingDeletion);
     expect(useAuthStore.getState().pendingDeletion).not.toBeNull();
 
     useAuthStore.getState().logout();

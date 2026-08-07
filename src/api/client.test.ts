@@ -1,13 +1,16 @@
 import client from './client';
 import { useAuthStore } from '../store/authStore';
 import { queryClient } from '../lib/queryClient';
+import { resumeAuthTeardown, suspendAuthTeardown } from '../lib/authTeardown';
 import { server } from '../../test/server';
+import { fixtures } from '../../test/fixtures';
 import { http, HttpResponse } from 'msw';
 import { beforeEach, test, expect } from 'vitest';
 
 beforeEach(() => {
   useAuthStore.getState().logout();
   queryClient.clear();
+  resumeAuthTeardown();
 });
 
 test('client adds bearer token when authenticated', async () => {
@@ -38,6 +41,26 @@ test('client handles 401 and tears down auth', async () => {
   expect(queryClient.getQueryCache().getAll()).toHaveLength(0);
 });
 
+test('client leaves auth alone on a 401 while teardown is suspended', async () => {
+  // Scheduling deletion kills the token server-side, so anything in flight
+  // 401s. Tearing down here would flip ProtectedRoute to /welcome and the user
+  // would never see the purge date. DeletionScheduledPage tears down instead.
+  useAuthStore.getState().login('test-token', { discordId: '1', username: 'test' });
+  suspendAuthTeardown();
+
+  server.use(
+    http.get('http://localhost:3000/api/v1/test', () => new HttpResponse(null, { status: 401 })),
+  );
+
+  await expect(client.get('/test')).rejects.toThrow();
+  expect(useAuthStore.getState().isAuthenticated).toBe(true);
+
+  // And once the window closes, 401 behaves normally again.
+  resumeAuthTeardown();
+  await expect(client.get('/test')).rejects.toThrow();
+  expect(useAuthStore.getState().isAuthenticated).toBe(false);
+});
+
 test('client does not tear down auth on failed login attempts', async () => {
   useAuthStore.getState().login('test-token', { discordId: '1', username: 'test' });
 
@@ -58,12 +81,7 @@ test('records pendingDeletion from the grace-period 403 without tearing down aut
     http.get('/api/v1/profile/me', () =>
       HttpResponse.json(
         {
-          detail: {
-            detail: 'Account scheduled for deletion',
-            deletion_requested_at: '2026-08-07T12:00:00Z',
-            purge_at: '2026-08-14T12:00:00Z',
-            days_left: 7,
-          },
+          detail: { detail: 'Account scheduled for deletion', ...fixtures.pendingDeletion },
         },
         { status: 403 },
       ),

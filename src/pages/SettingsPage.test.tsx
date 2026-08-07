@@ -155,3 +155,21 @@ it('lands on the deletion-scheduled screen with the purge date, not /welcome, af
   expect(await screen.findByText(/14/)).toBeInTheDocument();
   expect(screen.queryByText('welcome page')).not.toBeInTheDocument();
 });
+it('keeps the delete button disabled for an admin when the profile request fails', async () => {
+  await i18n.changeLanguage('pl');
+  const deleteLabel = i18n.t('account.deleteAction', { ns: 'settings' });
+  // profile is undefined and profileLoading is false, so the guard has to fall
+  // back to the store's flag. Defaulting to false would offer an admin a
+  // delete the backend always 403s.
+  server.use(http.get('/api/v1/profile/me', () => new HttpResponse(null, { status: 500 })));
+
+  renderAppRoutes(
+    <>
+      <Route path="/settings" element={<SettingsPage />} />
+    </>,
+    { route: '/settings' },
+  );
+
+  const deleteButton = await screen.findByRole('button', { name: deleteLabel });
+  expect(deleteButton).toBeDisabled();
+});

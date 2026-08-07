@@ -5,6 +5,7 @@ import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
+import { listOf } from '../lib/i18nList';
 import styles from './PrivacyPage.module.css';
 
 /** Public contact for official-host privacy questions (same as portfolio). */
@@ -20,6 +21,57 @@ const SECTION_ORDER = [
   'more',
 ] as const;
 
+type SectionKey = (typeof SECTION_ORDER)[number];
+
+/** Three sections carry more than a paragraph; the rest are plain body copy. */
+function SectionBody({ sectionKey, items }: { sectionKey: SectionKey; items: string[] }) {
+  const { t } = useTranslation('privacy');
+
+  if (sectionKey === 'data') {
+    return (
+      <>
+        <p className={styles.body}>{t('sections.data.intro')}</p>
+        <ul className={styles.list}>
+          {items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </>
+    );
+  }
+
+  if (sectionKey === 'contact') {
+    return (
+      <>
+        <p className={styles.body}>{t('sections.contact.body')}</p>
+        <p className={styles.contactLine}>
+          <span className={styles.contactLabel}>{t('sections.contact.emailLabel')}: </span>
+          <a className={styles.email} href={`mailto:${PRIVACY_CONTACT_EMAIL}`}>
+            {PRIVACY_CONTACT_EMAIL}
+          </a>
+        </p>
+      </>
+    );
+  }
+
+  if (sectionKey === 'deletion') {
+    return (
+      <>
+        <p className={styles.body}>
+          {t('sections.deletion.body', { days: ACCOUNT_DELETION_GRACE_DAYS })}
+        </p>
+        <p>
+          <Link to="/delete-account" className={styles.email}>
+            {t('sections.deletion.linkLabel')}
+          </Link>
+        </p>
+      </>
+    );
+  }
+
+  return <p className={styles.body}>{t(`sections.${sectionKey}.body`)}</p>;
+}
+
 export function PrivacyPage() {
   const { t, i18n } = useTranslation('privacy');
   const language = (i18n.language === 'en' ? 'en' : 'pl') as Language;
@@ -32,8 +84,7 @@ export function PrivacyPage() {
     };
   }, [t, i18n.language]);
 
-  const dataItems = t('sections.data.items', { returnObjects: true });
-  const items = Array.isArray(dataItems) ? (dataItems as string[]) : [];
+  const items = listOf(t('sections.data.items', { returnObjects: true }));
 
   return (
     <div className={styles.page}>
@@ -73,39 +124,7 @@ export function PrivacyPage() {
           {SECTION_ORDER.map((key) => (
             <section key={key} className={styles.section} id={key === 'deletion' ? 'account-deletion' : undefined}>
               <h2 className={styles.sectionTitle}>{t(`sections.${key}.title`)}</h2>
-              {key === 'data' ? (
-                <>
-                  <p className={styles.body}>{t('sections.data.intro')}</p>
-                  <ul className={styles.list}>
-                    {items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </>
-              ) : key === 'contact' ? (
-                <>
-                  <p className={styles.body}>{t('sections.contact.body')}</p>
-                  <p className={styles.contactLine}>
-                    <span className={styles.contactLabel}>{t('sections.contact.emailLabel')}: </span>
-                    <a className={styles.email} href={`mailto:${PRIVACY_CONTACT_EMAIL}`}>
-                      {PRIVACY_CONTACT_EMAIL}
-                    </a>
-                  </p>
-                </>
-              ) : key === 'deletion' ? (
-                <>
-                  <p className={styles.body}>
-                    {t('sections.deletion.body', { days: ACCOUNT_DELETION_GRACE_DAYS })}
-                  </p>
-                  <p>
-                    <Link to="/delete-account" className={styles.email}>
-                      {t('sections.deletion.linkLabel')}
-                    </Link>
-                  </p>
-                </>
-              ) : (
-                <p className={styles.body}>{t(`sections.${key}.body`)}</p>
-              )}
+              <SectionBody sectionKey={key} items={items} />
             </section>
           ))}
         </article>

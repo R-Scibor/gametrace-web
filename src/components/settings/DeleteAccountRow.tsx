@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../ui';
 import { ACCOUNT_DELETION_GRACE_DAYS } from '../../lib/accountDeletion';
 import { DeleteAccountDialog } from './DeleteAccountDialog';
+import { SettingsRow } from './SettingsRow';
 import styles from './DeleteAccountRow.module.css';
 
 interface DeleteAccountRowProps {
@@ -21,15 +22,15 @@ export function DeleteAccountRow({ username, isAdmin }: DeleteAccountRowProps) {
 
   return (
     <>
-      <div className={styles.row}>
-        <div className={styles.info}>
-          <span className={styles.label}>{t('account.delete')}</span>
-          <span className={styles.subtext}>
-            {isAdmin
-              ? t('account.deleteAdmin')
-              : t('account.deleteSub', { days: ACCOUNT_DELETION_GRACE_DAYS })}
-          </span>
-        </div>
+      <SettingsRow
+        label={t('account.delete')}
+        labelClassName={styles.label}
+        subtext={
+          isAdmin
+            ? t('account.deleteAdmin')
+            : t('account.deleteSub', { days: ACCOUNT_DELETION_GRACE_DAYS })
+        }
+      >
         <Button
           className={styles.danger}
           variant="secondary"
@@ -38,11 +39,9 @@ export function DeleteAccountRow({ username, isAdmin }: DeleteAccountRowProps) {
         >
           {t('account.deleteAction')}
         </Button>
-      </div>
+      </SettingsRow>
 
-      {open && (
-        <DeleteAccountDialog open={open} username={username} onClose={() => setOpen(false)} />
-      )}
+      {open && <DeleteAccountDialog username={username} onClose={() => setOpen(false)} />}
     </>
   );
 }

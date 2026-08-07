@@ -4,12 +4,7 @@ import { Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import { useAuthStore } from '../store/authStore';
 import { renderAppRoutes, resetStores } from '../../test/utils';
-
-const pending = {
-  deletion_requested_at: '2026-08-07T12:00:00Z',
-  purge_at: '2026-08-14T12:00:00Z',
-  days_left: 7,
-};
+import { fixtures } from '../../test/fixtures';
 
 beforeEach(() => {
   resetStores();
@@ -39,14 +34,14 @@ describe('ProtectedRoute', () => {
   it('sends a scheduled account to the blocking screen', () => {
     renderAppRoutes(routes, { route: '/', authenticated: true });
     act(() => {
-      useAuthStore.getState().setPendingDeletion(pending);
+      useAuthStore.getState().setPendingDeletion(fixtures.pendingDeletion);
     });
     // re-render happens via the store subscription
     expect(screen.getByText('blocking screen')).toBeInTheDocument();
   });
 
   it('checks auth before pendingDeletion', () => {
-    useAuthStore.setState({ pendingDeletion: pending });
+    useAuthStore.setState({ pendingDeletion: fixtures.pendingDeletion });
     renderAppRoutes(routes, { route: '/', authenticated: false });
     expect(screen.getByText('welcome')).toBeInTheDocument();
   });

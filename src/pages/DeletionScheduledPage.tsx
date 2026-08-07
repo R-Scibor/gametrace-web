@@ -1,9 +1,15 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { DeletionStatusPanel } from '../components/account/DeletionStatusPanel';
-import { isDeletionStatus, readScheduledDeletion } from '../lib/accountDeletion';
-import { teardownAuth } from '../lib/authTeardown';
+import {
+  isDeletionStatus,
+  isScheduledDeletionConsumed,
+  markScheduledDeletionConsumed,
+  readScheduledDeletion,
+} from '../lib/accountDeletion';
+import { resumeAuthTeardown, teardownAuth } from '../lib/authTeardown';
+import { useAuthStore } from '../store/authStore';
 import styles from './DeletionScheduledPage.module.css';
 
 /**
@@ -16,6 +22,10 @@ import styles from './DeletionScheduledPage.module.css';
 export function DeletionScheduledPage() {
   const { t } = useTranslation('account');
   const location = useLocation();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  // Read once at mount: teardown below flips it, and this must keep reporting
+  // what was true when this particular mount started.
+  const [alreadyConsumed] = useState(isScheduledDeletionConsumed);
   const status = useMemo(() => {
     const fromState = isDeletionStatus(location.state) ? location.state : null;
     return fromState ?? readScheduledDeletion();
@@ -30,6 +40,12 @@ export function DeletionScheduledPage() {
     };
   }, [t, status]);
 
+  // Closes the window opened by the confirm dialog. Unconditional: leaving it
+  // open would disable 401 auto-logout for the rest of the session.
+  useEffect(() => {
+    resumeAuthTeardown();
+  }, []);
+
   // Teardown lives here, not in the dialog before navigating, so it can
   // never race ProtectedRoute: this route is public, so flipping
   // isAuthenticated to false here cannot trigger a redirect. By the time the
@@ -37,14 +53,24 @@ export function DeletionScheduledPage() {
   // part of scheduling deletion, so this only clears already-dead client
   // state. Guarded on `status` so a visitor who lands here with nothing to
   // show (and gets redirected to /delete-account below) never gets signed
-  // out.
+  // out, and on `alreadyConsumed` so only the mount that follows the request
+  // itself tears anything down.
   useEffect(() => {
-    if (!status) return;
+    if (!status || alreadyConsumed) return;
+    markScheduledDeletionConsumed();
     teardownAuth();
-  }, [status]);
+  }, [status, alreadyConsumed]);
 
   if (!status) {
     return <Navigate to="/delete-account" replace />;
+  }
+
+  // Both the sessionStorage entry and the history entry carrying this status
+  // outlive the visit, so this page is reachable again — pressing Back after
+  // logging in to cancel. Someone holding a live token belongs on the gated
+  // side of the app, not on a dead-token screen telling them to sign in.
+  if (alreadyConsumed && isAuthenticated) {
+    return <Navigate to="/" replace />;
   }
 
   return (

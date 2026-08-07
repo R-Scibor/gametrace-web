@@ -7,6 +7,8 @@ import { LoginPage } from './LoginPage';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useAuthStore } from '../store/authStore';
 import { server } from '../../test/server';
+import { fixtures } from '../../test/fixtures';
+import { renderAppRoutes } from '../../test/utils';
 import { test, expect, beforeEach } from 'vitest';
 
 function renderLogin(route = '/login') {
@@ -98,26 +100,18 @@ test('sends a scheduled account to the blocking screen instead of the dashboard'
         username: 'testuser',
         timezone: 'Europe/Warsaw',
         is_admin: false,
-        pending_deletion: {
-          deletion_requested_at: '2026-08-07T12:00:00Z',
-          purge_at: '2026-08-14T12:00:00Z',
-          days_left: 7,
-        },
+        pending_deletion: fixtures.pendingDeletion,
       }),
     ),
   );
 
-  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  render(
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={['/login']}>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<p>dashboard</p>} />
-          <Route path="/account/pending-deletion" element={<p>blocking screen</p>} />
-        </Routes>
-      </MemoryRouter>
-    </QueryClientProvider>,
+  renderAppRoutes(
+    <>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<p>dashboard</p>} />
+      <Route path="/account/pending-deletion" element={<p>blocking screen</p>} />
+    </>,
+    { route: '/login', authenticated: false },
   );
 
   await user.type(screen.getByLabelText(/kod/i), '231996');

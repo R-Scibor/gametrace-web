@@ -1,11 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 import { DeleteAccountDialog } from './DeleteAccountDialog';
+import { DeleteAccountRow } from './DeleteAccountRow';
 import { readScheduledDeletion } from '../../lib/accountDeletion';
+import { isAuthTeardownSuspended, resumeAuthTeardown } from '../../lib/authTeardown';
 import { useAuthStore } from '../../store/authStore';
 import { server } from '../../../test/server';
+import { fixtures } from '../../../test/fixtures';
 import { renderWithProviders, resetStores } from '../../../test/utils';
 import i18n from '../../i18n';
 
@@ -13,7 +16,7 @@ const onClose = vi.fn();
 
 beforeEach(async () => {
   resetStores();
-  sessionStorage.clear();
+  resumeAuthTeardown();
   onClose.mockClear();
   await i18n.changeLanguage('pl');
 });
@@ -21,7 +24,7 @@ beforeEach(async () => {
 describe('DeleteAccountDialog', () => {
   it('keeps confirm disabled until the username matches', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />);
+    renderWithProviders(<DeleteAccountDialog username="testuser" onClose={onClose} />);
 
     const confirm = screen.getByRole('button', { name: 'Usuń konto' });
     expect(confirm).toBeDisabled();
@@ -35,7 +38,7 @@ describe('DeleteAccountDialog', () => {
 
   it('keeps confirm disabled for an empty username even after typing', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<DeleteAccountDialog open username="" onClose={onClose} />);
+    renderWithProviders(<DeleteAccountDialog username="" onClose={onClose} />);
 
     const confirm = screen.getByRole('button', { name: 'Usuń konto' });
     expect(confirm).toBeDisabled();
@@ -46,14 +49,14 @@ describe('DeleteAccountDialog', () => {
 
   it('accepts a trimmed, differently-cased username', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />);
+    renderWithProviders(<DeleteAccountDialog username="testuser" onClose={onClose} />);
 
     await user.type(screen.getByLabelText(/Wpisz testuser/), '  TestUser  ');
     expect(screen.getByRole('button', { name: 'Usuń konto' })).toBeEnabled();
   });
 
   it('lists the inventory without claiming the catalogue is deleted', () => {
-    renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />);
+    renderWithProviders(<DeleteAccountDialog username="testuser" onClose={onClose} />);
     expect(screen.getByText(/Sesje gry i cała historia grania/)).toBeInTheDocument();
     expect(screen.getByText(/katalog gier nie zawiera/i)).toBeInTheDocument();
   });
@@ -66,7 +69,7 @@ describe('DeleteAccountDialog', () => {
     // the user to /welcome. See SettingsPage.test.tsx for the end-to-end
     // regression test that guards this.
     const user = userEvent.setup();
-    renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />, {
+    renderWithProviders(<DeleteAccountDialog username="testuser" onClose={onClose} />, {
       authenticated: true,
     });
 
@@ -84,7 +87,7 @@ describe('DeleteAccountDialog', () => {
         HttpResponse.json({ detail: 'Admin accounts cannot self-delete' }, { status: 403 }),
       ),
     );
-    renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />, {
+    renderWithProviders(<DeleteAccountDialog username="testuser" onClose={onClose} />, {
       authenticated: true,
     });
 
@@ -104,7 +107,7 @@ describe('DeleteAccountDialog', () => {
         HttpResponse.json({ detail: 'Admin accounts cannot self-delete' }, { status: 403 }),
       ),
     );
-    renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />, {
+    renderWithProviders(<DeleteAccountDialog username="testuser" onClose={onClose} />, {
       authenticated: true,
     });
 
@@ -117,7 +120,7 @@ describe('DeleteAccountDialog', () => {
     server.use(
       http.post('/api/v1/profile/me/deletion', () =>
         HttpResponse.json(
-          { deletion_requested_at: '2026-08-07T12:00:00Z', purge_at: '2026-08-14T12:00:00Z', days_left: 7 },
+          fixtures.pendingDeletion,
           { status: 202 },
         ),
       ),
@@ -127,5 +130,60 @@ describe('DeleteAccountDialog', () => {
     expect(
       screen.queryByText('Nie udało się zlecić usunięcia konta. Spróbuj ponownie.'),
     ).not.toBeInTheDocument();
+  });
+});
+
+describe('teardown suspension window', () => {
+  it('is not dismissable mid-request, so the window cannot leak', async () => {
+    const user = userEvent.setup();
+    server.use(
+      http.post('/api/v1/profile/me/deletion', async () => {
+        await delay(200);
+        return HttpResponse.json(fixtures.pendingDeletion, { status: 202 });
+      }),
+    );
+
+    renderWithProviders(<DeleteAccountRow username="testuser" isAdmin={false} />, {
+      authenticated: true,
+    });
+
+    await user.click(screen.getByRole('button', { name: 'Usuń' }));
+    await user.type(screen.getByLabelText(/Wpisz testuser/), 'testuser');
+    await user.click(screen.getByRole('button', { name: 'Usuń konto' }));
+    expect(isAuthTeardownSuspended()).toBe(true);
+
+    // Escape and a backdrop click both route through Modal's onClose, which the
+    // disabled Cancel button does not cover.
+    await user.keyboard('{Escape}');
+    expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('alertdialog').parentElement!);
+    expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+  });
+
+  it('resumes teardown if the dialog unmounts before the request settles', async () => {
+    const user = userEvent.setup();
+    server.use(
+      http.post('/api/v1/profile/me/deletion', async () => {
+        await delay(200);
+        return HttpResponse.json(fixtures.pendingDeletion, { status: 202 });
+      }),
+    );
+
+    const { unmount } = renderWithProviders(
+      <DeleteAccountRow username="testuser" isAdmin={false} />,
+      { authenticated: true },
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Usuń' }));
+    await user.type(screen.getByLabelText(/Wpisz testuser/), 'testuser');
+    await user.click(screen.getByRole('button', { name: 'Usuń konto' }));
+    expect(isAuthTeardownSuspended()).toBe(true);
+
+    // React Query drops the mutation callbacks when the observer unmounts, so
+    // nothing else would ever resume: 401 auto-logout would stay off for the
+    // rest of the session.
+    unmount();
+    expect(isAuthTeardownSuspended()).toBe(false);
   });
 });
