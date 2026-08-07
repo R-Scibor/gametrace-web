@@ -34,6 +34,17 @@ export function formatDate(iso: string, options?: FormatOptions): string {
   });
 }
 
+/** Date without time — for purge dates, where the exact minute is misleading
+ *  (the purge sweep runs nightly, so deletion lands on or shortly after). */
+export function formatDateOnly(iso: string, options?: FormatOptions): string {
+  return new Date(iso).toLocaleDateString(locale(), {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    timeZone: options?.timeZone,
+  });
+}
+
 export function formatTimeShort(iso: string, options?: FormatOptions): string {
   return new Date(iso).toLocaleTimeString(locale(), {
     hour: '2-digit',

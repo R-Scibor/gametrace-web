@@ -20,6 +20,7 @@ export const handlers = [
       username: 'testuser',
       timezone: 'Europe/Warsaw',
       is_admin: true,
+      pending_deletion: null,
     });
   }),
 
@@ -419,4 +420,12 @@ export const handlers = [
       raw_transcript: 'Grałem w Wiedźmina',
     });
   }),
+
+  http.post('/api/v1/profile/me/deletion', () =>
+    HttpResponse.json(fixtures.pendingDeletion, { status: 202 }),
+  ),
+
+  http.delete('/api/v1/profile/me/deletion', () =>
+    HttpResponse.json({ detail: 'Account deletion cancelled' }),
+  ),
 ];

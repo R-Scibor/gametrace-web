@@ -138,6 +138,12 @@ export const profileMe: ProfileMe = {
   language: 'pl',
 };
 
+export const pendingDeletion = {
+  deletion_requested_at: '2026-08-07T12:00:00Z',
+  purge_at: '2026-08-14T12:00:00Z',
+  days_left: 7,
+};
+
 export const trashSession: TrashSession = {
   ...session,
   id: 10,
@@ -289,6 +295,7 @@ export const fixtures = {
   dashboardSummary,
   dashboardNoActive,
   profileMe,
+  pendingDeletion,
   game,
   gameNeedsReview,
   gameFacets,

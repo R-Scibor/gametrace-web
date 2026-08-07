@@ -2,12 +2,23 @@ import type { Language } from '../i18n/resolve';
 
 // Auth
 export interface LoginRequest { username: string; timezone?: string; }
+
+export interface PendingDeletion {
+  deletion_requested_at: string;
+  purge_at: string;
+  days_left: number;
+}
+
+/** The 202 body of POST /profile/me/deletion — same shape as PendingDeletion. */
+export type DeletionStatus = PendingDeletion;
+
 export interface LoginResponse {
   token: string;
   discord_id: string;
   username: string;
   timezone: string;
   is_admin: boolean;
+  pending_deletion: PendingDeletion | null;
 }
 
 // Games
