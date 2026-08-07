@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { beforeEach, expect, test } from 'vitest';
 import i18n from '../i18n';
 import { PrivacyPage, PRIVACY_CONTACT_EMAIL } from './PrivacyPage';
-import { renderAppRoutes, resetStores } from '../../test/utils';
+import { renderAppRoutes, renderWithProviders, resetStores } from '../../test/utils';
 
 beforeEach(() => {
   resetStores();
@@ -49,4 +49,17 @@ test('PrivacyPage remains reachable when authenticated', () => {
   });
 
   expect(screen.getByRole('heading', { level: 1, name: /polityka prywatności/i })).toBeInTheDocument();
+});
+
+test('links the deletion section to the public delete-account page', async () => {
+  await i18n.changeLanguage('pl');
+  renderWithProviders(<PrivacyPage />, { authenticated: false });
+  const link = screen.getByRole('link', { name: /Jak usunąć konto/ });
+  expect(link).toHaveAttribute('href', '/delete-account');
+});
+
+test('no longer says deletion is coming soon', async () => {
+  await i18n.changeLanguage('pl');
+  renderWithProviders(<PrivacyPage />, { authenticated: false });
+  expect(screen.queryByText(/Wkrótce/)).not.toBeInTheDocument();
 });

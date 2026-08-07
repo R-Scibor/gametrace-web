@@ -32,7 +32,8 @@
     },
     "deletion": {
       "title": "Usuwanie konta",
-      "body": "Wkrótce: w ustawieniach aplikacji i panelu web będzie można zlecić usunięcie konta. Konto zostanie od razu wyłączone; dane osobowe mają być trwale usuwane z aktywnej bazy po okresie karencji 7 dni (możliwość zmiany zdania). Publiczna strona z instrukcją usuwania dla Google Play pojawi się osobno. Do tego czasu możesz napisać na adres kontaktowy poniżej."
+      "body": "Usunięcie konta zlecisz w panelu web: Ustawienia → Konto → Usuń konto. Konto jest wyłączane natychmiast, a dane trwale usuwane po 7 dniach (usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby później). W okresie karencji możesz anulować, logując się ponownie. Jeśli nie możesz się zalogować, napisz na adres kontaktowy poniżej.",
+      "linkLabel": "Jak usunąć konto — pełna instrukcja"
     },
     "contact": {
       "title": "Kontakt",

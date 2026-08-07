@@ -91,6 +91,15 @@ export function PrivacyPage() {
                     </a>
                   </p>
                 </>
+              ) : key === 'deletion' ? (
+                <>
+                  <p className={styles.body}>{t('sections.deletion.body')}</p>
+                  <p>
+                    <Link to="/delete-account" className={styles.email}>
+                      {t('sections.deletion.linkLabel')}
+                    </Link>
+                  </p>
+                </>
               ) : (
                 <p className={styles.body}>{t(`sections.${key}.body`)}</p>
               )}
