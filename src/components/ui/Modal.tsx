@@ -13,6 +13,12 @@ interface ModalProps {
    * dialogs whose body needs more room, e.g. a scrollable candidate list.
    */
   className?: string;
+  /**
+   * Extra class applied to the full-screen overlay. Use it to re-center the
+   * dialog over a narrower region than the viewport, e.g. the app content
+   * column to the right of the sidebar.
+   */
+  overlayClassName?: string;
 }
 
 const FOCUSABLE = [
@@ -24,7 +30,15 @@ const FOCUSABLE = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
-export function Modal({ open, onClose, labelledBy, role = 'dialog', children, className }: ModalProps) {
+export function Modal({
+  open,
+  onClose,
+  labelledBy,
+  role = 'dialog',
+  children,
+  className,
+  overlayClassName,
+}: ModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   // Captured on open so focus can be handed back to whatever opened the dialog.
   const restoreRef = useRef<HTMLElement | null>(null);
@@ -89,7 +103,11 @@ export function Modal({ open, onClose, labelledBy, role = 'dialog', children, cl
   if (!open) return null;
 
   return (
-    <div className={styles.overlay} onClick={onClose} role="presentation">
+    <div
+      className={[styles.overlay, overlayClassName].filter(Boolean).join(' ')}
+      onClick={onClose}
+      role="presentation"
+    >
       <div
         ref={dialogRef}
         tabIndex={-1}

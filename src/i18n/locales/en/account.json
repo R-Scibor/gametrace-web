@@ -7,7 +7,7 @@
     "consequences": [
       "Access is disabled immediately — you are signed out everywhere, and any ongoing game session ends in an error.",
       "Data is permanently deleted after {{days}} days, or shortly after.",
-      "You can cancel during that time by signing in again with a Discord code."
+      "You can cancel the deletion before that date by signing in again with a Discord code."
     ],
     "confirmLabel": "Type {{username}} to confirm",
     "submit": "Delete account",
@@ -72,7 +72,6 @@
       "Reports you sent to the administrator",
       "Voice feature usage records"
     ],
-    "inventoryNote": "The shared game catalogue holds no personal data and is left untouched.",
     "noAccessTitle": "Cannot sign in?",
     "noAccessBody": "Email the address below from the Discord account linked to GameTrace and we will delete the account manually.",
     "backHome": "← Home",

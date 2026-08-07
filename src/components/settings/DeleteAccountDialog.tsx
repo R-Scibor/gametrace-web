@@ -77,7 +77,13 @@ export function DeleteAccountDialog({ username, onClose }: DeleteAccountDialogPr
   );
 
   return (
-    <Modal open onClose={requestClose} labelledBy="delete-account-title" role="alertdialog">
+    <Modal
+      open
+      onClose={requestClose}
+      labelledBy="delete-account-title"
+      role="alertdialog"
+      overlayClassName={styles.overlay}
+    >
       <h2 id="delete-account-title" className={styles.title}>{t('dialog.title')}</h2>
       <p className={styles.lead}>{t('dialog.lead')}</p>
 
@@ -86,7 +92,6 @@ export function DeleteAccountDialog({ username, onClose }: DeleteAccountDialogPr
         <ul className={styles.list}>
           {inventory.map((item) => <li key={item}>{item}</li>)}
         </ul>
-        <p className={styles.note}>{t('public.inventoryNote')}</p>
       </div>
 
       <p className={styles.label}>{t('dialog.consequencesLabel')}</p>

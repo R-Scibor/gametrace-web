@@ -77,7 +77,6 @@ export function DeleteAccountPage() {
             <ul className={styles.list}>
               {inventory.map((item) => <li key={item}>{item}</li>)}
             </ul>
-            <p className={styles.note}>{t('public.inventoryNote')}</p>
           </section>
 
           <section className={styles.section}>

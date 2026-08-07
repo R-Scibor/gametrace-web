@@ -23,7 +23,7 @@ describe('DeleteAccountPage', () => {
 
   it('does not claim the game catalogue is deleted', () => {
     renderWithProviders(<DeleteAccountPage />, { authenticated: false });
-    expect(screen.getByText(/katalog gier nie zawiera/i)).toBeInTheDocument();
+    expect(screen.queryByText(/katalog gier/i)).not.toBeInTheDocument();
   });
 
   it('renders in English', async () => {

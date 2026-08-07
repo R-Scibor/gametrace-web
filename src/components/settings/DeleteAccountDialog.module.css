@@ -39,11 +39,6 @@
   color: var(--text2);
   line-height: 1.4;
 }
-.note {
-  margin: 0;
-  font-size: 11px;
-  color: var(--text3);
-}
 .error {
   margin: 0;
   font-size: 13px;
@@ -58,4 +53,16 @@
 .danger {
   background-color: var(--warn) !important;
   color: var(--bg) !important;
+}
+
+/* Centered over the app content column rather than the whole viewport, so the
+   dialog sits above Settings instead of straddling the sidebar. Widths mirror
+   Sidebar.module.css. */
+.overlay {
+  padding-left: 264px;
+}
+@media (max-width: 1100px) {
+  .overlay {
+    padding-left: 88px;
+  }
 }

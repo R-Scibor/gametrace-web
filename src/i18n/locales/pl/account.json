@@ -7,7 +7,7 @@
     "consequences": [
       "Dostęp zostanie wyłączony natychmiast — zostaniesz wylogowany na wszystkich urządzeniach, a trwająca sesja gry zakończy się błędem.",
       "Dane zostaną trwale usunięte po {{days}} dniach lub wkrótce po tym terminie.",
-      "Możesz anulować w tym czasie, logując się ponownie kodem z Discorda."
+      "Możesz anulować usunięcie przed tym terminem, logując się ponownie kodem z Discorda."
     ],
     "confirmLabel": "Wpisz {{username}}, aby potwierdzić",
     "submit": "Usuń konto",
@@ -73,7 +73,6 @@
       "Zgłoszenia wysłane do administratora",
       "Historia użycia funkcji głosowej"
     ],
-    "inventoryNote": "Wspólny katalog gier nie zawiera Twoich danych osobowych i pozostaje nienaruszony.",
     "noAccessTitle": "Nie możesz się zalogować?",
     "noAccessBody": "Napisz na adres poniżej z konta Discord powiązanego z GameTrace — usuniemy konto ręcznie.",
     "backHome": "← Strona główna",

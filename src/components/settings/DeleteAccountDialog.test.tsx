@@ -58,7 +58,7 @@ describe('DeleteAccountDialog', () => {
   it('lists the inventory without claiming the catalogue is deleted', () => {
     renderWithProviders(<DeleteAccountDialog username="testuser" onClose={onClose} />);
     expect(screen.getByText(/Sesje gry i cała historia grania/)).toBeInTheDocument();
-    expect(screen.getByText(/katalog gier nie zawiera/i)).toBeInTheDocument();
+    expect(screen.queryByText(/katalog gier/i)).not.toBeInTheDocument();
   });
 
   it('schedules deletion and stores the status without tearing down auth itself', async () => {
