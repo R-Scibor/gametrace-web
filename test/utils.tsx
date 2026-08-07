@@ -55,7 +55,7 @@ export function renderWithProviders(
     queryClient: client,
     ...render(
       <QueryClientProvider client={client}>
-        <MemoryRouter initialEntries={[route]} useTransitions={false}>{ui}</MemoryRouter>
+        <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
       </QueryClientProvider>,
     ),
   };
@@ -87,7 +87,7 @@ export function renderAppRoutes(
     queryClient: client,
     ...render(
       <QueryClientProvider client={client}>
-        <MemoryRouter initialEntries={[route]} useTransitions={false}>
+        <MemoryRouter initialEntries={[route]}>
           <Routes>{routes}</Routes>
         </MemoryRouter>
       </QueryClientProvider>,

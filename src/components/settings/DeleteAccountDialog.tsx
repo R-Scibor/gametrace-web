@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { requestDeletion } from '../../api/profile';
 import { ACCOUNT_DELETION_GRACE_DAYS, saveScheduledDeletion } from '../../lib/accountDeletion';
-import { teardownAuth } from '../../lib/authTeardown';
 import { listOf } from '../../lib/i18nList';
 import { Button, Input, Modal } from '../ui';
 import styles from './DeleteAccountDialog.module.css';
@@ -33,24 +32,10 @@ export function DeleteAccountDialog({ open, username, onClose }: DeleteAccountDi
     mutationFn: requestDeletion,
     onMutate: () => setFailed(false),
     onSuccess: (status) => {
-      // Order matters: stash the status before teardownAuth, and rely on
-      // teardownAuth NOT touching sessionStorage — it clears auth only.
-      //
-      // The app's routers are mounted with useTransitions={false} (see
-      // main.tsx / test/utils.tsx) specifically so this navigate() commits
-      // synchronously with teardownAuth()'s isAuthenticated flip below, in
-      // the same render. Without that, React Router defers location updates
-      // via startTransition while zustand's useSyncExternalStore-backed auth
-      // update always applies eagerly — so the auth flip would commit first,
-      // transiently re-rendering ProtectedRoute against the *old* /settings
-      // location with isAuthenticated=false. That mounts <Navigate to=
-      // "/welcome">, whose effect fires its own (later) navigate() and
-      // overwrites this one, stranding the user on /welcome having never
-      // seen the purge date — the exact failure DeletionScheduledPage exists
-      // to prevent.
+      // Auth teardown deliberately does NOT happen here. It happens on
+      // DeletionScheduledPage's mount instead — see the comment there for why.
       saveScheduledDeletion(status);
       navigate('/account/deletion-scheduled', { state: status, replace: true });
-      teardownAuth();
     },
     onError: () => setFailed(true),
   });

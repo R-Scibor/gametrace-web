@@ -3,6 +3,7 @@ import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { DeletionStatusPanel } from '../components/account/DeletionStatusPanel';
 import { isDeletionStatus, readScheduledDeletion } from '../lib/accountDeletion';
+import { teardownAuth } from '../lib/authTeardown';
 import styles from './DeletionScheduledPage.module.css';
 
 /**
@@ -28,6 +29,19 @@ export function DeletionScheduledPage() {
       document.title = prev;
     };
   }, [t, status]);
+
+  // Teardown lives here, not in the dialog before navigating, so it can
+  // never race ProtectedRoute: this route is public, so flipping
+  // isAuthenticated to false here cannot trigger a redirect. By the time the
+  // user is on this screen the backend has already revoked the token as
+  // part of scheduling deletion, so this only clears already-dead client
+  // state. Guarded on `status` so a visitor who lands here with nothing to
+  // show (and gets redirected to /delete-account below) never gets signed
+  // out.
+  useEffect(() => {
+    if (!status) return;
+    teardownAuth();
+  }, [status]);
 
   if (!status) {
     return <Navigate to="/delete-account" replace />;

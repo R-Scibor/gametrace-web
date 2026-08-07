@@ -3,7 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { DeletionScheduledPage } from './DeletionScheduledPage';
 import { saveScheduledDeletion } from '../lib/accountDeletion';
-import { renderAppRoutes, resetStores } from '../../test/utils';
+import { useAuthStore } from '../store/authStore';
+import { renderAppRoutes, resetStores, seedAuth } from '../../test/utils';
 import i18n from '../i18n';
 
 const status = {
@@ -67,5 +68,28 @@ describe('DeletionScheduledPage', () => {
     renderAppRoutes(routes, { route: '/account/deletion-scheduled', authenticated: false });
     expect(screen.getByRole('link', { name: /Zaloguj się, aby anulować/ })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Anuluj usunięcie/ })).not.toBeInTheDocument();
+  });
+
+  it('tears down auth once mounted with a real status', () => {
+    // This is where auth teardown actually happens now (moved out of
+    // DeleteAccountDialog's onSuccess to avoid racing ProtectedRoute).
+    saveScheduledDeletion(status);
+    seedAuth();
+    expect(useAuthStore.getState().isAuthenticated).toBe(true);
+
+    renderAppRoutes(routes, { route: '/account/deletion-scheduled', authenticated: false });
+
+    expect(screen.getByText(/14/)).toBeInTheDocument();
+    expect(useAuthStore.getState().isAuthenticated).toBe(false);
+  });
+
+  it('does not tear down auth when there is no status to show', () => {
+    seedAuth();
+    expect(useAuthStore.getState().isAuthenticated).toBe(true);
+
+    renderAppRoutes(routes, { route: '/account/deletion-scheduled', authenticated: false });
+
+    expect(screen.getByText('public info page')).toBeInTheDocument();
+    expect(useAuthStore.getState().isAuthenticated).toBe(true);
   });
 });

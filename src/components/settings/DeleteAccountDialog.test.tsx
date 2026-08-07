@@ -58,7 +58,13 @@ describe('DeleteAccountDialog', () => {
     expect(screen.getByText(/katalog gier nie zawiera/i)).toBeInTheDocument();
   });
 
-  it('schedules deletion, stores the status and tears down auth', async () => {
+  it('schedules deletion and stores the status without tearing down auth itself', async () => {
+    // Auth teardown intentionally does NOT happen in this onSuccess handler
+    // (see DeletionScheduledPage, which does it on mount instead) — doing it
+    // here would flip isAuthenticated while ProtectedRoute is still mounted
+    // on /settings, racing the deferred navigate() and potentially bouncing
+    // the user to /welcome. See SettingsPage.test.tsx for the end-to-end
+    // regression test that guards this.
     const user = userEvent.setup();
     renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />, {
       authenticated: true,
@@ -67,8 +73,8 @@ describe('DeleteAccountDialog', () => {
     await user.type(screen.getByLabelText(/Wpisz testuser/), 'testuser');
     await user.click(screen.getByRole('button', { name: 'Usuń konto' }));
 
-    await waitFor(() => expect(useAuthStore.getState().isAuthenticated).toBe(false));
-    expect(readScheduledDeletion()?.days_left).toBe(7);
+    await waitFor(() => expect(readScheduledDeletion()?.days_left).toBe(7));
+    expect(useAuthStore.getState().isAuthenticated).toBe(true);
   });
 
   it('shows an error and keeps the user signed in when the request fails', async () => {
