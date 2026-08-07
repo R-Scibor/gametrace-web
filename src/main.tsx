@@ -10,7 +10,10 @@ import App from './App.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      {/* useTransitions={false}: keep location updates synchronous. The account-
+          deletion flow relies on navigate() and the auth-store teardown landing
+          in the same render — see the comment in DeleteAccountDialog.tsx. */}
+      <BrowserRouter useTransitions={false}>
         <App />
       </BrowserRouter>
     </QueryClientProvider>

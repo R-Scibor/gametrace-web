@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { screen } from '@testing-library/react';
-import { Route } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { DeletionScheduledPage } from './DeletionScheduledPage';
 import { saveScheduledDeletion } from '../lib/accountDeletion';
 import { renderAppRoutes, resetStores } from '../../test/utils';
@@ -26,6 +26,30 @@ beforeEach(async () => {
 });
 
 describe('DeletionScheduledPage', () => {
+  it('ignores garbage router state and falls back to sessionStorage instead of "Invalid Date"', () => {
+    saveScheduledDeletion(status);
+    render(
+      <MemoryRouter
+        initialEntries={[{ pathname: '/account/deletion-scheduled', state: { from: '/settings' } }]}
+      >
+        <Routes>{routes}</Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.queryByText('Invalid Date')).not.toBeInTheDocument();
+    expect(screen.getByText(/14/)).toBeInTheDocument();
+  });
+
+  it('redirects to the public page when router state is garbage and sessionStorage is empty', () => {
+    render(
+      <MemoryRouter
+        initialEntries={[{ pathname: '/account/deletion-scheduled', state: { from: '/settings' } }]}
+      >
+        <Routes>{routes}</Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.getByText('public info page')).toBeInTheDocument();
+  });
+
   it('recovers the status from sessionStorage when router state is gone', () => {
     saveScheduledDeletion(status);
     renderAppRoutes(routes, { route: '/account/deletion-scheduled', authenticated: false });

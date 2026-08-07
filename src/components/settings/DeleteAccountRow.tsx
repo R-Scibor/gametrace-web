@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui';
+import { ACCOUNT_DELETION_GRACE_DAYS } from '../../lib/accountDeletion';
 import { DeleteAccountDialog } from './DeleteAccountDialog';
 import styles from './DeleteAccountRow.module.css';
 
@@ -24,7 +25,9 @@ export function DeleteAccountRow({ username, isAdmin }: DeleteAccountRowProps) {
         <div className={styles.info}>
           <span className={styles.label}>{t('account.delete')}</span>
           <span className={styles.subtext}>
-            {isAdmin ? t('account.deleteAdmin') : t('account.deleteSub')}
+            {isAdmin
+              ? t('account.deleteAdmin')
+              : t('account.deleteSub', { days: ACCOUNT_DELETION_GRACE_DAYS })}
           </span>
         </div>
         <Button

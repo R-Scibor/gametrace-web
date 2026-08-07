@@ -32,7 +32,7 @@
     },
     "deletion": {
       "title": "Usuwanie konta",
-      "body": "Usunięcie konta zlecisz w panelu web: Ustawienia → Konto → Usuń konto. Konto jest wyłączane natychmiast, a dane trwale usuwane po 7 dniach (usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby później). W okresie karencji możesz anulować, logując się ponownie. Jeśli nie możesz się zalogować, napisz na adres kontaktowy poniżej.",
+      "body": "Usunięcie konta zlecisz w panelu web: Ustawienia → Konto → Usuń konto. Konto jest wyłączane natychmiast, a dane trwale usuwane po {{days}} dniach (usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby później). W okresie karencji możesz anulować, logując się ponownie. Jeśli nie możesz się zalogować, napisz na adres kontaktowy poniżej.",
       "linkLabel": "Jak usunąć konto — pełna instrukcja"
     },
     "contact": {

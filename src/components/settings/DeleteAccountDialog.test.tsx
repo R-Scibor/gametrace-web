@@ -33,6 +33,17 @@ describe('DeleteAccountDialog', () => {
     expect(confirm).toBeEnabled();
   });
 
+  it('keeps confirm disabled for an empty username even after typing', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<DeleteAccountDialog open username="" onClose={onClose} />);
+
+    const confirm = screen.getByRole('button', { name: 'Usuń konto' });
+    expect(confirm).toBeDisabled();
+
+    await user.type(screen.getByLabelText(/Wpisz/), 'anything');
+    expect(confirm).toBeDisabled();
+  });
+
   it('accepts a trimmed, differently-cased username', async () => {
     const user = userEvent.setup();
     renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />);
@@ -78,5 +89,37 @@ describe('DeleteAccountDialog', () => {
       expect(screen.getByText('Nie udało się zlecić usunięcia konta. Spróbuj ponownie.')).toBeInTheDocument(),
     );
     expect(useAuthStore.getState().isAuthenticated).toBe(true);
+  });
+
+  it('clears a stale error banner once a retry is in flight', async () => {
+    const user = userEvent.setup();
+    server.use(
+      http.post('/api/v1/profile/me/deletion', () =>
+        HttpResponse.json({ detail: 'Admin accounts cannot self-delete' }, { status: 403 }),
+      ),
+    );
+    renderWithProviders(<DeleteAccountDialog open username="testuser" onClose={onClose} />, {
+      authenticated: true,
+    });
+
+    await user.type(screen.getByLabelText(/Wpisz testuser/), 'testuser');
+    await user.click(screen.getByRole('button', { name: 'Usuń konto' }));
+    await waitFor(() =>
+      expect(screen.getByText('Nie udało się zlecić usunięcia konta. Spróbuj ponownie.')).toBeInTheDocument(),
+    );
+
+    server.use(
+      http.post('/api/v1/profile/me/deletion', () =>
+        HttpResponse.json(
+          { deletion_requested_at: '2026-08-07T12:00:00Z', purge_at: '2026-08-14T12:00:00Z', days_left: 7 },
+          { status: 202 },
+        ),
+      ),
+    );
+    await user.click(screen.getByRole('button', { name: 'Usuń konto' }));
+
+    expect(
+      screen.queryByText('Nie udało się zlecić usunięcia konta. Spróbuj ponownie.'),
+    ).not.toBeInTheDocument();
   });
 });

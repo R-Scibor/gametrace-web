@@ -9,7 +9,7 @@
     "user": "User",
     "discordId": "ID: {{id}}",
     "delete": "Delete account",
-    "deleteSub": "The account is disabled immediately; data is permanently deleted after 7 days.",
+    "deleteSub": "The account is disabled immediately; data is permanently deleted after {{days}} days.",
     "deleteAdmin": "Admin accounts cannot delete themselves.",
     "deleteAction": "Delete"
   },

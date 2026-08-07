@@ -11,7 +11,7 @@ export const ACCOUNT_DELETION_GRACE_DAYS = 7;
 
 const STORAGE_KEY = 'gt.deletionScheduled';
 
-const isDeletionStatus = (value: unknown): value is DeletionStatus =>
+export const isDeletionStatus = (value: unknown): value is DeletionStatus =>
   typeof value === 'object' &&
   value !== null &&
   typeof (value as DeletionStatus).purge_at === 'string' &&

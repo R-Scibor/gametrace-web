@@ -1,22 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { DeletionStatusPanel } from '../components/account/DeletionStatusPanel';
-import { readScheduledDeletion } from '../lib/accountDeletion';
-import type { DeletionStatus } from '../types/api';
+import { isDeletionStatus, readScheduledDeletion } from '../lib/accountDeletion';
 import styles from './DeletionScheduledPage.module.css';
 
 /**
  * Where the user lands right after scheduling deletion. Their token is already
  * dead, so there is no cancel button here — only instructions for getting back
  * in. Status resolves from router state first, then sessionStorage so a refresh
- * does not lose the purge date.
+ * does not lose the purge date. Router state is validated the same way as
+ * sessionStorage — an unrelated navigation must not render a bogus purge date.
  */
 export function DeletionScheduledPage() {
   const { t } = useTranslation('account');
   const location = useLocation();
-  const fromState = (location.state as DeletionStatus | null) ?? null;
-  const status = fromState ?? readScheduledDeletion();
+  const status = useMemo(() => {
+    const fromState = isDeletionStatus(location.state) ? location.state : null;
+    return fromState ?? readScheduledDeletion();
+  }, [location.state]);
 
   useEffect(() => {
     if (!status) return;

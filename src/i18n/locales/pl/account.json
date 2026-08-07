@@ -6,7 +6,7 @@
     "consequencesLabel": "Co się stanie",
     "consequences": [
       "Dostęp zostanie wyłączony natychmiast — zostaniesz wylogowany na wszystkich urządzeniach, a trwająca sesja gry zakończy się błędem.",
-      "Dane zostaną trwale usunięte po 7 dniach lub wkrótce po tym terminie.",
+      "Dane zostaną trwale usunięte po {{days}} dniach lub wkrótce po tym terminie.",
       "Możesz anulować w tym czasie, logując się ponownie kodem z Discorda."
     ],
     "confirmLabel": "Wpisz {{username}}, aby potwierdzić",
@@ -62,9 +62,9 @@
       "Wybierz „Usuń konto” i potwierdź, wpisując swoją nazwę użytkownika."
     ],
     "graceTitle": "Co się dzieje potem",
-    "graceBody": "Konto jest wyłączane natychmiast — zostajesz wylogowany na wszystkich urządzeniach. Dane są trwale usuwane po 7 dniach; usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby po tej dacie.",
+    "graceBody": "Konto jest wyłączane natychmiast — zostajesz wylogowany na wszystkich urządzeniach. Dane są trwale usuwane po {{days}} dniach; usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby po tej dacie.",
     "cancelTitle": "Anulowanie",
-    "cancelBody": "W ciągu 7 dni możesz anulować usunięcie, logując się ponownie — zobaczysz wtedy ekran z przyciskiem anulowania. Po tym czasie danych nie da się odzyskać.",
+    "cancelBody": "W ciągu {{days}} dni możesz anulować usunięcie, logując się ponownie — zobaczysz wtedy ekran z przyciskiem anulowania. Po tym czasie danych nie da się odzyskać.",
     "inventoryTitle": "Co zostaje usunięte",
     "inventory": [
       "Sesje gry i cała historia grania",

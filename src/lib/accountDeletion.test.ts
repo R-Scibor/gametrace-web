@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { AxiosError, AxiosHeaders } from 'axios';
+import i18n from '../i18n';
 import {
   ACCOUNT_DELETION_GRACE_DAYS,
+  isDeletionStatus,
   saveScheduledDeletion,
   readScheduledDeletion,
   clearScheduledDeletion,
@@ -31,8 +33,25 @@ beforeEach(() => {
 });
 
 describe('grace constant', () => {
-  it('mirrors the backend default', () => {
-    expect(ACCOUNT_DELETION_GRACE_DAYS).toBe(7);
+  it('drives the interpolated copy actually shown to the user', async () => {
+    await i18n.changeLanguage('pl');
+    const consequences = i18n.t('account:dialog.consequences', {
+      returnObjects: true,
+      days: ACCOUNT_DELETION_GRACE_DAYS,
+    }) as string[];
+    expect(consequences[1]).toContain(`${ACCOUNT_DELETION_GRACE_DAYS} dniach`);
+  });
+});
+
+describe('isDeletionStatus', () => {
+  it('accepts a well-shaped status', () => {
+    expect(isDeletionStatus(status)).toBe(true);
+  });
+
+  it('rejects unrelated router state', () => {
+    expect(isDeletionStatus({ from: '/settings' })).toBe(false);
+    expect(isDeletionStatus(null)).toBe(false);
+    expect(isDeletionStatus('nope')).toBe(false);
   });
 });
 

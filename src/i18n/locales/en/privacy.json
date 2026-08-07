@@ -32,7 +32,7 @@
     },
     "deletion": {
       "title": "Account deletion",
-      "body": "You can request deletion from the web app: Settings → Account → Delete account. The account is disabled immediately and data is permanently deleted after 7 days (the deletion job runs once a day, so it may happen up to a day later). During the grace period you can cancel by signing in again. If you cannot sign in, email the contact address below.",
+      "body": "You can request deletion from the web app: Settings → Account → Delete account. The account is disabled immediately and data is permanently deleted after {{days}} days (the deletion job runs once a day, so it may happen up to a day later). During the grace period you can cancel by signing in again. If you cannot sign in, email the contact address below.",
       "linkLabel": "How to delete your account — full instructions"
     },
     "contact": {

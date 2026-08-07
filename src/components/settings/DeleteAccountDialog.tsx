@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { requestDeletion } from '../../api/profile';
-import { saveScheduledDeletion } from '../../lib/accountDeletion';
+import { ACCOUNT_DELETION_GRACE_DAYS, saveScheduledDeletion } from '../../lib/accountDeletion';
 import { teardownAuth } from '../../lib/authTeardown';
 import { listOf } from '../../lib/i18nList';
 import { Button, Input, Modal } from '../ui';
@@ -16,7 +16,7 @@ interface DeleteAccountDialogProps {
 }
 
 const matches = (typed: string, username: string) =>
-  typed.trim().toLowerCase() === username.trim().toLowerCase();
+  username.trim().length > 0 && typed.trim().toLowerCase() === username.trim().toLowerCase();
 
 /**
  * Built on Modal rather than ConfirmDialog: a typed-confirmation gate and its
@@ -31,19 +31,35 @@ export function DeleteAccountDialog({ open, username, onClose }: DeleteAccountDi
 
   const schedule = useMutation({
     mutationFn: requestDeletion,
+    onMutate: () => setFailed(false),
     onSuccess: (status) => {
       // Order matters: stash the status before teardownAuth, and rely on
       // teardownAuth NOT touching sessionStorage — it clears auth only.
+      //
+      // The app's routers are mounted with useTransitions={false} (see
+      // main.tsx / test/utils.tsx) specifically so this navigate() commits
+      // synchronously with teardownAuth()'s isAuthenticated flip below, in
+      // the same render. Without that, React Router defers location updates
+      // via startTransition while zustand's useSyncExternalStore-backed auth
+      // update always applies eagerly — so the auth flip would commit first,
+      // transiently re-rendering ProtectedRoute against the *old* /settings
+      // location with isAuthenticated=false. That mounts <Navigate to=
+      // "/welcome">, whose effect fires its own (later) navigate() and
+      // overwrites this one, stranding the user on /welcome having never
+      // seen the purge date — the exact failure DeletionScheduledPage exists
+      // to prevent.
       saveScheduledDeletion(status);
-      teardownAuth();
       navigate('/account/deletion-scheduled', { state: status, replace: true });
+      teardownAuth();
     },
     onError: () => setFailed(true),
   });
 
   const confirmLabel = t('dialog.confirmLabel', { username });
   const inventory = listOf(t('public.inventory', { returnObjects: true }));
-  const consequences = listOf(t('dialog.consequences', { returnObjects: true }));
+  const consequences = listOf(
+    t('dialog.consequences', { returnObjects: true, days: ACCOUNT_DELETION_GRACE_DAYS }),
+  );
 
   return (
     <Modal open={open} onClose={onClose} labelledBy="delete-account-title" role="alertdialog">

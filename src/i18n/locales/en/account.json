@@ -6,7 +6,7 @@
     "consequencesLabel": "What happens",
     "consequences": [
       "Access is disabled immediately — you are signed out everywhere, and any ongoing game session ends in an error.",
-      "Data is permanently deleted after 7 days, or shortly after.",
+      "Data is permanently deleted after {{days}} days, or shortly after.",
       "You can cancel during that time by signing in again with a Discord code."
     ],
     "confirmLabel": "Type {{username}} to confirm",
@@ -61,9 +61,9 @@
       "Choose \"Delete account\" and confirm by typing your username."
     ],
     "graceTitle": "What happens next",
-    "graceBody": "The account is disabled immediately — you are signed out everywhere. Data is permanently deleted after 7 days; the deletion job runs once a day, so it may happen up to a day after that date.",
+    "graceBody": "The account is disabled immediately — you are signed out everywhere. Data is permanently deleted after {{days}} days; the deletion job runs once a day, so it may happen up to a day after that date.",
     "cancelTitle": "Cancelling",
-    "cancelBody": "Within those 7 days you can cancel by signing in again — you will be shown a screen with a cancel button. After that the data cannot be recovered.",
+    "cancelBody": "Within those {{days}} days you can cancel by signing in again — you will be shown a screen with a cancel button. After that the data cannot be recovered.",
     "inventoryTitle": "What gets deleted",
     "inventory": [
       "Game sessions and your full play history",

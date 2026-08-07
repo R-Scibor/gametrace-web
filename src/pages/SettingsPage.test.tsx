@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom';
 import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach, it } from 'vitest';
 import { SettingsPage } from './SettingsPage';
+import { DeletionScheduledPage } from './DeletionScheduledPage';
+import { ProtectedRoute } from '../components/ProtectedRoute';
 import { renderAppRoutes, renderPage, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
 import { fixtures } from '../../test/fixtures';
@@ -121,4 +123,35 @@ it('opens the confirm dialog for a non-admin', async () => {
 
   await user.click(screen.getByRole('button', { name: 'Usuń' }));
   expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+});
+
+it('lands on the deletion-scheduled screen with the purge date, not /welcome, after scheduling', async () => {
+  // Guards the onSuccess race in DeleteAccountDialog: teardownAuth() flips
+  // isAuthenticated false and navigate() fires in the same batch. If the
+  // ProtectedRoute redirect ever won that race the user would be bounced to
+  // /welcome and never see the purge date.
+  const user = userEvent.setup();
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({ ...fixtures.profileMe, is_admin: false }),
+    ),
+  );
+  renderAppRoutes(
+    <>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/settings" element={<SettingsPage />} />
+      </Route>
+      <Route path="/account/deletion-scheduled" element={<DeletionScheduledPage />} />
+      <Route path="/welcome" element={<p>welcome page</p>} />
+    </>,
+    { route: '/settings' },
+  );
+
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Usuń' })).toBeEnabled());
+  await user.click(screen.getByRole('button', { name: 'Usuń' }));
+  await user.type(screen.getByLabelText(/Wpisz testuser/), 'testuser');
+  await user.click(screen.getByRole('button', { name: 'Usuń konto' }));
+
+  expect(await screen.findByText(/14/)).toBeInTheDocument();
+  expect(screen.queryByText('welcome page')).not.toBeInTheDocument();
 });

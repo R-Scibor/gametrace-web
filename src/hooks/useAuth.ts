@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { linkLogin as linkLoginApi, logout as logoutApi } from '../api/auth';
 import { teardownAuth } from '../lib/authTeardown';
+import { clearScheduledDeletion } from '../lib/accountDeletion';
 import i18n from '../i18n';
 
 const linkErrorMessage = (err: unknown): string => {
@@ -41,6 +42,11 @@ export function useAuth() {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const res = await linkLoginApi(code, tz);
+      if (!res.pending_deletion) {
+        // A stale scheduled-deletion screen must not survive a login that
+        // proves the account is no longer scheduled (e.g. cancelled elsewhere).
+        clearScheduledDeletion();
+      }
       useAuthStore
         .getState()
         .login(

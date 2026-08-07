@@ -5,6 +5,7 @@ import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { listOf } from '../lib/i18nList';
+import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
 import { PRIVACY_CONTACT_EMAIL } from './PrivacyPage';
 import styles from './DeleteAccountPage.module.css';
 
@@ -59,12 +60,16 @@ export function DeleteAccountPage() {
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>{t('public.graceTitle')}</h2>
-            <p className={styles.body}>{t('public.graceBody')}</p>
+            <p className={styles.body}>
+              {t('public.graceBody', { days: ACCOUNT_DELETION_GRACE_DAYS })}
+            </p>
           </section>
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>{t('public.cancelTitle')}</h2>
-            <p className={styles.body}>{t('public.cancelBody')}</p>
+            <p className={styles.body}>
+              {t('public.cancelBody', { days: ACCOUNT_DELETION_GRACE_DAYS })}
+            </p>
           </section>
 
           <section className={styles.section}>

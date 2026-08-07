@@ -23,6 +23,26 @@ describe('authStore admin persistence', () => {
   });
 });
 
+describe('authStore pendingDeletion', () => {
+  beforeEach(() => {
+    localStorage.removeItem('auth-storage');
+    useAuthStore.getState().logout();
+  });
+
+  it('clears pendingDeletion on logout', () => {
+    useAuthStore.getState().login('t', { discordId: '1', username: 'u' }, false, {
+      deletion_requested_at: '2026-08-07T12:00:00Z',
+      purge_at: '2026-08-14T12:00:00Z',
+      days_left: 7,
+    });
+    expect(useAuthStore.getState().pendingDeletion).not.toBeNull();
+
+    useAuthStore.getState().logout();
+
+    expect(useAuthStore.getState().pendingDeletion).toBeNull();
+  });
+});
+
 describe('authStore previewDismissed', () => {
   beforeEach(() => {
     localStorage.removeItem('auth-storage');

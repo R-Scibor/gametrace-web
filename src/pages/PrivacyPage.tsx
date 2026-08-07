@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
+import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
 import styles from './PrivacyPage.module.css';
 
 /** Public contact for official-host privacy questions (same as portfolio). */
@@ -93,7 +94,9 @@ export function PrivacyPage() {
                 </>
               ) : key === 'deletion' ? (
                 <>
-                  <p className={styles.body}>{t('sections.deletion.body')}</p>
+                  <p className={styles.body}>
+                    {t('sections.deletion.body', { days: ACCOUNT_DELETION_GRACE_DAYS })}
+                  </p>
                   <p>
                     <Link to="/delete-account" className={styles.email}>
                       {t('sections.deletion.linkLabel')}
