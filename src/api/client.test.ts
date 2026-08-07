@@ -51,3 +51,41 @@ test('client does not tear down auth on failed login attempts', async () => {
   expect(useAuthStore.getState().isAuthenticated).toBe(true);
   expect(useAuthStore.getState().token).toBe('test-token');
 });
+
+test('records pendingDeletion from the grace-period 403 without tearing down auth', async () => {
+  useAuthStore.getState().login('test-token', { discordId: '1', username: 'test' });
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json(
+        {
+          detail: {
+            detail: 'Account scheduled for deletion',
+            deletion_requested_at: '2026-08-07T12:00:00Z',
+            purge_at: '2026-08-14T12:00:00Z',
+            days_left: 7,
+          },
+        },
+        { status: 403 },
+      ),
+    ),
+  );
+
+  await expect(client.get('/profile/me')).rejects.toThrow();
+
+  expect(useAuthStore.getState().pendingDeletion?.days_left).toBe(7);
+  expect(useAuthStore.getState().isAuthenticated).toBe(true);
+});
+
+test('leaves an ordinary 403 alone', async () => {
+  useAuthStore.getState().login('test-token', { discordId: '1', username: 'test' });
+  server.use(
+    http.get('/api/v1/admin/stats/overview', () =>
+      HttpResponse.json({ detail: 'Admin access required' }, { status: 403 }),
+    ),
+  );
+
+  await expect(client.get('/admin/stats/overview')).rejects.toThrow();
+
+  expect(useAuthStore.getState().pendingDeletion).toBeNull();
+  expect(useAuthStore.getState().isAuthenticated).toBe(true);
+});

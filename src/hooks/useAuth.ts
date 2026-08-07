@@ -43,7 +43,12 @@ export function useAuth() {
       const res = await linkLoginApi(code, tz);
       useAuthStore
         .getState()
-        .login(res.token, { discordId: res.discord_id, username: res.username }, res.is_admin);
+        .login(
+          res.token,
+          { discordId: res.discord_id, username: res.username },
+          res.is_admin,
+          res.pending_deletion,
+        );
       return true;
     } catch (err: unknown) {
       setError(linkErrorMessage(err));

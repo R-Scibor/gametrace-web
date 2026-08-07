@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
 import { formatLinkCode, isCompleteLinkCode, normalizeLinkCode } from '../lib/linkCode';
+import { useAuthStore } from '../store/authStore';
 import styles from './LoginPage.module.css';
 
 export function LoginPage() {
@@ -13,9 +14,10 @@ export function LoginPage() {
   const { data: health } = useHealth();
   const navigate = useNavigate();
   const [code, setCode] = useState('');
+  const pendingDeletion = useAuthStore((s) => s.pendingDeletion);
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={pendingDeletion ? '/account/pending-deletion' : '/'} replace />;
   }
 
   const canSubmit = !loading && isCompleteLinkCode(code);
@@ -25,7 +27,10 @@ export function LoginPage() {
     if (!canSubmit) return;
     const ok = await handleLinkLogin(code);
     if (ok) {
-      navigate('/', { replace: true });
+      // Read from the store, not from `pendingDeletion` above: that binding is
+      // from the render before the login landed.
+      const pending = useAuthStore.getState().pendingDeletion;
+      navigate(pending ? '/account/pending-deletion' : '/', { replace: true });
     }
   };
 

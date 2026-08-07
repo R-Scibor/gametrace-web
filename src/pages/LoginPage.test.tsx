@@ -1,10 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { http, HttpResponse } from 'msw';
 import { LoginPage } from './LoginPage';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useAuthStore } from '../store/authStore';
+import { server } from '../../test/server';
 import { test, expect, beforeEach } from 'vitest';
 
 function renderLogin(route = '/login') {
@@ -84,4 +86,42 @@ test('LoginPage reaches protected home through ProtectedRoute', async () => {
 
   expect(await screen.findByText('Dashboard Home')).toBeInTheDocument();
   expect(useAuthStore.getState().isAuthenticated).toBe(true);
+});
+
+test('sends a scheduled account to the blocking screen instead of the dashboard', async () => {
+  const user = userEvent.setup();
+  server.use(
+    http.post('/api/v1/auth/link', () =>
+      HttpResponse.json({
+        token: 'test-token',
+        discord_id: '123',
+        username: 'testuser',
+        timezone: 'Europe/Warsaw',
+        is_admin: false,
+        pending_deletion: {
+          deletion_requested_at: '2026-08-07T12:00:00Z',
+          purge_at: '2026-08-14T12:00:00Z',
+          days_left: 7,
+        },
+      }),
+    ),
+  );
+
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={['/login']}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<p>dashboard</p>} />
+          <Route path="/account/pending-deletion" element={<p>blocking screen</p>} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
+  );
+
+  await user.type(screen.getByLabelText(/kod/i), '231996');
+  await user.click(screen.getByRole('button', { name: /zaloguj/i }));
+
+  await waitFor(() => expect(screen.getByText('blocking screen')).toBeInTheDocument());
 });

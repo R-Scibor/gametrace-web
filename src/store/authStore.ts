@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import type { PendingDeletion } from '../types/api';
 
 type User = {
   discordId: string;
@@ -12,9 +13,16 @@ type AuthState = {
   isAdmin: boolean;
   isAuthenticated: boolean;
   previewDismissed: boolean;
-  login: (token: string, user: User, isAdmin?: boolean) => void;
+  pendingDeletion: PendingDeletion | null;
+  login: (
+    token: string,
+    user: User,
+    isAdmin?: boolean,
+    pendingDeletion?: PendingDeletion | null,
+  ) => void;
   setIsAdmin: (isAdmin: boolean) => void;
   setPreviewDismissed: (dismissed: boolean) => void;
+  setPendingDeletion: (pendingDeletion: PendingDeletion | null) => void;
   logout: () => void;
 };
 
@@ -26,13 +34,22 @@ export const useAuthStore = create<AuthState>()(
       isAdmin: false,
       isAuthenticated: false,
       previewDismissed: false,
+      pendingDeletion: null,
 
-      login: (token, user, isAdmin = false) =>
-        set({ token, user, isAdmin, isAuthenticated: true }),
+      login: (token, user, isAdmin = false, pendingDeletion = null) =>
+        set({ token, user, isAdmin, isAuthenticated: true, pendingDeletion }),
       setIsAdmin: (isAdmin) => set({ isAdmin }),
       setPreviewDismissed: (previewDismissed) => set({ previewDismissed }),
+      setPendingDeletion: (pendingDeletion) => set({ pendingDeletion }),
       logout: () =>
-        set({ token: null, user: null, isAdmin: false, isAuthenticated: false, previewDismissed: false }),
+        set({
+          token: null,
+          user: null,
+          isAdmin: false,
+          isAuthenticated: false,
+          previewDismissed: false,
+          pendingDeletion: null,
+        }),
     }),
     {
       name: 'auth-storage',
@@ -42,6 +59,7 @@ export const useAuthStore = create<AuthState>()(
         isAdmin: state.isAdmin,
         isAuthenticated: state.isAuthenticated,
         previewDismissed: state.previewDismissed,
+        pendingDeletion: state.pendingDeletion,
       }),
       onRehydrateStorage: () => (_state, error) => {
         if (error) {

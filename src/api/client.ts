@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { teardownAuth } from '../lib/authTeardown';
+import { pendingDeletionFromError } from '../lib/accountDeletion';
 
 const client = axios.create({
   baseURL: '/api/v1',
@@ -28,6 +29,15 @@ client.interceptors.response.use(
     if (error.response?.status === 401 && !isAuthEndpoint(error.config?.url)) {
       teardownAuth();
     }
+
+    // Safety net for a grace-period token whose pendingDeletion flag was never
+    // written or was cleared (stale persisted store, tab open across a failed
+    // cancel). Not the multi-device path — that one is a 401, handled above.
+    const pending = pendingDeletionFromError(error);
+    if (pending) {
+      useAuthStore.getState().setPendingDeletion(pending);
+    }
+
     return Promise.reject(error);
   },
 );

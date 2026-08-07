@@ -1,42 +1,53 @@
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { act, screen } from '@testing-library/react';
+import { Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
-import { test, expect, beforeEach } from 'vitest';
 import { useAuthStore } from '../store/authStore';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { resetStores } from '../../test/utils';
+import { renderAppRoutes, resetStores } from '../../test/utils';
+
+const pending = {
+  deletion_requested_at: '2026-08-07T12:00:00Z',
+  purge_at: '2026-08-14T12:00:00Z',
+  days_left: 7,
+};
 
 beforeEach(() => {
   resetStores();
 });
 
-test('ProtectedRoute redirects to /welcome when unauthenticated', () => {
-  render(
-    <MemoryRouter initialEntries={['/protected']}>
-      <Routes>
-        <Route element={<ProtectedRoute />}>
-          <Route path="/protected" element={<div>Protected Content</div>} />
-        </Route>
-        <Route path="/welcome" element={<div>Welcome Page</div>} />
-      </Routes>
-    </MemoryRouter>,
-  );
+const routes = (
+  <>
+    <Route element={<ProtectedRoute />}>
+      <Route path="/" element={<p>dashboard</p>} />
+    </Route>
+    <Route path="/welcome" element={<p>welcome</p>} />
+    <Route path="/account/pending-deletion" element={<p>blocking screen</p>} />
+  </>
+);
 
-  expect(screen.getByText('Welcome Page')).toBeInTheDocument();
-  expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
-});
+describe('ProtectedRoute', () => {
+  it('sends unauthenticated users to /welcome', () => {
+    renderAppRoutes(routes, { route: '/', authenticated: false });
+    expect(screen.getByText('welcome')).toBeInTheDocument();
+  });
 
-test('ProtectedRoute renders children when authenticated', () => {
-  useAuthStore.getState().login('token', { discordId: '1', username: 'test' });
+  it('renders the app for a normal authenticated user', () => {
+    renderAppRoutes(routes, { route: '/', authenticated: true });
+    expect(screen.getByText('dashboard')).toBeInTheDocument();
+  });
 
-  render(
-    <MemoryRouter initialEntries={['/protected']}>
-      <Routes>
-        <Route element={<ProtectedRoute />}>
-          <Route path="/protected" element={<div>Protected Content</div>} />
-        </Route>
-      </Routes>
-    </MemoryRouter>,
-  );
+  it('sends a scheduled account to the blocking screen', () => {
+    renderAppRoutes(routes, { route: '/', authenticated: true });
+    act(() => {
+      useAuthStore.getState().setPendingDeletion(pending);
+    });
+    // re-render happens via the store subscription
+    expect(screen.getByText('blocking screen')).toBeInTheDocument();
+  });
 
-  expect(screen.getByText('Protected Content')).toBeInTheDocument();
+  it('checks auth before pendingDeletion', () => {
+    useAuthStore.setState({ pendingDeletion: pending });
+    renderAppRoutes(routes, { route: '/', authenticated: false });
+    expect(screen.getByText('welcome')).toBeInTheDocument();
+  });
 });
