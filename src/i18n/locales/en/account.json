@@ -1,0 +1,67 @@
+{
+  "status": {
+    "purgeLabel": "Permanent deletion",
+    "purgeValue": "{{date}} or shortly after",
+    "purgeNote": "The deletion job runs once a day, so it may happen up to a day later.",
+    "daysLeftLabel": "Time left",
+    "daysLeft_one": "{{count}} day",
+    "daysLeft_other": "{{count}} days"
+  },
+  "scheduled": {
+    "documentTitle": "Account scheduled for deletion — GameTrace",
+    "eyebrow": "Account scheduled for deletion",
+    "title": "Your account will be deleted",
+    "lead": "Access has been disabled. You have been signed out on every device.",
+    "cancelTitle": "Changed your mind?",
+    "cancelBody": "Sign in again with a Discord code before that date and the deletion is cancelled. There is no cancel button on this page because you are no longer signed in.",
+    "loginCta": "Sign in to cancel",
+    "homeCta": "Home"
+  },
+  "pending": {
+    "documentTitle": "Account pending deletion — GameTrace",
+    "eyebrow": "Account pending deletion",
+    "title": "Your account will be deleted",
+    "lead": "The app stays unavailable until you cancel the deletion.",
+    "caveatsLabel": "Before you cancel",
+    "caveats": [
+      "Cancelling restores access immediately.",
+      "Sessions that were errored out when you requested deletion, and unregistered devices, do not come back.",
+      "Once the data is permanently deleted it cannot be recovered."
+    ],
+    "cancelCta": "Cancel deletion",
+    "logoutCta": "Sign out",
+    "cancelled": "Account deletion has been cancelled.",
+    "notScheduled": "This account is not scheduled for deletion.",
+    "cancelFailed": "Could not cancel the deletion. Please try again."
+  },
+  "public": {
+    "documentTitle": "Account deletion — GameTrace",
+    "eyebrow": "GameTrace",
+    "title": "Account deletion",
+    "intro": "You can request deletion of your GameTrace account and its data at any time. Here is how, and exactly what gets removed.",
+    "stepsTitle": "How to delete your account",
+    "steps": [
+      "Sign in to the web app (code from the /login command on Discord).",
+      "Go to Settings → Account.",
+      "Choose \"Delete account\" and confirm by typing your username."
+    ],
+    "graceTitle": "What happens next",
+    "graceBody": "The account is disabled immediately — you are signed out everywhere. Data is permanently deleted after 7 days; the deletion job runs once a day, so it may happen up to a day after that date.",
+    "cancelTitle": "Cancelling",
+    "cancelBody": "Within those 7 days you can cancel by signing in again — you will be shown a screen with a cancel button. After that the data cannot be recovered.",
+    "inventoryTitle": "What gets deleted",
+    "inventory": [
+      "Game sessions and your full play history",
+      "Library and game preferences",
+      "Login tokens and registered devices (notifications)",
+      "Reports you sent to the administrator",
+      "Voice feature usage records"
+    ],
+    "inventoryNote": "The shared game catalogue holds no personal data and is left untouched.",
+    "noAccessTitle": "Cannot sign in?",
+    "noAccessBody": "Email the address below from the Discord account linked to GameTrace and we will delete the account manually.",
+    "backHome": "← Home",
+    "privacyLink": "Privacy policy",
+    "languageLabel": "Language"
+  }
+}

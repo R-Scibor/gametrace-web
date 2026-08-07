@@ -1,0 +1,68 @@
+{
+  "status": {
+    "purgeLabel": "Trwałe usunięcie",
+    "purgeValue": "{{date}} lub wkrótce po tej dacie",
+    "purgeNote": "Usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby później.",
+    "daysLeftLabel": "Pozostało",
+    "daysLeft_one": "{{count}} dzień",
+    "daysLeft_few": "{{count}} dni",
+    "daysLeft_many": "{{count}} dni"
+  },
+  "scheduled": {
+    "documentTitle": "Konto zaplanowane do usunięcia — GameTrace",
+    "eyebrow": "Konto zaplanowane do usunięcia",
+    "title": "Twoje konto zostanie usunięte",
+    "lead": "Dostęp został wyłączony. Zostałeś wylogowany na wszystkich urządzeniach.",
+    "cancelTitle": "Zmieniłeś zdanie?",
+    "cancelBody": "Zaloguj się ponownie kodem z Discorda przed tą datą — usunięcie zostanie anulowane. Na tej stronie nie ma przycisku anulowania, bo nie jesteś już zalogowany.",
+    "loginCta": "Zaloguj się, aby anulować",
+    "homeCta": "Strona główna"
+  },
+  "pending": {
+    "documentTitle": "Konto oczekuje na usunięcie — GameTrace",
+    "eyebrow": "Konto oczekuje na usunięcie",
+    "title": "Konto zostanie usunięte",
+    "lead": "Aplikacja jest niedostępna do czasu anulowania usunięcia.",
+    "caveatsLabel": "Zanim anulujesz",
+    "caveats": [
+      "Anulowanie przywraca dostęp natychmiast.",
+      "Sesje zakończone błędem przy zlecaniu usunięcia oraz wyrejestrowane urządzenia nie wracają.",
+      "Po trwałym usunięciu danych nie da się odzyskać."
+    ],
+    "cancelCta": "Anuluj usunięcie",
+    "logoutCta": "Wyloguj",
+    "cancelled": "Usuwanie konta zostało anulowane.",
+    "notScheduled": "To konto nie jest zaplanowane do usunięcia.",
+    "cancelFailed": "Nie udało się anulować usunięcia. Spróbuj ponownie."
+  },
+  "public": {
+    "documentTitle": "Usuwanie konta — GameTrace",
+    "eyebrow": "GameTrace",
+    "title": "Usuwanie konta",
+    "intro": "Możesz w każdej chwili zlecić usunięcie konta GameTrace i powiązanych z nim danych. Poniżej opisujemy, jak to zrobić i co dokładnie zostanie usunięte.",
+    "stepsTitle": "Jak usunąć konto",
+    "steps": [
+      "Zaloguj się w aplikacji web (kod z komendy /login na Discordzie).",
+      "Przejdź do Ustawienia → Konto.",
+      "Wybierz „Usuń konto” i potwierdź, wpisując swoją nazwę użytkownika."
+    ],
+    "graceTitle": "Co się dzieje potem",
+    "graceBody": "Konto jest wyłączane natychmiast — zostajesz wylogowany na wszystkich urządzeniach. Dane są trwale usuwane po 7 dniach; usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby po tej dacie.",
+    "cancelTitle": "Anulowanie",
+    "cancelBody": "W ciągu 7 dni możesz anulować usunięcie, logując się ponownie — zobaczysz wtedy ekran z przyciskiem anulowania. Po tym czasie danych nie da się odzyskać.",
+    "inventoryTitle": "Co zostaje usunięte",
+    "inventory": [
+      "Sesje gry i cała historia grania",
+      "Biblioteka i preferencje gier",
+      "Tokeny logowania i zarejestrowane urządzenia (powiadomienia)",
+      "Zgłoszenia wysłane do administratora",
+      "Historia użycia funkcji głosowej"
+    ],
+    "inventoryNote": "Wspólny katalog gier nie zawiera Twoich danych osobowych i pozostaje nienaruszony.",
+    "noAccessTitle": "Nie możesz się zalogować?",
+    "noAccessBody": "Napisz na adres poniżej z konta Discord powiązanego z GameTrace — usuniemy konto ręcznie.",
+    "backHome": "← Strona główna",
+    "privacyLink": "Polityka prywatności",
+    "languageLabel": "Język"
+  }
+}

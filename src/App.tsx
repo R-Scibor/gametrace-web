@@ -9,6 +9,9 @@ import { LandingPage } from './pages/LandingPage';
 import { DownloadPage } from './pages/DownloadPage';
 import { LoginPage } from './pages/LoginPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { DeleteAccountPage } from './pages/DeleteAccountPage';
+import { DeletionScheduledPage } from './pages/DeletionScheduledPage';
+import { PendingDeletionPage } from './pages/PendingDeletionPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LibraryPage } from './pages/LibraryPage';
 import { SessionFormPage } from './pages/SessionFormPage';
@@ -54,6 +57,9 @@ function App() {
         <Route path="/download/" element={<DownloadPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/delete-account" element={<DeleteAccountPage />} />
+        <Route path="/account/deletion-scheduled" element={<DeletionScheduledPage />} />
+        <Route path="/account/pending-deletion" element={<PendingDeletionPage />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route path="/" element={<DashboardPage />} />

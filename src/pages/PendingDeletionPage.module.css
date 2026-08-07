@@ -1,0 +1,75 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: var(--bg);
+}
+
+.content {
+  width: 100%;
+  max-width: 640px;
+  padding: 72px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--warn);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.lead {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.sectionTitle {
+  margin: 12px 0 0;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.list li::marker {
+  color: var(--orange);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
