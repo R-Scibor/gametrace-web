@@ -1,4 +1,19 @@
 {
+  "dialog": {
+    "title": "Usunąć konto?",
+    "lead": "Ta operacja jest nieodwracalna po okresie karencji.",
+    "inventoryLabel": "Zostanie usunięte",
+    "consequencesLabel": "Co się stanie",
+    "consequences": [
+      "Dostęp zostanie wyłączony natychmiast — zostaniesz wylogowany na wszystkich urządzeniach, a trwająca sesja gry zakończy się błędem.",
+      "Dane zostaną trwale usunięte po 7 dniach lub wkrótce po tym terminie.",
+      "Możesz anulować w tym czasie, logując się ponownie kodem z Discorda."
+    ],
+    "confirmLabel": "Wpisz {{username}}, aby potwierdzić",
+    "submit": "Usuń konto",
+    "cancel": "Anuluj",
+    "error": "Nie udało się zlecić usunięcia konta. Spróbuj ponownie."
+  },
   "status": {
     "purgeLabel": "Trwałe usunięcie",
     "purgeValue": "{{date}} lub wkrótce po tej dacie",

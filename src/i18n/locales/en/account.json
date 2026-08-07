@@ -1,4 +1,19 @@
 {
+  "dialog": {
+    "title": "Delete your account?",
+    "lead": "This cannot be undone once the grace period ends.",
+    "inventoryLabel": "What gets deleted",
+    "consequencesLabel": "What happens",
+    "consequences": [
+      "Access is disabled immediately — you are signed out everywhere, and any ongoing game session ends in an error.",
+      "Data is permanently deleted after 7 days, or shortly after.",
+      "You can cancel during that time by signing in again with a Discord code."
+    ],
+    "confirmLabel": "Type {{username}} to confirm",
+    "submit": "Delete account",
+    "cancel": "Cancel",
+    "error": "Could not schedule the deletion. Please try again."
+  },
   "status": {
     "purgeLabel": "Permanent deletion",
     "purgeValue": "{{date}} or shortly after",

@@ -7,7 +7,11 @@
   },
   "account": {
     "user": "User",
-    "discordId": "ID: {{id}}"
+    "discordId": "ID: {{id}}",
+    "delete": "Delete account",
+    "deleteSub": "The account is disabled immediately; data is permanently deleted after 7 days.",
+    "deleteAdmin": "Admin accounts cannot delete themselves.",
+    "deleteAction": "Delete"
   },
   "preferences": {
     "language": "Language",

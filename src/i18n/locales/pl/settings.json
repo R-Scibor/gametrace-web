@@ -7,7 +7,11 @@
   },
   "account": {
     "user": "Użytkownik",
-    "discordId": "ID: {{id}}"
+    "discordId": "ID: {{id}}",
+    "delete": "Usuń konto",
+    "deleteSub": "Konto zostanie wyłączone natychmiast, dane trwale usunięte po 7 dniach.",
+    "deleteAdmin": "Konta administratora nie można usunąć samodzielnie.",
+    "deleteAction": "Usuń"
   },
   "preferences": {
     "language": "Język",

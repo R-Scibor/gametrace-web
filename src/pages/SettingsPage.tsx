@@ -6,6 +6,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { SectionHeader, Skeleton } from '../components/ui';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
+import { DeleteAccountRow } from '../components/settings/DeleteAccountRow';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
 
@@ -78,6 +79,10 @@ export function SettingsPage() {
         >
           <span className={styles.value}>{profile?.username ?? user?.username ?? '—'}</span>
         </SettingsRow>
+        <DeleteAccountRow
+          username={profile?.username ?? user?.username ?? ''}
+          isAdmin={profile?.is_admin ?? false}
+        />
       </div>
 
       <div className={styles.panel}>

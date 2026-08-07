@@ -101,3 +101,24 @@ it('changes the active language when a new one is selected', async () => {
   expect(i18n.language).toBe('en');
   await waitFor(() => expect(putBody).toEqual({ language: 'en' }));
 });
+
+it('disables the delete row for an admin and explains why', async () => {
+  renderPage(<SettingsPage />);
+  await waitFor(() => expect(screen.getByText('Usuń konto')).toBeInTheDocument());
+  expect(screen.getByRole('button', { name: 'Usuń' })).toBeDisabled();
+  expect(screen.getByText('Konta administratora nie można usunąć samodzielnie.')).toBeInTheDocument();
+});
+
+it('opens the confirm dialog for a non-admin', async () => {
+  const user = userEvent.setup();
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({ ...fixtures.profileMe, is_admin: false }),
+    ),
+  );
+  renderPage(<SettingsPage />);
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Usuń' })).toBeEnabled());
+
+  await user.click(screen.getByRole('button', { name: 'Usuń' }));
+  expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+});
