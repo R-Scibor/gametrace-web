@@ -118,7 +118,7 @@ cache.
 | `/welcome`          | Landing          | Public onboarding — what GameTrace is, how to get started. Footer links to privacy policy. |
 | `/download`         | Download hub     | Public APK download + install help (also `/download/`). |
 | `/login`            | Auth             | Link-code form (default); optional dev username mode. Redirects to `/` when already authed. Footer links to privacy policy. |
-| `/privacy`          | Privacy policy   | **Public** (no auth). PL/EN via `privacy` i18n namespace. Draft/stub legal notice for Play Console URL (`https://gametrace.rscibor.dev/privacy`); full GDPR copy is a follow-up. Language switcher on-page. Contact + planned 7-day account deletion note. |
+| `/privacy`          | Privacy policy   | **Public** (no auth). PL/EN via `privacy` i18n namespace. Full GDPR notice (`https://gametrace.rscibor.dev/privacy`). Language switcher on-page. Contact + 7-day account deletion note. |
 | `/`                 | Dashboard        | Active-session card (live timer, 30s poll) · today/7d/avg-session tiles · idle hero spotlight · pending-error banner · recent sessions (last 5, COMPLETED+ERROR). |
 | `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia / Inne**; server-side search; pagination; click → detail. |
 | `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · **local cover** (everyone) · **ignore toggle**. No admin controls here — merge and global cover live only in the admin catalog. |
