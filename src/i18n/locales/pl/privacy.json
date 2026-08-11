@@ -3,7 +3,7 @@
   "eyebrow": "GAMETRACE",
   "title": "Polityka prywatności",
   "lastUpdated": "Ostatnia aktualizacja: 11 sierpnia 2026",
-  "versionLabel": "Wersja 1.0",
+  "versionLabel": "Wersja {{version}}",
   "backHome": "← Strona główna",
   "languageLabel": "Język",
   "tocLabel": "Na tej stronie",
@@ -18,7 +18,7 @@
         },
         {
           "type": "p",
-          "text": "Publikujemy ją po polsku i po angielsku. Obie wersje opisują to samo przetwarzanie. To jest wersja 1.0, obowiązująca od 11 sierpnia 2026 r."
+          "text": "Informacja publikowana jest po polsku i po angielsku. Obie wersje opisują to samo przetwarzanie. To jest wersja {{version}}, obowiązująca od 11 sierpnia 2026 r."
         },
         {
           "type": "note",
@@ -52,7 +52,7 @@
           "type": "ul",
           "items": [
             "Rejestrujesz się przez bota Discord; dopiero wtedy bot zaczyna cokolwiek dla Ciebie zapisywać.",
-            "Sesje powstają automatycznie na podstawie statusu na Discordzie albo ręcznie, gdy dodasz je sam.",
+            "Sesje powstają automatycznie na podstawie statusu na Discordzie albo ręcznie, gdy zostaną dodane samodzielnie.",
             "Wprowadzanie głosowe to opcjonalny, dodatkowy sposób na utworzenie sesji mówieniem zamiast pisania.",
             "W każdej chwili możesz edytować lub usunąć swoje sesje oraz usunąć całe konto."
           ]
@@ -67,8 +67,8 @@
           "type": "ul",
           "items": [
             "Tożsamość na Discordzie: Twój identyfikator użytkownika i nazwa. Hasło nigdy nie jest widziane ani przechowywane, a z Discorda nie jest pobierany adres e-mail.",
-            "Sesje: jaka gra, czas rozpoczęcia i zakończenia, czas trwania, status, informacja, czy sesja pochodzi od bota, czy została wpisana ręcznie, oraz czy znajduje się w koszu. Sesje mają też pole notatki, które wypełnia system (na przykład powodem zakończenia sesji błędem). Nie jest to dowolny pamiętnik, który sam prowadzisz.",
-            "Preferencje biblioteki: które gry zignorowałeś lub zaakceptowałeś oraz Twoja własna etykieta dla gry.",
+            "Sesje: jaka gra, czas rozpoczęcia i zakończenia, czas trwania, status, informacja, czy sesja pochodzi od bota, czy została wpisana ręcznie, oraz czy znajduje się w koszu. Sesje mają też pole notatki, które wypełnia system (na przykład powodem zakończenia sesji błędem). Nie jest to dowolny pamiętnik prowadzony samodzielnie.",
+            "Preferencje biblioteki: gry zignorowane lub zaakceptowane oraz Twoja własna etykieta dla gry.",
             "Ustawienia: strefa czasowa, język interfejsu oraz przełączniki powiadomień push i cotygodniowego podsumowania.",
             "Dane uwierzytelniające: Twój token sesji, przechowywany wyłącznie w postaci skrótu, oraz krótkotrwałe kody logowania przechowywane w Redisie.",
             "Urządzenia: token Firebase Cloud Messaging i typ urządzenia, gdy klient rejestruje urządzenie i powiadomienia push są włączone.",
@@ -85,7 +85,7 @@
         },
         {
           "type": "note",
-          "text": "Nie zbieramy: Twojego hasła do Discorda, adresu e-mail, identyfikatorów reklamowych ani śledzących oraz dokładnych danych o lokalizacji. Aplikacja nigdy nie prosi o adres e-mail ani go nie przechowuje. Jeśli sam napiszesz na adres kontaktowy, Twoja wiadomość i adres, z którego ją wysłałeś, siłą rzeczy pozostaną w skrzynce operatora do czasu załatwienia sprawy."
+          "text": "Nie są zbierane: Twoje hasło do Discorda, adres e-mail, identyfikatory reklamowe ani śledzące oraz dokładne dane o lokalizacji. Aplikacja nigdy nie prosi o adres e-mail ani go nie przechowuje. Jeśli napiszesz na adres kontaktowy, Twoja wiadomość i adres, z którego została wysłana, siłą rzeczy pozostaną w skrzynce operatora do czasu załatwienia sprawy."
         }
       ]
     },
@@ -115,12 +115,12 @@
             [
               "Prowadzenie Twojego konta, dziennika sesji, biblioteki oraz śledzenie sesji przez bota",
               "Tożsamość na Discordzie, sesje, biblioteka, ustawienia",
-              "Art. 6 ust. 1 lit. b) RODO: wykonanie umowy o usługę, o którą poprosiłeś"
+              "Art. 6 ust. 1 lit. b) RODO: wykonanie umowy o usługę świadczoną na Twoje żądanie"
             ],
             [
               "Głosowe wprowadzanie sesji, gdy z niego korzystasz",
               "Nagranie, transkrypcja, strefa czasowa, kandydujące nazwy gier",
-              "Art. 6 ust. 1 lit. b) RODO: wykonanie umowy o usługę, o którą poprosiłeś"
+              "Art. 6 ust. 1 lit. b) RODO: wykonanie umowy o usługę świadczoną na Twoje żądanie"
             ],
             [
               "Powiadomienia push i cotygodniowe podsumowanie",
@@ -200,7 +200,7 @@
         {
           "type": "ul",
           "items": [
-            "Web: Twój token sesji i język interfejsu są trzymane w pamięci lokalnej przeglądarki, a okładki, które sam dodasz, również tam trafiają, jako dane obrazu w przeglądarce.",
+            "Web: Twój token sesji i język interfejsu są trzymane w pamięci lokalnej przeglądarki, a okładki dodane samodzielnie również tam trafiają, jako dane obrazu w przeglądarce.",
             "Web: krótkotrwała wartość w pamięci sesji przenosi Cię z Ustawień na ekran usuwania konta.",
             "Mobile: token sesji jest trzymany w bezpiecznej pamięci urządzenia, a preferencje i lokalne okładki w pamięci samej aplikacji."
           ]
@@ -211,7 +211,7 @@
         },
         {
           "type": "note",
-          "text": "Nie ma tu żadnych plików cookie reklamowych ani analitycznych, ani zewnętrznych narzędzi śledzących. Pozostajesz zalogowany dzięki tokenowi trzymanemu w pamięci Twojego urządzenia, co jest niezbędne, aby aplikacja w ogóle działała, i dlatego nie ma banera o plikach cookie."
+          "text": "Nie ma tu żadnych plików cookie reklamowych ani analitycznych, ani zewnętrznych narzędzi śledzących. Sesja pozostaje aktywna dzięki tokenowi trzymanemu w pamięci Twojego urządzenia, co jest niezbędne, aby aplikacja w ogóle działała, i dlatego nie ma banera o plikach cookie."
         }
       ]
     },
@@ -250,7 +250,7 @@
     },
     {
       "id": "no-sale",
-      "title": "Nie sprzedajemy Twoich danych",
+      "title": "Twoje dane nie są sprzedawane",
       "blocks": [
         {
           "type": "p",
@@ -276,7 +276,7 @@
         },
         {
           "type": "p",
-          "text": "Każdy z tych dostawców opiera się na własnym opublikowanym mechanizmie przekazywania danych, takim jak standardowe klauzule umowne albo ramy prawne UE–USA, o ile się na nie powołuje. Zamiast powtarzać mechanizmy, które mogą się zmieniać, ta informacja odsyła do ich polityk, abyś mógł samodzielnie sprawdzić aktualny stan."
+          "text": "Każdy z tych dostawców opiera się na własnym opublikowanym mechanizmie przekazywania danych, takim jak standardowe klauzule umowne albo ramy prawne UE–USA, o ile się na nie powołuje. Zamiast powtarzać mechanizmy, które mogą się zmieniać, ta informacja odsyła do ich polityk, aby móc samodzielnie sprawdzić aktualny stan."
         },
         {
           "type": "note",
@@ -310,7 +310,7 @@
             ["Transkrypcje głosowe w bazie danych", "Nigdy nie są zapisywane"],
             ["Ślad po usunięciu", "Bezterminowo, jako minimalny zapis"],
             ["Kopie zapasowe bazy danych i okładek", "7 dni, na własnym hoście operatora"],
-            ["Logi aplikacji, brzegowe i logi błędów", "Krótkie okna operacyjne; nie deklarujemy stałej liczby dni"]
+            ["Logi aplikacji, brzegowe i logi błędów", "Krótkie okna operacyjne; stała liczba dni nie jest deklarowana"]
           ]
         }
       ]
@@ -362,7 +362,7 @@
           "type": "ul",
           "items": [
             "Dostęp: możesz zapytać, jakie dane na Twój temat są przechowywane, i otrzymać ich kopię.",
-            "Sprostowanie: możesz żądać poprawienia nieprawidłowych danych. Większość z nich poprawisz sam w aplikacji.",
+            "Sprostowanie: możesz żądać poprawienia nieprawidłowych danych. Większość z nich można poprawić samodzielnie w aplikacji.",
             "Usunięcie: możesz żądać usunięcia swoich danych, jak opisano w poprzedniej sekcji.",
             "Ograniczenie: możesz żądać, aby dane były przechowywane, ale poza tym nieużywane, dopóki wątpliwość co do nich nie zostanie wyjaśniona.",
             "Przenoszenie: możesz otrzymać dostarczone przez siebie dane w formacie nadającym się do odczytu maszynowego.",
@@ -372,7 +372,7 @@
         },
         {
           "type": "p",
-          "text": "Najszybsza droga to sama aplikacja: w Ustawieniach znajdziesz usuwanie konta, ustawienie języka i przełączniki powiadomień. We wszystkich pozostałych sprawach pisz na {{email}}. Staramy się odpowiadać w ciągu miesiąca."
+          "text": "Najszybsza droga to sama aplikacja: w Ustawieniach znajdziesz usuwanie konta, ustawienie języka i przełączniki powiadomień. We wszystkich pozostałych sprawach pisz na {{email}}. Celem jest odpowiedź w ciągu miesiąca."
         },
         {
           "type": "p",
@@ -423,7 +423,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "To jest wersja 1.0, obowiązująca od 11 sierpnia 2026 r. Gdy informacja się zmieni, zmienią się wraz z nią wersja i data na górze strony, a zaktualizowana treść zostanie opublikowana na tej stronie."
+          "text": "To jest wersja {{version}}, obowiązująca od 11 sierpnia 2026 r. Gdy informacja się zmieni, zmienią się wraz z nią wersja i data na górze strony, a zaktualizowana treść zostanie opublikowana na tej stronie."
         },
         {
           "type": "p",
