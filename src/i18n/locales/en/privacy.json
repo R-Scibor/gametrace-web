@@ -67,13 +67,13 @@
           "type": "ul",
           "items": [
             "Discord identity: your Discord user id and username. No password is ever seen or stored, and no email address is taken from Discord.",
-            "Sessions: which game, start and end time, duration, status, whether the session came from the bot or was entered by hand, and whether it is in the trash. Sessions also carry a notes field, which is written by the system (for example the reason a session ended in an error state) — it is not a free-form diary you write in.",
+            "Sessions: which game, start and end time, duration, status, whether the session came from the bot or was entered by hand, and whether it is in the trash. Sessions also carry a notes field, which is written by the system (for example the reason a session ended in an error state). It is not a free-form diary you write in.",
             "Library preferences: which games you have ignored or accepted, and your own tag for a game.",
             "Settings: timezone, interface language, and the push notification and weekly digest switches.",
             "Credentials: your session token, stored only as a hash, and short-lived login link codes held in Redis.",
             "Devices: a Firebase Cloud Messaging token and device type when a client registers a device and push is enabled.",
             "Voice usage metadata: how long the audio was, the detected language, whether a game was matched, and how many fields were filled. The transcript itself is never stored.",
-            "Reports you send: your message plus client context — screen, platform, OS version, app version.",
+            "Reports you send: your message plus client context (screen, platform, OS version, app version).",
             "Deletion trail: your Discord id, the type of event, and timestamps, kept after an account is purged.",
             "Technical data: your IP address for login link-code abuse controls (held briefly in Redis), application logs, optional error reports, and access logs on the host's edge proxy (IP, path, user agent).",
             "On your device only: your interface language and any local cover images you save. These stay in browser storage or mobile app storage and are not uploaded to GameTrace servers."
@@ -85,7 +85,7 @@
         },
         {
           "type": "note",
-          "text": "Not collected: your Discord password, any email address of yours, advertising or tracking identifiers, and precise location data."
+          "text": "Not collected: your Discord password, an email address, advertising or tracking identifiers, and precise location data. The app never asks for or stores an email address. If you write to the contact address yourself, your message and the address you wrote from naturally sit in the operator's mailbox until the matter is dealt with."
         }
       ]
     },
@@ -115,48 +115,48 @@
             [
               "Running your account, the session journal, your library, and bot session tracking",
               "Discord identity, sessions, library, settings",
-              "Art. 6(1)(b) GDPR — performance of the service you asked for"
+              "Art. 6(1)(b) GDPR: performance of the service you asked for"
             ],
             [
               "Voice-assisted session entry when you use it",
               "Audio, transcript, timezone, game name candidates",
-              "Art. 6(1)(b) GDPR — performance of the service you asked for"
+              "Art. 6(1)(b) GDPR: performance of the service you asked for"
             ],
             [
               "Push notifications and the weekly digest",
               "Device token, notification title and body",
-              "Art. 6(1)(f) GDPR — legitimate interest in keeping you informed about your own account. You can switch both off in Settings and you have a right to object."
+              "Art. 6(1)(f) GDPR: legitimate interest in keeping you informed about your own account. You can switch both off in Settings and you have a right to object."
             ],
             [
               "Preventing abuse: rate limits, login link-code counters keyed to your IP address, security",
               "IP address, hashed token, counters",
-              "Art. 6(1)(f) GDPR — legitimate interest in keeping the service usable and secure"
+              "Art. 6(1)(f) GDPR: legitimate interest in keeping the service usable and secure"
             ],
             [
               "Error monitoring and application, edge, and proxy logs",
               "Diagnostics, IP address, path, user agent",
-              "Art. 6(1)(f) GDPR — legitimate interest in reliability"
+              "Art. 6(1)(f) GDPR: legitimate interest in reliability"
             ],
             [
               "Keeping a record that an account deletion happened",
               "Discord id, event type, timestamps",
-              "Art. 6(1)(f) GDPR — legitimate interest, together with the accountability duty in Art. 5(2) GDPR"
+              "Art. 6(1)(f) GDPR: legitimate interest, together with the accountability duty in Art. 5(2) GDPR"
             ],
             [
               "Logging administrator actions",
               "Administrator id, action, timestamp",
-              "Art. 6(1)(f) GDPR — legitimate interest in traceable moderation"
+              "Art. 6(1)(f) GDPR: legitimate interest in traceable moderation"
             ],
             [
               "Enriching the shared game catalog from IGDB and Steam",
               "Game titles and search queries",
-              "Art. 6(1)(f) GDPR — legitimate interest in a usable game catalog"
+              "Art. 6(1)(f) GDPR: legitimate interest in a usable game catalog"
             ]
           ]
         },
         {
           "type": "note",
-          "text": "Push notifications and the weekly digest are on by default, so they are not based on your consent — they run on legitimate interest, and you can object to them or simply switch them off in Settings at any time. Delivering a push to a phone additionally needs the operating system's notification permission, which is a device setting and not consent to the digest."
+          "text": "Push notifications and the weekly digest are on by default, so they are not based on your consent. They run on legitimate interest, and you can object to them or simply switch them off in Settings at any time. Delivering a push to a phone additionally needs the operating system's notification permission, which is a device setting and not consent to the digest."
         }
       ]
     },
@@ -211,7 +211,7 @@
         },
         {
           "type": "note",
-          "text": "There are no advertising or analytics cookies and no third-party trackers. You stay signed in through a token held in your own device's storage, which is necessary for the app to work at all — which is why there is no cookie banner."
+          "text": "There are no advertising or analytics cookies and no third-party trackers. You stay signed in through a token held in your own device's storage, which is necessary for the app to work at all, which is why there is no cookie banner."
         }
       ]
     },
@@ -280,7 +280,7 @@
         },
         {
           "type": "note",
-          "text": "Pinning Vertex AI to a European region alone would not make voice entry an EEA-only path, because the audio already reaches OpenAI in the United States before Gemini ever sees a transcript. If you would rather no data leave the EEA, do not use voice entry — the rest of GameTrace works without it."
+          "text": "Pinning Vertex AI to a European region alone would not make voice entry an EEA-only path, because the audio already reaches OpenAI in the United States before Gemini ever sees a transcript. If you would rather no data leave the EEA, do not use voice entry. The rest of GameTrace works without it."
         },
         {
           "type": "links",
@@ -328,7 +328,7 @@
           "headers": ["Stage", "Timing"],
           "rows": [
             ["You request deletion", "Immediately: the account is disabled, tokens and registered devices are revoked, pending login codes are discarded, and any session still running is closed with an error"],
-            ["Grace period", "{{days}} days — sign in again to cancel"],
+            ["Grace period", "{{days}} days, and you can sign in again to cancel"],
             ["Purge", "A nightly job removes your data on or after the end of the grace period, so up to about a day later"],
             ["Backups", "Up to 7 further days before the last copy rotates out"],
             ["Worst case", "About 15 to 16 days from the request until no residual copy remains"]
@@ -344,7 +344,7 @@
         },
         {
           "type": "p",
-          "text": "Administrator accounts cannot delete themselves — the app refuses the request by design so that the administration tools are never left without an owner. An administrator who wants their data erased should write to {{email}}. Write to the same address if you cannot sign in to start the deletion yourself."
+          "text": "Administrator accounts cannot delete themselves. The app refuses the request by design so that the administration tools are never left without an owner. An administrator who wants their data erased should write to {{email}}. Write to the same address if you cannot sign in to start the deletion yourself."
         },
         {
           "type": "links",
@@ -362,7 +362,7 @@
           "type": "ul",
           "items": [
             "Access: ask what data is held about you and get a copy.",
-            "Rectification: have inaccurate data corrected — most of it you can correct yourself in the app.",
+            "Rectification: have inaccurate data corrected. Most of it you can correct yourself in the app.",
             "Erasure: have your data deleted, as described in the previous section.",
             "Restriction: ask that data be held but not otherwise used while a question about it is resolved.",
             "Portability: receive the data you provided in a machine-readable form.",
@@ -372,7 +372,7 @@
         },
         {
           "type": "p",
-          "text": "The quickest route is the app itself: Settings holds account deletion, the language setting, and the notification switches. For anything else, write to {{email}}. Requests are answered within one month."
+          "text": "The quickest route is the app itself: Settings holds account deletion, the language setting, and the notification switches. For anything else, write to {{email}}. The aim is to answer within one month."
         },
         {
           "type": "p",
@@ -413,7 +413,7 @@
         },
         {
           "type": "note",
-          "text": "This is a personal project maintained on a best-effort basis with no service level agreement, no security certification, and no external audit. Keep your own copies of anything you cannot afford to lose."
+          "text": "This is a personal project maintained on a best-effort basis with no service level agreement, no security certification, and no external audit."
         }
       ]
     },
@@ -423,7 +423,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "This is version 1.0, effective 11 August 2026. When the notice changes, the version and date at the top change with it, and the updated text is published on this page. The mobile app records which version you accepted and asks again when a new one is published."
+          "text": "This is version 1.0, effective 11 August 2026. When the notice changes, the version and date at the top change with it, and the updated text is published on this page."
         },
         {
           "type": "p",
