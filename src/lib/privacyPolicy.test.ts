@@ -3,6 +3,7 @@ import i18n from '../i18n';
 import {
   isSafeHref,
   parsePolicySections,
+  PRIVACY_POLICY_EFFECTIVE_DATE,
   PRIVACY_POLICY_VERSION,
   REQUIRED_SECTION_IDS,
 } from './privacyPolicy';
@@ -149,6 +150,41 @@ test('policy version is a non-empty string', () => {
 
 test('required section ids include the pinned deletion anchor', () => {
   expect(REQUIRED_SECTION_IDS).toContain('account-deletion');
+});
+
+describe('version and date single sourcing', () => {
+  const bundle = (lng: string) =>
+    i18n.getResourceBundle(lng, 'privacy') as {
+      sections?: unknown;
+      lastUpdated?: string;
+      versionLabel?: string;
+    };
+
+  test.each(['pl', 'en'])(
+    'the %s prose carries no hardcoded version literal',
+    (lng) => {
+      const serialized = JSON.stringify(bundle(lng).sections);
+      // Any "version 1.0" / "wersja 1.0" style literal would silently drift
+      // when PRIVACY_POLICY_VERSION is bumped.
+      expect(serialized).not.toMatch(/(wersja|version)\s+\d+\.\d+/i);
+      expect(serialized).toContain('{{version}}');
+    },
+  );
+
+  test.each(['pl', 'en'])('the %s version label interpolates', (lng) => {
+    expect(bundle(lng).versionLabel).toContain('{{version}}');
+    expect(bundle(lng).versionLabel).not.toMatch(/\d+\.\d+/);
+  });
+
+  test.each(['pl', 'en'])(
+    'the %s lastUpdated string matches the effective date constant',
+    (lng) => {
+      const [year, , day] = PRIVACY_POLICY_EFFECTIVE_DATE.split('-');
+      const lastUpdated = bundle(lng).lastUpdated ?? '';
+      expect(lastUpdated).toContain(year);
+      expect(lastUpdated).toMatch(new RegExp(`\\b${Number(day)}\\b`));
+    },
+  );
 });
 
 describe('locale parity', () => {

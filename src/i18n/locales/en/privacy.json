@@ -3,7 +3,7 @@
   "eyebrow": "GAMETRACE",
   "title": "Privacy policy",
   "lastUpdated": "Last updated: 11 August 2026",
-  "versionLabel": "Version 1.0",
+  "versionLabel": "Version {{version}}",
   "backHome": "← Home",
   "languageLabel": "Language",
   "tocLabel": "On this page",
@@ -18,7 +18,7 @@
         },
         {
           "type": "p",
-          "text": "It is published in Polish and English. Both versions describe the same processing. This is version 1.0, effective 11 August 2026."
+          "text": "It is published in Polish and English. Both versions describe the same processing. This is version {{version}}, effective 11 August 2026."
         },
         {
           "type": "note",
@@ -423,7 +423,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "This is version 1.0, effective 11 August 2026. When the notice changes, the version and date at the top change with it, and the updated text is published on this page."
+          "text": "This is version {{version}}, effective 11 August 2026. When the notice changes, the version and date at the top change with it, and the updated text is published on this page."
         },
         {
           "type": "p",

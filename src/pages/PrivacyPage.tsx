@@ -36,6 +36,7 @@ export function PrivacyPage() {
       parsePolicySections(t('sections', { returnObjects: true }), {
         days: ACCOUNT_DELETION_GRACE_DAYS,
         email: PRIVACY_CONTACT_EMAIL,
+        version: PRIVACY_POLICY_VERSION,
       }),
     [t, i18n.language],
   );
@@ -72,11 +73,11 @@ export function PrivacyPage() {
             <span className={styles.metaSep} aria-hidden>
               ·
             </span>
-            <span>{t('versionLabel')}</span>
+            <span>{t('versionLabel', { version: PRIVACY_POLICY_VERSION })}</span>
           </p>
         </header>
 
-        <div className={styles.shell}>
+        <main className={styles.shell}>
           <PolicyToc sections={sections} label={t('tocLabel')} />
 
           <article className={styles.article}>
@@ -87,7 +88,7 @@ export function PrivacyPage() {
               </section>
             ))}
           </article>
-        </div>
+        </main>
       </div>
 
       <footer className={styles.footer} role="contentinfo">
