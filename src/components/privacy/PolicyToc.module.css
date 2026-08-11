@@ -29,17 +29,17 @@
 }
 
 .tocLink {
-  color: var(--text-dim);
+  color: var(--text2);
   text-decoration: none;
 }
 
 .tocLink:hover {
-  color: var(--accent);
+  color: var(--orange);
 }
 
 .tocLinkActive {
   composes: tocLink;
-  color: var(--accent);
+  color: var(--orange);
   font-weight: 600;
 }
 
