@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import i18n from '../i18n';
 import {
   isSafeHref,
   parsePolicySections,
@@ -148,4 +149,62 @@ test('policy version is a non-empty string', () => {
 
 test('required section ids include the pinned deletion anchor', () => {
   expect(REQUIRED_SECTION_IDS).toContain('account-deletion');
+});
+
+describe('locale parity', () => {
+  const bundleSections = (lng: string): unknown =>
+    (i18n.getResourceBundle(lng, 'privacy') as { sections?: unknown } | undefined)
+      ?.sections;
+
+  const enSections = parsePolicySections(bundleSections('en'));
+  const plSections = parsePolicySections(bundleSections('pl'));
+
+  test('both locales contain every required section id, in order', () => {
+    expect(enSections.map((s) => s.id)).toEqual([...REQUIRED_SECTION_IDS]);
+    expect(plSections.map((s) => s.id)).toEqual([...REQUIRED_SECTION_IDS]);
+  });
+
+  test('matching sections have matching block types', () => {
+    for (const [index, enSection] of enSections.entries()) {
+      const plSection = plSections[index];
+      expect(plSection.blocks.map((b) => b.type)).toEqual(
+        enSection.blocks.map((b) => b.type),
+      );
+    }
+  });
+
+  test('matching tables have the same shape', () => {
+    for (const [index, enSection] of enSections.entries()) {
+      const plSection = plSections[index];
+      for (const [blockIndex, enBlock] of enSection.blocks.entries()) {
+        if (enBlock.type !== 'table') continue;
+        const plBlock = plSection.blocks[blockIndex];
+        expect(plBlock.type).toBe('table');
+        if (plBlock.type !== 'table') continue;
+        expect(plBlock.headers).toHaveLength(enBlock.headers.length);
+        expect(plBlock.rows).toHaveLength(enBlock.rows.length);
+      }
+    }
+  });
+
+  test('link hrefs are identical across locales', () => {
+    for (const [index, enSection] of enSections.entries()) {
+      const plSection = plSections[index];
+      for (const [blockIndex, enBlock] of enSection.blocks.entries()) {
+        if (enBlock.type !== 'links') continue;
+        const plBlock = plSection.blocks[blockIndex];
+        expect(plBlock.type).toBe('links');
+        if (plBlock.type !== 'links') continue;
+        expect(plBlock.items.map((i) => i.href)).toEqual(
+          enBlock.items.map((i) => i.href),
+        );
+      }
+    }
+  });
+
+  test('no section lost every block to the validator', () => {
+    for (const section of [...enSections, ...plSections]) {
+      expect(section.blocks.length).toBeGreaterThan(0);
+    }
+  });
 });

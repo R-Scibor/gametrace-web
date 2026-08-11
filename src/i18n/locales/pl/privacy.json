@@ -1,48 +1,435 @@
 {
   "documentTitle": "Polityka prywatności · GameTrace",
-  "eyebrow": "GAMETRACE · PROJEKT ROBOCZY",
+  "eyebrow": "GAMETRACE",
   "title": "Polityka prywatności",
-  "lastUpdated": "Ostatnia aktualizacja: 3 sierpnia 2026",
-  "stubBanner": "To jest skrócona wersja robocza. Pełna polityka zgodna z RODO (PL + EN) zostanie opublikowana wkrótce na tej stronie. Treść poniżej opisuje zamierzony zakres przetwarzania w sposób rzetelny, ale nie jest jeszcze pełnym zawiadomieniem prawnym.",
+  "lastUpdated": "Ostatnia aktualizacja: 11 sierpnia 2026",
+  "versionLabel": "Wersja 1.0",
   "backHome": "← Strona główna",
   "languageLabel": "Język",
-  "sections": {
-    "about": {
-      "title": "Czym jest GameTrace",
-      "body": "GameTrace to dziennik sesji gier: bot Discord, aplikacja mobilna i panel w przeglądarce. Produkt jest projektowany przede wszystkim pod self-hosting; oficjalna chmura (np. ta instalacja pod gametrace.rscibor.dev) to wygodna opcja best-effort, bez SLA."
-    },
-    "controller": {
-      "title": "Administrator danych",
-      "body": "Na oficjalnym hoście GameTrace administratorem danych osobowych użytkowników tej instancji jest operator usługi (Rafał Ścibor — kontakt poniżej). Gdy łączysz klienta z własnym serwerem (self-host), administratorem danych na tej instancji jest zwykle operator Twojego serwera — my nie kontrolujemy praktyk prywatności cudzych instalacji."
-    },
-    "data": {
-      "title": "Jakie dane zamierzamy przetwarzać",
-      "intro": "Na oficjalnym hoście mogą być przetwarzane m.in.:",
-      "items": [
-        "Tożsamość Discord (m.in. identyfikator użytkownika, nazwa) powiązana z kontem GameTrace — logowanie kodem z bota / OAuth; nie przechowujemy hasła Discord.",
-        "Sesje gry i biblioteka (tytuły, czasy, notatki, preferencje, okładki przesłane przez użytkownika).",
-        "Ustawienia profilu (strefa czasowa, język, powiadomienia e-mail/push).",
-        "Tokeny urządzeń FCM (powiadomienia push w aplikacji mobilnej), gdy włączone.",
-        "Opcjonalnie nagrania głosowe wysłane do transkrypcji (np. w celu utworzenia sesji) — szczegóły podprocesorów i retencji w pełnej polityce."
+  "tocLabel": "Na tej stronie",
+  "sections": [
+    {
+      "id": "scope",
+      "title": "Kogo dotyczy ta informacja",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ta informacja opisuje, jak przetwarzane są dane osobowe na oficjalnym hoście GameTrace pod adresem gametrace.rscibor.dev. Jest to prywatny, niekomercyjny projekt udostępniany w miarę możliwości (best-effort), bez umowy o gwarantowanym poziomie usług."
+        },
+        {
+          "type": "p",
+          "text": "Publikujemy ją po polsku i po angielsku. Obie wersje opisują to samo przetwarzanie. To jest wersja 1.0, obowiązująca od 11 sierpnia 2026 r."
+        },
+        {
+          "type": "note",
+          "text": "GameTrace można też uruchomić na własnym serwerze. Jeśli podłączysz klienta do swojego serwera, administratorem danych na nim jest operator tego serwera, a niniejsza informacja nie opisuje jego praktyk."
+        }
       ]
     },
-    "noSale": {
-      "title": "Sprzedaż danych",
-      "body": "Nie sprzedajemy Twoich danych osobowych. Nie budujemy profili reklamowych z Twojej historii gier."
+    {
+      "id": "controller",
+      "title": "Kto odpowiada za dane",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Administratorem danych osobowych na oficjalnym hoście jest Rafał Ścibor. Możesz się z nim skontaktować pod adresem {{email}} w każdej sprawie dotyczącej tej informacji lub Twoich danych."
+        },
+        {
+          "type": "p",
+          "text": "GameTrace jest prowadzony jako prywatny projekt poboczny. Nie jest firmą, nie jest sprzedawany i jest rozwijany w wolnym czasie, w miarę możliwości. Nie wyznaczono inspektora ochrony danych; w takich sprawach pisz na powyższy adres."
+        }
+      ]
     },
-    "deletion": {
+    {
+      "id": "what-we-do",
+      "title": "Czym jest GameTrace",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "GameTrace to dziennik gier, w które grasz. Bot Discord obserwuje status gry zarejestrowanych użytkowników i zapisuje sesję, gdy zaczynasz i kończysz grać. Aplikacja webowa i mobilna pozwalają przeglądać, poprawiać, dodawać i usuwać te sesje, prowadzić bibliotekę gier oraz oglądać statystyki."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Rejestrujesz się przez bota Discord; dopiero wtedy bot zaczyna cokolwiek dla Ciebie zapisywać.",
+            "Sesje powstają automatycznie na podstawie statusu na Discordzie albo ręcznie, gdy dodasz je sam.",
+            "Wprowadzanie głosowe to opcjonalny, dodatkowy sposób na utworzenie sesji mówieniem zamiast pisania.",
+            "W każdej chwili możesz edytować lub usunąć swoje sesje oraz usunąć całe konto."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Jakie dane są przetwarzane",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Tożsamość na Discordzie: Twój identyfikator użytkownika i nazwa. Hasło nigdy nie jest widziane ani przechowywane, a z Discorda nie jest pobierany adres e-mail.",
+            "Sesje: jaka gra, czas rozpoczęcia i zakończenia, czas trwania, status, informacja, czy sesja pochodzi od bota, czy została wpisana ręcznie, oraz czy znajduje się w koszu. Sesje mają też pole notatki, które wypełnia system (na przykład powodem zakończenia sesji błędem). Nie jest to dowolny pamiętnik, który sam prowadzisz.",
+            "Preferencje biblioteki: które gry zignorowałeś lub zaakceptowałeś oraz Twoja własna etykieta dla gry.",
+            "Ustawienia: strefa czasowa, język interfejsu oraz przełączniki powiadomień push i cotygodniowego podsumowania.",
+            "Dane uwierzytelniające: Twój token sesji, przechowywany wyłącznie w postaci skrótu, oraz krótkotrwałe kody logowania przechowywane w Redisie.",
+            "Urządzenia: token Firebase Cloud Messaging i typ urządzenia, gdy klient rejestruje urządzenie i powiadomienia push są włączone.",
+            "Metadane użycia funkcji głosowej: długość nagrania, wykryty język, informacja, czy dopasowano grę, i ile pól zostało wypełnionych. Sama transkrypcja nigdy nie jest przechowywana.",
+            "Zgłoszenia, które wysyłasz: Twoja wiadomość wraz z kontekstem klienta (ekran, platforma, wersja systemu, wersja aplikacji).",
+            "Ślad po usunięciu: Twój identyfikator Discord, rodzaj zdarzenia i znaczniki czasu, zachowywane po wyczyszczeniu konta.",
+            "Dane techniczne: Twój adres IP na potrzeby ochrony kodów logowania przed nadużyciami (przechowywany krótko w Redisie), logi aplikacji, opcjonalne raporty o błędach oraz logi dostępu na brzegowym proxy hosta (adres IP, ścieżka, identyfikator przeglądarki).",
+            "Wyłącznie na Twoim urządzeniu: język interfejsu i lokalne okładki, które zapiszesz. Zostają one w pamięci przeglądarki lub aplikacji mobilnej i nie są przesyłane na serwery GameTrace."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Katalog gier jest wspólny dla wszystkich użytkowników: tytuły gier, aliasy nazw procesów z Discorda, metadane z IGDB i Steam oraz okładki katalogowe (w tym własne okładki wgrane przez administratora). Nie są to dane osobowe na Twój temat i nie są usuwane wraz z Twoim kontem."
+        },
+        {
+          "type": "note",
+          "text": "Nie zbieramy: Twojego hasła do Discorda, adresu e-mail, identyfikatorów reklamowych ani śledzących oraz dokładnych danych o lokalizacji. Aplikacja nigdy nie prosi o adres e-mail ani go nie przechowuje. Jeśli sam napiszesz na adres kontaktowy, Twoja wiadomość i adres, z którego ją wysłałeś, siłą rzeczy pozostaną w skrzynce operatora do czasu załatwienia sprawy."
+        }
+      ]
+    },
+    {
+      "id": "sources",
+      "title": "Skąd pochodzą dane",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Od Ciebie: sesje, które wpisujesz lub poprawiasz, preferencje biblioteki, ustawienia, zgłoszenia i opcjonalne nagrania głosowe.",
+            "Z Discorda: Twój identyfikator użytkownika i nazwa w momencie połączenia konta. Członkostwo na serwerze jest sprawdzane przy logowaniu i nie jest przechowywane.",
+            "Z obserwacji przez bota Twojego statusu gry na Discordzie, wyłącznie dla zarejestrowanych użytkowników z aktywnym kontem.",
+            "Z IGDB i Steam: tytuły gier, metadane i okładki do wspólnego katalogu. Te zapytania dotyczą gier, a nie Ciebie."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "purposes",
+      "title": "W jakim celu i na jakiej podstawie prawnej dane są wykorzystywane",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": ["Cel", "Główne dane", "Podstawa prawna"],
+          "rows": [
+            [
+              "Prowadzenie Twojego konta, dziennika sesji, biblioteki oraz śledzenie sesji przez bota",
+              "Tożsamość na Discordzie, sesje, biblioteka, ustawienia",
+              "Art. 6 ust. 1 lit. b) RODO: wykonanie umowy o usługę, o którą poprosiłeś"
+            ],
+            [
+              "Głosowe wprowadzanie sesji, gdy z niego korzystasz",
+              "Nagranie, transkrypcja, strefa czasowa, kandydujące nazwy gier",
+              "Art. 6 ust. 1 lit. b) RODO: wykonanie umowy o usługę, o którą poprosiłeś"
+            ],
+            [
+              "Powiadomienia push i cotygodniowe podsumowanie",
+              "Token urządzenia, tytuł i treść powiadomienia",
+              "Art. 6 ust. 1 lit. f) RODO: prawnie uzasadniony interes polegający na informowaniu Cię o Twoim własnym koncie. Oba możesz wyłączyć w Ustawieniach i przysługuje Ci prawo sprzeciwu."
+            ],
+            [
+              "Zapobieganie nadużyciom: limity zapytań, liczniki kodów logowania powiązane z Twoim adresem IP, bezpieczeństwo",
+              "Adres IP, token w postaci skrótu, liczniki",
+              "Art. 6 ust. 1 lit. f) RODO: prawnie uzasadniony interes polegający na utrzymaniu usługi używalnej i bezpiecznej"
+            ],
+            [
+              "Monitorowanie błędów oraz logi aplikacji, brzegowe i proxy",
+              "Dane diagnostyczne, adres IP, ścieżka, identyfikator przeglądarki",
+              "Art. 6 ust. 1 lit. f) RODO: prawnie uzasadniony interes polegający na niezawodności"
+            ],
+            [
+              "Zachowanie zapisu o tym, że doszło do usunięcia konta",
+              "Identyfikator Discord, rodzaj zdarzenia, znaczniki czasu",
+              "Art. 6 ust. 1 lit. f) RODO: prawnie uzasadniony interes wraz z obowiązkiem rozliczalności z art. 5 ust. 2 RODO"
+            ],
+            [
+              "Rejestrowanie działań administratora",
+              "Identyfikator administratora, działanie, znacznik czasu",
+              "Art. 6 ust. 1 lit. f) RODO: prawnie uzasadniony interes polegający na możliwej do prześledzenia moderacji"
+            ],
+            [
+              "Wzbogacanie wspólnego katalogu gier danymi z IGDB i Steam",
+              "Tytuły gier i zapytania wyszukiwania",
+              "Art. 6 ust. 1 lit. f) RODO: prawnie uzasadniony interes polegający na użytecznym katalogu gier"
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Powiadomienia push i cotygodniowe podsumowanie są domyślnie włączone, więc nie opierają się na Twojej zgodzie. Działają na podstawie prawnie uzasadnionego interesu, a Ty w każdej chwili możesz wnieść wobec nich sprzeciw albo po prostu wyłączyć je w Ustawieniach. Dostarczenie powiadomienia na telefon wymaga dodatkowo zezwolenia systemu operacyjnego na powiadomienia, które jest ustawieniem urządzenia, a nie zgodą na podsumowanie."
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "title": "Głosowe wprowadzanie sesji",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Wprowadzanie głosowe jest opcjonalne. Gdy nagrywasz sesję głosem, nagranie trafia do zewnętrznych usług AI, które zamieniają je na propozycje pól. Nic nie jest zapisywane na Twoim koncie, dopóki nie zatwierdzisz wyniku."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Nagranie jest wysyłane do OpenAI (Whisper, model whisper-1, z automatycznym wykrywaniem języka) w celu transkrypcji.",
+            "Powstały tekst, razem z Twoją strefą czasową i krótką listą nazw gier z Twojej własnej biblioteki, jest wysyłany do Google (Gemini na Vertex AI), aby wyodrębnić grę, datę, godziny i czas trwania. Na oficjalnym hoście Vertex AI jest wywoływane na globalnym punkcie końcowym.",
+            "Zaproponowane pola są pokazywane Ci do zatwierdzenia, zanim powstanie jakakolwiek sesja.",
+            "Przesłane nagranie jest usuwane z serwera GameTrace, gdy tylko żądanie się zakończy.",
+            "Transkrypcja nigdy nie jest zapisywana w bazie danych GameTrace.",
+            "Zachowywane są wyłącznie metadane użycia: ile sekund nagrania, wykryty język, informacja, czy dopasowano grę, i ile pól zostało wypełnionych.",
+            "Wprowadzanie głosowe jest ograniczone do 10 żądań na godzinę na jedno poświadczenie."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "OpenAI i Google przetwarzają te dane na podstawie własnych polityk. GameTrace nie ma wpływu na to, jak długo je przechowują."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "Polityka prywatności OpenAI", "href": "https://openai.com/policies/privacy-policy" },
+            { "label": "Informacja o prywatności Google Cloud", "href": "https://cloud.google.com/terms/cloud-privacy-notice" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "client-storage",
+      "title": "Co jest przechowywane na Twoim urządzeniu",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Web: Twój token sesji i język interfejsu są trzymane w pamięci lokalnej przeglądarki, a okładki, które sam dodasz, również tam trafiają, jako dane obrazu w przeglądarce.",
+            "Web: krótkotrwała wartość w pamięci sesji przenosi Cię z Ustawień na ekran usuwania konta.",
+            "Mobile: token sesji jest trzymany w bezpiecznej pamięci urządzenia, a preferencje i lokalne okładki w pamięci samej aplikacji."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Wyczyszczenie tej pamięci albo wylogowanie usuwa dane z Twojego urządzenia, ale nie usuwa konta. Usunięcie konta to osobna czynność, opisana poniżej."
+        },
+        {
+          "type": "note",
+          "text": "Nie ma tu żadnych plików cookie reklamowych ani analitycznych, ani zewnętrznych narzędzi śledzących. Pozostajesz zalogowany dzięki tokenowi trzymanemu w pamięci Twojego urządzenia, co jest niezbędne, aby aplikacja w ogóle działała, i dlatego nie ma banera o plikach cookie."
+        }
+      ]
+    },
+    {
+      "id": "recipients",
+      "title": "Kto jeszcze widzi te dane",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": ["Kto", "Co", "Po co"],
+          "rows": [
+            ["Host operatora (serwer domowy)", "Baza danych aplikacji, Redis, wolumen z okładkami i lokalne kopie zapasowe", "Prowadzenie usługi"],
+            ["Discord", "Logowanie i tożsamość, status gry na potrzeby bota, wiadomości bota", "Logowanie i śledzenie sesji"],
+            ["OpenAI", "Nagranie głosowe do transkrypcji przez Whisper", "Opcjonalna funkcja głosowa"],
+            ["Google Vertex AI", "Transkrypcja, kandydujące nazwy gier z Twojej biblioteki i punkt odniesienia strefy czasowej", "Zamiana transkrypcji na uporządkowane pola"],
+            ["Google Firebase Cloud Messaging", "Token urządzenia, tytuł i treść powiadomienia", "Powiadomienia push i cotygodniowe podsumowanie, gdy urządzenie jest zarejestrowane"],
+            ["IGDB (Twitch)", "Frazy wyszukiwania gier i metadane tytułów", "Wzbogacanie wspólnego katalogu"],
+            ["Steam", "Zapasowe wyszukiwanie nazw gier i okładek", "Wzbogacanie wspólnego katalogu"],
+            ["Sentry, jeśli jest skonfigurowane", "Diagnostyka błędów, z usuniętym nagłówkiem Authorization i wyłączonym domyślnym zbieraniem danych osobowych", "Niezawodność"],
+            ["Brzegowe proxy na hoście", "Terminacja TLS i logi dostępu", "Trasowanie i bezpieczeństwo"]
+          ]
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "Polityka prywatności Discorda", "href": "https://discord.com/privacy" },
+            { "label": "Polityka prywatności OpenAI", "href": "https://openai.com/policies/privacy-policy" },
+            { "label": "Informacja o prywatności Google Cloud", "href": "https://cloud.google.com/terms/cloud-privacy-notice" },
+            { "label": "Prywatność i bezpieczeństwo Firebase", "href": "https://firebase.google.com/support/privacy" },
+            { "label": "Informacja o prywatności Twitch (IGDB)", "href": "https://www.twitch.tv/p/legal/privacy-notice/" },
+            { "label": "Polityka prywatności Steam", "href": "https://store.steampowered.com/privacy_agreement/" },
+            { "label": "Polityka prywatności Sentry", "href": "https://sentry.io/privacy/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "no-sale",
+      "title": "Nie sprzedajemy Twoich danych",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Twoje dane osobowe nie są sprzedawane, wynajmowane ani wymieniane. Z Twojej historii gier nie są budowane profile reklamowe ani behawioralne, a Twoje dane nie są udostępniane sieciom reklamowym ani brokerom danych."
+        },
+        {
+          "type": "p",
+          "text": "Wymienione wyżej usługi otrzymują dane wyłącznie po to, aby pełnić funkcję opisaną obok nich."
+        }
+      ]
+    },
+    {
+      "id": "transfers",
+      "title": "Przekazywanie danych poza EOG",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Baza danych aplikacji, wolumen z okładkami i kopie zapasowe znajdują się na własnym sprzęcie operatora w Polsce, na terenie Europejskiego Obszaru Gospodarczego."
+        },
+        {
+          "type": "p",
+          "text": "Część wymienionych wyżej odbiorców ma siedzibę poza EOG lub przetwarza dane poza jego obszarem. Nagranie głosowe trafia do OpenAI, a transkrypcja do Google Vertex AI na globalnym punkcie końcowym, który nie przypisuje przetwarzania do regionu europejskiego. Discord, Firebase Cloud Messaging, IGDB, Steam i Sentry również działają międzynarodowo."
+        },
+        {
+          "type": "p",
+          "text": "Każdy z tych dostawców opiera się na własnym opublikowanym mechanizmie przekazywania danych, takim jak standardowe klauzule umowne albo ramy prawne UE–USA, o ile się na nie powołuje. Zamiast powtarzać mechanizmy, które mogą się zmieniać, ta informacja odsyła do ich polityk, abyś mógł samodzielnie sprawdzić aktualny stan."
+        },
+        {
+          "type": "note",
+          "text": "Samo przypisanie Vertex AI do regionu europejskiego nie sprawiłoby, że wprowadzanie głosowe pozostaje w całości w EOG, ponieważ nagranie trafia do OpenAI w Stanach Zjednoczonych, zanim Gemini w ogóle zobaczy transkrypcję. Jeśli wolisz, aby żadne dane nie opuszczały EOG, nie korzystaj z wprowadzania głosowego. Reszta GameTrace działa bez niego."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "Polityka prywatności OpenAI", "href": "https://openai.com/policies/privacy-policy" },
+            { "label": "Informacja o prywatności Google Cloud", "href": "https://cloud.google.com/terms/cloud-privacy-notice" },
+            { "label": "Polityka prywatności Discorda", "href": "https://discord.com/privacy" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "title": "Jak długo dane są przechowywane",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": ["Dane", "Okres przechowywania"],
+          "rows": [
+            ["Konto, sesje, preferencje, zgłoszenia, metadane użycia funkcji głosowej", "Do czasu wyczyszczenia konta, potem usuwane razem z nim"],
+            ["Sesje w koszu", "7 dni, potem trwale usuwane"],
+            ["Bardzo krótkie, \"migające\" sesje", "Sprzątane automatycznie, mniej więcej w ciągu doby"],
+            ["Tokeny sesji", "Około 30 dni, przedłużane w miarę korzystania z aplikacji; unieważniane przy wylogowaniu i przy żądaniu usunięcia konta"],
+            ["Urządzenia zarejestrowane do powiadomień push", "Do czasu wyrejestrowania, utraty ważności tokenu albo około 6 miesięcy bezczynności"],
+            ["Kody logowania i liczniki nieudanych prób dla adresu IP", "Minuty, potem wygasają automatycznie"],
+            ["Nagrania głosowe w GameTrace", "Nie są przechowywane po zakończeniu żądania"],
+            ["Transkrypcje głosowe w bazie danych", "Nigdy nie są zapisywane"],
+            ["Ślad po usunięciu", "Bezterminowo, jako minimalny zapis"],
+            ["Kopie zapasowe bazy danych i okładek", "7 dni, na własnym hoście operatora"],
+            ["Logi aplikacji, brzegowe i logi błędów", "Krótkie okna operacyjne; nie deklarujemy stałej liczby dni"]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "account-deletion",
       "title": "Usuwanie konta",
-      "body": "Usunięcie konta zlecisz w panelu web: Ustawienia → Konto → Usuń konto. Konto jest wyłączane natychmiast, a dane trwale usuwane po {{days}} dniach (usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby później). W okresie karencji możesz anulować, logując się ponownie. Jeśli nie możesz się zalogować, napisz na adres kontaktowy poniżej.",
-      "linkLabel": "Jak usunąć konto — pełna instrukcja"
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Konto możesz usunąć samodzielnie w aplikacji webowej: Ustawienia → Konto → Usuń konto. Usunięcie nie jest natychmiastowe: obowiązuje okres karencji, w którym możesz zmienić zdanie, a potem dane muszą jeszcze wypaść z kopii zapasowych."
+        },
+        {
+          "type": "table",
+          "headers": ["Etap", "Termin"],
+          "rows": [
+            ["Zgłaszasz żądanie usunięcia", "Natychmiast: konto zostaje wyłączone, tokeny i zarejestrowane urządzenia unieważnione, oczekujące kody logowania odrzucone, a każda trwająca sesja zamknięta błędem"],
+            ["Okres karencji", "{{days}} dni, w tym czasie możesz zalogować się ponownie i anulować"],
+            ["Wyczyszczenie danych", "Nocne zadanie usuwa Twoje dane w dniu zakończenia karencji lub później, czyli do około doby po jej upływie"],
+            ["Kopie zapasowe", "Do 7 kolejnych dni, zanim ostatnia kopia wypadnie z rotacji"],
+            ["Najgorszy przypadek", "Około 15 do 16 dni od żądania, zanim zniknie każda pozostała kopia"]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Anulowanie w okresie karencji przywraca dostęp do konta, ale nie przywraca zarejestrowanych urządzeń ani nie naprawia sesji, które zostały zamknięte błędem w chwili zgłoszenia żądania."
+        },
+        {
+          "type": "p",
+          "text": "Dwie rzeczy przetrwają wyczyszczenie danych: minimalny zapis w śladzie po usunięciu (Twój identyfikator Discord, zdarzenie i znaczniki czasu) oraz wspólny katalog gier wraz z tytułami, aliasami i okładkami katalogowymi, który nie jest danymi osobowymi na Twój temat."
+        },
+        {
+          "type": "p",
+          "text": "Konta administratorów nie mogą usunąć same siebie. Aplikacja z założenia odrzuca takie żądanie, aby narzędzia administracyjne nigdy nie zostały bez właściciela. Administrator, który chce usunąć swoje dane, powinien napisać na {{email}}. Pod ten sam adres napisz, jeśli nie możesz się zalogować, aby samodzielnie rozpocząć usuwanie."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "Jak usunąć konto", "href": "/delete-account" }
+          ]
+        }
+      ]
     },
-    "contact": {
-      "title": "Kontakt",
-      "body": "Pytania o prywatność i prawa związane z danymi na oficjalnym hoście:",
-      "emailLabel": "E-mail"
+    {
+      "id": "rights",
+      "title": "Twoje prawa",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Dostęp: możesz zapytać, jakie dane na Twój temat są przechowywane, i otrzymać ich kopię.",
+            "Sprostowanie: możesz żądać poprawienia nieprawidłowych danych. Większość z nich poprawisz sam w aplikacji.",
+            "Usunięcie: możesz żądać usunięcia swoich danych, jak opisano w poprzedniej sekcji.",
+            "Ograniczenie: możesz żądać, aby dane były przechowywane, ale poza tym nieużywane, dopóki wątpliwość co do nich nie zostanie wyjaśniona.",
+            "Przenoszenie: możesz otrzymać dostarczone przez siebie dane w formacie nadającym się do odczytu maszynowego.",
+            "Sprzeciw: możesz wnieść sprzeciw wobec przetwarzania opartego na prawnie uzasadnionym interesie, w tym wobec powiadomień push i cotygodniowego podsumowania.",
+            "Wycofanie preferencji: wyłączenie powiadomień lub innych opcjonalnych funkcji działa od tego momentu i nie powoduje, że wcześniejsze przetwarzanie było niezgodne z prawem."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Najszybsza droga to sama aplikacja: w Ustawieniach znajdziesz usuwanie konta, ustawienie języka i przełączniki powiadomień. We wszystkich pozostałych sprawach pisz na {{email}}. Staramy się odpowiadać w ciągu miesiąca."
+        },
+        {
+          "type": "p",
+          "text": "Jeśli uważasz, że Twoje dane są przetwarzane nieprawidłowo, możesz wnieść skargę do polskiego organu nadzorczego: Prezes Urzędu Ochrony Danych Osobowych, ul. Stawki 2, 00-193 Warszawa."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "uodo.gov.pl", "href": "https://uodo.gov.pl" }
+          ]
+        }
+      ]
     },
-    "more": {
-      "title": "Co dalej",
-      "body": "Pełna polityka uzupełni m.in.: podstawy prawne, odbiorców i podprocesorów, transfery poza EOG, okresy retencji, zabezpieczenia oraz pełny katalog praw (dostęp, sprostowanie, usunięcie, ograniczenie, przenoszenie, sprzeciw, skarga do UODO)."
+    {
+      "id": "children",
+      "title": "Dzieci",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "GameTrace nie jest skierowany do dzieci poniżej 16. roku życia i konta nie są dla nich świadomie zakładane. Jeśli sądzisz, że dziecko poniżej 16. roku życia ma konto na oficjalnym hoście, napisz na {{email}}, a konto zostanie usunięte."
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Bezpieczeństwo",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Tokeny sesji są przechowywane wyłącznie jako skróty, nigdy w czytelnej postaci.",
+            "Cały ruch do oficjalnego hosta idzie przez HTTPS.",
+            "Przeglądarka nigdy nie komunikuje się bezpośrednio z backendem; żądania idą przez proxy w tej samej domenie.",
+            "Próby logowania i żądania głosowe są objęte limitami, a powtarzające się niepowodzenia z jednego adresu IP są na krótko blokowane.",
+            "W raportach o błędach nagłówek Authorization jest usuwany, a domyślne zbieranie danych osobowych wyłączone.",
+            "Kopie zapasowe zostają na własnym hoście operatora i nie są kopiowane do zewnętrznego dostawcy przestrzeni dyskowej."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "To prywatny projekt rozwijany w miarę możliwości (best-effort), bez umowy o gwarantowanym poziomie usług, bez certyfikacji bezpieczeństwa i bez zewnętrznego audytu."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "title": "Zmiany w tej informacji",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "To jest wersja 1.0, obowiązująca od 11 sierpnia 2026 r. Gdy informacja się zmieni, zmienią się wraz z nią wersja i data na górze strony, a zaktualizowana treść zostanie opublikowana na tej stronie."
+        },
+        {
+          "type": "p",
+          "text": "Pytania o tę informację lub o Twoje dane na oficjalnym hoście kieruj na {{email}}."
+        }
+      ]
     }
-  }
+  ]
 }
