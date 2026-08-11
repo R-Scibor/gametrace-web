@@ -1,48 +1,435 @@
 {
   "documentTitle": "Privacy policy · GameTrace",
-  "eyebrow": "GAMETRACE · DRAFT",
+  "eyebrow": "GAMETRACE",
   "title": "Privacy policy",
-  "lastUpdated": "Last updated: 3 August 2026",
-  "stubBanner": "This is a short working draft. A full GDPR-style notice (PL + EN) will be published here soon. The text below honestly summarises the intended scope of processing, but it is not yet a complete legal notice.",
+  "lastUpdated": "Last updated: 11 August 2026",
+  "versionLabel": "Version 1.0",
   "backHome": "← Home",
   "languageLabel": "Language",
-  "sections": {
-    "about": {
-      "title": "What GameTrace is",
-      "body": "GameTrace is a game-session journal: a Discord bot, a mobile app, and a web dashboard. The product is designed primarily for self-hosting; the official cloud (for example this install at gametrace.rscibor.dev) is a convenience / best-effort option with no SLA."
-    },
-    "controller": {
-      "title": "Data controller",
-      "body": "On the official GameTrace host, the controller of personal data for users of that instance is the service operator (Rafał Ścibor — contact below). When you point a client at your own server (self-host), the controller for data on that instance is typically the operator of your server — we do not control other people’s privacy practices."
-    },
-    "data": {
-      "title": "What data we intend to process",
-      "intro": "On the official host we may process, among other things:",
-      "items": [
-        "Discord identity (e.g. user id, username) linked to a GameTrace account — login via bot link code / OAuth; we do not store Discord passwords.",
-        "Game sessions and library (titles, times, notes, preferences, user-uploaded covers).",
-        "Profile settings (timezone, language, email/push notification preferences).",
-        "FCM device tokens (mobile push) when enabled.",
-        "Optionally voice recordings sent for transcription (e.g. to create a session) — subprocessors and retention details will appear in the full policy."
+  "tocLabel": "On this page",
+  "sections": [
+    {
+      "id": "scope",
+      "title": "Who this notice covers",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "This notice describes how personal data is handled on the official GameTrace host at gametrace.rscibor.dev. It is a personal, non-commercial project offered on a best-effort basis with no service level agreement."
+        },
+        {
+          "type": "p",
+          "text": "It is published in Polish and English. Both versions describe the same processing. This is version 1.0, effective 11 August 2026."
+        },
+        {
+          "type": "note",
+          "text": "GameTrace can also be self-hosted. If you point a client at your own server, the operator of that server is the controller for the data on it, and this notice does not describe their practices."
+        }
       ]
     },
-    "noSale": {
-      "title": "Sale of data",
-      "body": "We do not sell your personal data. We do not build advertising profiles from your play history."
+    {
+      "id": "controller",
+      "title": "Who is responsible",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "The controller for personal data on the official host is Rafał Ścibor. You can reach him at {{email}} for any question about this notice or about your data."
+        },
+        {
+          "type": "p",
+          "text": "GameTrace is run as a personal side project. It is not a company, it is not sold, and it is maintained on a best-effort basis in spare time. No data protection officer is appointed; write to the address above instead."
+        }
+      ]
     },
-    "deletion": {
-      "title": "Account deletion",
-      "body": "You can request deletion from the web app: Settings → Account → Delete account. The account is disabled immediately and data is permanently deleted after {{days}} days (the deletion job runs once a day, so it may happen up to a day later). During the grace period you can cancel by signing in again. If you cannot sign in, email the contact address below.",
-      "linkLabel": "How to delete your account — full instructions"
+    {
+      "id": "what-we-do",
+      "title": "What GameTrace does",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "GameTrace is a journal of the games you play. A Discord bot watches the game presence of registered users and records a session when you start and stop playing. The web app and the mobile app let you review, correct, add, and delete those sessions, keep a library of games, and see statistics."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "You register through the Discord bot; only then does the bot record anything for you.",
+            "Sessions are created automatically from Discord presence, or by you by hand.",
+            "Voice-assisted entry is an optional extra way to create a session by speaking instead of typing.",
+            "You can edit or delete your sessions and delete your whole account at any time."
+          ]
+        }
+      ]
     },
-    "contact": {
-      "title": "Contact",
-      "body": "Privacy questions and data-rights requests for the official host:",
-      "emailLabel": "Email"
+    {
+      "id": "data",
+      "title": "What data is processed",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Discord identity: your Discord user id and username. No password is ever seen or stored, and no email address is taken from Discord.",
+            "Sessions: which game, start and end time, duration, status, whether the session came from the bot or was entered by hand, and whether it is in the trash. Sessions also carry a notes field, which is written by the system (for example the reason a session ended in an error state) — it is not a free-form diary you write in.",
+            "Library preferences: which games you have ignored or accepted, and your own tag for a game.",
+            "Settings: timezone, interface language, and the push notification and weekly digest switches.",
+            "Credentials: your session token, stored only as a hash, and short-lived login link codes held in Redis.",
+            "Devices: a Firebase Cloud Messaging token and device type when a client registers a device and push is enabled.",
+            "Voice usage metadata: how long the audio was, the detected language, whether a game was matched, and how many fields were filled. The transcript itself is never stored.",
+            "Reports you send: your message plus client context — screen, platform, OS version, app version.",
+            "Deletion trail: your Discord id, the type of event, and timestamps, kept after an account is purged.",
+            "Technical data: your IP address for login link-code abuse controls (held briefly in Redis), application logs, optional error reports, and access logs on the host's edge proxy (IP, path, user agent).",
+            "On your device only: your interface language and any local cover images you save. These stay in browser storage or mobile app storage and are not uploaded to GameTrace servers."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The game catalog is shared between all users: game titles, Discord process-name aliases, metadata from IGDB and Steam, and catalog cover images (including custom covers uploaded by an administrator). It is not personal data about you and is not removed when your account is deleted."
+        },
+        {
+          "type": "note",
+          "text": "Not collected: your Discord password, any email address of yours, advertising or tracking identifiers, and precise location data."
+        }
+      ]
     },
-    "more": {
-      "title": "What’s next",
-      "body": "The full policy will add, among other things: legal bases, recipients and subprocessors, transfers outside the EEA, retention periods, security measures, and the full catalogue of rights (access, rectification, erasure, restriction, portability, objection, complaint to a supervisory authority)."
+    {
+      "id": "sources",
+      "title": "Where the data comes from",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "From you: sessions you enter or correct, library preferences, settings, reports, and optional voice recordings.",
+            "From Discord: your user id and username when you link your account. Server membership is checked at login and is not stored.",
+            "From the bot observing your Discord game presence, and only for registered users whose account is active.",
+            "From IGDB and Steam: game titles, metadata, and cover art for the shared catalog. These lookups are about games, not about you."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "purposes",
+      "title": "Why the data is used, and on what legal basis",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": ["Purpose", "Main data", "Legal basis"],
+          "rows": [
+            [
+              "Running your account, the session journal, your library, and bot session tracking",
+              "Discord identity, sessions, library, settings",
+              "Art. 6(1)(b) GDPR — performance of the service you asked for"
+            ],
+            [
+              "Voice-assisted session entry when you use it",
+              "Audio, transcript, timezone, game name candidates",
+              "Art. 6(1)(b) GDPR — performance of the service you asked for"
+            ],
+            [
+              "Push notifications and the weekly digest",
+              "Device token, notification title and body",
+              "Art. 6(1)(f) GDPR — legitimate interest in keeping you informed about your own account. You can switch both off in Settings and you have a right to object."
+            ],
+            [
+              "Preventing abuse: rate limits, login link-code counters keyed to your IP address, security",
+              "IP address, hashed token, counters",
+              "Art. 6(1)(f) GDPR — legitimate interest in keeping the service usable and secure"
+            ],
+            [
+              "Error monitoring and application, edge, and proxy logs",
+              "Diagnostics, IP address, path, user agent",
+              "Art. 6(1)(f) GDPR — legitimate interest in reliability"
+            ],
+            [
+              "Keeping a record that an account deletion happened",
+              "Discord id, event type, timestamps",
+              "Art. 6(1)(f) GDPR — legitimate interest, together with the accountability duty in Art. 5(2) GDPR"
+            ],
+            [
+              "Logging administrator actions",
+              "Administrator id, action, timestamp",
+              "Art. 6(1)(f) GDPR — legitimate interest in traceable moderation"
+            ],
+            [
+              "Enriching the shared game catalog from IGDB and Steam",
+              "Game titles and search queries",
+              "Art. 6(1)(f) GDPR — legitimate interest in a usable game catalog"
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Push notifications and the weekly digest are on by default, so they are not based on your consent — they run on legitimate interest, and you can object to them or simply switch them off in Settings at any time. Delivering a push to a phone additionally needs the operating system's notification permission, which is a device setting and not consent to the digest."
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "title": "Voice-assisted session entry",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Voice entry is optional. When you record a session out loud, the recording is sent to third-party AI services to turn it into suggested fields. Nothing is saved to your account until you confirm the result."
+        },
+        {
+          "type": "ul",
+          "items": [
+            "The audio is sent to OpenAI (Whisper, model whisper-1, with automatic language detection) for transcription.",
+            "The resulting text, together with your timezone and a short list of game names from your own library, is sent to Google (Gemini on Vertex AI) to extract the game, date, times, and duration. On the official host Vertex AI is called on the global endpoint.",
+            "The suggested fields are shown to you for confirmation before any session is created.",
+            "The uploaded audio is deleted from the GameTrace server as soon as the request finishes.",
+            "The transcript is never stored in the GameTrace database.",
+            "Only usage metadata is kept: how many seconds of audio, the detected language, whether a game was matched, and how many fields were filled.",
+            "Voice entry is limited to 10 requests per hour per credential."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "OpenAI and Google process this data under their own policies. GameTrace does not control how long they keep it."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "OpenAI privacy policy", "href": "https://openai.com/policies/privacy-policy" },
+            { "label": "Google Cloud privacy notice", "href": "https://cloud.google.com/terms/cloud-privacy-notice" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "client-storage",
+      "title": "What is stored on your device",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Web: your session token and your interface language are kept in the browser's local storage, and any cover images you add yourself are kept there as well, as image data in the browser.",
+            "Web: a short-lived value in session storage carries you from Settings into the account deletion screen.",
+            "Mobile: the session token is kept in the device's secure storage, and preferences and local covers in the app's own storage."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Clearing this storage, or signing out, removes the data from your device but does not delete your account. Deleting your account is a separate action described below."
+        },
+        {
+          "type": "note",
+          "text": "There are no advertising or analytics cookies and no third-party trackers. You stay signed in through a token held in your own device's storage, which is necessary for the app to work at all — which is why there is no cookie banner."
+        }
+      ]
+    },
+    {
+      "id": "recipients",
+      "title": "Who else sees the data",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": ["Who", "What", "Why"],
+          "rows": [
+            ["Operator host (home server)", "The application database, Redis, the covers volume, and local backups", "Running the service"],
+            ["Discord", "Login and identity, game presence for the bot, bot messages", "Sign-in and session tracking"],
+            ["OpenAI", "Voice audio for Whisper transcription", "Optional voice feature"],
+            ["Google Vertex AI", "The transcript, candidate game names from your library, and a timezone anchor", "Turning the transcript into structured fields"],
+            ["Google Firebase Cloud Messaging", "Device token, notification title and body", "Push notifications and the weekly digest when a device is registered"],
+            ["IGDB (Twitch)", "Game search terms and title metadata", "Shared catalog enrichment"],
+            ["Steam", "Fallback game name and cover lookups", "Shared catalog enrichment"],
+            ["Sentry, if configured", "Error diagnostics, with the Authorization header scrubbed and default personal-data capture switched off", "Reliability"],
+            ["Edge proxy on the host", "TLS termination and access logs", "Routing and security"]
+          ]
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "Discord privacy policy", "href": "https://discord.com/privacy" },
+            { "label": "OpenAI privacy policy", "href": "https://openai.com/policies/privacy-policy" },
+            { "label": "Google Cloud privacy notice", "href": "https://cloud.google.com/terms/cloud-privacy-notice" },
+            { "label": "Firebase privacy and security", "href": "https://firebase.google.com/support/privacy" },
+            { "label": "Twitch privacy notice (IGDB)", "href": "https://www.twitch.tv/p/legal/privacy-notice/" },
+            { "label": "Steam privacy policy", "href": "https://store.steampowered.com/privacy_agreement/" },
+            { "label": "Sentry privacy policy", "href": "https://sentry.io/privacy/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "no-sale",
+      "title": "No sale of your data",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Your personal data is not sold, rented, or traded. No advertising or behavioural profiles are built from your play history, and your data is not shared with advertising networks or data brokers."
+        },
+        {
+          "type": "p",
+          "text": "The services listed above receive data only to perform the function described next to them."
+        }
+      ]
+    },
+    {
+      "id": "transfers",
+      "title": "Transfers outside the EEA",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "The application database, the covers volume, and the backups are held on the operator's own hardware in Poland, inside the European Economic Area."
+        },
+        {
+          "type": "p",
+          "text": "Some of the recipients above are based outside the EEA or process data outside it. Voice audio goes to OpenAI, and the transcript goes to Google Vertex AI on the global endpoint, which does not pin processing to a European region. Discord, Firebase Cloud Messaging, IGDB, Steam, and Sentry likewise operate internationally."
+        },
+        {
+          "type": "p",
+          "text": "Each of those providers relies on its own published transfer mechanism, such as standard contractual clauses or an EU–US framework where they claim one. Rather than restate mechanisms that can change, this notice links their policies so you can check the current position yourself."
+        },
+        {
+          "type": "note",
+          "text": "Pinning Vertex AI to a European region alone would not make voice entry an EEA-only path, because the audio already reaches OpenAI in the United States before Gemini ever sees a transcript. If you would rather no data leave the EEA, do not use voice entry — the rest of GameTrace works without it."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "OpenAI privacy policy", "href": "https://openai.com/policies/privacy-policy" },
+            { "label": "Google Cloud privacy notice", "href": "https://cloud.google.com/terms/cloud-privacy-notice" },
+            { "label": "Discord privacy policy", "href": "https://discord.com/privacy" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "title": "How long data is kept",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": ["Data", "Kept for"],
+          "rows": [
+            ["Account, sessions, preferences, reports, voice usage metadata", "Until your account is purged, then deleted with it"],
+            ["Sessions in the trash", "7 days, then permanently deleted"],
+            ["Very short \"flicker\" sessions", "Cleaned up automatically, roughly within a day"],
+            ["Session tokens", "About 30 days, extended as you keep using the app; revoked on sign-out and on a deletion request"],
+            ["Registered devices for push", "Until you unregister, the token stops working, or about 6 months of inactivity"],
+            ["Login link codes and IP failure counters", "Minutes, then they expire automatically"],
+            ["Voice audio on GameTrace", "Not kept after the request finishes"],
+            ["Voice transcripts in the database", "Never stored"],
+            ["Deletion trail", "Indefinitely, as a minimal record"],
+            ["Backups of the database and covers", "7 days, on the operator's own host"],
+            ["Application, edge, and error logs", "Short operational windows; no fixed number of days is claimed"]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "account-deletion",
+      "title": "Deleting your account",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "You can delete your account yourself in the web app under Settings → Account → Delete account. Deletion is not instant: there is a grace period so you can change your mind, and then the data has to age out of the backups."
+        },
+        {
+          "type": "table",
+          "headers": ["Stage", "Timing"],
+          "rows": [
+            ["You request deletion", "Immediately: the account is disabled, tokens and registered devices are revoked, pending login codes are discarded, and any session still running is closed with an error"],
+            ["Grace period", "{{days}} days — sign in again to cancel"],
+            ["Purge", "A nightly job removes your data on or after the end of the grace period, so up to about a day later"],
+            ["Backups", "Up to 7 further days before the last copy rotates out"],
+            ["Worst case", "About 15 to 16 days from the request until no residual copy remains"]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Cancelling during the grace period restores access to your account, but it does not bring back registered devices or repair sessions that were closed with an error when you requested deletion."
+        },
+        {
+          "type": "p",
+          "text": "Two things survive the purge: a minimal record in the deletion trail (your Discord id, the event, and timestamps) and the shared game catalog, including titles, aliases, and catalog covers, which is not personal data about you."
+        },
+        {
+          "type": "p",
+          "text": "Administrator accounts cannot delete themselves — the app refuses the request by design so that the administration tools are never left without an owner. An administrator who wants their data erased should write to {{email}}. Write to the same address if you cannot sign in to start the deletion yourself."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "How to delete your account", "href": "/delete-account" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rights",
+      "title": "Your rights",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Access: ask what data is held about you and get a copy.",
+            "Rectification: have inaccurate data corrected — most of it you can correct yourself in the app.",
+            "Erasure: have your data deleted, as described in the previous section.",
+            "Restriction: ask that data be held but not otherwise used while a question about it is resolved.",
+            "Portability: receive the data you provided in a machine-readable form.",
+            "Objection: object to processing based on legitimate interest, including push notifications and the weekly digest.",
+            "Withdraw a preference: switching notifications or other optional features off applies from that point on and does not make earlier processing unlawful."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The quickest route is the app itself: Settings holds account deletion, the language setting, and the notification switches. For anything else, write to {{email}}. Requests are answered within one month."
+        },
+        {
+          "type": "p",
+          "text": "If you think your data is being handled improperly, you can complain to the Polish supervisory authority: Prezes Urzędu Ochrony Danych Osobowych, ul. Stawki 2, 00-193 Warszawa."
+        },
+        {
+          "type": "links",
+          "items": [
+            { "label": "uodo.gov.pl", "href": "https://uodo.gov.pl" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "children",
+      "title": "Children",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "GameTrace is not directed at children under 16 and accounts are not knowingly created for them. If you believe a child under 16 has an account on the official host, write to {{email}} and it will be removed."
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Security",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Session tokens are stored only as hashes, never in a readable form.",
+            "All traffic to the official host goes over HTTPS.",
+            "The browser never talks to the backend directly; requests go through a same-origin proxy.",
+            "Login attempts and voice requests are rate limited, and repeated failures from one IP address are locked out for a short time.",
+            "Error reports have the Authorization header scrubbed and default personal-data capture switched off.",
+            "Backups stay on the operator's own host and are not copied to a third-party storage provider."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "This is a personal project maintained on a best-effort basis with no service level agreement, no security certification, and no external audit. Keep your own copies of anything you cannot afford to lose."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "title": "Changes to this notice",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "This is version 1.0, effective 11 August 2026. When the notice changes, the version and date at the top change with it, and the updated text is published on this page. The mobile app records which version you accepted and asks again when a new one is published."
+        },
+        {
+          "type": "p",
+          "text": "Questions about this notice, or about your data on the official host, go to {{email}}."
+        }
+      ]
     }
-  }
+  ]
 }
