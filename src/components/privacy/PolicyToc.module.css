@@ -1,0 +1,57 @@
+.toc {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.tocLabel {
+  margin: 0 0 10px;
+  color: var(--text-faint);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.tocList {
+  margin: 0;
+  padding: 0 0 0 18px;
+  list-style: decimal;
+  color: var(--text-faint);
+}
+
+.tocList li {
+  margin-bottom: 7px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.tocLink {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+
+.tocLink:hover {
+  color: var(--accent);
+}
+
+.tocLinkActive {
+  composes: tocLink;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Below the two-column breakpoint the TOC becomes a plain jump list above the
+   article rather than a sticky rail. */
+@media (max-width: 899px) {
+  .toc {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    margin-bottom: 28px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+}
