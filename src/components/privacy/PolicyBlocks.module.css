@@ -1,0 +1,80 @@
+.paragraph {
+  margin: 0 0 14px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.note {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--accent);
+  background: rgba(255, 122, 26, 0.06);
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.list {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.list li {
+  margin-bottom: 6px;
+}
+
+.tableWrap {
+  margin: 0 0 18px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.table th {
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.table td {
+  color: var(--text-dim);
+}
+
+.links {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.links li {
+  margin-bottom: 6px;
+}
+
+.link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
