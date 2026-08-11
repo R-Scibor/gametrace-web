@@ -76,8 +76,13 @@ test('the grace period comes from the shared constant, not a literal', () => {
 
 test('the contact email renders as a mailto link', () => {
   renderWithProviders(<PrivacyPage />, { authenticated: false });
+  // Five occurrences across the notice (controller, account-deletion, rights,
+  // children, changes), each a plain-text {{email}} inside a `p` block. Exact
+  // count catches regressions where trailing punctuation gets swallowed into
+  // the link, since a malformed anchor's accessible name no longer equals
+  // PRIVACY_CONTACT_EMAIL and silently drops out of this query.
   const emailLinks = screen.getAllByRole('link', { name: PRIVACY_CONTACT_EMAIL });
-  expect(emailLinks.length).toBeGreaterThan(0);
+  expect(emailLinks).toHaveLength(5);
   for (const link of emailLinks) {
     expect(link).toHaveAttribute('href', `mailto:${PRIVACY_CONTACT_EMAIL}`);
   }

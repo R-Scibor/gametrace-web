@@ -3,7 +3,12 @@ import { Link } from 'react-router-dom';
 import type { PolicyBlock } from '../../lib/privacyPolicy';
 import styles from './PolicyBlocks.module.css';
 
-const EMAIL_PATTERN = /[\w.+-]+@[\w-]+\.[\w.-]+/g;
+// Domain is one-or-more dot-separated labels, each a maximal run of
+// [\w-]. Deliberately NOT `[\w-]+\.[\w.-]+` (or any pattern ending the
+// domain in a greedy dot-inclusive class): that swallows sentence-final
+// punctuation, e.g. "...write to a@b.com. Then wait." would previously
+// match "a@b.com." and produce a broken `mailto:a@b.com.` link.
+const EMAIL_PATTERN = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
 
 /** Body text may contain a plain email address (interpolated from
  *  {{email}}). Splits it out into a clickable mailto: link so the address
@@ -29,7 +34,18 @@ function linkifyEmails(text: string): ReactNode[] {
 }
 
 /** Renders one policy block. Content arrives already validated and
- *  interpolated by parsePolicySections, so this stays purely presentational. */
+ *  interpolated by parsePolicySections; the only parsing done here is
+ *  `linkifyEmails` picking a plain address out of `p`/`note` text so it can
+ *  become an anchor.
+ *
+ *  That anchor's `mailto:` href is built directly from the regex match,
+ *  bypassing `isSafeHref` in lib/privacyPolicy.ts — otherwise the single
+ *  chokepoint for every href rendered on this page (the `links` block case
+ *  below always routes through it). This is safe because EMAIL_PATTERN's
+ *  character classes (`[\w.+-]` and `[\w-]`) cannot contain `:`, so the
+ *  match can never itself be a URL scheme like `javascript:`; and because
+ *  the matched text is passed to React as anchor children, not raw HTML, so
+ *  it is escaped like any other text node. */
 function Block({ block }: { block: PolicyBlock }) {
   switch (block.type) {
     case 'p':
@@ -39,6 +55,11 @@ function Block({ block }: { block: PolicyBlock }) {
       return <p className={styles.note}>{linkifyEmails(block.text)}</p>;
 
     case 'ul':
+      // Deliberately not run through linkifyEmails: today every {{email}}
+      // in the locale content lives inside a `p`/`note` block. If a future
+      // edit moves the address into a list item, it will render as inert
+      // text here — see PolicyBlocks.test.tsx's "does not linkify list
+      // items or table cells" case, which documents this invariant.
       return (
         <ul className={styles.list}>
           {block.items.map((item, index) => (
@@ -49,7 +70,8 @@ function Block({ block }: { block: PolicyBlock }) {
 
     case 'table':
       // Wrapper scrolls on its own so a wide recipients/retention table never
-      // forces the whole page to scroll horizontally on a phone.
+      // forces the whole page to scroll horizontally on a phone. Cells are
+      // also not run through linkifyEmails — same caveat as the `ul` case.
       return (
         <div className={styles.tableWrap}>
           <table className={styles.table}>
