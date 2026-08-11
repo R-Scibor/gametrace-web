@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { beforeEach, expect, test, vi } from 'vitest';
 import i18n from '../i18n';
 import { PrivacyPage, PRIVACY_CONTACT_EMAIL } from './PrivacyPage';
-import { REQUIRED_SECTION_IDS } from '../lib/privacyPolicy';
+import { PRIVACY_POLICY_VERSION, REQUIRED_SECTION_IDS } from '../lib/privacyPolicy';
 import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
 import { renderAppRoutes, renderWithProviders, resetStores } from '../../test/utils';
 
@@ -96,16 +96,35 @@ test('links the deletion section to the public delete-account page', () => {
   ).toBe(true);
 });
 
-test('the version and effective date are visible', () => {
+test('the header version comes from the shared constant, not a literal', () => {
   renderWithProviders(<PrivacyPage />, { authenticated: false });
   const banner = within(screen.getByRole('banner'));
-  expect(banner.getByText(/wersja 1\.0/i)).toBeInTheDocument();
+  expect(
+    banner.getByText(new RegExp(`wersja ${PRIVACY_POLICY_VERSION.replace(/\./g, '\\.')}`, 'i')),
+  ).toBeInTheDocument();
+  expect(banner.queryByText(/\{\{version\}\}/)).not.toBeInTheDocument();
   expect(banner.getByText(/11 sierpnia 2026/i)).toBeInTheDocument();
 });
 
-test('at least one table renders its headers', () => {
+test('every table renders a header row', () => {
   renderWithProviders(<PrivacyPage />, { authenticated: false });
-  expect(screen.getAllByRole('table').length).toBeGreaterThan(0);
+
+  // purposes (3x8), recipients (3x9), retention (2x11), account-deletion (2x5).
+  const tables = screen.getAllByRole('table');
+  expect(tables).toHaveLength(4);
+
+  const headerCounts = tables.map(
+    (table) => within(table).getAllByRole('columnheader').length,
+  );
+  expect(headerCounts).toEqual([3, 3, 2, 2]);
+  expect(
+    within(tables[0]).getByRole('columnheader', { name: 'Cel' }),
+  ).toBeInTheDocument();
+});
+
+test('the notice sits in a main landmark', () => {
+  renderWithProviders(<PrivacyPage />, { authenticated: false });
+  expect(screen.getByRole('main')).toBeInTheDocument();
 });
 
 test('language select switches to English', async () => {
