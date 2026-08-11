@@ -1,76 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
-import { listOf } from '../lib/i18nList';
+import {
+  parsePolicySections,
+  PRIVACY_CONTACT_EMAIL,
+  PRIVACY_POLICY_VERSION,
+} from '../lib/privacyPolicy';
+import { PolicyBlocks } from '../components/privacy/PolicyBlocks';
+import { PolicyToc } from '../components/privacy/PolicyToc';
 import styles from './PrivacyPage.module.css';
 
-/** Public contact for official-host privacy questions (same as portfolio). */
-export const PRIVACY_CONTACT_EMAIL = 'sciborr08@gmail.com';
-
-const SECTION_ORDER = [
-  'about',
-  'controller',
-  'data',
-  'noSale',
-  'deletion',
-  'contact',
-  'more',
-] as const;
-
-type SectionKey = (typeof SECTION_ORDER)[number];
-
-/** Three sections carry more than a paragraph; the rest are plain body copy. */
-function SectionBody({ sectionKey, items }: { sectionKey: SectionKey; items: string[] }) {
-  const { t } = useTranslation('privacy');
-
-  if (sectionKey === 'data') {
-    return (
-      <>
-        <p className={styles.body}>{t('sections.data.intro')}</p>
-        <ul className={styles.list}>
-          {items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </>
-    );
-  }
-
-  if (sectionKey === 'contact') {
-    return (
-      <>
-        <p className={styles.body}>{t('sections.contact.body')}</p>
-        <p className={styles.contactLine}>
-          <span className={styles.contactLabel}>{t('sections.contact.emailLabel')}: </span>
-          <a className={styles.email} href={`mailto:${PRIVACY_CONTACT_EMAIL}`}>
-            {PRIVACY_CONTACT_EMAIL}
-          </a>
-        </p>
-      </>
-    );
-  }
-
-  if (sectionKey === 'deletion') {
-    return (
-      <>
-        <p className={styles.body}>
-          {t('sections.deletion.body', { days: ACCOUNT_DELETION_GRACE_DAYS })}
-        </p>
-        <p>
-          <Link to="/delete-account" className={styles.email}>
-            {t('sections.deletion.linkLabel')}
-          </Link>
-        </p>
-      </>
-    );
-  }
-
-  return <p className={styles.body}>{t(`sections.${sectionKey}.body`)}</p>;
-}
+// Re-exported because DeleteAccountPage and existing tests import it from here.
+// The constant itself lives in lib/privacyPolicy so the validator can
+// interpolate {{email}} without importing a page component.
+export { PRIVACY_CONTACT_EMAIL };
 
 export function PrivacyPage() {
   const { t, i18n } = useTranslation('privacy');
@@ -84,7 +31,14 @@ export function PrivacyPage() {
     };
   }, [t, i18n.language]);
 
-  const items = listOf(t('sections.data.items', { returnObjects: true }));
+  const sections = useMemo(
+    () =>
+      parsePolicySections(t('sections', { returnObjects: true }), {
+        days: ACCOUNT_DELETION_GRACE_DAYS,
+        email: PRIVACY_CONTACT_EMAIL,
+      }),
+    [t, i18n.language],
+  );
 
   return (
     <div className={styles.page}>
@@ -113,21 +67,27 @@ export function PrivacyPage() {
             {t('title')}
             <span className={styles.titleAccent}>.</span>
           </h1>
-          <p className={styles.meta}>{t('lastUpdated')}</p>
+          <p className={styles.meta}>
+            <span>{t('lastUpdated')}</span>
+            <span className={styles.metaSep} aria-hidden>
+              ·
+            </span>
+            <span>{t('versionLabel')}</span>
+          </p>
         </header>
 
-        <p className={styles.stubBanner} role="status">
-          {t('stubBanner')}
-        </p>
+        <div className={styles.shell}>
+          <PolicyToc sections={sections} label={t('tocLabel')} />
 
-        <article className={styles.article}>
-          {SECTION_ORDER.map((key) => (
-            <section key={key} className={styles.section} id={key === 'deletion' ? 'account-deletion' : undefined}>
-              <h2 className={styles.sectionTitle}>{t(`sections.${key}.title`)}</h2>
-              <SectionBody sectionKey={key} items={items} />
-            </section>
-          ))}
-        </article>
+          <article className={styles.article}>
+            {sections.map((section) => (
+              <section key={section.id} className={styles.section} id={section.id}>
+                <h2 className={styles.sectionTitle}>{section.title}</h2>
+                <PolicyBlocks blocks={section.blocks} />
+              </section>
+            ))}
+          </article>
+        </div>
       </div>
 
       <footer className={styles.footer} role="contentinfo">
@@ -136,9 +96,7 @@ export function PrivacyPage() {
             <span className={styles.footerDot} aria-hidden />
             <span>GAMETRACE</span>
           </div>
-          <Link to="/privacy" className={styles.footerLink}>
-            {t('title')}
-          </Link>
+          <span className={styles.footerVersion}>v{PRIVACY_POLICY_VERSION}</span>
         </div>
       </footer>
     </div>

@@ -78,3 +78,13 @@
 .link:hover {
   text-decoration: underline;
 }
+
+.emailLink {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.emailLink:hover {
+  text-decoration: underline;
+}

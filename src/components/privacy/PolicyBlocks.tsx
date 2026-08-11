@@ -1,16 +1,42 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import type { PolicyBlock } from '../../lib/privacyPolicy';
 import styles from './PolicyBlocks.module.css';
+
+const EMAIL_PATTERN = /[\w.+-]+@[\w-]+\.[\w.-]+/g;
+
+/** Body text may contain a plain email address (interpolated from
+ *  {{email}}). Splits it out into a clickable mailto: link so the address
+ *  isn't just inert text in a legal notice. */
+function linkifyEmails(text: string): ReactNode[] {
+  const parts = text.split(EMAIL_PATTERN);
+  const matches = text.match(EMAIL_PATTERN) ?? [];
+  if (matches.length === 0) return [text];
+
+  const nodes: ReactNode[] = [];
+  parts.forEach((part, index) => {
+    if (part) nodes.push(part);
+    const email = matches[index];
+    if (email) {
+      nodes.push(
+        <a key={`${email}-${index}`} className={styles.emailLink} href={`mailto:${email}`}>
+          {email}
+        </a>,
+      );
+    }
+  });
+  return nodes;
+}
 
 /** Renders one policy block. Content arrives already validated and
  *  interpolated by parsePolicySections, so this stays purely presentational. */
 function Block({ block }: { block: PolicyBlock }) {
   switch (block.type) {
     case 'p':
-      return <p className={styles.paragraph}>{block.text}</p>;
+      return <p className={styles.paragraph}>{linkifyEmails(block.text)}</p>;
 
     case 'note':
-      return <p className={styles.note}>{block.text}</p>;
+      return <p className={styles.note}>{linkifyEmails(block.text)}</p>;
 
     case 'ul':
       return (
