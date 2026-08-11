@@ -15,8 +15,8 @@ function Block({ block }: { block: PolicyBlock }) {
     case 'ul':
       return (
         <ul className={styles.list}>
-          {block.items.map((item) => (
-            <li key={item}>{item}</li>
+          {block.items.map((item, index) => (
+            <li key={`${index}-${item}`}>{item}</li>
           ))}
         </ul>
       );
@@ -37,8 +37,8 @@ function Block({ block }: { block: PolicyBlock }) {
               </tr>
             </thead>
             <tbody>
-              {block.rows.map((row) => (
-                <tr key={row.join('|')}>
+              {block.rows.map((row, rowIndex) => (
+                <tr key={rowIndex}>
                   {row.map((cell, i) => (
                     <td key={`${block.headers[i]}-${cell}`}>{cell}</td>
                   ))}
@@ -52,8 +52,8 @@ function Block({ block }: { block: PolicyBlock }) {
     case 'links':
       return (
         <ul className={styles.links}>
-          {block.items.map((item) => (
-            <li key={item.href}>
+          {block.items.map((item, index) => (
+            <li key={`${index}-${item.href}`}>
               {item.href.startsWith('/') ? (
                 <Link className={styles.link} to={item.href}>
                   {item.label}
