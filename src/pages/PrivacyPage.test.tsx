@@ -4,7 +4,11 @@ import { Route } from 'react-router-dom';
 import { beforeEach, expect, test, vi } from 'vitest';
 import i18n from '../i18n';
 import { PrivacyPage, PRIVACY_CONTACT_EMAIL } from './PrivacyPage';
-import { PRIVACY_POLICY_VERSION, REQUIRED_SECTION_IDS } from '../lib/privacyPolicy';
+import {
+  PRIVACY_POLICY_EFFECTIVE_DATE,
+  PRIVACY_POLICY_VERSION,
+  REQUIRED_SECTION_IDS,
+} from '../lib/privacyPolicy';
 import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
 import { renderAppRoutes, renderWithProviders, resetStores } from '../../test/utils';
 
@@ -103,7 +107,25 @@ test('the header version comes from the shared constant, not a literal', () => {
     banner.getByText(new RegExp(`wersja ${PRIVACY_POLICY_VERSION.replace(/\./g, '\\.')}`, 'i')),
   ).toBeInTheDocument();
   expect(banner.queryByText(/\{\{version\}\}/)).not.toBeInTheDocument();
-  expect(banner.getByText(/11 sierpnia 2026/i)).toBeInTheDocument();
+  // PL month names; day and year must match PRIVACY_POLICY_EFFECTIVE_DATE.
+  const [, month, day] = PRIVACY_POLICY_EFFECTIVE_DATE.split('-');
+  const plMonths = [
+    '',
+    'stycznia',
+    'lutego',
+    'marca',
+    'kwietnia',
+    'maja',
+    'czerwca',
+    'lipca',
+    'sierpnia',
+    'września',
+    'października',
+    'listopada',
+    'grudnia',
+  ];
+  const plDate = `${Number(day)} ${plMonths[Number(month)]} ${PRIVACY_POLICY_EFFECTIVE_DATE.slice(0, 4)}`;
+  expect(banner.getByText(new RegExp(plDate.replace(/\s+/g, '\\s+'), 'i'))).toBeInTheDocument();
 });
 
 test('every table renders a header row', () => {

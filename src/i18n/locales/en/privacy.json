@@ -2,7 +2,7 @@
   "documentTitle": "Privacy policy · GameTrace",
   "eyebrow": "GAMETRACE",
   "title": "Privacy policy",
-  "lastUpdated": "Last updated: 11 August 2026",
+  "lastUpdated": "Last updated: 12 August 2026",
   "versionLabel": "Version {{version}}",
   "backHome": "← Home",
   "languageLabel": "Language",
@@ -14,11 +14,11 @@
       "blocks": [
         {
           "type": "p",
-          "text": "This notice describes how personal data is handled on the official GameTrace host at gametrace.rscibor.dev. It is a personal, non-commercial project offered on a best-effort basis with no service level agreement."
+          "text": "This notice describes how personal data is handled by the official GameTrace service at gametrace.rscibor.dev and by the clients that connect to it: the web app, the Android app, and the Discord bot. It is a personal, non-commercial project offered on a best-effort basis with no service level agreement."
         },
         {
           "type": "p",
-          "text": "It is published in Polish and English. Both versions describe the same processing. This is version {{version}}, effective 11 August 2026."
+          "text": "It is published in Polish and English. Both versions describe the same processing. This is version {{version}}, effective 12 August 2026."
         },
         {
           "type": "note",
@@ -51,7 +51,7 @@
         {
           "type": "ul",
           "items": [
-            "You register through the Discord bot; only then does the bot record anything for you.",
+            "You can get an account in two ways: sign in with Discord in the Android app, which creates the account on first sign-in, or register through the Discord bot and sign in with the code it sends you. Either way, the bot records sessions only once your account exists.",
             "Sessions are created automatically from Discord presence, or by you by hand.",
             "Voice-assisted entry is an optional extra way to create a session by speaking instead of typing.",
             "You can edit or delete your sessions and delete your whole account at any time."
@@ -76,7 +76,8 @@
             "Reports you send: your message plus client context (screen, platform, OS version, app version).",
             "Deletion trail: your Discord id, the type of event, and timestamps, kept after an account is purged.",
             "Technical data: your IP address for login link-code abuse controls (held briefly in Redis), application logs, optional error reports, and access logs on the host's edge proxy (IP, path, user agent).",
-            "On your device only: your interface language and any local cover images you save. These stay in browser storage or mobile app storage and are not uploaded to GameTrace servers."
+            "On your device only: your interface language and any local cover images you save. These stay in browser storage or mobile app storage and are not uploaded to GameTrace servers.",
+            "Optional device access (Android): the microphone, only when you start voice-assisted session entry; the photo library, only when you choose a custom local game cover; notification permission, only when you enable or use push notifications. These permissions are requested at the moment of use, not at install time."
           ]
         },
         {
@@ -97,7 +98,8 @@
           "type": "ul",
           "items": [
             "From you: sessions you enter or correct, library preferences, settings, reports, and optional voice recordings.",
-            "From Discord: your user id and username when you link your account. Server membership is checked at login and is not stored.",
+            "From Discord when you sign in with Discord: your user id and username. You authorize GameTrace on Discord's own page, so no Discord password is ever seen or stored, and the authorization is exchanged for your identity on the GameTrace server rather than on your device. GameTrace also asks Discord which servers you are in, to check whether you are in the GameTrace server; that membership is checked at sign-in and is not stored.",
+            "From Discord when you sign in with a code from the bot: your user id and username, for the account the bot already created.",
             "From the bot observing your Discord game presence, and only for registered users whose account is active.",
             "From IGDB and Steam: game titles, metadata, and cover art for the shared catalog. These lookups are about games, not about you."
           ]
@@ -202,7 +204,8 @@
           "items": [
             "Web: your session token and your interface language are kept in the browser's local storage, and any cover images you add yourself are kept there as well, as image data in the browser.",
             "Web: a short-lived value in session storage carries you from Settings into the account deletion screen.",
-            "Mobile: the session token is kept in the device's secure storage, and preferences and local covers in the app's own storage."
+            "Mobile: the session token is kept in the device's secure storage, and preferences and local covers in the app's own storage.",
+            "Mobile local covers: when you set a custom game cover, the Android app may read a photo you pick from the device library. That image is stored only on the device for display in the app and is not uploaded to GameTrace servers."
           ]
         },
         {
@@ -321,7 +324,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "You can delete your account yourself in the web app under Settings → Account → Delete account. Deletion is not instant: there is a grace period so you can change your mind, and then the data has to age out of the backups."
+          "text": "You can delete your account yourself in Settings (web or Android) under Account → Delete account. Deletion is not instant: there is a grace period so you can change your mind, and then the data has to age out of the backups."
         },
         {
           "type": "table",
@@ -423,7 +426,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "This is version {{version}}, effective 11 August 2026. When the notice changes, the version and date at the top change with it, and the updated text is published on this page."
+          "text": "This is version {{version}}, effective 12 August 2026. When the notice changes, the version and date at the top change with it, and the updated text is published on this page."
         },
         {
           "type": "p",

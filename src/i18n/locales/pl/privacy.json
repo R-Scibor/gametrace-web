@@ -2,7 +2,7 @@
   "documentTitle": "Polityka prywatności · GameTrace",
   "eyebrow": "GAMETRACE",
   "title": "Polityka prywatności",
-  "lastUpdated": "Ostatnia aktualizacja: 11 sierpnia 2026",
+  "lastUpdated": "Ostatnia aktualizacja: 12 sierpnia 2026",
   "versionLabel": "Wersja {{version}}",
   "backHome": "← Strona główna",
   "languageLabel": "Język",
@@ -14,11 +14,11 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Ta informacja opisuje, jak przetwarzane są dane osobowe na oficjalnym hoście GameTrace pod adresem gametrace.rscibor.dev. Jest to prywatny, niekomercyjny projekt udostępniany w miarę możliwości (best-effort), bez umowy o gwarantowanym poziomie usług."
+          "text": "Ta informacja opisuje, jak przetwarzane są dane osobowe w oficjalnej usłudze GameTrace pod adresem gametrace.rscibor.dev oraz w klientach, które się z nią łączą: aplikacji webowej, aplikacji na Androida i bocie Discord. Jest to prywatny, niekomercyjny projekt udostępniany w miarę możliwości (best-effort), bez umowy o gwarantowanym poziomie usług."
         },
         {
           "type": "p",
-          "text": "Informacja publikowana jest po polsku i po angielsku. Obie wersje opisują to samo przetwarzanie. To jest wersja {{version}}, obowiązująca od 11 sierpnia 2026 r."
+          "text": "Informacja publikowana jest po polsku i po angielsku. Obie wersje opisują to samo przetwarzanie. To jest wersja {{version}}, obowiązująca od 12 sierpnia 2026 r."
         },
         {
           "type": "note",
@@ -51,7 +51,7 @@
         {
           "type": "ul",
           "items": [
-            "Rejestrujesz się przez bota Discord; dopiero wtedy bot zaczyna cokolwiek dla Ciebie zapisywać.",
+            "Konto można założyć na dwa sposoby: logując się przez Discord w aplikacji na Androida, co tworzy konto przy pierwszym logowaniu, albo rejestrując się przez bota Discord i logując się kodem, który bot wysyła. W obu przypadkach bot zapisuje sesje dopiero wtedy, gdy konto już istnieje.",
             "Sesje powstają automatycznie na podstawie statusu na Discordzie albo ręcznie, gdy zostaną dodane samodzielnie.",
             "Wprowadzanie głosowe to opcjonalny, dodatkowy sposób na utworzenie sesji mówieniem zamiast pisania.",
             "W każdej chwili możesz edytować lub usunąć swoje sesje oraz usunąć całe konto."
@@ -76,7 +76,8 @@
             "Zgłoszenia, które wysyłasz: Twoja wiadomość wraz z kontekstem klienta (ekran, platforma, wersja systemu, wersja aplikacji).",
             "Ślad po usunięciu: Twój identyfikator Discord, rodzaj zdarzenia i znaczniki czasu, zachowywane po wyczyszczeniu konta.",
             "Dane techniczne: Twój adres IP na potrzeby ochrony kodów logowania przed nadużyciami (przechowywany krótko w Redisie), logi aplikacji, opcjonalne raporty o błędach oraz logi dostępu na brzegowym proxy hosta (adres IP, ścieżka, identyfikator przeglądarki).",
-            "Wyłącznie na Twoim urządzeniu: język interfejsu i lokalne okładki, które zapiszesz. Zostają one w pamięci przeglądarki lub aplikacji mobilnej i nie są przesyłane na serwery GameTrace."
+            "Wyłącznie na Twoim urządzeniu: język interfejsu i lokalne okładki, które zapiszesz. Zostają one w pamięci przeglądarki lub aplikacji mobilnej i nie są przesyłane na serwery GameTrace.",
+            "Opcjonalny dostęp do urządzenia (Android): mikrofon, wyłącznie gdy rozpoczynasz głosowe wprowadzanie sesji; galeria zdjęć, wyłącznie gdy wybierasz własną lokalną okładkę gry; uprawnienie do powiadomień, wyłącznie gdy włączasz lub korzystasz z powiadomień push. O te uprawnienia prosimy w momencie użycia, a nie przy instalacji."
           ]
         },
         {
@@ -97,7 +98,8 @@
           "type": "ul",
           "items": [
             "Od Ciebie: sesje, które wpisujesz lub poprawiasz, preferencje biblioteki, ustawienia, zgłoszenia i opcjonalne nagrania głosowe.",
-            "Z Discorda: Twój identyfikator użytkownika i nazwa w momencie połączenia konta. Członkostwo na serwerze jest sprawdzane przy logowaniu i nie jest przechowywane.",
+            "Z Discorda przy logowaniu przez Discord: Twój identyfikator użytkownika i nazwa. Zgoda jest wyrażana na stronie samego Discorda, więc hasło do Discorda nigdy nie jest widoczne ani przechowywane, a autoryzacja jest wymieniana na dane tożsamości po stronie serwera GameTrace, a nie na urządzeniu. GameTrace pyta też Discord o listę serwerów, aby sprawdzić obecność na serwerze GameTrace; członkostwo jest sprawdzane przy logowaniu i nie jest przechowywane.",
+            "Z Discorda przy logowaniu kodem od bota: Twój identyfikator użytkownika i nazwa, dla konta, które bot już utworzył.",
             "Z obserwacji przez bota Twojego statusu gry na Discordzie, wyłącznie dla zarejestrowanych użytkowników z aktywnym kontem.",
             "Z IGDB i Steam: tytuły gier, metadane i okładki do wspólnego katalogu. Te zapytania dotyczą gier, a nie Ciebie."
           ]
@@ -202,7 +204,8 @@
           "items": [
             "Web: Twój token sesji i język interfejsu są trzymane w pamięci lokalnej przeglądarki, a okładki dodane samodzielnie również tam trafiają, jako dane obrazu w przeglądarce.",
             "Web: krótkotrwała wartość w pamięci sesji przenosi Cię z Ustawień na ekran usuwania konta.",
-            "Mobile: token sesji jest trzymany w bezpiecznej pamięci urządzenia, a preferencje i lokalne okładki w pamięci samej aplikacji."
+            "Mobile: token sesji jest trzymany w bezpiecznej pamięci urządzenia, a preferencje i lokalne okładki w pamięci samej aplikacji.",
+            "Lokalne okładki na mobile: gdy ustawiasz własną okładkę gry, aplikacja na Androida może odczytać zdjęcie wybrane z galerii urządzenia. Ten obraz jest przechowywany wyłącznie na urządzeniu do wyświetlania w aplikacji i nie jest przesyłany na serwery GameTrace."
           ]
         },
         {
@@ -321,7 +324,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Konto możesz usunąć samodzielnie w aplikacji webowej: Ustawienia → Konto → Usuń konto. Usunięcie nie jest natychmiastowe: obowiązuje okres karencji, w którym możesz zmienić zdanie, a potem dane muszą jeszcze wypaść z kopii zapasowych."
+          "text": "Konto możesz usunąć samodzielnie w Ustawieniach (web lub Android): Konto → Usuń konto. Usunięcie nie jest natychmiastowe: obowiązuje okres karencji, w którym możesz zmienić zdanie, a potem dane muszą jeszcze wypaść z kopii zapasowych."
         },
         {
           "type": "table",
@@ -423,7 +426,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "To jest wersja {{version}}, obowiązująca od 11 sierpnia 2026 r. Gdy informacja się zmieni, zmienią się wraz z nią wersja i data na górze strony, a zaktualizowana treść zostanie opublikowana na tej stronie."
+          "text": "To jest wersja {{version}}, obowiązująca od 12 sierpnia 2026 r. Gdy informacja się zmieni, zmienią się wraz z nią wersja i data na górze strony, a zaktualizowana treść zostanie opublikowana na tej stronie."
         },
         {
           "type": "p",

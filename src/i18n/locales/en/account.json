@@ -56,9 +56,9 @@
     "intro": "You can request deletion of your GameTrace account and its data at any time. Here is how, and exactly what gets removed.",
     "stepsTitle": "How to delete your account",
     "steps": [
-      "Sign in to the web app (code from the /login command on Discord).",
+      "Sign in on the web or in the Android app (code from the /login command on Discord).",
       "Go to Settings → Account.",
-      "Choose \"Delete account\" and confirm by typing your username."
+      "Choose \"Delete account\" and confirm as prompted (on the web, by typing your username)."
     ],
     "graceTitle": "What happens next",
     "graceBody": "The account is disabled immediately — you are signed out everywhere. Data is permanently deleted after {{days}} days; the deletion job runs once a day, so it may happen up to a day after that date.",

@@ -57,9 +57,9 @@
     "intro": "Możesz w każdej chwili zlecić usunięcie konta GameTrace i powiązanych z nim danych. Poniżej opisujemy, jak to zrobić i co dokładnie zostanie usunięte.",
     "stepsTitle": "Jak usunąć konto",
     "steps": [
-      "Zaloguj się w aplikacji web (kod z komendy /login na Discordzie).",
+      "Zaloguj się w aplikacji web lub w aplikacji na Androida (kod z komendy /login na Discordzie).",
       "Przejdź do Ustawienia → Konto.",
-      "Wybierz „Usuń konto” i potwierdź, wpisując swoją nazwę użytkownika."
+      "Wybierz „Usuń konto” i potwierdź zgodnie z komunikatem (w aplikacji web — wpisując nazwę użytkownika)."
     ],
     "graceTitle": "Co się dzieje potem",
     "graceBody": "Konto jest wyłączane natychmiast — zostajesz wylogowany na wszystkich urządzeniach. Dane są trwale usuwane po {{days}} dniach; usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby po tej dacie.",

@@ -1,13 +1,13 @@
 /** Version stamp for the published notice. Mobile stores the accepted value and
  *  re-prompts when it changes, so bump this whenever the substance changes. */
-export const PRIVACY_POLICY_VERSION = '1.0';
+export const PRIVACY_POLICY_VERSION = '1.2';
 
 /** ISO date the current version took effect. Deliberately exported even though
  *  nothing in `src/` reads it yet: the mobile Accept flow stamps it alongside
  *  the accepted version (cross-repo handoff is tracked separately). Keep it in
  *  step with the human-readable `lastUpdated` string in both locales; a test
  *  asserts they cannot drift apart. */
-export const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-08-11';
+export const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-08-12';
 
 /** Public contact for official-host privacy questions. Lives here rather than in
  *  PrivacyPage so the validator can interpolate it without importing a page
