@@ -53,8 +53,8 @@
   "public": {
     "documentTitle": "Usuwanie konta — GameTrace",
     "eyebrow": "GameTrace",
-    "title": "Usuwanie konta",
-    "intro": "Możesz w każdej chwili zlecić usunięcie konta GameTrace i powiązanych z nim danych. Poniżej opisujemy, jak to zrobić i co dokładnie zostanie usunięte.",
+    "title": "Usuwanie konta i danych",
+    "intro": "Konto GameTrace i jego dane można usunąć w każdej chwili, można też usunąć część danych bez zamykania konta. Poniżej opisane jest, jak to zrobić, co zostaje usunięte i co jest zachowywane.",
     "stepsTitle": "Jak usunąć konto",
     "steps": [
       "Zaloguj się w aplikacji web lub w aplikacji na Androida (kod z komendy /login na Discordzie).",
@@ -73,6 +73,20 @@
       "Zgłoszenia wysłane do administratora",
       "Historia użycia funkcji głosowej"
     ],
+    "retainedTitle": "Co zostaje po usunięciu",
+    "retained": [
+      "Minimalny zapis o usunięciu: identyfikator Discord, rodzaj zdarzenia i znaczniki czasu. Jest przechowywany bezterminowo, aby operator mógł wykazać, że usunięcie nastąpiło.",
+      "Wspólny katalog gier: tytuły, aliasy, metadane i okładki katalogowe. Nie są to dane osobowe o Tobie i pozostają po usunięciu konta.",
+      "Kopie zapasowe: dane mogą pozostawać w dziennych kopiach do 7 dni dłużej, zanim wypadnie z rotacji ostatnia kopia. W najgorszym razie od zgłoszenia do zniknięcia ostatniej kopii mija około 15 do 16 dni."
+    ],
+    "partialTitle": "Usuwanie części danych bez zamykania konta",
+    "partialIntro": "Aby usunąć dane, nie trzeba usuwać konta. W aplikacji webowej i w aplikacji na Androida można:",
+    "partial": [
+      "Usuwać pojedyncze sesje gier. Usunięte sesje trafiają do kosza i znikają trwale po 7 dniach albo od razu, gdy zostaną usunięte z kosza.",
+      "Usuwać preferencje biblioteki i własne etykiety gier.",
+      "Wyłączyć powiadomienia push i raport tygodniowy oraz wyrejestrować urządzenie."
+    ],
+    "partialContact": "W pozostałych sprawach, w tym po kopię danych lub usunięcie konkretnych wpisów, napisz na adres poniżej. Odpowiedź powinna nastąpić w ciągu miesiąca.",
     "noAccessTitle": "Nie możesz się zalogować?",
     "noAccessBody": "Napisz na adres poniżej z konta Discord powiązanego z GameTrace — usuniemy konto ręcznie.",
     "backHome": "← Strona główna",

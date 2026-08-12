@@ -52,8 +52,8 @@
   "public": {
     "documentTitle": "Account deletion — GameTrace",
     "eyebrow": "GameTrace",
-    "title": "Account deletion",
-    "intro": "You can request deletion of your GameTrace account and its data at any time. Here is how, and exactly what gets removed.",
+    "title": "Account and data deletion",
+    "intro": "You can delete your GameTrace account and its data at any time, or delete parts of your data without closing your account. Here is how, what is removed, and what is kept.",
     "stepsTitle": "How to delete your account",
     "steps": [
       "Sign in on the web or in the Android app (code from the /login command on Discord).",
@@ -72,6 +72,20 @@
       "Reports you sent to the administrator",
       "Voice feature usage records"
     ],
+    "retainedTitle": "What is kept after deletion",
+    "retained": [
+      "A minimal deletion record: your Discord id, the type of event, and timestamps. It is kept indefinitely so the operator can show that the deletion happened.",
+      "The shared game catalog: game titles, aliases, metadata, and catalog covers. This is not personal data about you and stays after your account is gone.",
+      "Backups: your data can persist in the daily backups for up to 7 further days before the last copy rotates out. Worst case, about 15 to 16 days pass between your request and the last residual copy disappearing."
+    ],
+    "partialTitle": "Deleting some of your data without closing your account",
+    "partialIntro": "You do not have to delete your account to remove data. In the web app and the Android app you can:",
+    "partial": [
+      "Delete individual game sessions. Deleted sessions go to the trash and are removed permanently after 7 days, or immediately if you delete them from the trash.",
+      "Remove library preferences and your own tags on a game.",
+      "Turn off push notifications and the weekly digest, and unregister a device."
+    ],
+    "partialContact": "For anything else, including a copy of your data or deletion of specific records, write to the address below. The aim is to answer within one month.",
     "noAccessTitle": "Cannot sign in?",
     "noAccessBody": "Email the address below from the Discord account linked to GameTrace and we will delete the account manually.",
     "backHome": "← Home",

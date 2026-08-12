@@ -25,6 +25,8 @@ export function DeleteAccountPage() {
 
   const steps = listOf(t('public.steps', { returnObjects: true }));
   const inventory = listOf(t('public.inventory', { returnObjects: true }));
+  const retained = listOf(t('public.retained', { returnObjects: true }));
+  const partial = listOf(t('public.partial', { returnObjects: true }));
 
   return (
     <div className={styles.page}>
@@ -77,6 +79,22 @@ export function DeleteAccountPage() {
             <ul className={styles.list}>
               {inventory.map((item) => <li key={item}>{item}</li>)}
             </ul>
+          </section>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{t('public.retainedTitle')}</h2>
+            <ul className={styles.list}>
+              {retained.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </section>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{t('public.partialTitle')}</h2>
+            <p className={styles.body}>{t('public.partialIntro')}</p>
+            <ul className={styles.list}>
+              {partial.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+            <p className={styles.body}>{t('public.partialContact')}</p>
           </section>
 
           <section className={styles.section}>
