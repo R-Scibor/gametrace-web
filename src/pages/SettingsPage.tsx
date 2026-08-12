@@ -8,6 +8,7 @@ import { SectionHeader, Skeleton } from '../components/ui';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { DeleteAccountRow } from '../components/settings/DeleteAccountRow';
+import { PrivacyNoticeRow } from '../components/settings/PrivacyNoticeRow';
 import { SettingsRow } from '../components/settings/SettingsRow';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
@@ -69,6 +70,11 @@ export function SettingsPage() {
           username={profile?.username ?? user?.username ?? ''}
           isAdmin={profile?.is_admin ?? storedIsAdmin}
         />
+      </div>
+
+      <div className={styles.panel}>
+        <h3 className={styles.sectionTitle}>{t('sections.privacy')}</h3>
+        <PrivacyNoticeRow />
       </div>
 
       <div className={styles.panel}>

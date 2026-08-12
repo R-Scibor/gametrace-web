@@ -3,7 +3,8 @@
   "sections": {
     "account": "Konto",
     "preferences": "Preferencje",
-    "status": "Status"
+    "status": "Status",
+    "privacy": "Prywatność"
   },
   "account": {
     "user": "Użytkownik",
@@ -12,6 +13,10 @@
     "deleteSub": "Konto zostanie wyłączone natychmiast, dane trwale usunięte po {{days}} dniach.",
     "deleteAdmin": "Konta administratora nie można usunąć samodzielnie.",
     "deleteAction": "Usuń"
+  },
+  "privacy": {
+    "policy": "Polityka prywatności",
+    "open": "Czytaj"
   },
   "preferences": {
     "language": "Język",

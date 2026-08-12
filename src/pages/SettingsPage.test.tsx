@@ -10,6 +10,7 @@ import { renderAppRoutes, renderPage, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
 import { fixtures } from '../../test/fixtures';
 import i18n from '../i18n';
+import { PRIVACY_POLICY_VERSION } from '../lib/privacyPolicy';
 
 beforeEach(() => {
   resetStores();
@@ -172,4 +173,27 @@ it('keeps the delete button disabled for an admin when the profile request fails
 
   const deleteButton = await screen.findByRole('button', { name: deleteLabel });
   expect(deleteButton).toBeDisabled();
+});
+
+it('links a signed-in user to the privacy notice, stamped with the published version', async () => {
+  await i18n.changeLanguage('pl');
+
+  renderAppRoutes(
+    <>
+      <Route path="/settings" element={<SettingsPage />} />
+    </>,
+    { route: '/settings' },
+  );
+
+  const link = await screen.findByRole('link', {
+    name: i18n.t('privacy.open', { ns: 'settings' }),
+  });
+  expect(link).toHaveAttribute('href', '/privacy');
+
+  // The row must quote the shipped document, not a copy of its version string.
+  expect(
+    screen.getByText(
+      new RegExp(i18n.t('versionLabel', { ns: 'privacy', version: PRIVACY_POLICY_VERSION })),
+    ),
+  ).toBeInTheDocument();
 });

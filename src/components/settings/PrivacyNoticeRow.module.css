@@ -1,0 +1,27 @@
+/* Mirrors the secondary Button so the row reads at the same weight as the
+   delete control above it. A Link, not a Button, because it navigates. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 20px;
+  border: 1px solid var(--border-bright);
+  border-radius: 2px;
+  background-color: transparent;
+  color: var(--text3);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.link:hover {
+  border-color: var(--text2);
+  color: var(--text2);
+}
+.link:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}

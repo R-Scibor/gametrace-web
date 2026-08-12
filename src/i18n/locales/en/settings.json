@@ -3,7 +3,8 @@
   "sections": {
     "account": "Account",
     "preferences": "Preferences",
-    "status": "Status"
+    "status": "Status",
+    "privacy": "Privacy"
   },
   "account": {
     "user": "User",
@@ -12,6 +13,10 @@
     "deleteSub": "The account is disabled immediately; data is permanently deleted after {{days}} days.",
     "deleteAdmin": "Admin accounts cannot delete themselves.",
     "deleteAction": "Delete"
+  },
+  "privacy": {
+    "policy": "Privacy policy",
+    "open": "Read"
   },
   "preferences": {
     "language": "Language",
