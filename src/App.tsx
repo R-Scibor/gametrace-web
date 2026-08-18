@@ -8,6 +8,7 @@ import { Skeleton } from './components/ui';
 import { LandingPage } from './pages/LandingPage';
 import { DownloadPage } from './pages/DownloadPage';
 import { LoginPage } from './pages/LoginPage';
+import { DiscordCallbackPage } from './pages/DiscordCallbackPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { DeleteAccountPage } from './pages/DeleteAccountPage';
 import { DeletionScheduledPage } from './pages/DeletionScheduledPage';
@@ -56,6 +57,7 @@ function App() {
         <Route path="/download" element={<DownloadPage />} />
         <Route path="/download/" element={<DownloadPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/auth/discord/callback" element={<DiscordCallbackPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/delete-account" element={<DeleteAccountPage />} />
         <Route path="/account/deletion-scheduled" element={<DeletionScheduledPage />} />
