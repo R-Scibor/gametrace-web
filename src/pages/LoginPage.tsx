@@ -4,13 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
+import { DiscordLoginButton } from '../components/auth/DiscordLoginButton';
 import { formatLinkCode, isCompleteLinkCode, normalizeLinkCode } from '../lib/linkCode';
 import { useAuthStore } from '../store/authStore';
 import styles from './LoginPage.module.css';
 
 export function LoginPage() {
   const { t } = useTranslation('auth');
-  const { isAuthenticated, handleLinkLogin, loading, error } = useAuth();
+  const { isAuthenticated, handleLinkLogin, loading, error, setError } = useAuth();
   const { data: health } = useHealth();
   const [code, setCode] = useState('');
   const pendingDeletion = useAuthStore((s) => s.pendingDeletion);
@@ -70,6 +71,8 @@ export function LoginPage() {
             {loading ? t('connecting') : t('submit')}
           </Button>
         </form>
+
+        <DiscordLoginButton disabled={loading} onError={setError} />
 
         <div className={styles.helper}>
           <p className={styles.helperTitle}>{t('helperTitle')}</p>

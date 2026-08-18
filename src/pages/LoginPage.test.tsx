@@ -115,7 +115,7 @@ test('sends a scheduled account to the blocking screen instead of the dashboard'
   );
 
   await user.type(screen.getByLabelText(/kod/i), '231996');
-  await user.click(screen.getByRole('button', { name: /zaloguj/i }));
+  await user.click(screen.getByRole('button', { name: /^zaloguj się$/i }));
 
   await waitFor(() => expect(screen.getByText('blocking screen')).toBeInTheDocument());
 });
