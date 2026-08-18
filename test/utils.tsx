@@ -8,6 +8,7 @@ import { resumeAuthTeardown } from '../src/lib/authTeardown';
 import { useGamesStore } from '../src/store/gamesStore';
 import { useLocalCoversStore } from '../src/store/localCoversStore';
 import { useToastStore } from '../src/store/toastStore';
+import { useServerJoinStore } from '../src/store/serverJoinStore';
 
 export function createTestQueryClient() {
   return new QueryClient({
@@ -21,6 +22,8 @@ export function createTestQueryClient() {
 export function resetStores() {
   useAuthStore.getState().logout();
   useToastStore.setState({ toasts: [] });
+  useServerJoinStore.setState({ visible: false });
+  sessionStorage.removeItem('gametrace.discord-oauth');
   useGamesStore.setState({ stale: false });
   useLocalCoversStore.setState({ covers: {} });
   localStorage.removeItem('local-covers-storage');

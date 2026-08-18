@@ -20,6 +20,23 @@ export const handlers = [
       username: 'testuser',
       timezone: 'Europe/Warsaw',
       is_admin: true,
+      needs_server_join: false,
+      pending_deletion: null,
+    });
+  }),
+
+  http.post('/api/v1/auth/discord', async ({ request }) => {
+    const body = (await request.json()) as { code?: string };
+    if (body.code !== 'valid-code') {
+      return HttpResponse.json({ detail: 'Discord authorization failed' }, { status: 401 });
+    }
+    return HttpResponse.json({
+      token: 'test-token',
+      discord_id: '123',
+      username: 'testuser',
+      timezone: 'Europe/Warsaw',
+      is_admin: true,
+      needs_server_join: false,
       pending_deletion: null,
     });
   }),
