@@ -24,7 +24,9 @@
     "weeklyReport": "Raport tygodniowy",
     "push": "Powiadomienia push",
     "unavailable": "Jeszcze niedostępne",
-    "inDevelopment": "W rozwoju"
+    "inDevelopment": "W rozwoju",
+    "botReminder": "Przypomnienie o bocie",
+    "botReminderSubtext": "Pokazuje komunikat, gdy bot nie widzi twojego konta. Nie wyłącza bota."
   },
   "status": {
     "bot": "Bot",

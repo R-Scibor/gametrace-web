@@ -24,7 +24,9 @@
     "weeklyReport": "Weekly report",
     "push": "Push notifications",
     "unavailable": "Not available yet",
-    "inDevelopment": "In development"
+    "inDevelopment": "In development",
+    "botReminder": "Bot reminder",
+    "botReminderSubtext": "Shows a notice when the bot cannot see your account. Does not disable the bot."
   },
   "status": {
     "bot": "Bot",
