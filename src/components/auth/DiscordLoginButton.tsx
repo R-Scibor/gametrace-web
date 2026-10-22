@@ -5,6 +5,7 @@ import {
   isSecureContextAvailable,
   redirectToDiscord,
 } from '../../lib/discordOAuth';
+import { BotContactConfirm } from './BotContactConfirm';
 import styles from './DiscordLoginButton.module.css';
 
 type Props = {
@@ -19,21 +20,26 @@ type Props = {
 export function DiscordLoginButton({ disabled = false, onError }: Props) {
   const { t } = useTranslation('auth');
   const [starting, setStarting] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   if (!isDiscordLoginEnabled()) return null;
 
-  const onClick = async () => {
+  const onClick = () => {
     // PKCE needs crypto.subtle, which plain HTTP outside localhost lacks.
     if (!isSecureContextAvailable()) {
       onError(t('errors.discordInsecure'));
       return;
     }
+    setConfirmOpen(true);
+  };
+
+  const onContinue = async () => {
     setStarting(true);
     try {
       await redirectToDiscord();
-    } catch {
+    } catch (err) {
       setStarting(false);
-      onError(t('errors.loginFailed'));
+      throw err;
     }
   };
 
@@ -56,6 +62,11 @@ export function DiscordLoginButton({ disabled = false, onError }: Props) {
         </svg>
         {starting ? t('discord.starting') : t('discord.button')}
       </button>
+      <BotContactConfirm
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onContinue={onContinue}
+      />
     </div>
   );
 }
