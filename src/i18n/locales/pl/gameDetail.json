@@ -18,7 +18,6 @@
   "menu": {
     "trigger": "Opcje gry",
     "header": "OPCJE",
-    "options": "Opcje",
     "accept": "Akceptuj grę",
     "acceptDesc": "Pokaż w bibliotece i statystykach",
     "restore": "Przywróć grę",

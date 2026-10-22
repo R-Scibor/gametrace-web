@@ -203,9 +203,8 @@ test('IN USE badge on default when no local cover and on "Your cover" when local
   await screen.findByRole('dialog');
 
   // Without local cover, default cover is active
-  const headings = screen.getAllByRole('heading', { level: 3 });
-  const yourCoverCard = headings.find((c) => c.textContent?.includes('Twoja okładka'))?.closest('div[class*="cardsGrid"] > div');
-  const defaultCoverCard = headings.find((c) => c.textContent?.includes('Okładka domyślna'))?.closest('div[class*="cardsGrid"] > div');
+  const yourCoverCard = screen.getByRole('group', { name: 'Twoja okładka' });
+  const defaultCoverCard = screen.getByRole('group', { name: 'Okładka domyślna' });
 
   expect(defaultCoverCard).toHaveAttribute('aria-current', 'true');
   expect(defaultCoverCard).toHaveTextContent('W UŻYCIU');
@@ -263,6 +262,8 @@ test('reset clears local cover', async () => {
     expect(useLocalCoversStore.getState().covers[1]).toBeUndefined();
   });
   expect(await screen.findByText('Przywrócono oryginalną okładkę.')).toBeInTheDocument();
+  // Focus stays inside the dialog after the reset button unmounts.
+  expect(screen.getByRole('button', { name: /WYBIERZ OBRAZ/i })).toHaveFocus();
 });
 
 test('reset/remove menu item hidden without local cover', async () => {

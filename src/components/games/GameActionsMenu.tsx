@@ -33,6 +33,8 @@ export function GameActionsMenu({
   const { t } = useTranslation('gameDetail');
   const [isOpen, setIsOpen] = useState(false);
   const menuId = useId();
+  const triggerId = useId();
+  const focusLastOnOpen = useRef(false);
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -109,8 +111,12 @@ export function GameActionsMenu({
   // When opening, focus the first item
   useEffect(() => {
     if (isOpen) {
-      const first = itemRefs.current[0];
-      first?.focus();
+      const menuItems = menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
+      const target = focusLastOnOpen.current
+        ? menuItems?.[menuItems.length - 1]
+        : menuItems?.[0];
+      focusLastOnOpen.current = false;
+      target?.focus();
     }
   }, [isOpen]);
 
@@ -191,6 +197,12 @@ export function GameActionsMenu({
   };
 
   const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (!isOpen && e.key === 'ArrowUp') {
+      e.preventDefault();
+      focusLastOnOpen.current = true;
+      setIsOpen(true);
+      return;
+    }
     if (!isOpen && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       setIsOpen(true);
@@ -206,6 +218,7 @@ export function GameActionsMenu({
         aria-label={t('menu.trigger')}
         aria-haspopup="menu"
         aria-expanded={isOpen}
+        id={triggerId}
         aria-controls={menuId}
         onClick={() => setIsOpen((prev) => !prev)}
         onKeyDown={handleTriggerKeyDown}
@@ -218,6 +231,7 @@ export function GameActionsMenu({
           ref={menuRef}
           id={menuId}
           role="menu"
+          aria-labelledby={triggerId}
           className={styles.menu}
           onKeyDown={handleMenuKeyDown}
         >
@@ -233,8 +247,10 @@ export function GameActionsMenu({
               type="button"
               role="menuitem"
               className={styles.item}
-              disabled={item.disabled}
+              tabIndex={-1}
+              aria-disabled={item.disabled || undefined}
               onClick={() => {
+                if (item.disabled) return;
                 // Hand focus back to the trigger before the item unmounts, so a
                 // dialog opened by the item restores focus there on close.
                 triggerRef.current?.focus();

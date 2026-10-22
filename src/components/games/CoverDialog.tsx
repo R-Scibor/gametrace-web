@@ -16,6 +16,7 @@ interface CoverDialogProps {
 export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
   const { t } = useTranslation('gameDetail');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const buttonGroupRef = useRef<HTMLDivElement>(null);
   const [pending, setPending] = useState(false);
 
   const localCover = useLocalCoversStore((s) => s.covers[game.id]);
@@ -26,7 +27,10 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
   const hasLocalCover = Boolean(localCover);
 
   const handleFile = async (file: File | undefined) => {
-    if (!file || !file.type.startsWith('image/')) return;
+    if (!file || !file.type.startsWith('image/')) {
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
     setPending(true);
     try {
       await setCover(game.id, file);
@@ -42,6 +46,8 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
   };
 
   const handleClear = () => {
+    // The reset button unmounts once the local cover is gone; keep focus inside the dialog.
+    buttonGroupRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
     clearCover(game.id);
     pushToast({ type: 'success', message: t('coverDialog.toasts.restored') });
   };
@@ -62,10 +68,12 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
           {/* Your cover */}
           <div
             className={[styles.card, hasLocalCover ? styles.cardActive : styles.cardMuted].join(' ')}
+            role="group"
+            aria-labelledby="cover-dialog-yours"
             aria-current={hasLocalCover ? 'true' : undefined}
           >
             <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>{t('coverDialog.yourCover')}</h3>
+              <h3 id="cover-dialog-yours" className={styles.cardTitle}>{t('coverDialog.yourCover')}</h3>
               {hasLocalCover && (
                 <span className={styles.inUseBadge}>{t('coverDialog.inUse')}</span>
               )}
@@ -86,10 +94,12 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
           {/* Default cover */}
           <div
             className={[styles.card, !hasLocalCover ? styles.cardActive : styles.cardMuted].join(' ')}
+            role="group"
+            aria-labelledby="cover-dialog-default"
             aria-current={!hasLocalCover ? 'true' : undefined}
           >
             <div className={styles.cardHeader}>
-              <h3 className={styles.cardTitle}>{t('coverDialog.defaultCover')}</h3>
+              <h3 id="cover-dialog-default" className={styles.cardTitle}>{t('coverDialog.defaultCover')}</h3>
               {!hasLocalCover && (
                 <span className={styles.inUseBadge}>{t('coverDialog.inUse')}</span>
               )}
@@ -110,7 +120,7 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
         </div>
 
         <div className={styles.footer}>
-          <div className={styles.buttonGroup}>
+          <div ref={buttonGroupRef} className={styles.buttonGroup}>
             <input
               ref={fileInputRef}
               type="file"

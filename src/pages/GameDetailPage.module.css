@@ -26,6 +26,8 @@
 .hero {
   position: relative;
   isolation: isolate;
+  /* Lift the hero (and the options menu inside it) above later sections. */
+  z-index: 2;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(28, 24, 21, 0.85), rgba(20, 17, 15, 0.85));
