@@ -136,6 +136,9 @@ export const profileMe: ProfileMe = {
   push_enabled: false,
   is_admin: true,
   language: 'pl',
+  bot_can_see_user: true,
+  bot_visibility_reminders_enabled: true,
+  bot_visibility_reminder_snoozed_until: null,
 };
 
 export const pendingDeletion = {

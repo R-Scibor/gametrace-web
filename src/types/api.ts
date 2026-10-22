@@ -169,10 +169,15 @@ export interface ProfileMe {
   push_enabled: boolean;
   is_admin: boolean;
   language: Language;
+  bot_can_see_user: boolean | null;
+  bot_visibility_reminders_enabled: boolean;
+  bot_visibility_reminder_snoozed_until: string | null;
 }
 export interface ProfileSettingsUpdate {
   timezone?: string; weekly_report_enabled?: boolean; push_enabled?: boolean;
   language?: Language;
+  bot_visibility_reminders_enabled?: boolean;
+  bot_visibility_reminder_snoozed_until?: string | null;
 }
 
 // Stats
