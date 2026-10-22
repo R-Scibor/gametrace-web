@@ -49,7 +49,7 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
     // The reset button unmounts once the local cover is gone; keep focus inside the dialog.
     buttonGroupRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
     clearCover(game.id);
-    pushToast({ type: 'success', message: t('coverDialog.toasts.restored') });
+    pushToast({ type: 'success', message: game.cover_image_url ? t('coverDialog.toasts.restored') : t('coverDialog.toasts.removed') });
   };
 
   return (

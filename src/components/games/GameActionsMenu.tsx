@@ -9,6 +9,7 @@ interface GameActionsMenuProps {
   game: Game;
   canAccept: boolean;
   onOpenCoverDialog: () => void;
+  onOpenReportDuplicate: () => void;
   prefMut: {
     mutate: (vars: { is_ignored?: boolean; is_accepted?: boolean }) => void;
     isPending: boolean;
@@ -28,6 +29,7 @@ export function GameActionsMenu({
   game,
   canAccept,
   onOpenCoverDialog,
+  onOpenReportDuplicate,
   prefMut,
 }: GameActionsMenuProps) {
   const { t } = useTranslation('gameDetail');
@@ -102,11 +104,18 @@ export function GameActionsMenu({
         desc: t('menu.removeCoverDesc'),
         onClick: () => {
           clearCover(game.id);
-          pushToast({ type: 'success', message: t('coverDialog.toasts.restored') });
+          pushToast({ type: 'success', message: t('coverDialog.toasts.removed') });
         },
       });
     }
   }
+
+  items.push({
+    key: 'reportDuplicate',
+    label: t('menu.reportDuplicate'),
+    desc: t('menu.reportDuplicateDesc'),
+    onClick: onOpenReportDuplicate,
+  });
 
   // When opening, focus the first item
   useEffect(() => {

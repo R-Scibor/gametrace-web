@@ -8,6 +8,7 @@ import { formatDuration, formatDateShort, formatRecency } from '../lib/format';
 import { Cover } from '../components/Cover';
 import { GameActionsMenu } from '../components/games/GameActionsMenu';
 import { CoverDialog } from '../components/games/CoverDialog';
+import { ReportDuplicateDialog } from '../components/games/ReportDuplicateDialog';
 import { SectionHeader, Skeleton, Button } from '../components/ui';
 import { SessionList } from '../components/games/SessionList';
 import type { Game } from '../types/api';
@@ -54,6 +55,7 @@ export function GameDetailPage() {
   } = useGameSessions(id);
   const prefMut = useUpdateGamePreference(id);
   const [coverDialogOpen, setCoverDialogOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
 
   const sessions = useMemo(() => sessionPages?.pages.flat() ?? [], [sessionPages]);
 
@@ -98,6 +100,7 @@ export function GameDetailPage() {
           game={game}
           canAccept={canAccept}
           onOpenCoverDialog={() => setCoverDialogOpen(true)}
+          onOpenReportDuplicate={() => setReportOpen(true)}
           prefMut={prefMut}
         />
 
@@ -155,6 +158,11 @@ export function GameDetailPage() {
         game={game}
         open={coverDialogOpen}
         onClose={() => setCoverDialogOpen(false)}
+      />
+      <ReportDuplicateDialog
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        source={{ id: game.id, name: game.primary_name }}
       />
     </div>
   );

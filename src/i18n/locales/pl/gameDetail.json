@@ -29,7 +29,9 @@
     "restoreDefaultCover": "Przywróć domyślną okładkę",
     "restoreDefaultCoverDesc": "Użyj okładki widocznej na wszystkich urządzeniach",
     "removeCover": "Usuń swoją okładkę",
-    "removeCoverDesc": "Wróć do litery zastępczej"
+    "removeCoverDesc": "Wróć do litery zastępczej",
+    "reportDuplicate": "Zgłoś duplikat",
+    "reportDuplicateDesc": "Ta sama gra podzielona na dwa wpisy"
   },
   "coverDialog": {
     "title": "Okładka gry",
@@ -49,7 +51,8 @@
     "toasts": {
       "saved": "Okładka zapisana lokalnie.",
       "saveFailed": "Nie udało się zapisać okładki.",
-      "restored": "Przywrócono oryginalną okładkę."
+      "restored": "Przywrócono oryginalną okładkę.",
+      "removed": "Usunięto okładkę."
     }
   },
   "history": {
@@ -63,5 +66,25 @@
     "colSource": "Źródło",
     "sourceBot": "Bot Discord",
     "sourceManual": "Ręczna"
+  },
+  "report": {
+    "title": "Zgłoś duplikat",
+    "explainer": "Wybierz drugą grę, która wygląda na tę samą. Administrator sprawdzi zgłoszenie — nic nie zostanie scalone od razu.",
+    "source": "Ta gra",
+    "otherGame": "Druga gra",
+    "searchPlaceholder": "Szukaj gry...",
+    "clearSelection": "Wyczyść wybór",
+    "noteLabel": "Notatka (opcjonalnie)",
+    "notePlaceholder": "Np. ta sama okładka / ta sama aktywność na Discordzie",
+    "emptyList": "Nie znaleziono innych gier.",
+    "noResults": "Brak wyników.",
+    "loading": "Wczytywanie gier...",
+    "loadError": "Nie udało się pobrać listy gier.",
+    "retry": "SPRÓBUJ PONOWNIE",
+    "submitError": "Nie udało się wysłać zgłoszenia. Spróbuj ponownie.",
+    "cancel": "ANULUJ",
+    "send": "WYŚLIJ ZGŁOSZENIE",
+    "sending": "WYSYŁANIE...",
+    "thanks": "Dzięki! Sprawdzimy i scalimy, jeśli to ta sama gra."
   }
 }

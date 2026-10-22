@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route } from 'react-router-dom';
 import { http, HttpResponse } from 'msw';
@@ -255,13 +255,13 @@ test('reset clears local cover', async () => {
 
   await screen.findByRole('dialog');
 
-  const resetBtn = screen.getByRole('button', { name: /PRZYWRÓĆ DOMYŚLNĄ|USUŃ SWOJĄ OKŁADKĘ/i });
+  const resetBtn = screen.getByRole('button', { name: 'USUŃ SWOJĄ OKŁADKĘ' });
   await user.click(resetBtn);
 
   await waitFor(() => {
     expect(useLocalCoversStore.getState().covers[1]).toBeUndefined();
   });
-  expect(await screen.findByText('Przywrócono oryginalną okładkę.')).toBeInTheDocument();
+  expect(await screen.findByText('Usunięto okładkę.')).toBeInTheDocument();
   // Focus stays inside the dialog after the reset button unmounts.
   expect(screen.getByRole('button', { name: /WYBIERZ OBRAZ/i })).toHaveFocus();
 });
@@ -297,7 +297,7 @@ test('reset/remove menu item hidden without local cover', async () => {
   await waitFor(() => {
     expect(useLocalCoversStore.getState().covers[1]).toBeUndefined();
   });
-  expect(await screen.findByText('Przywrócono oryginalną okładkę.')).toBeInTheDocument();
+  expect(await screen.findByText('Usunięto okładkę.')).toBeInTheDocument();
 });
 
 test('menu supports arrow, Home and End keys', async () => {
@@ -334,4 +334,83 @@ test('closing the cover dialog returns focus to the options button', async () =>
   await user.keyboard('{Escape}');
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   expect(trigger).toHaveFocus();
+});
+
+test('report duplicate sends a merge-candidate report, never a merge', async () => {
+  let reportBody: { message: string; context: Record<string, string> } | null = null;
+  let mergeCalled = false;
+  server.use(
+    http.post('/api/v1/reports', async ({ request }) => {
+      reportBody = (await request.json()) as typeof reportBody;
+      return HttpResponse.json({ id: 1, created_at: '2026-10-22T10:00:00Z' }, { status: 201 });
+    }),
+    http.post('/api/v1/admin/games/:id/merge/:target', () => {
+      mergeCalled = true;
+      return new HttpResponse(null, { status: 204 });
+    }),
+  );
+  const user = userEvent.setup();
+  renderGameDetail();
+
+  await screen.findByRole('heading', { name: 'Wiedźmin 3' });
+  await user.click(screen.getByRole('button', { name: /Opcje gry/i }));
+  const items = screen.getAllByRole('menuitem');
+  // Same position as on mobile: after the cover entries.
+  expect(items[items.length - 1]).toHaveAccessibleName(/Zgłoś duplikat/);
+  await user.click(items[items.length - 1]);
+
+  const dialog = await screen.findByRole('dialog', { name: 'Zgłoś duplikat' });
+  const send = within(dialog).getByRole('button', { name: 'WYŚLIJ ZGŁOSZENIE' });
+  expect(send).toBeDisabled();
+  // The source game is not offered as its own duplicate.
+  const option = await within(dialog).findByRole('radio', { name: 'Cyberpunk 2077' });
+  expect(within(dialog).queryByRole('radio', { name: 'Wiedźmin 3' })).not.toBeInTheDocument();
+
+  await user.click(option);
+  await user.type(within(dialog).getByLabelText('Notatka (opcjonalnie)'), 'ta sama okładka');
+  await user.click(send);
+
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  expect(reportBody!.message).toContain('kind: merge_candidate');
+  expect(reportBody!.message).toContain('source_id: 1');
+  expect(reportBody!.message).toContain('target_name: Cyberpunk 2077');
+  expect(reportBody!.message).toContain('ta sama okładka');
+  expect(reportBody!.context.platform).toBe('web');
+  expect(reportBody!.context.screen).toBe('GameDetail');
+  expect(mergeCalled).toBe(false);
+  expect(await screen.findByText(/Dzięki! Sprawdzimy/)).toBeInTheDocument();
+});
+
+test('report duplicate keeps the dialog open with an error when sending fails', async () => {
+  server.use(http.post('/api/v1/reports', () => new HttpResponse(null, { status: 500 })));
+  const user = userEvent.setup();
+  renderGameDetail();
+
+  await screen.findByRole('heading', { name: 'Wiedźmin 3' });
+  await user.click(screen.getByRole('button', { name: /Opcje gry/i }));
+  await user.click(screen.getByRole('menuitem', { name: /Zgłoś duplikat/ }));
+  const dialog = await screen.findByRole('dialog', { name: 'Zgłoś duplikat' });
+  await user.click(await within(dialog).findByRole('radio', { name: 'Cyberpunk 2077' }));
+  await user.click(within(dialog).getByRole('button', { name: 'WYŚLIJ ZGŁOSZENIE' }));
+
+  expect(await within(dialog).findByRole('alert')).toHaveTextContent('Nie udało się wysłać zgłoszenia');
+  expect(screen.getByRole('dialog', { name: 'Zgłoś duplikat' })).toBeInTheDocument();
+});
+
+test('removing own cover without a default says "removed", not "restored"', async () => {
+  server.use(
+    http.get('/api/v1/games/:id', () =>
+      HttpResponse.json({ ...fixtures.game, cover_image_url: null }),
+    ),
+  );
+  useLocalCoversStore.setState({ covers: { 1: 'data:image/png;base64,test-image' } });
+  const user = userEvent.setup();
+  renderGameDetail();
+
+  await screen.findByRole('heading', { name: 'Wiedźmin 3' });
+  await user.click(screen.getByRole('button', { name: /Opcje gry/i }));
+  await user.click(screen.getByRole('menuitem', { name: /Usuń swoją okładkę/ }));
+
+  expect(await screen.findByText('Usunięto okładkę.')).toBeInTheDocument();
+  expect(screen.queryByText('Przywrócono oryginalną okładkę.')).not.toBeInTheDocument();
 });

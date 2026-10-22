@@ -29,7 +29,9 @@
     "restoreDefaultCover": "Restore default cover",
     "restoreDefaultCoverDesc": "Use the cover visible on all devices",
     "removeCover": "Remove your cover",
-    "removeCoverDesc": "Back to letter placeholder"
+    "removeCoverDesc": "Back to letter placeholder",
+    "reportDuplicate": "Report duplicate",
+    "reportDuplicateDesc": "Same game split into two entries"
   },
   "coverDialog": {
     "title": "Game cover",
@@ -49,7 +51,8 @@
     "toasts": {
       "saved": "Cover saved locally.",
       "saveFailed": "Couldn't save the cover.",
-      "restored": "Original cover restored."
+      "restored": "Original cover restored.",
+      "removed": "Cover removed."
     }
   },
   "history": {
@@ -63,5 +66,25 @@
     "colSource": "Source",
     "sourceBot": "Discord bot",
     "sourceManual": "Manual"
+  },
+  "report": {
+    "title": "Report duplicate",
+    "explainer": "Pick the other game that looks like the same one. An admin will review it — nothing is merged right away.",
+    "source": "This game",
+    "otherGame": "Other game",
+    "searchPlaceholder": "Search games...",
+    "clearSelection": "Clear selection",
+    "noteLabel": "Note (optional)",
+    "notePlaceholder": "e.g. same cover / same Discord activity",
+    "emptyList": "No other games found.",
+    "noResults": "No results.",
+    "loading": "Loading games...",
+    "loadError": "Couldn't load the game list.",
+    "retry": "TRY AGAIN",
+    "submitError": "Couldn't send the report. Try again.",
+    "cancel": "CANCEL",
+    "send": "SEND REPORT",
+    "sending": "SENDING...",
+    "thanks": "Thanks! We'll review it and merge if it's the same game."
   }
 }
