@@ -15,17 +15,43 @@
     "firstPlayed": "FIRST PLAYED",
     "lastPlayed": "LAST PLAYED"
   },
-  "actions": {
-    "title": "Actions",
-    "localCover": "Local cover",
-    "globalCover": "Global cover",
-    "manage": "Manage",
-    "accept": "ACCEPT GAME",
-    "acceptHint": "Add the detected game to your library and stats.",
-    "restore": "RESTORE TO LIBRARY",
-    "ignore": "IGNORE GAME",
-    "restoreHint": "Restore the game to your library and count it in your stats.",
-    "ignoreHint": "Hide the game in your library and skip it in your stats."
+  "menu": {
+    "trigger": "Game options",
+    "header": "OPTIONS",
+    "options": "Options",
+    "accept": "Accept game",
+    "acceptDesc": "Show in library and stats",
+    "restore": "Restore game",
+    "restoreDesc": "Show again in library and stats",
+    "ignore": "Ignore game",
+    "ignoreDesc": "Hide from library and stats",
+    "changeCover": "Change cover…",
+    "changeCoverDesc": "Your own image, only in this browser",
+    "restoreDefaultCover": "Restore default cover",
+    "restoreDefaultCoverDesc": "Use the cover visible on all devices",
+    "removeCover": "Remove your cover",
+    "removeCoverDesc": "Back to letter placeholder"
+  },
+  "coverDialog": {
+    "title": "Game cover",
+    "yourCover": "Your cover",
+    "yourCoverDesc": "Only in this browser. Other devices and the mobile app won't see it.",
+    "defaultCover": "Default cover",
+    "defaultCoverDesc": "Visible on all your devices. Comes from the game database.",
+    "defaultCoverEmptyDesc": "No default cover for this game yet.",
+    "notSet": "Not set",
+    "inUse": "IN USE",
+    "chooseImage": "CHOOSE IMAGE",
+    "saving": "SAVING...",
+    "resetDefault": "RESET TO DEFAULT",
+    "removeCover": "REMOVE YOUR COVER",
+    "hint": "JPEG, PNG or WebP. Stored only in this browser.",
+    "close": "CLOSE",
+    "toasts": {
+      "saved": "Cover saved locally.",
+      "saveFailed": "Couldn't save the cover.",
+      "restored": "Original cover restored."
+    }
   },
   "history": {
     "title": "Session history",

@@ -58,15 +58,6 @@
     "createFailed": "Could not add the game.",
     "retry": "Try again"
   },
-  "cover": {
-    "saved": "Cover saved locally.",
-    "saveFailed": "Couldn't save the cover.",
-    "restored": "Original cover restored.",
-    "saving": "SAVING...",
-    "choose": "CHOOSE IMAGE",
-    "restore": "RESTORE ORIGINAL",
-    "hint": "Cover saved locally in your browser (JPEG, PNG, WebP)"
-  },
   "toast": {
     "merged": "Games merged.",
     "mergeForbidden": "You don't have permission to merge games.",
