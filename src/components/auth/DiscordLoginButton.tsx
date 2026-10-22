@@ -63,6 +63,7 @@ export function DiscordLoginButton({ disabled = false, onError }: Props) {
         {starting ? t('discord.starting') : t('discord.button')}
       </button>
       <BotContactConfirm
+        key={confirmOpen ? 'open' : 'closed'}
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
         onContinue={onContinue}

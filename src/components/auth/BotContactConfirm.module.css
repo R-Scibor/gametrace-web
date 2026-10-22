@@ -33,6 +33,3 @@
   color: var(--danger, #ff5a36);
   font-size: 13px;
 }
-.overlay {
-  z-index: 1300;
-}

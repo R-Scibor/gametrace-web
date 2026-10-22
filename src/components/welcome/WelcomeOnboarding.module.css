@@ -255,6 +255,18 @@
   margin-top: 4px;
 }
 
+.linkGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stepError {
+  margin: 0;
+  color: var(--danger, #ff5a36);
+  font-size: 13px;
+}
+
 .stepBtn {
   width: 100%;
   border-radius: 2px;

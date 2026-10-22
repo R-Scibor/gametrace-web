@@ -1,14 +1,20 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route } from 'react-router-dom';
-import { test, expect, beforeEach, vi } from 'vitest';
+import { test, expect, beforeEach, afterEach, vi } from 'vitest';
 import { WelcomeOnboarding } from './WelcomeOnboarding';
 import * as copyToClipboard from '../../lib/copyToClipboard';
+import * as discordOAuth from '../../lib/discordOAuth';
 import { renderAppRoutes, resetStores } from '../../../test/utils';
 
 beforeEach(() => {
   resetStores();
   vi.stubGlobal('open', vi.fn());
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllEnvs();
 });
 
 test('WelcomeOnboarding step 1 opens bot invite and advances', async () => {
@@ -182,5 +188,51 @@ test('skips choose mode when Discord login is not enabled', async () => {
   expect(screen.getByRole('heading', { name: 'Przedstaw się botowi' })).toBeInTheDocument();
   expect(screen.getByLabelText('Komenda /login')).toBeInTheDocument();
   expect(screen.queryByRole('heading', { name: 'Jak chcesz założyć konto' })).not.toBeInTheDocument();
-  vi.unstubAllEnvs();
+});
+
+test('Discord choice continue button initiates redirect', async () => {
+  const redirectSpy = vi.spyOn(discordOAuth, 'redirectToDiscord').mockResolvedValue();
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <Route path="/welcome" element={<WelcomeOnboarding open onClose={vi.fn()} apkAvailable={false} isAuthenticated={false} onApkUnavailable={vi.fn()} />} />,
+    { route: '/welcome', authenticated: false },
+  );
+  await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  await user.click(screen.getByRole('button', { name: /Konto przez Discord/i }));
+
+  const continueBtn = screen.getByRole('button', { name: /Rozumiem, przejdź do Discorda/i });
+  await user.click(continueBtn);
+  expect(redirectSpy).toHaveBeenCalledOnce();
+});
+
+test('Discord choice in insecure context displays HTTPS error and blocks redirect', async () => {
+  vi.spyOn(discordOAuth, 'isSecureContextAvailable').mockReturnValue(false);
+  const redirectSpy = vi.spyOn(discordOAuth, 'redirectToDiscord').mockResolvedValue();
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <Route path="/welcome" element={<WelcomeOnboarding open onClose={vi.fn()} apkAvailable={false} isAuthenticated={false} onApkUnavailable={vi.fn()} />} />,
+    { route: '/welcome', authenticated: false },
+  );
+  await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  await user.click(screen.getByRole('button', { name: /Konto przez Discord/i }));
+
+  const continueBtn = screen.getByRole('button', { name: /Rozumiem, przejdź do Discorda/i });
+  await user.click(continueBtn);
+
+  expect(screen.getByRole('alert')).toHaveTextContent(/wymaga połączenia HTTPS/i);
+  expect(redirectSpy).not.toHaveBeenCalled();
+});
+
+test('back button returns from discord mode to choose mode', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <Route path="/welcome" element={<WelcomeOnboarding open onClose={vi.fn()} apkAvailable={false} isAuthenticated={false} onApkUnavailable={vi.fn()} />} />,
+    { route: '/welcome', authenticated: false },
+  );
+  await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  await user.click(screen.getByRole('button', { name: /Konto przez Discord/i }));
+  expect(screen.getByRole('heading', { name: 'Bot musi być na wspólnym serwerze' })).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /^Wróć$/i }));
+  expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
 });

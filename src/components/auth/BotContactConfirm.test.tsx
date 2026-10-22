@@ -59,3 +59,53 @@ test('shows an error inside the dialog when continue throws', async () => {
   await user.click(screen.getByRole('button', { name: i18n.t('auth:botContact.continue') }));
   expect(screen.getByRole('alert')).toHaveTextContent(i18n.t('auth:errors.loginFailed'));
 });
+
+test('clears error and pending state when dialog closes and reopens', async () => {
+  const user = userEvent.setup();
+  const { rerender } = renderWithProviders(
+    <BotContactConfirm
+      open
+      onClose={vi.fn()}
+      onContinue={() => {
+        throw new Error('boom');
+      }}
+    />,
+  );
+  await user.click(screen.getByRole('button', { name: i18n.t('auth:botContact.continue') }));
+  expect(screen.getByRole('alert')).toBeInTheDocument();
+
+  rerender(
+    <BotContactConfirm
+      open={false}
+      onClose={vi.fn()}
+      onContinue={vi.fn()}
+    />,
+  );
+  rerender(
+    <BotContactConfirm
+      open
+      onClose={vi.fn()}
+      onContinue={vi.fn()}
+    />,
+  );
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+});
+
+test('insecure context displays HTTPS error and does not call onContinue', async () => {
+  const user = userEvent.setup();
+  const onContinue = vi.fn();
+  const discordOAuth = await import('../../lib/discordOAuth');
+  vi.spyOn(discordOAuth, 'isSecureContextAvailable').mockReturnValue(false);
+
+  renderWithProviders(
+    <BotContactConfirm
+      open
+      onClose={vi.fn()}
+      onContinue={onContinue}
+    />,
+  );
+  await user.click(screen.getByRole('button', { name: i18n.t('auth:botContact.continue') }));
+  expect(screen.getByRole('alert')).toHaveTextContent(i18n.t('auth:errors.discordInsecure'));
+  expect(onContinue).not.toHaveBeenCalled();
+});
+

@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button } from '../ui';
-import { useProfile } from '../../hooks/useProfile';
-import { useToastStore } from '../../store/toastStore';
-import { updateSettings } from '../../api/profile';
-import { useQueryClient } from '@tanstack/react-query';
-import { qk } from '../../lib/queryKeys';
+import { useProfile, useUpdateSettings } from '../../hooks/useProfile';
 import { getDiscordBotInviteUrl, getDiscordServerJoinUrl } from '../../lib/discordInvites';
 import {
   markReminderShown,
@@ -15,51 +11,47 @@ import {
 import styles from './BotVisibilityReminder.module.css';
 
 export function BotVisibilityReminder() {
-  const { t } = useTranslation(['auth', 'common']);
+  const { t } = useTranslation('auth');
   const { data: profile } = useProfile();
-  const pushToast = useToastStore((s) => s.pushToast);
-  const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false);
-  const [snoozing, setSnoozing] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  const updateSettings = useUpdateSettings({ successMessage: t('botReminder.snoozed') });
 
-  useEffect(() => {
-    if (!profile || open) return;
-    const show = shouldShowBotReminder({
+  const show =
+    !dismissed &&
+    profile != null &&
+    shouldShowBotReminder({
       botCanSeeUser: profile.bot_can_see_user,
       enabled: profile.bot_visibility_reminders_enabled,
       snoozedUntil: profile.bot_visibility_reminder_snoozed_until,
       discordId: profile.discord_id,
       timeZone: profile.timezone,
     });
-    if (!show) return;
-    // Stamp before the next navigation. Do not fold this flag back into `open`,
-    // or the modal closes on the same render that recorded the day.
-    markReminderShown(profile.discord_id, profile.timezone);
-    /* eslint-disable-next-line react-hooks/set-state-in-effect -- reveal modal once profile loads */
-    setOpen(true);
-  }, [profile, open]);
 
-  if (!profile) return null;
+  const handleDismiss = () => {
+    if (profile) {
+      markReminderShown(profile.discord_id, profile.timezone);
+    }
+    setDismissed(true);
+  };
+
+  const snooze = async () => {
+    try {
+      await updateSettings.mutateAsync({
+        bot_visibility_reminder_snoozed_until: snoozeUntilIso(),
+      });
+      handleDismiss();
+    } catch {
+      // useUpdateSettings pushes settingsSaveFailed toast on error
+    }
+  };
+
+  if (!show || !profile) return null;
 
   const joinUrl = getDiscordServerJoinUrl();
   const botUrl = getDiscordBotInviteUrl();
 
-  const snooze = async () => {
-    setSnoozing(true);
-    try {
-      await updateSettings({ bot_visibility_reminder_snoozed_until: snoozeUntilIso() });
-      await queryClient.invalidateQueries({ queryKey: qk.profile });
-      setOpen(false);
-      pushToast({ type: 'success', message: t('botReminder.snoozed') });
-    } catch {
-      pushToast({ type: 'error', message: t('common:toast.settingsSaveFailed') });
-    } finally {
-      setSnoozing(false);
-    }
-  };
-
   return (
-    <Modal open={open} onClose={() => setOpen(false)} labelledBy="bot-reminder-title">
+    <Modal open onClose={handleDismiss} labelledBy="bot-reminder-title">
       <h2 id="bot-reminder-title" className={styles.title}>{t('botReminder.title')}</h2>
       <p className={styles.body}>{t('botReminder.body')}</p>
       <div className={styles.actions}>
@@ -73,7 +65,7 @@ export function BotVisibilityReminder() {
             {t('botReminder.addBot')}
           </Button>
         ) : null}
-        <Button onClick={() => void snooze()} disabled={snoozing}>
+        <Button onClick={() => void snooze()} disabled={updateSettings.isPending}>
           {t('botReminder.snooze')}
         </Button>
       </div>

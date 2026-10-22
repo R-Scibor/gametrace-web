@@ -23,7 +23,7 @@ export function useProfile() {
   return query;
 }
 
-export function useUpdateSettings() {
+export function useUpdateSettings(options?: { successMessage?: string | null }) {
   const queryClient = useQueryClient();
   const pushToast = useToastStore((s) => s.pushToast);
 
@@ -31,7 +31,12 @@ export function useUpdateSettings() {
     mutationFn: (payload: ProfileSettingsUpdate) => updateSettings(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: qk.profile });
-      pushToast({ type: 'success', message: i18n.t('common:toast.settingsSaved') });
+      if (options?.successMessage !== null) {
+        pushToast({
+          type: 'success',
+          message: options?.successMessage ?? i18n.t('common:toast.settingsSaved'),
+        });
+      }
     },
     onError: () => {
       pushToast({ type: 'error', message: i18n.t('common:toast.settingsSaveFailed') });
