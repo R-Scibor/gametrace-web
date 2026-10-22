@@ -4,7 +4,6 @@ import { test, expect, beforeEach } from 'vitest';
 import { Route, Routes } from 'react-router-dom';
 import { DiscordCallbackPage } from './DiscordCallbackPage';
 import { useAuthStore } from '../store/authStore';
-import { useServerJoinStore } from '../store/serverJoinStore';
 import { beginDiscordLogin } from '../lib/discordOAuth';
 import { renderWithProviders, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
@@ -62,26 +61,6 @@ test('routes a pending-deletion account to its own screen', async () => {
   renderCallback(`?code=valid-code&state=${encodeURIComponent(state)}`);
 
   await waitFor(() => expect(screen.getByText('PENDING')).toBeInTheDocument());
-});
-
-test('shows the server-join prompt flag for an account outside the guild', async () => {
-  server.use(
-    http.post('/api/v1/auth/discord', () =>
-      HttpResponse.json({
-        token: 'test-token',
-        discord_id: '123',
-        username: 'testuser',
-        timezone: 'Europe/Warsaw',
-        is_admin: false,
-        needs_server_join: true,
-        pending_deletion: null,
-      }),
-    ),
-  );
-  const state = await startFlow();
-  renderCallback(`?code=valid-code&state=${encodeURIComponent(state)}`);
-
-  await waitFor(() => expect(useServerJoinStore.getState().visible).toBe(true));
 });
 
 test('rejects a mismatched state without calling the backend', async () => {

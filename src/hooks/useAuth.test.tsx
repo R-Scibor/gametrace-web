@@ -3,7 +3,6 @@ import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 import { useAuth } from './useAuth';
 import { useAuthStore } from '../store/authStore';
-import { useServerJoinStore } from '../store/serverJoinStore';
 import i18n from '../i18n';
 import { saveScheduledDeletion, readScheduledDeletion } from '../lib/accountDeletion';
 import { renderHookWithProviders, resetStores } from '../../test/utils';
@@ -115,28 +114,6 @@ test('useAuth stores token on successful Discord login', async () => {
     expect(useAuthStore.getState().token).toBe('discord-token');
     expect(useAuthStore.getState().user?.username).toBe('oauthuser');
   });
-  expect(useServerJoinStore.getState().visible).toBe(false);
-});
-
-test('useAuth raises the server-join prompt when the account is outside the guild', async () => {
-  server.use(
-    http.post('/api/v1/auth/discord', () =>
-      HttpResponse.json({
-        token: 'discord-token',
-        discord_id: '777',
-        username: 'oauthuser',
-        timezone: 'Europe/Warsaw',
-        is_admin: false,
-        needs_server_join: true,
-        pending_deletion: null,
-      }),
-    ),
-  );
-
-  const { result } = renderHookWithProviders(() => useAuth());
-  await result.current.handleDiscordLogin('auth-code', 'verifier', 'https://x/cb');
-
-  await waitFor(() => expect(useServerJoinStore.getState().visible).toBe(true));
 });
 
 test('useAuth surfaces a Discord login failure without storing a token', async () => {

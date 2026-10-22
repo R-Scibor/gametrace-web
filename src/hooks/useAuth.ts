@@ -6,7 +6,6 @@ import {
   discordLogin as discordLoginApi,
   logout as logoutApi,
 } from '../api/auth';
-import { useServerJoinStore } from '../store/serverJoinStore';
 import type { LoginResponse } from '../types/api';
 import { teardownAuth } from '../lib/authTeardown';
 import { clearScheduledDeletion } from '../lib/accountDeletion';
@@ -76,9 +75,6 @@ const commitLogin = (res: LoginResponse) => {
       res.is_admin,
       res.pending_deletion,
     );
-  if (res.needs_server_join) {
-    useServerJoinStore.getState().show();
-  }
 };
 
 export function useAuth() {

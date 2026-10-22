@@ -8,7 +8,6 @@ import { resumeAuthTeardown } from '../src/lib/authTeardown';
 import { useGamesStore } from '../src/store/gamesStore';
 import { useLocalCoversStore } from '../src/store/localCoversStore';
 import { useToastStore } from '../src/store/toastStore';
-import { useServerJoinStore } from '../src/store/serverJoinStore';
 import { clearReminderDayKeys } from '../src/lib/botReminder';
 
 export function createTestQueryClient() {
@@ -23,7 +22,6 @@ export function createTestQueryClient() {
 export function resetStores() {
   useAuthStore.getState().logout();
   useToastStore.setState({ toasts: [] });
-  useServerJoinStore.setState({ visible: false });
   sessionStorage.removeItem('gametrace.discord-oauth');
   useGamesStore.setState({ stale: false });
   useLocalCoversStore.setState({ covers: {} });
