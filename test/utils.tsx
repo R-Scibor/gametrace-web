@@ -9,6 +9,7 @@ import { useGamesStore } from '../src/store/gamesStore';
 import { useLocalCoversStore } from '../src/store/localCoversStore';
 import { useToastStore } from '../src/store/toastStore';
 import { useServerJoinStore } from '../src/store/serverJoinStore';
+import { clearReminderDayKeys } from '../src/lib/botReminder';
 
 export function createTestQueryClient() {
   return new QueryClient({
@@ -28,6 +29,7 @@ export function resetStores() {
   useLocalCoversStore.setState({ covers: {} });
   localStorage.removeItem('local-covers-storage');
   localStorage.removeItem('auth-storage');
+  clearReminderDayKeys();
   // Module-level flags that outlive sessionStorage.clear(), so a test that
   // mounts the scheduled screen would otherwise leak "already consumed" (or a
   // suspended teardown) into every test after it.
