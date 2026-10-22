@@ -15,7 +15,7 @@ import {
 import styles from './BotVisibilityReminder.module.css';
 
 export function BotVisibilityReminder() {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation(['auth', 'common']);
   const { data: profile } = useProfile();
   const pushToast = useToastStore((s) => s.pushToast);
   const queryClient = useQueryClient();
@@ -52,8 +52,9 @@ export function BotVisibilityReminder() {
       setOpen(false);
       pushToast({ type: 'success', message: t('botReminder.snoozed') });
     } catch {
+      pushToast({ type: 'error', message: t('common:toast.settingsSaveFailed') });
+    } finally {
       setSnoozing(false);
-      pushToast({ type: 'error', message: t('errors.loginFailed') });
     }
   };
 

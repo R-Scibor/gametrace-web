@@ -198,3 +198,59 @@ test('external links for join and addBot open with _blank and noopener,noreferre
     'noopener,noreferrer',
   );
 });
+
+test('snooze failure displays error toast and re-enables snooze button', async () => {
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({
+        ...fixtures.profileMe,
+        bot_can_see_user: false,
+        bot_visibility_reminders_enabled: true,
+        bot_visibility_reminder_snoozed_until: null,
+      }),
+    ),
+    http.put('/api/v1/profile/settings', () =>
+      HttpResponse.json({ message: 'Internal Server Error' }, { status: 500 }),
+    ),
+  );
+
+  renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
+  expect(await screen.findByRole('heading', { name: /bot cię nie widzi/i })).toBeInTheDocument();
+
+  const snoozeBtn = screen.getByRole('button', { name: /przypomnij za 7 dni/i });
+  expect(snoozeBtn).toBeEnabled();
+
+  await userEvent.click(snoozeBtn);
+
+  await waitFor(() => {
+    const toasts = useToastStore.getState().toasts;
+    expect(toasts).toHaveLength(1);
+    expect(toasts[0].type).toBe('error');
+    expect(toasts[0].message).toBe('Nie udało się zapisać ustawień.');
+  });
+
+  expect(snoozeBtn).toBeEnabled();
+  expect(screen.getByRole('heading', { name: /bot cię nie widzi/i })).toBeInTheDocument();
+});
+
+test('dismissing the modal via Escape key closes dialog and does not reopen', async () => {
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({
+        ...fixtures.profileMe,
+        bot_can_see_user: false,
+        bot_visibility_reminders_enabled: true,
+        bot_visibility_reminder_snoozed_until: null,
+      }),
+    ),
+  );
+
+  renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
+  expect(await screen.findByRole('heading', { name: /bot cię nie widzi/i })).toBeInTheDocument();
+
+  await userEvent.keyboard('{Escape}');
+
+  await waitFor(() => {
+    expect(screen.queryByRole('heading', { name: /bot cię nie widzi/i })).not.toBeInTheDocument();
+  });
+});
