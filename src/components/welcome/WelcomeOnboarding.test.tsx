@@ -38,6 +38,7 @@ test('WelcomeOnboarding step 1 opens bot invite and advances', async () => {
   expect(nextBtn.className).toMatch(/stepBtnOrange/);
 
   await user.click(nextBtn);
+  await user.click(screen.getByRole('button', { name: /KOD Z \/login/i }));
   expect(screen.getByRole('heading', { name: 'Przedstaw się botowi' })).toBeInTheDocument();
 });
 
@@ -90,6 +91,7 @@ test('WelcomeOnboarding selects /login command field on click', async () => {
   });
 
   await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  await user.click(screen.getByRole('button', { name: /KOD Z \/login/i }));
   const commandField = screen.getByLabelText('Komenda /login');
   expect(commandField).toHaveValue('/login');
 
@@ -108,6 +110,7 @@ test('WelcomeOnboarding step 2 advances to client picker', async () => {
   });
 
   await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  await user.click(screen.getByRole('button', { name: /KOD Z \/login/i }));
   await user.click(screen.getByRole('button', { name: /Mam już kod/i }));
 
   expect(screen.getByRole('heading', { name: 'Wybierz klienta' })).toBeInTheDocument();
@@ -130,8 +133,54 @@ test('WelcomeOnboarding browser client navigates to login', async () => {
   );
 
   await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  await user.click(screen.getByRole('button', { name: /KOD Z \/login/i }));
   await user.click(screen.getByRole('button', { name: /Mam już kod/i }));
   await user.click(screen.getByRole('button', { name: /Zaloguj w przeglądarce/i }));
 
   expect(screen.getByText('Login Screen')).toBeInTheDocument();
+});
+
+test('Discord choice opens the shared-server confirm and does not redirect yet', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <Route path="/welcome" element={<WelcomeOnboarding open onClose={vi.fn()} apkAvailable={false} isAuthenticated={false} onApkUnavailable={vi.fn()} />} />,
+    { route: '/welcome', authenticated: false },
+  );
+  await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  await user.click(screen.getByRole('button', { name: /Konto przez Discord/i }));
+  expect(screen.getByRole('heading', { name: 'Bot musi być na wspólnym serwerze' })).toBeInTheDocument();
+  expect(screen.queryByLabelText('Komenda /login')).not.toBeInTheDocument();
+});
+
+test('back button returns from code mode to choose mode, then to step 1', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <Route path="/welcome" element={<WelcomeOnboarding open onClose={vi.fn()} apkAvailable={false} isAuthenticated={false} onApkUnavailable={vi.fn()} />} />,
+    { route: '/welcome', authenticated: false },
+  );
+  await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /KOD Z \/login/i }));
+  expect(screen.getByRole('heading', { name: 'Przedstaw się botowi' })).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /Wstecz/i }));
+  expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /Wstecz/i }));
+  expect(screen.getByRole('heading', { name: 'Zaproś bota albo dołącz na serwer' })).toBeInTheDocument();
+});
+
+test('skips choose mode when Discord login is not enabled', async () => {
+  vi.stubEnv('VITE_DISCORD_CLIENT_ID', '');
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <Route path="/welcome" element={<WelcomeOnboarding open onClose={vi.fn()} apkAvailable={false} isAuthenticated={false} onApkUnavailable={vi.fn()} />} />,
+    { route: '/welcome', authenticated: false },
+  );
+  await user.click(screen.getByRole('button', { name: /Mam już bota/i }));
+  expect(screen.getByRole('heading', { name: 'Przedstaw się botowi' })).toBeInTheDocument();
+  expect(screen.getByLabelText('Komenda /login')).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: 'Jak chcesz założyć konto' })).not.toBeInTheDocument();
+  vi.unstubAllEnvs();
 });

@@ -138,7 +138,11 @@
       "hintCopied": "Skopiowano — wklej na Discordzie.",
       "hintSelected": "Zaznaczono — Ctrl+C / Cmd+C, jeśli nie skopiowało się samo.",
       "hintIdle": "Kliknij pole, aby zaznaczyć komendę /login.",
-      "haveCode": "MAM JUŻ KOD → DALEJ"
+      "haveCode": "MAM JUŻ KOD → DALEJ",
+      "chooseTitle": "Jak chcesz założyć konto",
+      "chooseBody": "Kod z kanału albo logowanie przez Discord. W obu przypadkach bot musi być na wspólnym serwerze.",
+      "chooseCode": "KOD Z /login",
+      "chooseDiscord": "KONTO PRZEZ DISCORD"
     },
     "step3": {
       "title": "Wybierz klienta",
