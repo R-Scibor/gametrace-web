@@ -13,6 +13,22 @@ import { SettingsRow } from '../components/settings/SettingsRow';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
 
+/** Shown off and inert. Does not read or write the stored preference. */
+function LockedToggle({ label }: { label: string }) {
+  return (
+    <label className={styles.toggle}>
+      <input
+        type="checkbox"
+        aria-label={label}
+        checked={false}
+        disabled
+        onChange={() => {}}
+      />
+      <span className={styles.toggleSlider} />
+    </label>
+  );
+}
+
 export function SettingsPage() {
   const { t } = useTranslation('settings');
   const { t: tCommon } = useTranslation('common');
@@ -28,14 +44,6 @@ export function SettingsPage() {
 
   const handleTimezone = (tz: string) => {
     updateSettings.mutate({ timezone: tz });
-  };
-
-  const handleWeeklyReport = (enabled: boolean) => {
-    updateSettings.mutate({ weekly_report_enabled: enabled });
-  };
-
-  const handlePushEnabled = (enabled: boolean) => {
-    updateSettings.mutate({ push_enabled: enabled });
   };
 
   if (profileLoading) {
@@ -98,30 +106,17 @@ export function SettingsPage() {
         </SettingsRow>
         <SettingsRow
           label={t('preferences.weeklyReport')}
-          subtext={t('preferences.weeklyReportSub')}
+          subtext={t('preferences.unavailable')}
+          badge={t('preferences.inDevelopment')}
         >
-          <label className={styles.toggle}>
-            <input
-              type="checkbox"
-              aria-label={t('preferences.weeklyReport')}
-              checked={profile?.weekly_report_enabled ?? false}
-              onChange={(e) => handleWeeklyReport(e.target.checked)}
-              disabled={updateSettings.isPending}
-            />
-            <span className={styles.toggleSlider} />
-          </label>
+          <LockedToggle label={t('preferences.weeklyReport')} />
         </SettingsRow>
-        <SettingsRow label={t('preferences.push')} subtext={t('preferences.pushSub')}>
-          <label className={styles.toggle}>
-            <input
-              type="checkbox"
-              aria-label={t('preferences.push')}
-              checked={profile?.push_enabled ?? false}
-              onChange={(e) => handlePushEnabled(e.target.checked)}
-              disabled={updateSettings.isPending}
-            />
-            <span className={styles.toggleSlider} />
-          </label>
+        <SettingsRow
+          label={t('preferences.push')}
+          subtext={t('preferences.unavailable')}
+          badge={t('preferences.inDevelopment')}
+        >
+          <LockedToggle label={t('preferences.push')} />
         </SettingsRow>
       </div>
 

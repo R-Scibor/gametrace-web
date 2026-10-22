@@ -22,9 +22,9 @@
     "language": "Language",
     "timezone": "Timezone",
     "weeklyReport": "Weekly report",
-    "weeklyReportSub": "Sent by the bot on Discord",
     "push": "Push notifications",
-    "pushSub": "Alerts on your mobile device"
+    "unavailable": "Not available yet",
+    "inDevelopment": "In development"
   },
   "status": {
     "bot": "Bot",

@@ -16,9 +16,27 @@
   flex-direction: column;
   gap: 2px;
 }
+.labelLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 .label {
   font-size: 14px;
   color: var(--text);
+}
+.badge {
+  font-family: var(--display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid rgba(255, 122, 26, 0.45);
+  border-radius: 2px;
+  padding: 2px 6px;
+  line-height: 1.4;
 }
 .subtext {
   font-size: 11px;

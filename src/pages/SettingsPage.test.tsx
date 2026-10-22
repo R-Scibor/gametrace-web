@@ -53,13 +53,19 @@ test('SettingsPage timezone change calls settings API', async () => {
   await waitFor(() => expect(updatedTimezone).toBe('America/New_York'));
 });
 
-test('SettingsPage push toggle calls settings API', async () => {
-  let updatedPush: boolean | undefined;
+test('SettingsPage keeps notification preferences locked and does not save them', async () => {
+  let settingsCalls = 0;
   server.use(
-    http.put('/api/v1/profile/settings', async ({ request }) => {
-      const body = (await request.json()) as { push_enabled?: boolean };
-      updatedPush = body.push_enabled;
-      return HttpResponse.json({ ...fixtures.profileMe, push_enabled: body.push_enabled });
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({
+        ...fixtures.profileMe,
+        weekly_report_enabled: true,
+        push_enabled: true,
+      }),
+    ),
+    http.put('/api/v1/profile/settings', () => {
+      settingsCalls += 1;
+      return HttpResponse.json(fixtures.profileMe);
     }),
   );
 
@@ -71,10 +77,18 @@ test('SettingsPage push toggle calls settings API', async () => {
     { route: '/settings' },
   );
 
-  const pushToggle = await screen.findByRole('checkbox', { name: /Powiadomienia push/i });
-  await user.click(pushToggle);
+  const weekly = await screen.findByRole('checkbox', { name: 'Raport tygodniowy' });
+  const push = screen.getByRole('checkbox', { name: 'Powiadomienia push' });
+  expect(weekly).toBeDisabled();
+  expect(weekly).not.toBeChecked();
+  expect(push).toBeDisabled();
+  expect(push).not.toBeChecked();
+  expect(screen.getAllByText('W rozwoju')).toHaveLength(2);
+  expect(screen.getAllByText('Jeszcze niedostępne')).toHaveLength(2);
 
-  await waitFor(() => expect(updatedPush).toBe(true));
+  await user.click(weekly);
+  await user.click(push);
+  expect(settingsCalls).toBe(0);
 });
 
 test('SettingsPage does not render logout button', async () => {
