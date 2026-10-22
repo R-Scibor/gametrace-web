@@ -4,6 +4,7 @@ import { useLanguageSync } from '../../hooks/useLanguageSync';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { ToastViewport } from '../ui/Toast';
+import { ServerJoinPrompt } from '../auth/ServerJoinPrompt';
 import styles from './AppLayout.module.css';
 
 export function AppLayout() {
@@ -24,6 +25,7 @@ export function AppLayout() {
         </main>
       </div>
       <ToastViewport />
+      <ServerJoinPrompt />
     </div>
   );
 }

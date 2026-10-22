@@ -3,6 +3,8 @@ import { http, HttpResponse } from 'msw';
 import { test, expect, beforeEach } from 'vitest';
 import { useAuth } from './useAuth';
 import { useAuthStore } from '../store/authStore';
+import { useServerJoinStore } from '../store/serverJoinStore';
+import i18n from '../i18n';
 import { saveScheduledDeletion, readScheduledDeletion } from '../lib/accountDeletion';
 import { renderHookWithProviders, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
@@ -81,5 +83,88 @@ test('useAuth maps expired link code to Polish error', async () => {
     expect(result.current.error).toBe(
       'Nieprawidłowy lub wygasły kod. Uruchom /login na Discordzie ponownie.',
     ),
+  );
+});
+test('useAuth stores token on successful Discord login', async () => {
+  let capturedBody: Record<string, string> = {};
+  server.use(
+    http.post('/api/v1/auth/discord', async ({ request }) => {
+      capturedBody = (await request.json()) as Record<string, string>;
+      return HttpResponse.json({
+        token: 'discord-token',
+        discord_id: '777',
+        username: 'oauthuser',
+        timezone: 'Europe/Warsaw',
+        is_admin: false,
+        needs_server_join: false,
+        pending_deletion: null,
+      });
+    }),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+  const ok = await result.current.handleDiscordLogin('auth-code', 'verifier', 'https://x/cb');
+
+  expect(ok).toBe(true);
+  expect(capturedBody).toEqual({
+    code: 'auth-code',
+    code_verifier: 'verifier',
+    redirect_uri: 'https://x/cb',
+  });
+  await waitFor(() => {
+    expect(useAuthStore.getState().token).toBe('discord-token');
+    expect(useAuthStore.getState().user?.username).toBe('oauthuser');
+  });
+  expect(useServerJoinStore.getState().visible).toBe(false);
+});
+
+test('useAuth raises the server-join prompt when the account is outside the guild', async () => {
+  server.use(
+    http.post('/api/v1/auth/discord', () =>
+      HttpResponse.json({
+        token: 'discord-token',
+        discord_id: '777',
+        username: 'oauthuser',
+        timezone: 'Europe/Warsaw',
+        is_admin: false,
+        needs_server_join: true,
+        pending_deletion: null,
+      }),
+    ),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+  await result.current.handleDiscordLogin('auth-code', 'verifier', 'https://x/cb');
+
+  await waitFor(() => expect(useServerJoinStore.getState().visible).toBe(true));
+});
+
+test('useAuth surfaces a Discord login failure without storing a token', async () => {
+  server.use(
+    http.post('/api/v1/auth/discord', () =>
+      HttpResponse.json({ detail: 'Discord authorization failed' }, { status: 401 }),
+    ),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+  const ok = await result.current.handleDiscordLogin('bad', 'verifier', 'https://x/cb');
+
+  expect(ok).toBe(false);
+  expect(useAuthStore.getState().token).toBeNull();
+  await waitFor(() => expect(result.current.error).toBeTruthy());
+});
+
+test('useAuth reports an unregistered redirect uri distinctly', async () => {
+  server.use(
+    http.post('/api/v1/auth/discord', () =>
+      HttpResponse.json({ detail: 'redirect_uri not allowed' }, { status: 400 }),
+    ),
+  );
+
+  const { result } = renderHookWithProviders(() => useAuth());
+  await result.current.handleDiscordLogin('code', 'verifier', 'https://x/cb');
+
+  await waitFor(() =>
+    expect(result.current.error).toBe(i18n.t('auth:errors.discordRedirect')),
   );
 });

@@ -18,6 +18,8 @@ export interface LoginResponse {
   username: string;
   timezone: string;
   is_admin: boolean;
+  /** True when the user is not in the GameTrace guild (Discord login only). */
+  needs_server_join: boolean;
   pending_deletion: PendingDeletion | null;
 }
 

@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 48px 24px;
+  text-align: center;
+}
+.title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+.titleAccent {
+  color: var(--orange);
+}
+.status {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--text3);
+}
+.error {
+  margin: 0;
+  max-width: 420px;
+  color: var(--warn);
+  font-size: 13px;
+}
+.backLink {
+  font-family: var(--display);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-decoration: none;
+}
+.backLink:hover,
+.backLink:focus-visible {
+  color: var(--orange);
+}
