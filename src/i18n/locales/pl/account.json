@@ -57,7 +57,7 @@
     "intro": "Konto GameTrace i jego dane można usunąć w każdej chwili, można też usunąć część danych bez zamykania konta. Poniżej opisane jest, jak to zrobić, co zostaje usunięte i co jest zachowywane.",
     "stepsTitle": "Jak usunąć konto",
     "steps": [
-      "Zaloguj się w aplikacji web lub w aplikacji na Androida (kod z komendy /login na Discordzie).",
+      "Zaloguj się w aplikacji web lub w aplikacji na Androida (kod z komendy /login na Discordzie albo logowanie przez Discord).",
       "Przejdź do Ustawienia → Konto.",
       "Wybierz „Usuń konto” i potwierdź zgodnie z komunikatem (w aplikacji web — wpisując nazwę użytkownika)."
     ],

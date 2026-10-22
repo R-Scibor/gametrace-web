@@ -56,7 +56,7 @@
     "intro": "You can delete your GameTrace account and its data at any time, or delete parts of your data without closing your account. Here is how, what is removed, and what is kept.",
     "stepsTitle": "How to delete your account",
     "steps": [
-      "Sign in on the web or in the Android app (code from the /login command on Discord).",
+      "Sign in on the web or in the Android app (code from the /login command on Discord or Discord login).",
       "Go to Settings → Account.",
       "Choose \"Delete account\" and confirm as prompted (on the web, by typing your username)."
     ],

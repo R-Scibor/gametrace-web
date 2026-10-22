@@ -66,12 +66,12 @@
       "body": "Invite the bot to your server or join a server that already has it."
     },
     "login": {
-      "title": "/login in a channel",
-      "body": "Send the command in a server chat — not in a DM. The bot gives you a login code."
+      "title": "Code or Discord",
+      "body": "A code from the /login command in a channel, or Discord login on this site. Both require a server with the bot from step 1."
     },
     "client": {
       "title": "Browser or app",
-      "body": "Log in with the code here or download the APK. One account everywhere."
+      "body": "Log in with a code or via Discord here, or download the APK. One account everywhere."
     }
   },
   "platforms": {
@@ -80,7 +80,7 @@
       "status": "Foundation",
       "body": "It detects gaming in the background and keeps your session journal without you watching the clock manually.",
       "point1": "Auto-detects running games",
-      "point2": "Registration via the /login command",
+      "point2": "Registration via /login code or Discord",
       "point3": "Works on a server with the bot"
     },
     "app": {

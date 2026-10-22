@@ -66,12 +66,12 @@
       "body": "Zaproś bota na swój serwer albo dołącz na serwer, który go już ma."
     },
     "login": {
-      "title": "/login na kanale",
-      "body": "Wyślij komendę na czacie serwera — nie na privie. Bot poda kod do logowania."
+      "title": "Kod albo Discord",
+      "body": "Kod z komendy /login na kanale, albo logowanie przez Discord na tej stronie. Jedno i drugie wymaga serwera z botem z kroku 1."
     },
     "client": {
       "title": "Przeglądarka lub aplikacja",
-      "body": "Zaloguj się kodem tutaj albo pobierz APK. Jedno konto wszędzie."
+      "body": "Zaloguj się kodem albo przez Discord tutaj, albo pobierz APK. Jedno konto wszędzie."
     }
   },
   "platforms": {
@@ -80,7 +80,7 @@
       "status": "Fundament",
       "body": "Wykrywa granie w tle i prowadzi Twój dziennik sesji bez ręcznego pilnowania czasu.",
       "point1": "Auto-wykrywanie uruchomionych gier",
-      "point2": "Rejestracja komendą /login",
+      "point2": "Rejestracja kodem /login albo przez Discord",
       "point3": "Działa na serwerze z botem"
     },
     "app": {

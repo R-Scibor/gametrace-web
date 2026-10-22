@@ -25,8 +25,8 @@ test('LandingPage renders ecosystem gateway sections', async () => {
     expect(screen.getAllByRole('button', { name: /pobierz apk/i }).length).toBeGreaterThanOrEqual(1);
   });
   expect(screen.getAllByText('PRZEGLĄDARKA').length).toBeGreaterThan(0);
-  expect(screen.getByText(/nie na privie/i)).toBeInTheDocument();
-  expect(screen.getByText(/Jedno konto wszędzie/i)).toBeInTheDocument();
+  expect(screen.getByText(/Kod z komendy \/login na kanale/i)).toBeInTheDocument();
+  expect(screen.getByText(/Zaloguj się kodem albo przez Discord tutaj/i)).toBeInTheDocument();
   expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   expect(screen.getByText('GAMETRACE', { selector: 'footer span' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /polityka prywatności/i })).toHaveAttribute(

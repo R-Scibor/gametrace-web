@@ -51,7 +51,7 @@
         {
           "type": "ul",
           "items": [
-            "Konto można założyć na dwa sposoby: logując się przez Discord w aplikacji na Androida, co tworzy konto przy pierwszym logowaniu, albo rejestrując się przez bota Discord i logując się kodem, który bot wysyła. W obu przypadkach bot zapisuje sesje dopiero wtedy, gdy konto już istnieje.",
+            "Konto można założyć na trzy sposoby: logując się przez Discord w przeglądarce, logując się przez Discord w aplikacji na Androida, albo rejestrując się przez bota Discord i logując się kodem, który bot wysyła. Bot zapisuje sesje dopiero wtedy, gdy konto już istnieje i bot jest z tobą na tym samym serwerze.",
             "Sesje powstają automatycznie na podstawie statusu na Discordzie albo ręcznie, gdy zostaną dodane samodzielnie.",
             "Wprowadzanie głosowe to opcjonalny, dodatkowy sposób na utworzenie sesji mówieniem zamiast pisania.",
             "W każdej chwili możesz edytować lub usunąć swoje sesje oraz usunąć całe konto."

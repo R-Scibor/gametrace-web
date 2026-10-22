@@ -51,7 +51,7 @@
         {
           "type": "ul",
           "items": [
-            "You can get an account in two ways: sign in with Discord in the Android app, which creates the account on first sign-in, or register through the Discord bot and sign in with the code it sends you. Either way, the bot records sessions only once your account exists.",
+            "You can create an account in three ways: signing in with Discord in the browser, signing in with Discord in the Android app, or registering through the Discord bot and signing in with the code the bot sends. The bot records sessions only once your account exists and the bot shares a server with you.",
             "Sessions are created automatically from Discord presence, or by you by hand.",
             "Voice-assisted entry is an optional extra way to create a session by speaking instead of typing.",
             "You can edit or delete your sessions and delete your whole account at any time."

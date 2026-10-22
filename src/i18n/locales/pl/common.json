@@ -40,7 +40,7 @@
     "logoutConfirm": "WYLOGUJ SIĘ"
   },
   "logout": {
-    "message": "Na pewno chcesz się wylogować? Będziesz musiał ponownie wpisać kod z /login."
+    "message": "Na pewno chcesz się wylogować? Potem zalogujesz się kodem z /login albo przez Discord."
   },
   "errors": {
     "connectionLabel": "BŁĄD POŁĄCZENIA",
