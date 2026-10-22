@@ -53,6 +53,32 @@ test('SettingsPage timezone change calls settings API', async () => {
   await waitFor(() => expect(updatedTimezone).toBe('America/New_York'));
 });
 
+test('SettingsPage bot reminder toggle calls settings API', async () => {
+  let putBody: unknown = null;
+  server.use(
+    http.put('/api/v1/profile/settings', async ({ request }) => {
+      putBody = await request.json();
+      return HttpResponse.json({ ...fixtures.profileMe, ...(putBody as object) });
+    }),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/settings" element={<SettingsPage />} />
+    </>,
+    { route: '/settings' },
+  );
+
+  const toggle = await screen.findByRole('switch', { name: 'Przypomnienie o bocie' });
+  expect(toggle).toBeChecked();
+  await user.click(toggle);
+
+  await waitFor(() =>
+    expect(putBody).toEqual({ bot_visibility_reminders_enabled: false }),
+  );
+});
+
 test('SettingsPage keeps notification preferences locked and does not save them', async () => {
   let settingsCalls = 0;
   server.use(

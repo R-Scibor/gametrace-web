@@ -5,6 +5,7 @@ import { useHealth } from '../hooks/useHealth';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAuthStore } from '../store/authStore';
 import { SectionHeader, Skeleton } from '../components/ui';
+import { Switch } from '../components/ui/Switch';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { DeleteAccountRow } from '../components/settings/DeleteAccountRow';
@@ -102,6 +103,19 @@ export function SettingsPage() {
             value={timezone}
             onChange={handleTimezone}
             disabled={updateSettings.isPending}
+          />
+        </SettingsRow>
+        <SettingsRow
+          label={t('preferences.botReminder')}
+          subtext={t('preferences.botReminderSubtext')}
+        >
+          <Switch
+            label={t('preferences.botReminder')}
+            checked={profile?.bot_visibility_reminders_enabled ?? true}
+            disabled={updateSettings.isPending || !profile}
+            onChange={(checked) =>
+              updateSettings.mutate({ bot_visibility_reminders_enabled: checked })
+            }
           />
         </SettingsRow>
         <SettingsRow
