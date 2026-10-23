@@ -32,5 +32,11 @@
     "bot": "Bot",
     "botUptime": "Bot up since",
     "apiVersion": "API version"
+  },
+  "timezonePicker": {
+    "change": "change",
+    "search": "Search timezone...",
+    "noResults": "No results",
+    "groupCommon": "COMMON"
   }
 }

@@ -47,8 +47,11 @@ test('SettingsPage timezone change calls settings API', async () => {
     { route: '/settings' },
   );
 
-  const select = await screen.findByLabelText('Strefa czasowa');
-  await user.selectOptions(select, 'America/New_York');
+  const chip = await screen.findByRole('button', { name: /strefa czasowa/i });
+  await user.click(chip);
+  const searchInput = screen.getByRole('combobox', { name: /strefa czasowa/i });
+  await user.type(searchInput, 'New York');
+  await user.click(screen.getByRole('option', { name: /America\/New York/i }));
 
   await waitFor(() => expect(updatedTimezone).toBe('America/New_York'));
 });

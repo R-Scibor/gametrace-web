@@ -32,5 +32,11 @@
     "bot": "Bot",
     "botUptime": "Bot aktywny od",
     "apiVersion": "Wersja API"
+  },
+  "timezonePicker": {
+    "change": "zmień",
+    "search": "Szukaj strefy...",
+    "noResults": "Brak wyników",
+    "groupCommon": "CZĘSTE"
   }
 }
