@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './Modal.module.css';
 
 interface ModalProps {
@@ -102,7 +103,10 @@ export function Modal({
 
   if (!open) return null;
 
-  return (
+  // Portal to <body>: rendered in place, the overlay was trapped in the page
+  // content's stacking context (z-index: 1), so the sticky top bar (z-index: 10)
+  // painted above the backdrop instead of being dimmed.
+  return createPortal(
     <div
       className={[styles.overlay, overlayClassName].filter(Boolean).join(' ')}
       onClick={onClose}
@@ -119,6 +123,7 @@ export function Modal({
       >
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

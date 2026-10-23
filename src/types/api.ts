@@ -283,3 +283,16 @@ export type AdminReportPatch = {
   status?: ReportStatus;
   admin_note?: string | null;
 };
+/** Diagnostic context sent with every user report (same shape as the mobile app). */
+export type ReportContext = {
+  screen: string;
+  platform: string;
+  osVersion: string;
+  appVersion: string;
+};
+
+/** Body of POST /reports. */
+export interface SubmitReportPayload {
+  message: string;
+  context: ReportContext;
+}

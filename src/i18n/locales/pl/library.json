@@ -59,15 +59,6 @@
     "createFailed": "Nie udało się dodać gry.",
     "retry": "Spróbuj ponownie"
   },
-  "cover": {
-    "saved": "Okładka zapisana lokalnie.",
-    "saveFailed": "Nie udało się zapisać okładki.",
-    "restored": "Przywrócono oryginalną okładkę.",
-    "saving": "ZAPISYWANIE...",
-    "choose": "WYBIERZ ZDJĘCIE",
-    "restore": "PRZYWRÓĆ ORYGINALNĄ",
-    "hint": "Okładka zapisywana lokalnie w przeglądarce (JPEG, PNG, WebP)"
-  },
   "toast": {
     "merged": "Gry połączone.",
     "mergeForbidden": "Brak uprawnień do łączenia gier.",

@@ -15,17 +15,45 @@
     "firstPlayed": "PIERWSZY RAZ",
     "lastPlayed": "OSTATNIO"
   },
-  "actions": {
-    "title": "Akcje",
-    "localCover": "Okładka lokalna",
-    "globalCover": "Okładka globalna",
-    "manage": "Zarządzanie",
-    "accept": "ZAAKCEPTUJ GRĘ",
-    "acceptHint": "Dodaj rozpoznaną grę do biblioteki i statystyk.",
-    "restore": "PRZYWRÓĆ DO BIBLIOTEKI",
-    "ignore": "IGNORUJ GRĘ",
-    "restoreHint": "Przywróć grę do biblioteki i wliczaj ją do statystyk.",
-    "ignoreHint": "Ukryj grę w bibliotece i pomiń ją w statystykach."
+  "menu": {
+    "trigger": "Opcje gry",
+    "header": "OPCJE",
+    "accept": "Akceptuj grę",
+    "acceptDesc": "Pokaż w bibliotece i statystykach",
+    "restore": "Przywróć grę",
+    "restoreDesc": "Pokaż ponownie w bibliotece i statystykach",
+    "ignore": "Ignoruj grę",
+    "ignoreDesc": "Ukryj z biblioteki i statystyk",
+    "changeCover": "Zmień okładkę…",
+    "changeCoverDesc": "Własny obraz, tylko w tej przeglądarce",
+    "restoreDefaultCover": "Przywróć domyślną okładkę",
+    "restoreDefaultCoverDesc": "Użyj okładki widocznej na wszystkich urządzeniach",
+    "removeCover": "Usuń swoją okładkę",
+    "removeCoverDesc": "Wróć do litery zastępczej",
+    "reportDuplicate": "Zgłoś duplikat",
+    "reportDuplicateDesc": "Ta sama gra podzielona na dwa wpisy"
+  },
+  "coverDialog": {
+    "title": "Okładka gry",
+    "yourCover": "Twoja okładka",
+    "yourCoverDesc": "Tylko w tej przeglądarce. Inne urządzenia i aplikacja mobilna jej nie zobaczą.",
+    "defaultCover": "Okładka domyślna",
+    "defaultCoverDesc": "Widoczna na wszystkich Twoich urządzeniach. Pochodzi z bazy gier.",
+    "defaultCoverEmptyDesc": "Brak domyślnej okładki dla tej gry.",
+    "notSet": "Nie ustawiono",
+    "inUse": "W UŻYCIU",
+    "chooseImage": "WYBIERZ OBRAZ",
+    "saving": "ZAPISYWANIE...",
+    "resetDefault": "PRZYWRÓĆ DOMYŚLNĄ",
+    "removeCover": "USUŃ SWOJĄ OKŁADKĘ",
+    "hint": "JPEG, PNG lub WebP. Zapisywana tylko w tej przeglądarce.",
+    "close": "ZAMKNIJ",
+    "toasts": {
+      "saved": "Okładka zapisana lokalnie.",
+      "saveFailed": "Nie udało się zapisać okładki.",
+      "restored": "Przywrócono oryginalną okładkę.",
+      "removed": "Usunięto okładkę."
+    }
   },
   "history": {
     "title": "Historia sesji",
@@ -38,5 +66,25 @@
     "colSource": "Źródło",
     "sourceBot": "Bot Discord",
     "sourceManual": "Ręczna"
+  },
+  "report": {
+    "title": "Zgłoś duplikat",
+    "explainer": "Wybierz drugą grę, która wygląda na tę samą. Administrator sprawdzi zgłoszenie — nic nie zostanie scalone od razu.",
+    "source": "Ta gra",
+    "otherGame": "Druga gra",
+    "searchPlaceholder": "Szukaj gry...",
+    "clearSelection": "Wyczyść wybór",
+    "noteLabel": "Notatka (opcjonalnie)",
+    "notePlaceholder": "Np. ta sama okładka / ta sama aktywność na Discordzie",
+    "emptyList": "Nie znaleziono innych gier.",
+    "noResults": "Brak wyników.",
+    "loading": "Wczytywanie gier...",
+    "loadError": "Nie udało się pobrać listy gier.",
+    "retry": "SPRÓBUJ PONOWNIE",
+    "submitError": "Nie udało się wysłać zgłoszenia. Spróbuj ponownie.",
+    "cancel": "ANULUJ",
+    "send": "WYŚLIJ ZGŁOSZENIE",
+    "sending": "WYSYŁANIE...",
+    "thanks": "Dzięki! Sprawdzimy i scalimy, jeśli to ta sama gra."
   }
 }

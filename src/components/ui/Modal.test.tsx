@@ -173,3 +173,16 @@ test('dialog carries aria-modal and aria-labelledby matching the passed id', () 
   expect(dialog).toHaveAttribute('aria-modal', 'true');
   expect(dialog).toHaveAttribute('aria-labelledby', 'test-title');
 });
+
+test('Modal renders into document.body so it stacks above the app top bar', () => {
+  const { container } = render(
+    <div data-testid="host">
+      <Modal open onClose={() => {}} labelledBy="portal-title">
+        <h2 id="portal-title">Portal</h2>
+      </Modal>
+    </div>,
+  );
+  const dialog = screen.getByRole('dialog', { name: 'Portal' });
+  expect(container.contains(dialog)).toBe(false);
+  expect(dialog.closest('[role="presentation"]')?.parentElement).toBe(document.body);
+});

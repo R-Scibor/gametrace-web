@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useGame, useUpdateGamePreference } from '../hooks/useGames';
@@ -6,7 +6,9 @@ import { useGameSessions } from '../hooks/useGameSessions';
 import { useGameStats } from '../hooks/useGameStats';
 import { formatDuration, formatDateShort, formatRecency } from '../lib/format';
 import { Cover } from '../components/Cover';
-import { CoverUpload } from '../components/library/CoverUpload';
+import { GameActionsMenu } from '../components/games/GameActionsMenu';
+import { CoverDialog } from '../components/games/CoverDialog';
+import { ReportDuplicateDialog } from '../components/games/ReportDuplicateDialog';
 import { SectionHeader, Skeleton, Button } from '../components/ui';
 import { SessionList } from '../components/games/SessionList';
 import type { Game } from '../types/api';
@@ -52,6 +54,8 @@ export function GameDetailPage() {
     isFetchingNextPage,
   } = useGameSessions(id);
   const prefMut = useUpdateGamePreference(id);
+  const [coverDialogOpen, setCoverDialogOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
 
   const sessions = useMemo(() => sessionPages?.pages.flat() ?? [], [sessionPages]);
 
@@ -82,14 +86,24 @@ export function GameDetailPage() {
       </Link>
 
       <section className={styles.hero}>
-        {game.cover_image_url && (
-          <div
-            className={styles.backdrop}
-            style={{ backgroundImage: `url(${game.cover_image_url})` }}
-            aria-hidden
-          />
-        )}
-        <div className={styles.heroScrim} aria-hidden />
+        <div className={styles.backdropWrapper} aria-hidden>
+          {game.cover_image_url && (
+            <div
+              className={styles.backdrop}
+              style={{ backgroundImage: `url(${game.cover_image_url})` }}
+            />
+          )}
+          <div className={styles.heroScrim} />
+        </div>
+
+        <GameActionsMenu
+          game={game}
+          canAccept={canAccept}
+          onOpenCoverDialog={() => setCoverDialogOpen(true)}
+          onOpenReportDuplicate={() => setReportOpen(true)}
+          prefMut={prefMut}
+        />
+
         <div className={styles.heroContent}>
           <div className={styles.coverWrapper}>
             <Cover
@@ -124,54 +138,6 @@ export function GameDetailPage() {
         </div>
       </section>
 
-      <div className={styles.actionsPanel}>
-        <SectionHeader title={t('actions.title')} />
-        <div className={styles.actionsGrid}>
-          <div className={styles.coverSection}>
-            <p className={styles.coverSectionLabel}>{t('actions.localCover')}</p>
-            <CoverUpload gameId={id} coverUrl={game.cover_image_url} gameName={game.primary_name} />
-          </div>
-          <div className={styles.coverSection}>
-            <p className={styles.coverSectionLabel}>{t('actions.globalCover')}</p>
-            <div className={styles.readonlyPreview}>
-              <Cover
-                coverImageUrl={game.cover_image_url}
-                placeholderChar={game.primary_name}
-                className={styles.cover}
-              />
-            </div>
-          </div>
-          <div className={styles.actionButtons}>
-            <p className={styles.coverSectionLabel}>{t('actions.manage')}</p>
-            {canAccept && (
-              <div className={styles.actionItem}>
-                <Button
-                  type="button"
-                  disabled={prefMut.isPending}
-                  onClick={() => prefMut.mutate({ is_ignored: false, is_accepted: true })}
-                >
-                  {t('actions.accept')}
-                </Button>
-                <p className={styles.actionHint}>{t('actions.acceptHint')}</p>
-              </div>
-            )}
-            <div className={styles.actionItem}>
-              <Button
-                type="button"
-                variant="secondary"
-                disabled={prefMut.isPending}
-                onClick={() => prefMut.mutate({ is_ignored: !game.is_ignored })}
-              >
-                {game.is_ignored ? t('actions.restore') : t('actions.ignore')}
-              </Button>
-              <p className={styles.actionHint}>
-                {game.is_ignored ? t('actions.restoreHint') : t('actions.ignoreHint')}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div>
         <SectionHeader title={t('history.title')} />
         <SessionList sessions={sessions} />
@@ -187,6 +153,17 @@ export function GameDetailPage() {
           </div>
         )}
       </div>
+
+      <CoverDialog
+        game={game}
+        open={coverDialogOpen}
+        onClose={() => setCoverDialogOpen(false)}
+      />
+      <ReportDuplicateDialog
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        source={{ id: game.id, name: game.primary_name }}
+      />
     </div>
   );
 }
