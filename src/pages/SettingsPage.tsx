@@ -98,7 +98,7 @@ export function SettingsPage() {
             disabled={languagePending}
           />
         </SettingsRow>
-        <SettingsRow label={t('preferences.timezone')} subtext={timezone}>
+        <SettingsRow label={t('preferences.timezone')}>
           <TimezoneSelect
             value={timezone}
             onChange={handleTimezone}
