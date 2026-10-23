@@ -38,9 +38,33 @@ function zoneLabel(zone: string): string {
   return zone.replace(/_/g, ' ');
 }
 
-function matches(zone: string, query: string): boolean {
-  const needle = query.trim().toLowerCase();
-  return zone.toLowerCase().includes(needle) || zoneLabel(zone).toLowerCase().includes(needle);
+// eslint-disable-next-line react-refresh/only-export-components
+export function rankTimezones(
+  zones: readonly string[] | string[],
+  query: string
+): string[] {
+  const normQuery = query.trim().replace(/_/g, ' ').toLowerCase();
+  if (!normQuery) {
+    return [];
+  }
+
+  // Tiers: 0 = region (first segment) starts with query (e.g. 'eu' -> Europe/*),
+  // 1 = city/other segment starts with query, 2 = any word starts with query,
+  // 3 = substring. Alphabetical within each tier.
+  const tiers: string[][] = [[], [], [], []];
+
+  for (const zone of zones) {
+    const normZone = zone.replace(/_/g, ' ').toLowerCase();
+    const segments = normZone.split('/').filter(Boolean);
+    let tier = -1;
+    if (segments[0]?.startsWith(normQuery)) tier = 0;
+    else if (segments.slice(1).some((segment) => segment.startsWith(normQuery))) tier = 1;
+    else if (normZone.split(/[\s/-]+/).some((word) => word.startsWith(normQuery))) tier = 2;
+    else if (normZone.includes(normQuery)) tier = 3;
+    if (tier >= 0) tiers[tier].push(zone);
+  }
+
+  return tiers.flatMap((tier) => tier.sort((a, b) => a.localeCompare(b)));
 }
 
 interface TimezoneSelectProps {
@@ -86,7 +110,7 @@ export function TimezoneSelect({
       }
       return FALLBACK_ZONES;
     }
-    return ALL_TIMEZONES.filter((zone) => matches(zone, trimmed));
+    return rankTimezones(ALL_TIMEZONES, trimmed);
   }, [trimmed, value]);
 
   // Focus chip on close
@@ -270,6 +294,11 @@ export function TimezoneSelect({
             </li>
           )}
         </ul>
+        {!trimmed && (
+          <div role="note" className={styles.hint}>
+            {t('settings:timezonePicker.hint')}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -37,6 +37,7 @@
     "change": "zmień",
     "search": "Szukaj strefy...",
     "noResults": "Brak wyników",
-    "groupCommon": "CZĘSTE"
+    "groupCommon": "CZĘSTE",
+    "hint": "Wpisz, aby wyszukać wszystkie strefy"
   }
 }

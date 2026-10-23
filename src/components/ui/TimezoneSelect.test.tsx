@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { TimezoneSelect } from './TimezoneSelect';
+import { TimezoneSelect, rankTimezones } from './TimezoneSelect';
 
 function ControlledTimezoneSelect({
   initialValue = 'Europe/Warsaw',
@@ -212,5 +212,92 @@ describe('TimezoneSelect', () => {
 
     await user.click(chip);
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+  });
+
+  it('renders non-option hint footer on empty query and hides it when typing', async () => {
+    const user = userEvent.setup();
+    render(<TimezoneSelect value="Europe/Warsaw" onChange={vi.fn()} />);
+
+    await user.click(screen.getByRole('button', { name: /strefa czasowa/i }));
+
+    const hint = screen.getByRole('note');
+    expect(hint).toBeInTheDocument();
+    expect(hint).toHaveTextContent(/wpisz, aby wyszukać wszystkie strefy/i);
+    expect(screen.getAllByRole('option')).not.toContain(hint);
+
+    const input = screen.getByRole('combobox');
+    await user.type(input, 'tokyo');
+    expect(screen.queryByRole('note')).not.toBeInTheDocument();
+
+    await user.clear(input);
+    expect(screen.getByRole('note')).toBeInTheDocument();
+  });
+});
+
+describe('rankTimezones', () => {
+  it("prioritizes Tier 0 so 'eu' query first results are all Europe/ zones", () => {
+    const sample = [
+      'America/North_Dakota/Beulah',
+      'Africa/Ceuta',
+      'Europe/Warsaw',
+      'Europe/Berlin',
+      'Europe/London',
+    ];
+    const results = rankTimezones(sample, 'eu');
+    expect(results).toEqual([
+      'Europe/Berlin',
+      'Europe/London',
+      'Europe/Warsaw',
+      'Africa/Ceuta',
+      'America/North_Dakota/Beulah',
+    ]);
+    const tier0 = results.slice(0, 3);
+    expect(tier0.every((z) => z.startsWith('Europe/'))).toBe(true);
+  });
+
+  it('orders by tiers (Tier 0, then Tier 1, then Tier 2) and alphabetical within each tier', () => {
+    const sample = [
+      'Europe/Warsaw', // Tier 2 (substring 'ar' in 'warsaw')
+      'America/Punta_Arenas', // Tier 1 (word 'arenas' starts with 'ar')
+      'America/Argentina/Buenos_Aires', // Tier 0 (segment 'argentina' starts with 'ar')
+      'America/Araguaina', // Tier 0 (segment 'araguaina' starts with 'ar')
+      'America/New_York', // non-match
+    ];
+    const results = rankTimezones(sample, 'ar');
+    expect(results).toEqual([
+      // Tier 0 (alphabetical)
+      'America/Araguaina',
+      'America/Argentina/Buenos_Aires',
+      // Tier 1
+      'America/Punta_Arenas',
+      // Tier 2
+      'Europe/Warsaw',
+    ]);
+  });
+
+  it('normalizes underscores to spaces and matches query with underscores and varying case', () => {
+    const sample = [
+      'America/New_York',
+      'America/Argentina/Buenos_Aires',
+      'Europe/Isle_of_Man',
+    ];
+
+    expect(rankTimezones(sample, 'new york')).toEqual(['America/New_York']);
+    expect(rankTimezones(sample, 'new_york')).toEqual(['America/New_York']);
+    expect(rankTimezones(sample, 'NEW_YORK')).toEqual(['America/New_York']);
+    expect(rankTimezones(sample, 'buenos_aires')).toEqual(['America/Argentina/Buenos_Aires']);
+    expect(rankTimezones(sample, 'buenos aires')).toEqual(['America/Argentina/Buenos_Aires']);
+    expect(rankTimezones(sample, 'isle_of_man')).toEqual(['Europe/Isle_of_Man']);
+    expect(rankTimezones(sample, 'man')).toEqual(['Europe/Isle_of_Man']);
+  });
+
+  it('ranks region prefix above city prefix (Europe/* before Australia/Eucla)', () => {
+    const results = rankTimezones(['Australia/Eucla', 'Europe/Warsaw', 'Europe/Athens'], 'eu');
+    expect(results).toEqual(['Europe/Athens', 'Europe/Warsaw', 'Australia/Eucla']);
+  });
+
+  it('returns empty array when query is empty or whitespace', () => {
+    expect(rankTimezones(['Europe/Warsaw'], '')).toEqual([]);
+    expect(rankTimezones(['Europe/Warsaw'], '   ')).toEqual([]);
   });
 });

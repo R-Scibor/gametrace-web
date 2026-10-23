@@ -1,7 +1,15 @@
 .root {
   position: relative;
-  width: 280px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 280px;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .root {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* Chip (closed state) */
@@ -61,6 +69,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+  min-width: 0;
   background-color: var(--bg3);
   border: 1px solid var(--orange);
   border-left: 3px solid var(--orange);
@@ -69,6 +78,7 @@
 
 .input {
   width: 100%;
+  min-width: 0;
   padding: 9px 12px;
   background: transparent;
   border: none;
@@ -167,4 +177,12 @@
   color: var(--text3);
   font-family: var(--body);
   font-size: 13px;
+}
+
+.hint {
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+  color: var(--text3);
+  font-family: var(--body);
+  font-size: 12px;
 }

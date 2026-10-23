@@ -37,6 +37,7 @@
     "change": "change",
     "search": "Search timezone...",
     "noResults": "No results",
-    "groupCommon": "COMMON"
+    "groupCommon": "COMMON",
+    "hint": "Type to search all timezones"
   }
 }
