@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalCoversStore } from '../../store/localCoversStore';
-import { useToastStore } from '../../store/toastStore';
+import { useGameCoverActions } from '../../hooks/useGameCoverActions';
 import type { Game } from '../../types/api';
 import styles from './GameActionsMenu.module.css';
 
@@ -43,8 +43,7 @@ export function GameActionsMenu({
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const localCover = useLocalCoversStore((s) => s.covers[game.id]);
-  const clearCover = useLocalCoversStore((s) => s.clearCover);
-  const pushToast = useToastStore((s) => s.pushToast);
+  const { clearLocalCover } = useGameCoverActions(game);
 
   const hasLocalCover = Boolean(localCover);
 
@@ -92,20 +91,14 @@ export function GameActionsMenu({
         key: 'restoreDefaultCover',
         label: t('menu.restoreDefaultCover'),
         desc: t('menu.restoreDefaultCoverDesc'),
-        onClick: () => {
-          clearCover(game.id);
-          pushToast({ type: 'success', message: t('coverDialog.toasts.restored') });
-        },
+        onClick: clearLocalCover,
       });
     } else {
       items.push({
         key: 'removeCover',
         label: t('menu.removeCover'),
         desc: t('menu.removeCoverDesc'),
-        onClick: () => {
-          clearCover(game.id);
-          pushToast({ type: 'success', message: t('coverDialog.toasts.removed') });
-        },
+        onClick: clearLocalCover,
       });
     }
   }

@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getGames } from '../../api/games';
-import { submitReport } from '../../api/reports';
+import { useMergeCandidates, useSubmitReport } from '../../hooks/useReports';
 import {
   buildWebReportContext,
   composeMergeCandidateMessage,
@@ -18,23 +17,6 @@ interface ReportDuplicateDialogProps {
   source: { id: number; name: string };
 }
 
-const SEARCH_DEBOUNCE_MS = 300;
-
-/** Library + catalog-only games (mobile does the same dual fetch), minus the source game. */
-async function fetchCandidates(sourceId: number, locale: string, q?: string): Promise<Game[]> {
-  const base = { limit: 100, sort: 'name' as const, ...(q ? { q } : {}) };
-  const [inLib, outLib] = await Promise.all([
-    getGames(base),
-    getGames({ ...base, inLibrary: false }),
-  ]);
-  const byId = new Map<number, Game>();
-  for (const g of [...inLib.items, ...outLib.items]) byId.set(g.id, g);
-  byId.delete(sourceId);
-  return Array.from(byId.values()).sort((a, b) =>
-    a.primary_name.localeCompare(b.primary_name, locale),
-  );
-}
-
 /**
  * Sends a "these two games are the same" report to the admin panel
  * (POST /reports). It never merges anything itself — merging is admin-only.
@@ -48,76 +30,43 @@ export function ReportDuplicateDialog({ open, onClose, source }: ReportDuplicate
   const noteId = `${uid}-note`;
 
   const [query, setQuery] = useState('');
-  const [games, setGames] = useState<Game[]>([]);
   const [selected, setSelected] = useState<Game | null>(null);
   const [note, setNote] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [loadError, setLoadError] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const requestId = useRef(0);
 
-  const load = useCallback(
-    async (q: string) => {
-      const id = ++requestId.current;
-      setLoading(true);
-      setLoadError(false);
-      try {
-        const list = await fetchCandidates(source.id, i18n.language, q || undefined);
-        if (id === requestId.current) setGames(list);
-      } catch {
-        if (id === requestId.current) setLoadError(true);
-      } finally {
-        if (id === requestId.current) setLoading(false);
-      }
-    },
-    [source.id, i18n.language],
-  );
+  const candidates = useMergeCandidates(source.id, query, i18n.language, { enabled: open });
+  const submit = useSubmitReport();
 
-  // Initial load when opened, debounced reload while typing.
-  useEffect(() => {
-    if (!open) return;
-    const trimmed = query.trim();
-    const timer = setTimeout(() => void load(trimmed), trimmed ? SEARCH_DEBOUNCE_MS : 0);
-    return () => clearTimeout(timer);
-  }, [open, query, load]);
-
-  const reset = () => {
-    requestId.current += 1;
-    setQuery('');
-    setGames([]);
-    setSelected(null);
-    setNote('');
-    setLoading(false);
-    setLoadError(false);
-    setSubmitError(false);
-    setSubmitting(false);
-  };
+  const games = candidates.data ?? [];
+  const loading = candidates.isFetching;
+  const loadError = candidates.isError;
+  const submitting = submit.isPending;
 
   const handleClose = () => {
-    reset();
+    setQuery('');
+    setSelected(null);
+    setNote('');
+    submit.reset();
     onClose();
   };
 
   const canSend = !!selected && selected.id !== source.id && !submitting;
 
-  const handleSend = async () => {
+  const handleSend = () => {
     if (!selected || !canSend) return;
-    setSubmitting(true);
-    setSubmitError(false);
-    try {
-      const message = composeMergeCandidateMessage({
-        source,
-        target: { id: selected.id, name: selected.primary_name },
-        note,
-      });
-      await submitReport(message, buildWebReportContext('GameDetail'));
-      handleClose();
-      pushToast({ type: 'success', message: t('report.thanks') });
-    } catch {
-      setSubmitting(false);
-      setSubmitError(true);
-    }
+    const message = composeMergeCandidateMessage({
+      source,
+      target: { id: selected.id, name: selected.primary_name },
+      note,
+    });
+    submit.mutate(
+      { message, context: buildWebReportContext('GameDetail') },
+      {
+        onSuccess: () => {
+          handleClose();
+          pushToast({ type: 'success', message: t('report.thanks') });
+        },
+      },
+    );
   };
 
   return (
@@ -161,7 +110,7 @@ export function ReportDuplicateDialog({ open, onClose, source }: ReportDuplicate
         {loadError ? (
           <div className={styles.status} role="alert">
             <span>{t('report.loadError')}</span>
-            <button type="button" className={styles.retry} onClick={() => void load(query.trim())}>
+            <button type="button" className={styles.retry} onClick={() => void candidates.refetch()}>
               {t('report.retry')}
             </button>
           </div>
@@ -192,7 +141,7 @@ export function ReportDuplicateDialog({ open, onClose, source }: ReportDuplicate
                   checked={selected?.id === g.id}
                   onChange={() => {
                     setSelected(g);
-                    setSubmitError(false);
+                    submit.reset();
                   }}
                 />
                 <span className={styles.optionName}>{g.primary_name}</span>
@@ -217,7 +166,7 @@ export function ReportDuplicateDialog({ open, onClose, source }: ReportDuplicate
         />
       </div>
 
-      {submitError && (
+      {submit.isError && (
         <p className={styles.error} role="alert">
           {t('report.submitError')}
         </p>
@@ -227,7 +176,7 @@ export function ReportDuplicateDialog({ open, onClose, source }: ReportDuplicate
         <Button type="button" variant="secondary" onClick={handleClose}>
           {t('report.cancel')}
         </Button>
-        <Button type="button" disabled={!canSend} onClick={() => void handleSend()}>
+        <Button type="button" disabled={!canSend} onClick={handleSend}>
           {submitting ? t('report.sending') : t('report.send')}
         </Button>
       </div>

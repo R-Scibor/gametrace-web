@@ -84,3 +84,21 @@ export const createGame = async (payload: CreateGamePayload): Promise<CreatedGam
   const response = await client.post<CreatedGame>('/games', payload);
   return response.data;
 };
+/** Merge-report candidates: library + catalog-only games (mobile does the same dual fetch), minus the source game. */
+export async function getMergeCandidates(
+  sourceId: number,
+  locale: string,
+  q?: string,
+): Promise<Game[]> {
+  const base = { limit: 100, sort: 'name' as const, ...(q ? { q } : {}) };
+  const [inLib, outLib] = await Promise.all([
+    getGames(base),
+    getGames({ ...base, inLibrary: false }),
+  ]);
+  const byId = new Map<number, Game>();
+  for (const g of [...inLib.items, ...outLib.items]) byId.set(g.id, g);
+  byId.delete(sourceId);
+  return Array.from(byId.values()).sort((a, b) =>
+    a.primary_name.localeCompare(b.primary_name, locale),
+  );
+}

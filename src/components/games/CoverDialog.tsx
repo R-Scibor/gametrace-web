@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalCoversStore } from '../../store/localCoversStore';
 import { useToastStore } from '../../store/toastStore';
+import { useGameCoverActions } from '../../hooks/useGameCoverActions';
 import { Modal, Button } from '../ui';
 import { Cover } from '../Cover';
 import type { Game } from '../../types/api';
@@ -21,7 +22,7 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
 
   const localCover = useLocalCoversStore((s) => s.covers[game.id]);
   const setCover = useLocalCoversStore((s) => s.setCover);
-  const clearCover = useLocalCoversStore((s) => s.clearCover);
+  const { clearLocalCover } = useGameCoverActions(game);
   const pushToast = useToastStore((s) => s.pushToast);
 
   const hasLocalCover = Boolean(localCover);
@@ -48,8 +49,7 @@ export function CoverDialog({ game, open, onClose }: CoverDialogProps) {
   const handleClear = () => {
     // The reset button unmounts once the local cover is gone; keep focus inside the dialog.
     buttonGroupRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
-    clearCover(game.id);
-    pushToast({ type: 'success', message: game.cover_image_url ? t('coverDialog.toasts.restored') : t('coverDialog.toasts.removed') });
+    clearLocalCover();
   };
 
   return (

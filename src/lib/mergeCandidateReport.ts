@@ -1,4 +1,4 @@
-import type { ReportContext } from '../api/reports';
+import type { ReportContext } from '../types/api';
 
 export type MergeCandidateGameRef = { id: number; name: string };
 
