@@ -51,12 +51,12 @@ export function BotVisibilityReminder() {
   const botUrl = getDiscordBotInviteUrl();
 
   return (
-    <Modal open onClose={handleDismiss} labelledBy="bot-reminder-title">
+    <Modal open onClose={handleDismiss} labelledBy="bot-reminder-title" className={styles.dialog}>
       <h2 id="bot-reminder-title" className={styles.title}>{t('botReminder.title')}</h2>
       <p className={styles.body}>{t('botReminder.body')}</p>
       <div className={styles.actions}>
         {joinUrl ? (
-          <Button variant="secondary" onClick={() => window.open(joinUrl, '_blank', 'noopener,noreferrer')}>
+          <Button variant="primary" onClick={() => window.open(joinUrl, '_blank', 'noopener,noreferrer')}>
             {t('botReminder.join')}
           </Button>
         ) : null}
@@ -65,10 +65,18 @@ export function BotVisibilityReminder() {
             {t('botReminder.addBot')}
           </Button>
         ) : null}
-        <Button onClick={() => void snooze()} disabled={updateSettings.isPending}>
+        <Button variant="secondary" onClick={() => void snooze()} disabled={updateSettings.isPending}>
           {t('botReminder.snooze')}
         </Button>
       </div>
+      <button
+        type="button"
+        className={styles.closeButton}
+        onClick={handleDismiss}
+        aria-label={t('botReminder.close')}
+      >
+        ✕
+      </button>
     </Modal>
   );
 }

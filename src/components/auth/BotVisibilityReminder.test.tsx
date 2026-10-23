@@ -6,9 +6,10 @@ import { BotVisibilityReminder } from './BotVisibilityReminder';
 import { renderWithProviders, resetStores } from '../../../test/utils';
 import { server } from '../../../test/server';
 import { fixtures } from '../../../test/fixtures';
-import { markReminderShown, snoozeUntilIso } from '../../lib/botReminder';
+import { markReminderShown, reminderAlreadyShown, snoozeUntilIso } from '../../lib/botReminder';
 import { qk } from '../../lib/queryKeys';
 import { useToastStore } from '../../store/toastStore';
+import buttonStyles from '../ui/Button.module.css';
 
 beforeEach(() => {
   resetStores();
@@ -253,4 +254,88 @@ test('dismissing the modal via Escape key closes dialog and does not reopen', as
   await waitFor(() => {
     expect(screen.queryByRole('heading', { name: /bot cię nie widzi/i })).not.toBeInTheDocument();
   });
+  expect(reminderAlreadyShown(fixtures.profileMe.discord_id, fixtures.profileMe.timezone)).toBe(true);
+});
+
+test('close button dismisses dialog and marks reminder shown', async () => {
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({
+        ...fixtures.profileMe,
+        bot_can_see_user: false,
+        bot_visibility_reminders_enabled: true,
+        bot_visibility_reminder_snoozed_until: null,
+      }),
+    ),
+  );
+
+  renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
+  expect(await screen.findByRole('heading', { name: /bot cię nie widzi/i })).toBeInTheDocument();
+
+  const closeBtn = screen.getByRole('button', { name: /zamknij/i });
+  expect(closeBtn).toHaveAttribute('type', 'button');
+  await userEvent.click(closeBtn);
+
+  await waitFor(() => {
+    expect(screen.queryByRole('heading', { name: /bot cię nie widzi/i })).not.toBeInTheDocument();
+  });
+  expect(reminderAlreadyShown(fixtures.profileMe.discord_id, fixtures.profileMe.timezone)).toBe(true);
+});
+
+test('join button is primary and first, followed by secondary add-bot, secondary snooze, then close', async () => {
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({
+        ...fixtures.profileMe,
+        bot_can_see_user: false,
+        bot_visibility_reminders_enabled: true,
+        bot_visibility_reminder_snoozed_until: null,
+      }),
+    ),
+  );
+
+  renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
+  expect(await screen.findByRole('heading', { name: /bot cię nie widzi/i })).toBeInTheDocument();
+
+  const joinBtn = screen.getByRole('button', { name: /dołącz do serwera/i });
+  const addBotBtn = screen.getByRole('button', { name: /dodaj bota do serwera/i });
+  const snoozeBtn = screen.getByRole('button', { name: /przypomnij za 7 dni/i });
+  const closeBtn = screen.getByRole('button', { name: /zamknij/i });
+
+  const allButtons = screen.getAllByRole('button');
+  expect(allButtons).toEqual([joinBtn, addBotBtn, snoozeBtn, closeBtn]);
+
+  expect(joinBtn).toHaveClass(buttonStyles.primary);
+  expect(addBotBtn).toHaveClass(buttonStyles.secondary);
+  expect(snoozeBtn).toHaveClass(buttonStyles.secondary);
+
+  expect(document.activeElement).toBe(joinBtn);
+});
+
+test('when join URL is unset, join button is absent and snooze remains secondary', async () => {
+  vi.stubEnv('VITE_DISCORD_SERVER_INVITE_URL', '');
+
+  server.use(
+    http.get('/api/v1/profile/me', () =>
+      HttpResponse.json({
+        ...fixtures.profileMe,
+        bot_can_see_user: false,
+        bot_visibility_reminders_enabled: true,
+        bot_visibility_reminder_snoozed_until: null,
+      }),
+    ),
+  );
+
+  renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
+  expect(await screen.findByRole('heading', { name: /bot cię nie widzi/i })).toBeInTheDocument();
+
+  expect(screen.queryByRole('button', { name: /dołącz do serwera/i })).not.toBeInTheDocument();
+
+  const addBotBtn = screen.getByRole('button', { name: /dodaj bota do serwera/i });
+  const snoozeBtn = screen.getByRole('button', { name: /przypomnij za 7 dni/i });
+
+  expect(addBotBtn).toHaveClass(buttonStyles.secondary);
+  expect(snoozeBtn).toHaveClass(buttonStyles.secondary);
+  expect(addBotBtn).not.toHaveClass(buttonStyles.primary);
+  expect(snoozeBtn).not.toHaveClass(buttonStyles.primary);
 });
