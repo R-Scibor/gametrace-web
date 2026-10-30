@@ -16,7 +16,10 @@
     "homeAria": "GameTrace welcome page",
     "logout": "Log out",
     "logoutAria": "Log out",
-    "preview": "Sample preview"
+    "preview": "Sample preview",
+    "review": "Review",
+    "capture": "Capture",
+    "tools": "Tools"
   },
   "pageTitle": {
     "dashboard": "Dashboard",

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useId, useState, type ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
@@ -96,16 +96,28 @@ const LogoutIcon = icon(
   </>,
 );
 
-const mainNavDefs = [
+const reviewNav = [
   { path: '/', labelKey: 'nav.dashboard' as const, icon: DashboardIcon },
   { path: '/library', labelKey: 'nav.library' as const, icon: LibraryIcon },
   { path: '/analytics', labelKey: 'nav.analytics' as const, icon: AnalyticsIcon },
-  { path: '/sessions/new', labelKey: 'nav.addSession' as const, icon: AddIcon },
-  { path: '/voice', labelKey: 'nav.voice' as const, icon: VoiceIcon },
-  { path: '/trash', labelKey: 'nav.trash' as const, icon: TrashIcon },
 ];
 
-const bottomNavDefs = [{ path: '/settings', labelKey: 'nav.settings' as const, icon: SettingsIcon }];
+const captureNav = [
+  { path: '/sessions/new', labelKey: 'nav.addSession' as const, icon: AddIcon },
+  { path: '/voice', labelKey: 'nav.voice' as const, icon: VoiceIcon },
+];
+
+function NavGroup({ label, children }: { label: string; children: ReactNode }) {
+  const labelId = useId();
+  return (
+    <div className={styles.group} role="group" aria-labelledby={labelId}>
+      <p id={labelId} className={styles.groupLabel}>
+        {label}
+      </p>
+      {children}
+    </div>
+  );
+}
 
 function NavItem({ path, label, icon }: { path: string; label: string; icon: ReactNode }) {
   return (
@@ -149,14 +161,21 @@ export function Sidebar() {
         <span className={styles.wordmark}>GAMETRACE</span>
       </Link>
       <nav className={styles.nav}>
-        {mainNavDefs.map((item) => (
-          <NavItem key={item.path} path={item.path} label={t(item.labelKey)} icon={item.icon} />
-        ))}
-        <div className={styles.divider} />
-        {isAdmin && <NavItem path="/admin" label={t('nav.admin')} icon={AdminIcon} />}
-        {bottomNavDefs.map((item) => (
-          <NavItem key={item.path} path={item.path} label={t(item.labelKey)} icon={item.icon} />
-        ))}
+        <NavGroup label={t('nav.review')}>
+          {reviewNav.map((item) => (
+            <NavItem key={item.path} path={item.path} label={t(item.labelKey)} icon={item.icon} />
+          ))}
+        </NavGroup>
+        <NavGroup label={t('nav.capture')}>
+          {captureNav.map((item) => (
+            <NavItem key={item.path} path={item.path} label={t(item.labelKey)} icon={item.icon} />
+          ))}
+        </NavGroup>
+        <NavGroup label={t('nav.tools')}>
+          <NavItem path="/trash" label={t('nav.trash')} icon={TrashIcon} />
+          {isAdmin && <NavItem path="/admin" label={t('nav.admin')} icon={AdminIcon} />}
+          <NavItem path="/settings" label={t('nav.settings')} icon={SettingsIcon} />
+        </NavGroup>
       </nav>
       <div className={styles.footer}>
         {showPreviewToggle && (

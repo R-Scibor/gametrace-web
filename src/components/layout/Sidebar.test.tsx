@@ -28,15 +28,20 @@ test('Sidebar brand links to welcome page', () => {
   );
 });
 
-test('Sidebar renders nav links', () => {
+test('Sidebar renders nav links in groups', () => {
   renderWithProviders(<Sidebar />, { authenticated: true });
-  expect(screen.getByText('Dashboard')).toBeInTheDocument();
-  expect(screen.getByText('Biblioteka')).toBeInTheDocument();
-  expect(screen.getByText('Statystyki')).toBeInTheDocument();
-  expect(screen.getByText('Dodaj sesję')).toBeInTheDocument();
-  expect(screen.getByText('Sesja głosowa')).toBeInTheDocument();
-  expect(screen.getByText('Kosz')).toBeInTheDocument();
-  expect(screen.getByText('Ustawienia')).toBeInTheDocument();
+  const review = screen.getByRole('group', { name: 'Przegląd' });
+  const capture = screen.getByRole('group', { name: 'Zapis' });
+  const tools = screen.getByRole('group', { name: 'Narzędzia' });
+
+  expect(within(review).getByText('Dashboard')).toBeInTheDocument();
+  expect(within(review).getByText('Biblioteka')).toBeInTheDocument();
+  expect(within(review).getByText('Statystyki')).toBeInTheDocument();
+  expect(within(capture).getByText('Dodaj sesję')).toBeInTheDocument();
+  expect(within(capture).getByText('Sesja głosowa')).toBeInTheDocument();
+  expect(within(tools).getByText('Kosz')).toBeInTheDocument();
+  expect(within(tools).getByText('Administracja')).toBeInTheDocument();
+  expect(within(tools).getByText('Ustawienia')).toBeInTheDocument();
 });
 
 test('Sidebar shows Administracja only for admins', () => {

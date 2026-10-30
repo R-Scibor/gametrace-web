@@ -16,7 +16,10 @@
     "homeAria": "Strona powitalna GameTrace",
     "logout": "Wyloguj się",
     "logoutAria": "Wyloguj się",
-    "preview": "Podgląd przykładowy"
+    "preview": "Podgląd przykładowy",
+    "review": "Przegląd",
+    "capture": "Zapis",
+    "tools": "Narzędzia"
   },
   "pageTitle": {
     "dashboard": "Dashboard",
