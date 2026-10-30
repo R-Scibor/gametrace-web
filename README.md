@@ -2,7 +2,7 @@
 
 Client-rendered React 19 + TypeScript SPA for GameTrace — the desktop analytics and library management companion to the mobile app.
 
-See `docs/DESIGN.md` for the product spec.
+See `docs/product-spec.md` for the product spec.
 
 ## Stack
 

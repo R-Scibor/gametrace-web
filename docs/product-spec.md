@@ -222,7 +222,7 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 ```
 gametrace-web/
 ├── docs/
-│   ├── DESIGN.md                  ← this file
+│   ├── product-spec.md            ← this file
 │   └── IMPLEMENTATION_PLAN.md
 ├── public/
 ├── src/
