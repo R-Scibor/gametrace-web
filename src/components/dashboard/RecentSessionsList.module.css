@@ -12,7 +12,7 @@
   border: 1px solid var(--border);
   border-left: 2px solid transparent;
   border-radius: 6px;
-  background: linear-gradient(180deg, rgba(26, 22, 19, 0.5), rgba(20, 17, 15, 0.5));
+  background: var(--bg2);
   text-decoration: none;
   color: inherit;
   transition: background-color 0.15s, border-color 0.15s;
@@ -92,7 +92,7 @@
 .errorBadge {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 2px;
   color: var(--warn);
   flex-shrink: 0;

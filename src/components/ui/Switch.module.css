@@ -2,10 +2,10 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  width: 40px;
-  height: 20px;
-  padding: 3px;
-  border: 1px solid var(--border);
+  width: 44px;
+  height: 24px;
+  padding: 4px;
+  border: 1px solid var(--border-control);
   border-radius: 2px;
   background-color: var(--bg3);
   cursor: pointer;
@@ -14,7 +14,7 @@
 }
 
 .track:hover:not(:disabled) {
-  border-color: var(--border-bright);
+  border-color: var(--text2);
 }
 
 .track:focus-visible {
@@ -29,8 +29,8 @@
 
 .thumb {
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 1px;
   background-color: var(--text3);
   transition: transform 0.15s ease, background-color 0.15s ease;
@@ -43,6 +43,6 @@
 }
 
 .checked .thumb {
-  transform: translateX(18px);
+  transform: translateX(20px);
   background-color: var(--orange);
 }

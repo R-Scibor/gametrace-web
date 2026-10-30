@@ -3,12 +3,11 @@
   align-items: stretch;
   gap: 14px;
   margin-bottom: 16px;
-  border: 1px solid color-mix(in srgb, #ffcc00 55%, var(--border));
+  border: 1px solid var(--warn-border);
   border-radius: 4px;
-  background-color: color-mix(in srgb, #ffcc00 8%, var(--bg2));
+  background-color: var(--bg2);
   overflow: hidden;
   animation: reveal 0.3s ease-out;
-  box-shadow: 0 0 0 1px color-mix(in srgb, #ffcc00 25%, transparent);
 }
 
 @keyframes reveal {
@@ -23,15 +22,9 @@
 }
 
 .bar {
-  width: 6px;
+  width: 4px;
   flex-shrink: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    #111 0,
-    #111 5px,
-    #ffcc00 5px,
-    #ffcc00 10px
-  );
+  background: var(--warn);
 }
 
 .body {
@@ -46,31 +39,15 @@
 
 /* Bright yellow hazard label with sliding black text */
 .tag {
-  --warn-yellow: #ffeb00;
-  --warn-black: #0a0a0a;
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
   width: 7.5rem;
   height: 1.55rem;
   overflow: hidden;
-  border: 2px solid var(--warn-black);
+  border: 1px solid var(--warn-border);
   border-radius: 2px;
-  background: var(--warn-yellow);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--warn-yellow) 80%, white),
-    0 0 14px color-mix(in srgb, var(--warn-yellow) 55%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 35%, transparent);
-  /* hazard-stripe ends so it reads as a warning tape clip */
-  background-image:
-    repeating-linear-gradient(
-      -45deg,
-      transparent 0,
-      transparent 6px,
-      color-mix(in srgb, var(--warn-black) 12%, transparent) 6px,
-      color-mix(in srgb, var(--warn-black) 12%, transparent) 12px
-    ),
-    linear-gradient(var(--warn-yellow), var(--warn-yellow));
+  background: var(--warn);
 }
 
 .tagTrack {
@@ -94,7 +71,7 @@
   font-size: 11px;
   letter-spacing: 2.8px;
   line-height: 1;
-  color: var(--warn-black);
+  color: var(--button-text-on-orange);
   text-transform: uppercase;
   text-shadow: 0 0 0 transparent;
 }
@@ -102,7 +79,7 @@
 .tagSep {
   font-size: 7px;
   line-height: 1;
-  color: var(--warn-black);
+  color: var(--button-text-on-orange);
   opacity: 0.55;
 }
 
@@ -146,7 +123,7 @@
   align-items: stretch;
   flex-shrink: 0;
   margin: -1px -1px -1px 0;
-  border-left: 1px solid color-mix(in srgb, #ffcc00 40%, var(--border));
+  border-left: 1px solid var(--warn-border);
 }
 
 .cta {
@@ -160,7 +137,7 @@
   font-size: 12px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #ffcc00;
+  color: var(--warn);
   text-decoration: none;
   white-space: nowrap;
   transition: color 0.15s ease, background-color 0.15s ease;
@@ -168,8 +145,8 @@
 
 .cta:hover,
 .cta:focus-visible {
-  color: #0a0a0a;
-  background-color: #ffeb00;
+  color: var(--button-text-on-orange);
+  background-color: var(--warn);
 }
 
 .arrow {
@@ -187,7 +164,7 @@
   justify-content: center;
   flex-shrink: 0;
   border: none;
-  border-left: 1px solid color-mix(in srgb, #ffcc00 40%, var(--border));
+  border-left: 1px solid var(--warn-border);
   background: none;
   padding: 10px 14px;
   font-family: var(--display);
@@ -204,8 +181,8 @@
 
 .dismiss:hover,
 .dismiss:focus-visible {
-  color: #0a0a0a;
-  background-color: #ffeb00;
+  color: var(--button-text-on-orange);
+  background-color: var(--warn);
 }
 
 @media (max-width: 520px) {
@@ -217,7 +194,7 @@
     width: 100%;
     margin: 0;
     border-left: none;
-    border-top: 1px solid color-mix(in srgb, #ffcc00 40%, var(--border));
+    border-top: 1px solid var(--warn-border);
   }
   .cta {
     flex: 1;

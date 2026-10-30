@@ -85,7 +85,7 @@
 .inputWrapper {
   display: flex;
   background-color: var(--bg2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-control);
   border-radius: 2px;
   overflow: hidden;
 }

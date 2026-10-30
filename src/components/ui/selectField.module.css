@@ -1,6 +1,6 @@
 .select {
   background-color: var(--bg3);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-control);
   border-left: 3px solid var(--orange);
   border-radius: 2px;
   padding: 10px 12px;

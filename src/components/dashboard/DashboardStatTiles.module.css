@@ -27,7 +27,7 @@
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: linear-gradient(180deg, rgba(28, 24, 21, 0.7), rgba(20, 17, 15, 0.7));
+  background: var(--bg2);
   transition: transform 0.22s ease, border-color 0.22s ease;
 }
 .tile:hover {

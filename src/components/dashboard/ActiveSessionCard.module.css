@@ -8,17 +8,12 @@
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  background:
-    radial-gradient(ellipse 80% 120% at 100% 0%, rgba(255, 122, 26, 0.10), transparent 60%),
-    linear-gradient(180deg, rgba(34, 27, 20, 0.92), rgba(22, 18, 15, 0.92));
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 122, 26, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  background: var(--bg2);
+  transition: transform 0.22s ease, border-color 0.22s ease;
 }
 .card:hover {
   transform: translateY(-3px);
   border-color: var(--orange);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 0 26px rgba(255, 122, 26, 0.12);
 }
 
 /* Telemetry bar */
@@ -49,7 +44,7 @@
 .liveBadge {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1px;
   color: var(--orange);
   animation: pulse 2.2s ease-in-out infinite;

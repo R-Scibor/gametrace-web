@@ -219,10 +219,9 @@ button.secondaryLink {
 
 .feed {
   font-family: var(--mono);
-  background: linear-gradient(180deg, rgba(28, 24, 20, 0.9), rgba(20, 17, 15, 0.9));
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 6px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
   overflow: hidden;
   opacity: 0;
   transform: translateY(18px) rotate(0.4deg);
@@ -255,7 +254,7 @@ button.secondaryLink {
 
 .feedLive {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1px;
   color: var(--orange);
   animation: pulse 2.2s ease-in-out infinite;
@@ -438,7 +437,7 @@ button.secondaryLink {
 
 .featureCard {
   padding: 22px;
-  background: linear-gradient(180deg, rgba(28, 24, 21, 0.55), rgba(22, 19, 16, 0.55));
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 6px;
   transition: transform 0.25s ease, border-color 0.25s ease;
@@ -481,7 +480,7 @@ button.secondaryLink {
 
 .metricTag {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1.5px;
   padding: 3px 8px;
   border: 1px solid var(--border);
@@ -501,7 +500,7 @@ button.secondaryLink {
   flex-direction: column;
   gap: 6px;
   padding: 18px 16px;
-  background: linear-gradient(180deg, rgba(28, 24, 21, 0.6), rgba(20, 17, 15, 0.6));
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 6px;
 }
@@ -535,10 +534,10 @@ button.secondaryLink {
   flex-direction: column;
   gap: 14px;
   padding: 24px;
-  background: linear-gradient(180deg, rgba(28, 24, 21, 0.7), rgba(22, 19, 16, 0.7));
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 6px;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .platformCard:hover {
@@ -547,13 +546,11 @@ button.secondaryLink {
 }
 
 .platformCardAccent {
-  border-color: rgba(255, 122, 26, 0.4);
-  box-shadow: 0 10px 34px rgba(255, 122, 26, 0.08);
+  border-color: var(--orange-dim);
 }
 
 .platformCardAccent:hover {
   border-color: var(--orange);
-  box-shadow: 0 14px 40px rgba(255, 122, 26, 0.14);
 }
 
 .platformHead {

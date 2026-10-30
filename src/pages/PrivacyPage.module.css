@@ -225,3 +225,11 @@
     display: block;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .article {
+    opacity: 1;
+    animation: none;
+  }
+}

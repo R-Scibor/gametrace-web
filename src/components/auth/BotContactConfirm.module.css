@@ -30,6 +30,6 @@
 }
 .error {
   margin: 0 0 12px;
-  color: var(--danger, #ff5a36);
+  color: var(--warn);
   font-size: 13px;
 }

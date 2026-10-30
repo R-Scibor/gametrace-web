@@ -63,7 +63,7 @@
   border-radius: 6px;
   /* Dashboard tile hues (28,24,21 → 20,17,15), fully opaque so they don't
      wash out over the analytics ambient backdrop the way 0.7 alpha does. */
-  background: linear-gradient(180deg, rgb(28, 24, 21), rgb(20, 17, 15));
+  background: var(--bg2);
   text-decoration: none;
   color: inherit;
   transition: transform 0.22s ease, border-color 0.22s ease;

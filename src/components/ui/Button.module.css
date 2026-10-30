@@ -30,7 +30,7 @@
 
 .secondary {
   background-color: transparent;
-  border: 1px solid var(--border-bright);
+  border: 1px solid var(--border-control);
   color: var(--text3);
   padding: 13px;
 }
@@ -39,7 +39,6 @@
   color: var(--text2);
 }
 .secondary:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
 }
 

@@ -125,7 +125,7 @@
 
 .progressLabel {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1px;
   color: var(--text3);
   white-space: nowrap;
@@ -263,7 +263,7 @@
 
 .stepError {
   margin: 0;
-  color: var(--danger, #ff5a36);
+  color: var(--warn);
   font-size: 13px;
 }
 

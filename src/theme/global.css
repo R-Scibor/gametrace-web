@@ -6,11 +6,12 @@
 :root {
   --bg:#14110f; --bg2:#1a1714; --bg3:#221e1a; --bg4:#2c2722;
   --border:#2f2b27; --border-bright:#423a32;
-  --text:#ebe7e0; --text2:#a39e95; --text3:#645f57;
-  --orange:#ff7a1a; --orange-dim:#b85a14; --orange-glow:rgba(255,122,26,.25);
+  --text:#ebe7e0; --text2:#a39e95; --text3:#948e82;
+  --orange:#ff7a1a; --orange-dim:#c86a1c; --orange-glow:rgba(255,122,26,.25);
   --button-text-on-orange:#1a1410;
   --warn:#dcb95c; --warn-tint:rgba(220,185,92,.10); --warn-border:rgba(220,185,92,.40);
-  --chart1:#ff7a1a; --chart2:#dcb95c; --chart3:#9a8c7a; --chart4:#5a4a3a; --chart5:#b85a14;
+  --border-control:#73695e;
+  --chart1:#ff7a1a; --chart2:#dcb95c; --chart3:#9a8c7a; --chart4:#7a5f4b; --chart5:#c86a1c;
   --display:'Space Grotesk',sans-serif; --body:'DM Sans',sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }

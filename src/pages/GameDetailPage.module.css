@@ -30,8 +30,7 @@
   z-index: 2;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(28, 24, 21, 0.85), rgba(20, 17, 15, 0.85));
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
+  background: var(--bg2);
   opacity: 0;
   animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.02s forwards;
 }
@@ -59,9 +58,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background:
-    radial-gradient(ellipse 55% 90% at 88% -15%, rgba(255, 122, 26, 0.12), transparent 60%),
-    linear-gradient(180deg, rgba(20, 17, 15, 0.35), rgba(20, 17, 15, 0.9) 92%);
+  background: rgba(20, 17, 15, 0.72);
 }
 
 .heroContent {
@@ -78,8 +75,7 @@
   flex-shrink: 0;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-control);
 }
 .cover {
   width: 100%;
@@ -161,7 +157,7 @@
 }
 .metricLabel {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1.2px;
   color: var(--text3);
 }

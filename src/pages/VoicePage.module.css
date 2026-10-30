@@ -104,3 +104,9 @@
   from { height: 12px; }
   to { height: 40px; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .statusDotActive,
+  .barActive {
+    animation: none;
+  }
+}

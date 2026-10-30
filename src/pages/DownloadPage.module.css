@@ -151,10 +151,9 @@
 
 .handoff {
   font-family: var(--mono);
-  background: linear-gradient(180deg, rgba(28, 24, 20, 0.9), rgba(20, 17, 15, 0.9));
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 6px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
   overflow: hidden;
   opacity: 0;
   transform: translateY(18px) rotate(0.4deg);
@@ -162,11 +161,7 @@
 }
 
 .handoffReady {
-  border-color: rgba(255, 122, 26, 0.45);
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 122, 26, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border-color: var(--orange-dim);
 }
 
 .handoffBar {
@@ -196,7 +191,7 @@
 }
 
 .handoffStatus {
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1px;
   color: var(--text3);
   white-space: nowrap;
@@ -252,7 +247,7 @@
 .installDetails {
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: linear-gradient(180deg, rgba(28, 24, 21, 0.55), rgba(20, 17, 15, 0.55));
+  background: var(--bg2);
   overflow: hidden;
 }
 
