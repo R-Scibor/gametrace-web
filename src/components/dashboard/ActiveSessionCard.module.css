@@ -1,8 +1,11 @@
 .card {
   --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, monospace;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  width: 100%;
   border: 1px solid rgba(255, 122, 26, 0.45);
   border-radius: 6px;
   overflow: hidden;
@@ -50,19 +53,26 @@
   animation: pulse 2.2s ease-in-out infinite;
 }
 
-.row {
-  display: flex;
-  flex: 1;
-}
 .coverWrap {
-  width: 92px;
-  flex-shrink: 0;
-  align-self: stretch;
+  position: relative;
+  z-index: 1;
+  min-height: 0;
 }
-.cover {
+.coverWrap .cover {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  border-radius: 0;
   object-fit: cover;
+  object-position: center top;
+}
+.body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 .meta {
   flex: 1;

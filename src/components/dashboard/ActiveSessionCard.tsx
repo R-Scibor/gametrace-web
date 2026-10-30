@@ -16,19 +16,19 @@ export function ActiveSessionCard({ session }: ActiveSessionCardProps) {
 
   return (
     <Link to={`/library/${session.game_id}`} className={styles.card}>
-      <div className={styles.topBar}>
-        <span className={styles.liveDot} />
-        <span className={styles.liveLabel}>{t('active.label')}</span>
-        <span className={styles.liveBadge}>{t('active.live')}</span>
+      <div className={styles.coverWrap}>
+        <Cover
+          gameId={session.game_id}
+          coverImageUrl={session.cover_image_url}
+          placeholderChar={session.game_name}
+          className={styles.cover}
+        />
       </div>
-      <div className={styles.row}>
-        <div className={styles.coverWrap}>
-          <Cover
-            gameId={session.game_id}
-            coverImageUrl={session.cover_image_url}
-            placeholderChar={session.game_name}
-            className={styles.cover}
-          />
+      <div className={styles.body}>
+        <div className={styles.topBar}>
+          <span className={styles.liveDot} />
+          <span className={styles.liveLabel}>{t('active.label')}</span>
+          <span className={styles.liveBadge}>{t('active.live')}</span>
         </div>
         <div className={styles.meta}>
           <span className={styles.name}>{session.game_name}</span>
@@ -37,9 +37,9 @@ export function ActiveSessionCard({ session }: ActiveSessionCardProps) {
             {t('active.startedAt', { time: formatTimeShort(session.start_time) })}
           </span>
         </div>
-      </div>
-      <div className={styles.footer}>
-        <span className={styles.footerAction}>{t('active.details')}</span>
+        <div className={styles.footer}>
+          <span className={styles.footerAction}>{t('active.details')}</span>
+        </div>
       </div>
     </Link>
   );
