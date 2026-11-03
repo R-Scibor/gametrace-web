@@ -256,7 +256,7 @@ export function LandingPage() {
               <span className={styles.uiMetaTag}>KATALOG IGDB</span>
               <span className={styles.uiCountTag}>KOLEKCJA GIER</span>
             </div>
-            <div className={styles.uiLibStatsStrip}>
+            <div className={styles.uiLibStatsGrid}>
               <div className={styles.uiStatItem}>
                 <span className={styles.uiStatVal}>84</span>
                 <span className={styles.uiStatLabel}>{t('metrics.gamesInLibrary')}</span>
@@ -268,6 +268,18 @@ export function LandingPage() {
               <div className={styles.uiStatItem}>
                 <span className={styles.uiStatVal}>247h</span>
                 <span className={styles.uiStatLabel}>{t('metrics.totalTime')}</span>
+              </div>
+              <div className={styles.uiStatItem}>
+                <span className={styles.uiStatVal}>1h 48m</span>
+                <span className={styles.uiStatLabel}>{t('metrics.avgSession')}</span>
+              </div>
+              <div className={styles.uiStatItem}>
+                <span className={styles.uiStatVal}>6h 20m</span>
+                <span className={styles.uiStatLabel}>{t('metrics.recordSession')}</span>
+              </div>
+              <div className={styles.uiStatItem}>
+                <span className={styles.uiStatVal}>12 dni</span>
+                <span className={styles.uiStatLabel}>{t('metrics.streak')}</span>
               </div>
             </div>
             <div className={styles.uiLibList}>

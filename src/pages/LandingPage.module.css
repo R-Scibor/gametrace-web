@@ -711,12 +711,12 @@
   letter-spacing: 0.5px;
 }
 
-.uiLibStatsStrip {
+.uiLibStatsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  padding: 8px 10px;
-  margin-bottom: 10px;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--border);
   border-radius: 2px;
