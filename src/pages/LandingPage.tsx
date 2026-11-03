@@ -3,7 +3,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
-import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
 import { WelcomeOnboarding } from '../components/welcome/WelcomeOnboarding';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
@@ -117,7 +116,6 @@ export function LandingPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const { data: health } = useHealth();
   const [apkAvailable, setApkAvailable] = useState<boolean | null>(null);
   const [onboardingOpen, setOnboardingOpen] = useState(
     () => searchParams.get('onboarding') === '1',
@@ -426,7 +424,6 @@ export function LandingPage() {
             >
               {t('footer.privacy')}
             </a>
-            <span className={styles.footerMeta}>v{health?.version ?? '…'}</span>
           </div>
         </div>
       </footer>
