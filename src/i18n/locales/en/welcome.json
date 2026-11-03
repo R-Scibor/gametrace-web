@@ -59,6 +59,37 @@
     "gamesInLibrary": "GAMES IN LIBRARY",
     "sessions": "SESSIONS"
   },
+  "previews": {
+    "autoDetect": {
+      "liveBadge": "ACTIVE",
+      "processDetected": "Game process detected • PC",
+      "inGame": "IN-GAME",
+      "footnote": "Playtime is logged to your account when the game closes"
+    },
+    "voice": {
+      "quote": "“The Witcher 3, two hours, Baron quest”",
+      "recognizedGame": "RECOGNIZED GAME",
+      "gameTitle": "The Witcher 3: Wild Hunt",
+      "sessionTime": "SESSION TIME",
+      "footnote": "Transcription is automatically saved into the session note"
+    },
+    "library": {
+      "igdbCatalog": "IGDB CATALOG",
+      "gameCollection": "GAME COLLECTION",
+      "streakDays": "{{count}} days",
+      "sessionsCount_one": "{{count}} session",
+      "sessionsCount_other": "{{count}} sessions"
+    },
+    "heatmap": {
+      "lastWeeks": "LAST 16 WEEKS",
+      "less": "Less",
+      "more": "More",
+      "streakVal": "🔥 {{count}} DAYS",
+      "noSessions": "no sessions",
+      "sessionHours_one": "{{time}} ({{count}} session)",
+      "sessionHours_other": "{{time}} ({{count}} sessions)"
+    }
+  },
   "steps": {
     "server": {
       "title": "Add the bot to Discord",

@@ -1,8 +1,9 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { Route } from 'react-router-dom';
 import { test, expect, beforeEach } from 'vitest';
+import i18n from '../i18n';
 import { LandingPage } from './LandingPage';
 import { server } from '../../test/server';
 import { renderAppRoutes, resetStores, seedAuth } from '../../test/utils';
@@ -126,4 +127,45 @@ test('LandingPage keeps wizard as primary CTA when authenticated', async () => {
   await user.click(screen.getByRole('button', { name: /Zamknij/i }));
   await user.click(screen.getAllByRole('button', { name: /^Dashboard$/i })[0]);
   expect(screen.getByText('Dashboard')).toBeInTheDocument();
+});
+
+test('LandingPage translates feature preview cards when language is English', async () => {
+  await act(async () => {
+    await i18n.changeLanguage('en');
+  });
+  const { unmount } = renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, {
+    route: '/welcome',
+    authenticated: false,
+  });
+
+  // Auto-Detect
+  expect(screen.getByText('ACTIVE')).toBeInTheDocument();
+  expect(screen.getByText('Game process detected • PC')).toBeInTheDocument();
+  expect(screen.getByText('IN-GAME')).toBeInTheDocument();
+  expect(screen.getByText('Playtime is logged to your account when the game closes')).toBeInTheDocument();
+
+  // Voice
+  expect(screen.getByText('“The Witcher 3, two hours, Baron quest”')).toBeInTheDocument();
+  expect(screen.getByText('RECOGNIZED GAME')).toBeInTheDocument();
+  expect(screen.getByText('The Witcher 3: Wild Hunt')).toBeInTheDocument();
+  expect(screen.getByText('SESSION TIME')).toBeInTheDocument();
+  expect(screen.getByText('Transcription is automatically saved into the session note')).toBeInTheDocument();
+
+  // Library
+  expect(screen.getAllByText('IGDB CATALOG').length).toBeGreaterThanOrEqual(1);
+  expect(screen.getByText('GAME COLLECTION')).toBeInTheDocument();
+  expect(screen.getByText('12 days')).toBeInTheDocument();
+  expect(screen.getByText('18 sessions')).toBeInTheDocument();
+  expect(screen.getByText('5 sessions')).toBeInTheDocument();
+
+  // Heatmap
+  expect(screen.getByText('LAST 16 WEEKS')).toBeInTheDocument();
+  expect(screen.getByText('Less')).toBeInTheDocument();
+  expect(screen.getByText('More')).toBeInTheDocument();
+  expect(screen.getByText('🔥 12 DAYS')).toBeInTheDocument();
+
+  unmount();
+  await act(async () => {
+    await i18n.changeLanguage('pl');
+  });
 });

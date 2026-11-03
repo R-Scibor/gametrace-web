@@ -59,6 +59,41 @@
     "gamesInLibrary": "GIER W BIBLIOTECE",
     "sessions": "SESJI"
   },
+  "previews": {
+    "autoDetect": {
+      "liveBadge": "AKTYWNA",
+      "processDetected": "Wykryto proces gry • PC",
+      "inGame": "W GRZE",
+      "footnote": "Czas zostanie przypisany do konta po wyłączeniu gry"
+    },
+    "voice": {
+      "quote": "„Wiedźmin 3, dwie godziny, quest z Baronem”",
+      "recognizedGame": "ROZPOZNANA GRA",
+      "gameTitle": "Wiedźmin 3: Dziki Gon",
+      "sessionTime": "CZAS SESJI",
+      "footnote": "Transkrypcja trafi automatycznie do notatek sesji"
+    },
+    "library": {
+      "igdbCatalog": "KATALOG IGDB",
+      "gameCollection": "KOLEKCJA GIER",
+      "streakDays": "{{count}} dni",
+      "sessionsCount_one": "{{count}} sesja",
+      "sessionsCount_few": "{{count}} sesje",
+      "sessionsCount_many": "{{count}} sesji",
+      "sessionsCount_other": "{{count}} sesji"
+    },
+    "heatmap": {
+      "lastWeeks": "OSTATNIE 16 TYGODNI",
+      "less": "Mniej",
+      "more": "Więcej",
+      "streakVal": "🔥 {{count}} DNI",
+      "noSessions": "brak sesji",
+      "sessionHours_one": "{{time}} ({{count}} sesja)",
+      "sessionHours_few": "{{time}} ({{count}} sesje)",
+      "sessionHours_many": "{{time}} ({{count}} sesji)",
+      "sessionHours_other": "{{time}} ({{count}} sesji)"
+    }
+  },
   "steps": {
     "server": {
       "title": "Dodaj bota do Discorda",

@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui';
+import { LanguageSelect } from '../components/ui/LanguageSelect';
+import { setActiveLanguage } from '../i18n';
+import type { Language } from '../i18n/resolve';
 import { WelcomeOnboarding } from '../components/welcome/WelcomeOnboarding';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
 import { getDiscordBotInviteUrl } from '../lib/discordInvites';
@@ -55,35 +58,31 @@ interface HeatCell {
   level: number;
 }
 
-const HEATMAP_PREVIEW_CELLS: HeatCell[] = (() => {
-  const levels = [
-    0, 1, 2, 0, 3, 4, 2, 1, 0, 0, 2, 3, 4, 3, 2, 1,
-    1, 2, 0, 1, 4, 3, 0, 2, 1, 0, 3, 4, 2, 0, 1, 3,
-    0, 0, 2, 3, 2, 1, 0, 1, 3, 4, 1, 2, 0, 1, 4, 2,
-    2, 3, 4, 1, 0, 2, 3, 0, 1, 2, 4, 3, 1, 0, 2, 1,
-    1, 0, 2, 4, 3, 1, 2, 3, 4, 2, 0, 1, 3, 4, 2, 0,
-    0, 2, 1, 3, 4, 2, 1, 0, 2, 4, 3, 1, 0, 2, 3, 4,
-    3, 4, 2, 1, 0, 3, 4, 2, 1, 0, 2, 3, 4, 1, 0, 2,
-  ];
-  const hoursMap: Record<number, string> = {
-    0: 'brak sesji',
-    1: '45m (1 sesja)',
-    2: '1h 50m (1 sesja)',
-    3: '3h 20m (2 sesje)',
-    4: '5h 40m (3 sesje)',
-  };
-  const months = ['lip', 'sie', 'wrz', 'paź', 'lis'];
-  const start = new Date(2026, 6, 15);
-  return levels.map((level, i) => {
-    const d = new Date(start);
-    d.setDate(d.getDate() + i);
-    const date = `${d.getDate()} ${months[d.getMonth() - 6]}`;
-    return { date, hours: hoursMap[level], level };
-  });
-})();
+interface HeatCellData {
+  time: string;
+  sessions: number;
+}
+
+const HEATMAP_LEVEL_META: Record<number, HeatCellData> = {
+  0: { time: '0m', sessions: 0 },
+  1: { time: '45m', sessions: 1 },
+  2: { time: '1h 50m', sessions: 1 },
+  3: { time: '3h 20m', sessions: 2 },
+  4: { time: '5h 40m', sessions: 3 },
+};
+
+const HEATMAP_LEVELS = [
+  0, 1, 2, 0, 3, 4, 2, 1, 0, 0, 2, 3, 4, 3, 2, 1,
+  1, 2, 0, 1, 4, 3, 0, 2, 1, 0, 3, 4, 2, 0, 1, 3,
+  0, 0, 2, 3, 2, 1, 0, 1, 3, 4, 1, 2, 0, 1, 4, 2,
+  2, 3, 4, 1, 0, 2, 3, 0, 1, 2, 4, 3, 1, 0, 2, 1,
+  1, 0, 2, 4, 3, 1, 2, 3, 4, 2, 0, 1, 3, 4, 2, 0,
+  0, 2, 1, 3, 4, 2, 1, 0, 2, 4, 3, 1, 0, 2, 3, 4,
+  3, 4, 2, 1, 0, 3, 4, 2, 1, 0, 2, 3, 4, 1, 0, 2,
+];
 
 export function LandingPage() {
-  const { t } = useTranslation('welcome');
+  const { t, i18n } = useTranslation('welcome');
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -92,6 +91,24 @@ export function LandingPage() {
     () => searchParams.get('onboarding') === '1',
   );
   const [hoveredHeatCell, setHoveredHeatCell] = useState<HeatCell | null>(null);
+
+  const currentLanguage = (i18n.language.startsWith('en') ? 'en' : 'pl') as Language;
+
+  const heatmapCells: HeatCell[] = useMemo(() => {
+    const locale = i18n.language.startsWith('en') ? 'en-US' : 'pl-PL';
+    const start = new Date(2026, 6, 15);
+    return HEATMAP_LEVELS.map((level, i) => {
+      const d = new Date(start);
+      d.setDate(d.getDate() + i);
+      const date = d.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
+      const meta = HEATMAP_LEVEL_META[level];
+      const hours =
+        level === 0
+          ? t('previews.heatmap.noSessions')
+          : t('previews.heatmap.sessionHours', { time: meta.time, count: meta.sessions });
+      return { date, hours, level };
+    });
+  }, [i18n.language, t]);
 
   useEffect(() => {
     if (searchParams.get('onboarding') !== '1') return;
@@ -193,7 +210,7 @@ export function LandingPage() {
                 <span className={styles.uiDiscordDot} />
                 <span className={styles.uiDiscordName}>Discord Rich Presence</span>
               </div>
-              <span className={styles.uiBadgeLive}>AKTYWNA</span>
+              <span className={styles.uiBadgeLive}>{t('previews.autoDetect.liveBadge')}</span>
             </div>
             <div className={styles.uiDetectedGame}>
               <img
@@ -203,15 +220,15 @@ export function LandingPage() {
               />
               <div className={styles.uiDetectedInfo}>
                 <span className={styles.uiGameTitle}>Kingdom Come: Deliverance II</span>
-                <span className={styles.uiGameSub}>Wykryto proces gry • PC</span>
+                <span className={styles.uiGameSub}>{t('previews.autoDetect.processDetected')}</span>
               </div>
               <div className={styles.uiLiveDuration}>
                 <span className={styles.uiLiveClock}>1h 45m</span>
-                <span className={styles.uiLiveLabel}>W GRZE</span>
+                <span className={styles.uiLiveLabel}>{t('previews.autoDetect.inGame')}</span>
               </div>
             </div>
             <div className={styles.uiFootNote}>
-              <span>Czas zostanie przypisany do konta po wyłączeniu gry</span>
+              <span>{t('previews.autoDetect.footnote')}</span>
             </div>
           </div>
         );
@@ -228,23 +245,23 @@ export function LandingPage() {
                 <span />
               </span>
               <span className={styles.uiTranscriptQuote}>
-                „Wiedźmin 3, dwie godziny, quest z Baronem”
+                {t('previews.voice.quote')}
               </span>
             </div>
             <div className={styles.uiParsedCard}>
               <div className={styles.uiParsedGame}>
-                <span className={styles.uiParsedLabel}>ROZPOZNANA GRA</span>
-                <span className={styles.uiParsedTitle}>Wiedźmin 3: Dziki Gon</span>
+                <span className={styles.uiParsedLabel}>{t('previews.voice.recognizedGame')}</span>
+                <span className={styles.uiParsedTitle}>{t('previews.voice.gameTitle')}</span>
               </div>
               <div className={styles.uiParsedMeta}>
                 <div className={styles.uiParsedStat}>
-                  <span className={styles.uiParsedLabel}>CZAS SESJI</span>
+                  <span className={styles.uiParsedLabel}>{t('previews.voice.sessionTime')}</span>
                   <span className={styles.uiParsedVal}>2h 00m</span>
                 </div>
               </div>
             </div>
             <div className={styles.uiFootNote}>
-              <span>Transkrypcja trafi automatycznie do notatek sesji</span>
+              <span>{t('previews.voice.footnote')}</span>
             </div>
           </div>
         );
@@ -253,8 +270,8 @@ export function LandingPage() {
         return (
           <div className={styles.uiLibrary}>
             <div className={styles.uiRow}>
-              <span className={styles.uiMetaTag}>KATALOG IGDB</span>
-              <span className={styles.uiCountTag}>KOLEKCJA GIER</span>
+              <span className={styles.uiMetaTag}>{t('previews.library.igdbCatalog')}</span>
+              <span className={styles.uiCountTag}>{t('previews.library.gameCollection')}</span>
             </div>
             <div className={styles.uiLibStatsGrid}>
               <div className={styles.uiStatItem}>
@@ -278,7 +295,9 @@ export function LandingPage() {
                 <span className={styles.uiStatLabel}>{t('metrics.recordSession')}</span>
               </div>
               <div className={styles.uiStatItem}>
-                <span className={styles.uiStatVal}>12 dni</span>
+                <span className={styles.uiStatVal}>
+                  {t('previews.library.streakDays', { count: 12 })}
+                </span>
                 <span className={styles.uiStatLabel}>{t('metrics.streak')}</span>
               </div>
             </div>
@@ -298,7 +317,9 @@ export function LandingPage() {
                 </div>
                 <div className={styles.uiLibStats}>
                   <span className={styles.uiLibHours}>64h 12m</span>
-                  <span className={styles.uiLibSessions}>18 sesji</span>
+                  <span className={styles.uiLibSessions}>
+                    {t('previews.library.sessionsCount', { count: 18 })}
+                  </span>
                 </div>
               </div>
               <div className={styles.uiLibItem}>
@@ -316,7 +337,9 @@ export function LandingPage() {
                 </div>
                 <div className={styles.uiLibStats}>
                   <span className={styles.uiLibHours}>18h 30m</span>
-                  <span className={styles.uiLibSessions}>5 sesji</span>
+                  <span className={styles.uiLibSessions}>
+                    {t('previews.library.sessionsCount', { count: 5 })}
+                  </span>
                 </div>
               </div>
             </div>
@@ -333,21 +356,21 @@ export function LandingPage() {
                     <strong>{hoveredHeatCell.date}</strong>: {hoveredHeatCell.hours}
                   </span>
                 ) : (
-                  'OSTATNIE 16 TYGODNI'
+                  t('previews.heatmap.lastWeeks')
                 )}
               </span>
               <div className={styles.uiHeatLegend} aria-hidden>
-                <span>Mniej</span>
+                <span>{t('previews.heatmap.less')}</span>
                 <span className={styles.heatL0} />
                 <span className={styles.heatL1} />
                 <span className={styles.heatL2} />
                 <span className={styles.heatL3} />
                 <span className={styles.heatL4} />
-                <span>Więcej</span>
+                <span>{t('previews.heatmap.more')}</span>
               </div>
             </div>
             <div className={styles.uiHeatGrid}>
-              {HEATMAP_PREVIEW_CELLS.map((cell, i) => (
+              {heatmapCells.map((cell, i) => (
                 <span
                   key={i}
                   className={`${styles.uiHeatCell} ${styles[`heatL${cell.level}`]}`}
@@ -359,7 +382,9 @@ export function LandingPage() {
             </div>
             <div className={styles.uiHeatStats}>
               <div className={styles.uiHeatStat}>
-                <span className={styles.uiHeatVal}>🔥 12 DNI</span>
+                <span className={styles.uiHeatVal}>
+                  {t('previews.heatmap.streakVal', { count: 12 })}
+                </span>
                 <span className={styles.uiHeatSub}>{t('metrics.streak')}</span>
               </div>
               <div className={styles.uiHeatStat}>
@@ -557,6 +582,10 @@ export function LandingPage() {
             <span>GAMETRACE</span>
           </div>
           <div className={styles.footerRight}>
+            <LanguageSelect
+              value={currentLanguage}
+              onChange={(lng) => setActiveLanguage(lng)}
+            />
             <a
               href="/privacy"
               className={styles.footerLink}
