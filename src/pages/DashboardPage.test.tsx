@@ -20,7 +20,7 @@ test('DashboardPage shows active session card and stat tiles', async () => {
   expect(screen.getAllByText('Wiedźmin 3').length).toBeGreaterThanOrEqual(1);
   expect(screen.getByText('DZIŚ')).toBeInTheDocument();
   expect(screen.getByText('7 DNI')).toBeInTheDocument();
-  expect(screen.getByText('ŚR. SESJA')).toBeInTheDocument();
+  expect(screen.getAllByText('ŚR. SESJA')).toHaveLength(2);
   expect(screen.queryByText('30 DNI')).not.toBeInTheDocument();
 });
 

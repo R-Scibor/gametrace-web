@@ -17,46 +17,41 @@ export function HeroSpotlight({ session, stats, disabled }: HeroSpotlightProps) 
 
   const avgSeconds =
     stats && stats.session_count > 0 ? stats.total_seconds / stats.session_count : null;
+  const total = stats ? formatHours(stats.total_seconds) : '—';
+  const sessionCount = stats ? String(stats.session_count) : '—';
+  const avg = avgSeconds != null ? `${formatHours(avgSeconds)}h` : '—';
+  const recency = formatRecency(session.end_time ?? session.start_time);
 
   const body = (
     <>
-      <div className={styles.row}>
-        <div className={styles.coverWrap}>
-          <Cover
-            gameId={session.game_id}
-            coverImageUrl={session.game.cover_image_url}
-            placeholderChar={session.game.primary_name}
-            className={styles.cover}
-          />
-        </div>
-        <div className={styles.meta}>
-          <span className={styles.eyebrow}>{t('hero.lastPlayed')}</span>
-          <span className={styles.name}>{session.game.primary_name}</span>
-          <span className={styles.recency}>
-            {formatRecency(session.end_time ?? session.start_time)}
-          </span>
-          <div className={styles.bottom}>
-            <div>
-              <span className={styles.statLabel}>{t('hero.total')}</span>
-              <div className={styles.bigRow}>
-                <span className={styles.big}>{stats ? formatHours(stats.total_seconds) : '—'}</span>
-                <span className={styles.bigUnit}>h</span>
-              </div>
-            </div>
-            <div className={styles.sideStats}>
-              <div>
-                <span className={styles.statLabel}>{t('hero.sessions')}</span>
-                <span className={styles.statValue}>{stats ? stats.session_count : '—'}</span>
-              </div>
-              <div>
-                <span className={styles.statLabel}>{t('hero.avgSession')}</span>
-                <span className={styles.statValue}>
-                  {avgSeconds != null ? `${formatHours(avgSeconds)}h` : '—'}
-                </span>
-              </div>
-            </div>
+      <div className={styles.coverWrap}>
+        <Cover
+          gameId={session.game_id}
+          coverImageUrl={session.game.cover_image_url}
+          placeholderChar={session.game.primary_name}
+          className={styles.cover}
+        />
+      </div>
+      <div className={styles.body}>
+        <div className={styles.identity}>
+          <div className={styles.head}>
+            <span className={styles.name}>{session.game.primary_name}</span>
+            <span className={styles.mark}>{recency}</span>
           </div>
+          <span className={styles.hours}>{stats ? `${total}h` : total}</span>
+          <span className={styles.leadNote}>{t('hero.total')}</span>
+          <span className={styles.details}>{t('active.details')}</span>
         </div>
+        <dl className={styles.block}>
+          <div>
+            <dt>{t('hero.sessions')}</dt>
+            <dd>{sessionCount}</dd>
+          </div>
+          <div>
+            <dt>{t('hero.avgSession')}</dt>
+            <dd>{avg}</dd>
+          </div>
+        </dl>
       </div>
     </>
   );

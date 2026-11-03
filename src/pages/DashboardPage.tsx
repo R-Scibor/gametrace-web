@@ -62,6 +62,7 @@ export function DashboardPage() {
     ? recents?.find((s) => s.status === 'COMPLETED') ?? null
     : null;
   const { data: spotlightStats } = useGameStats(lastPlayed?.game_id ?? 0);
+  const { data: liveStats } = useGameStats(data?.active_session?.game_id ?? 0);
   const sampleSpotlightStats = SAMPLE_GAME_STATS(SAMPLE_LAST_SESSION.game_id);
 
   if (isLoading) return <DashboardSkeleton />;
@@ -116,7 +117,7 @@ export function DashboardPage() {
         {showPreview ? (
           <HeroSpotlight session={SAMPLE_LAST_SESSION} stats={sampleSpotlightStats} disabled />
         ) : data.active_session ? (
-          <ActiveSessionCard session={data.active_session} />
+          <ActiveSessionCard session={data.active_session} stats={liveStats} />
         ) : lastPlayed ? (
           <HeroSpotlight session={lastPlayed} stats={spotlightStats} />
         ) : null}
