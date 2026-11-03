@@ -25,22 +25,22 @@
     "autoDetect": {
       "tag": "DISCORD BOT",
       "title": "Auto-wykrywanie",
-      "body": "Bot sam widzi, kiedy grasz na Discordzie, i zapisuje czas w tle. Ty tylko grasz — bez stoperów i ręcznego klikania."
+      "body": "Bot rejestruje aktywność z Discord Rich Presence w czasie rzeczywistym. Odpalasz grę na PC, a sesja zapisuje się automatycznie — bez stoperów i ręcznego klikania."
     },
     "voice": {
       "tag": "GŁOS & SZYBKI ZAPIS",
       "title": "Sesja głosowa",
-      "body": "Powiedz jedno zdanie po skończonej grze lub wpisz czas ręcznie. GameTrace sam dopasuje tytuł i przygotuje sesję."
+      "body": "Grasz offline lub bez Discorda? Powiedz jedno zdanie do mikrofonu albo wpisz czas ręcznie. Model rozpozna tytuł i zapisze transkrypcję wprost do notatki."
     },
     "library": {
       "tag": "KATALOG IGDB",
       "title": "Biblioteka gier",
-      "body": "Pobieranie okładek, łączenie duplikatów z różnych platform, ignorowanie launcherów i kosz. Kolekcja zawsze uporządkowana."
+      "body": "Pełna integracja z bazą IGDB — oficjalne okładki, gatunki, studia i daty premier. Łącz duplikaty, zarządzaj kolekcją i miej całą historię w jednym miejscu."
     },
     "heatmap": {
       "tag": "ANALITYKA & TRENDY",
       "title": "Mapa aktywności",
-      "body": "Cały rok grania jako mapa ciepła. Serie, rekordy sesji i trendy tydzień do tygodnia na czytelnych wykresach."
+      "body": "Interaktywna mapa aktywności w stylu GitHuba. Śledź dzienne serie, rekordy maratonów i rozkład godzin w tygodniu — bez wypełniania tabelek."
     },
     "trends": {
       "title": "Passy i trendy",
@@ -61,42 +61,42 @@
   },
   "steps": {
     "server": {
-      "title": "Serwer z botem",
-      "body": "Zaproś bota na swój serwer albo dołącz na serwer, który go już ma."
+      "title": "Dodaj bota do Discorda",
+      "body": "Zaproś bota na swój serwer lub dołącz na serwer, gdzie GameTrace już działa."
     },
     "login": {
-      "title": "Kod albo Discord",
-      "body": "Kod z komendy /login na kanale, albo logowanie przez Discord na tej stronie. Jedno i drugie wymaga serwera z botem z kroku 1."
+      "title": "Połącz swoje konto",
+      "body": "Zaloguj się przez Discorda jednym kliknięciem lub wygeneruj kod jednorazowy komendą /login na kanale."
     },
     "client": {
-      "title": "Przeglądarka lub aplikacja",
-      "body": "Zaloguj się kodem albo przez Discord tutaj, albo pobierz APK. Jedno konto wszędzie."
+      "title": "Przeglądaj statystyki",
+      "body": "Otwórz panel w przeglądarce lub pobierz aplikację na Androida. Twoje sesje i czas gry synchronizują się na bieżąco."
     }
   },
   "platforms": {
     "bot": {
       "label": "BOT",
-      "status": "Fundament",
-      "body": "Wykrywa granie w tle i prowadzi Twój dziennik sesji bez ręcznego pilnowania czasu.",
-      "point1": "Auto-wykrywanie uruchomionych gier",
-      "point2": "Rejestracja kodem /login albo przez Discord",
-      "point3": "Działa na serwerze z botem"
+      "status": "Detekcja",
+      "body": "Cichy silnik na serwerze Discord. Wykrywa granie przez status Rich Presence i zapisuje czas sesji bez ręcznego pilnowania zegarka.",
+      "point1": "Ciągła detekcja uruchomionych gier",
+      "point2": "Zero wpływu na wydajność systemu",
+      "point3": "Błyskawiczna rejestracja przez Discord"
     },
     "app": {
       "label": "APLIKACJA",
       "status": "Android",
-      "body": "Sesje, biblioteka i statystyki w kieszeni — ten sam Dashboard co w przeglądarce.",
-      "point1": "Dashboard i ostatnie sesje",
-      "point2": "Dodawanie sesji i głos",
-      "point3": "Biblioteka i kosz na telefonie"
+      "body": "Wygodny companion w kieszeni. Szybki podgląd ostatnich sesji, dodawanie wpisów głosem i dostęp do biblioteki.",
+      "point1": "Błyskawiczne wprowadzanie sesji głosem",
+      "point2": "Ostatnie sesje i bilans tygodnia",
+      "point3": "Biblioteka gier i kosz na telefonie"
     },
     "web": {
       "label": "PRZEGLĄDARKA",
       "status": "Desktop",
-      "body": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam Dashboard co w aplikacji.",
-      "point1": "Mapa aktywności, passa i trendy",
-      "point2": "Biblioteka, okładki i łączenie gier",
-      "point3": "Sesja głosowa z komputera"
+      "body": "Pełny panel analityczny na dużym ekranie. Interaktywna mapa aktywności, zaawansowane wykresy, trendy i zarządzanie kolekcją.",
+      "point1": "Interaktywna mapa aktywności i passy",
+      "point2": "Katalog z okładkami i metadanymi IGDB",
+      "point3": "Szczegółowe wykresy i filtry biblioteki"
     },
     "addBot": "DODAJ BOTA DO SERWERA",
     "checking": "SPRAWDZANIE…",

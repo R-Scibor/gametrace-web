@@ -25,22 +25,22 @@
     "autoDetect": {
       "tag": "DISCORD BOT",
       "title": "Auto-Detect",
-      "body": "The bot sees when you play on Discord and logs the time in the background. You just play — no timers or manual clicks."
+      "body": "The bot captures real-time activity from Discord Rich Presence. Launch a game on PC and sessions log automatically — no timers or manual clicks."
     },
     "voice": {
       "tag": "VOICE & QUICK LOG",
       "title": "Voice Session",
-      "body": "Say a single sentence after playing or type the time manually. GameTrace matches the game and prepares your entry."
+      "body": "Playing offline or without Discord? Speak a single sentence or log duration manually. The model matches the title and stores the transcription directly in your note."
     },
     "library": {
       "tag": "IGDB CATALOG",
       "title": "Game Library",
-      "body": "Cover art downloads, multi-platform duplicate merging, ignoring launchers, and trash. Your collection always tidy."
+      "body": "Deep IGDB integration with official cover art, genres, studios, and release dates. Merge duplicates, manage your collection, and keep your history in one place."
     },
     "heatmap": {
       "tag": "ANALYTICS & TRENDS",
       "title": "Activity Map",
-      "body": "A full year of gaming as a heatmap. Streaks, session records, and week-over-week trends in clean charts."
+      "body": "GitHub-style interactive activity map. Track day streaks, record sessions, and weekly play patterns — without filling out spreadsheets."
     },
     "trends": {
       "title": "Streaks and trends",
@@ -61,42 +61,42 @@
   },
   "steps": {
     "server": {
-      "title": "Server with the bot",
-      "body": "Invite the bot to your server or join a server that already has it."
+      "title": "Add the bot to Discord",
+      "body": "Invite the bot to your server or join a server where GameTrace is already running."
     },
     "login": {
-      "title": "Code or Discord",
-      "body": "A code from the /login command in a channel, or Discord login on this site. Both require a server with the bot from step 1."
+      "title": "Connect your account",
+      "body": "Log in with Discord in one click or generate a one-time code using the /login command in a channel."
     },
     "client": {
-      "title": "Browser or app",
-      "body": "Log in with a code or via Discord here, or download the APK. One account everywhere."
+      "title": "Explore your stats",
+      "body": "Open the web dashboard or download the Android APK. Your sessions and playtime stay in sync in real time."
     }
   },
   "platforms": {
     "bot": {
       "label": "BOT",
-      "status": "Foundation",
-      "body": "It detects gaming in the background and keeps your session journal without you watching the clock manually.",
-      "point1": "Auto-detects running games",
-      "point2": "Registration via /login code or Discord",
-      "point3": "Works on a server with the bot"
+      "status": "Detection",
+      "body": "A background service on your Discord server. Detects playtime via Rich Presence and logs sessions without manual tracking.",
+      "point1": "Continuous detection of running games",
+      "point2": "Zero impact on system performance",
+      "point3": "Instant registration via Discord"
     },
     "app": {
       "label": "APP",
       "status": "Android",
-      "body": "Sessions, library, and stats in your pocket — the same dashboard as in the browser.",
-      "point1": "Dashboard and recent sessions",
-      "point2": "Adding sessions and voice",
-      "point3": "Library and trash on your phone"
+      "body": "A handy companion in your pocket. Quick view of recent sessions, voice logging, and library access on the go.",
+      "point1": "Instant voice logging from microphone",
+      "point2": "Recent sessions and weekly balance",
+      "point3": "Game library and trash on your phone"
     },
     "web": {
       "label": "BROWSER",
       "status": "Desktop",
-      "body": "Sessions, library, and stats on a big screen — the same dashboard as in the app.",
-      "point1": "Activity map, streak, and trends",
-      "point2": "Library, covers, and merging games",
-      "point3": "Voice session from your computer"
+      "body": "Full analytics hub on a large screen. Interactive activity map, advanced charts, trends, and library management.",
+      "point1": "Interactive activity heatmap and streaks",
+      "point2": "Catalog with IGDB metadata and covers",
+      "point3": "Detailed charts and library filters"
     },
     "addBot": "ADD BOT TO SERVER",
     "checking": "CHECKING…",
