@@ -30,7 +30,7 @@
   padding: 10px;
   background-color: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 2px;
   text-decoration: none;
   color: inherit;
   transition: border-color 0.15s;

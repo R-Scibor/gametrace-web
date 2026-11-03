@@ -1,7 +1,7 @@
 .panel {
   border: 1px solid var(--border);
   background: var(--bg2);
-  border-radius: 3px;
+  border-radius: 4px;
   padding: 14px 16px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));

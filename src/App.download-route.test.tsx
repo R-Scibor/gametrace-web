@@ -13,7 +13,7 @@ test('full App: unauthenticated /download stays on download hub (not /welcome)',
   await waitFor(() => {
     expect(screen.getByRole('heading', { level: 1, name: /pobierz aplikację/i })).toBeInTheDocument();
   });
-  expect(screen.queryByRole('heading', { name: /dziennik rozgrywek/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: /każda godzina gry/i })).not.toBeInTheDocument();
 });
 
 test('full App: unauthenticated /download/ stays on download hub (not /welcome)', async () => {
@@ -22,13 +22,13 @@ test('full App: unauthenticated /download/ stays on download hub (not /welcome)'
   await waitFor(() => {
     expect(screen.getByRole('heading', { level: 1, name: /pobierz aplikację/i })).toBeInTheDocument();
   });
-  expect(screen.queryByRole('heading', { name: /dziennik rozgrywek/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: /każda godzina gry/i })).not.toBeInTheDocument();
 });
 
 test('full App: unauthenticated / is redirected to /welcome via ProtectedRoute', async () => {
   renderWithProviders(<App />, { route: '/', authenticated: false });
 
   await waitFor(() => {
-    expect(screen.getByRole('heading', { level: 1, name: /dziennik rozgrywek/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /każda godzina gry/i })).toBeInTheDocument();
   });
 });

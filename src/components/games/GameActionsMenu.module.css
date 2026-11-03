@@ -14,7 +14,7 @@
   justify-content: center;
   background: rgba(20, 17, 15, 0.75);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 2px;
   color: var(--text2);
   font-size: 18px;
   line-height: 1;
@@ -38,7 +38,7 @@
   max-width: calc(100vw - 32px);
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 4px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   padding: 8px 0;
   z-index: 20;

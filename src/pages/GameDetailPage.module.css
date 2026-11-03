@@ -29,7 +29,7 @@
   /* Lift the hero (and the options menu inside it) above later sections. */
   z-index: 2;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 4px;
   background: var(--bg2);
   opacity: 0;
   animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.02s forwards;
@@ -73,7 +73,7 @@
   width: 168px;
   aspect-ratio: 3 / 4;
   flex-shrink: 0;
-  border-radius: 6px;
+  border-radius: 2px;
   overflow: hidden;
   border: 1px solid var(--border-control);
 }
