@@ -46,7 +46,7 @@
 
 .label {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   color: var(--text3);
 }

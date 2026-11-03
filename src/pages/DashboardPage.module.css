@@ -75,7 +75,7 @@
 
 .headDate {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   color: var(--text3);
   white-space: nowrap;
@@ -89,7 +89,7 @@
 }
 .headMetricLabel {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: var(--text3);
 }
