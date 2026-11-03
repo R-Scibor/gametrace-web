@@ -8,21 +8,17 @@
     "titleLine1": "Your gameplay journal",
     "titleLine2": "Kept automatically",
     "lead": "A Discord bot detects what you play and for how long. You review your stats and organize your library in the browser or the app.",
-    "start": "GET STARTED",
-    "goToDashboard": "GO TO DASHBOARD →",
-    "haveAccount": "ALREADY HAVE AN ACCOUNT → LOG IN",
-    "learnMore": "Learn more ↓"
+    "start": "GET STARTED"
   },
-  "feed": {
-    "title": "AUTO-DETECT",
-    "live": "● LIVE",
-    "metaYesterday48": "yesterday · 48m",
-    "metaYesterday3h": "yesterday · 3h 02m"
+  "specimen": {
+    "detected": "Detected by the bot",
+    "when": "yesterday",
+    "sessions": "SESSIONS",
+    "average": "AVG. SESSION"
   },
   "sections": {
     "features": "What GameTrace can do",
     "metrics": "The stats you get",
-    "metricsTag": "EXAMPLE",
     "howToStart": "How to start",
     "platforms": "Bot, app, browser"
   },
@@ -101,9 +97,7 @@
     },
     "addBot": "ADD BOT TO SERVER",
     "checking": "CHECKING…",
-    "downloadApk": "DOWNLOAD APK",
-    "openWeb": "OPEN IN BROWSER",
-    "loginWeb": "LOG IN VIA BROWSER"
+    "downloadApk": "DOWNLOAD APK"
   },
   "qr": {
     "defaultCaption": "Scan with your phone"

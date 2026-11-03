@@ -8,21 +8,17 @@
     "titleLine1": "Twój dziennik rozgrywek",
     "titleLine2": "Prowadzony automatycznie",
     "lead": "Bot na Discordzie wykrywa, w co i jak długo grasz. Ty przeglądasz statystyki i porządkujesz bibliotekę w przeglądarce albo w aplikacji.",
-    "start": "ROZPOCZNIJ",
-    "goToDashboard": "PRZEJDŹ DO DASHBOARD →",
-    "haveAccount": "MAM JUŻ KONTO → ZALOGUJ SIĘ",
-    "learnMore": "Dowiedz się więcej ↓"
+    "start": "ROZPOCZNIJ"
   },
-  "feed": {
-    "title": "AUTO-DETECT",
-    "live": "● LIVE",
-    "metaYesterday48": "wczoraj · 48m",
-    "metaYesterday3h": "wczoraj · 3h 02m"
+  "specimen": {
+    "detected": "Wykryto przez bota",
+    "when": "wczoraj",
+    "sessions": "SESJE",
+    "average": "ŚR. SESJA"
   },
   "sections": {
     "features": "Co potrafi GameTrace",
     "metrics": "Statystyki, które dostajesz",
-    "metricsTag": "PRZYKŁAD",
     "howToStart": "Jak zacząć",
     "platforms": "Bot, aplikacja, przeglądarka"
   },
@@ -101,9 +97,7 @@
     },
     "addBot": "DODAJ BOTA DO SERWERA",
     "checking": "SPRAWDZANIE…",
-    "downloadApk": "POBIERZ APK",
-    "openWeb": "OTWÓRZ W PRZEGLĄDARCE",
-    "loginWeb": "ZALOGUJ W PRZEGLĄDARCE"
+    "downloadApk": "POBIERZ APK"
   },
   "qr": {
     "defaultCaption": "Zeskanuj telefonem"

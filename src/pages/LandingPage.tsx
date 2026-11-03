@@ -12,6 +12,24 @@ import styles from './LandingPage.module.css';
 
 const BOT_INVITE_URL = getDiscordBotInviteUrl();
 
+/** Example journals for the hero. Not a live account. */
+const SPECIMENS = [
+  {
+    game: 'Baldur’s Gate 3',
+    cover: '/landing/baldurs-gate-3.jpg',
+    duration: '2h 14m',
+    sessions: '8',
+    average: '1h 40m',
+  },
+  {
+    game: 'Kingdom Come: Deliverance II',
+    cover: '/landing/kingdom-come-deliverance-2.jpg',
+    duration: '3h 05m',
+    sessions: '5',
+    average: '2h 20m',
+  },
+];
+
 const DiscordIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden width="22" height="22">
     <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.6 12.6 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.011c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.01c.12.099.245.198.372.292a.077.077 0 0 1-.006.127c-.598.35-1.22.642-1.873.892a.076.076 0 0 0-.04.107c.36.698.772 1.362 1.225 1.993a.077.077 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03ZM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.42 0 1.332-.955 2.418-2.157 2.418Zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.42 0 1.332-.946 2.418-2.157 2.418Z" />
@@ -228,12 +246,6 @@ export function LandingPage() {
     },
   ];
 
-  const feed = [
-    { game: 'Baldur’s Gate 3', meta: '2h 14m', live: true },
-    { game: 'Helldivers 2', meta: t('feed.metaYesterday48'), live: false },
-    { game: 'Factorio', meta: t('feed.metaYesterday3h'), live: false },
-  ];
-
   return (
     <div className={styles.page}>
       <div className={styles.grain} aria-hidden />
@@ -264,64 +276,40 @@ export function LandingPage() {
             </h1>
             <p className={styles.lead}>{t('hero.lead')}</p>
             <div className={styles.heroActions}>
-              <Button className={styles.ctaGlow} onClick={() => setOnboardingOpen(true)}>
+              <Button
+                className={`${styles.heroStart} ${styles.ctaGlow}`}
+                onClick={() => setOnboardingOpen(true)}
+              >
                 {t('hero.start')}
               </Button>
-              {isAuthenticated ? (
-                <a
-                  href="/"
-                  className={styles.secondaryLink}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate('/');
-                  }}
-                >
-                  {t('hero.goToDashboard')}
-                </a>
-              ) : (
-                <a
-                  href="/login"
-                  className={styles.secondaryLink}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate('/login');
-                  }}
-                >
-                  {t('hero.haveAccount')}
-                </a>
-              )}
-              <button
-                type="button"
-                className={styles.learnMoreLink}
-                onClick={() => document.getElementById('funkcje')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                {t('hero.learnMore')}
-              </button>
             </div>
           </div>
 
-          <aside className={styles.feed} aria-hidden>
-            <div className={styles.feedBar}>
-              <span className={styles.feedDot} />
-              <span className={styles.feedTitle}>{t('feed.title')}</span>
-              <span className={styles.feedLive}>{t('feed.live')}</span>
-            </div>
-            <ul className={styles.feedList}>
-              {feed.map((row) => (
-                <li key={row.game} className={styles.feedRow}>
-                  <span className={styles.feedGame}>
-                    {row.live && <span className={styles.feedRowDot} />}
-                    {row.game}
-                  </span>
-                  <span className={styles.feedMeta}>{row.meta}</span>
-                </li>
-              ))}
-            </ul>
-            <div className={styles.feedFoot}>
-              <span>this-week</span>
-              <span className={styles.feedFootValue}>14h 27m</span>
-            </div>
-          </aside>
+          <div className={styles.specimenStack}>
+            {SPECIMENS.map((item) => (
+              <aside key={item.game} className={styles.specimen} aria-label={item.game}>
+                <img className={styles.specimenCover} src={item.cover} alt="" />
+                <div className={styles.specimenBody}>
+                  <div className={styles.specimenIdentity}>
+                    <p className={styles.specimenName}>{item.game}</p>
+                    <p className={styles.specimenDetected}>{t('specimen.detected')}</p>
+                    <p className={styles.specimenDuration}>{item.duration}</p>
+                    <p className={styles.specimenWhen}>{t('specimen.when')}</p>
+                  </div>
+                  <dl className={styles.specimenBlock}>
+                    <div>
+                      <dt>{t('specimen.sessions')}</dt>
+                      <dd>{item.sessions}</dd>
+                    </div>
+                    <div>
+                      <dt>{t('specimen.average')}</dt>
+                      <dd>{item.average}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </aside>
+            ))}
+          </div>
         </header>
 
         <section className={styles.section} id="funkcje">
@@ -343,7 +331,6 @@ export function LandingPage() {
         <section className={styles.section} id="statystyki">
           <div className={styles.sectionHead}>
             <h2 className={styles.sectionTitle}>{t('sections.metrics')}</h2>
-            <span className={styles.metricTag}>{t('sections.metricsTag')}</span>
             <span className={styles.sectionRule} />
           </div>
           <div className={styles.metricGrid} aria-hidden>
@@ -370,11 +357,6 @@ export function LandingPage() {
               </li>
             ))}
           </ol>
-          <div className={styles.stepsCta}>
-            <Button className={styles.ctaGlow} onClick={() => setOnboardingOpen(true)}>
-              {t('hero.start')}
-            </Button>
-          </div>
         </section>
 
         <section className={styles.section} id="platformy">
@@ -406,6 +388,7 @@ export function LandingPage() {
                 ) : null}
                 {p.id === 'app' && (
                   <Button
+                    variant="secondary"
                     disabled={apkAvailable !== true}
                     onClick={async () => {
                       if (await isApkDownloadReady()) {
@@ -420,7 +403,7 @@ export function LandingPage() {
                 )}
                 {p.id === 'web' && (
                   <Button onClick={() => navigate(isAuthenticated ? '/' : '/login')}>
-                    {isAuthenticated ? t('platforms.openWeb') : t('platforms.loginWeb')}
+                    {isAuthenticated ? t('topBar.dashboard') : t('topBar.login')}
                   </Button>
                 )}
               </article>
