@@ -320,10 +320,6 @@ export function LandingPage() {
                 </div>
               </div>
             </div>
-            <div className={styles.uiFootTags}>
-              <span>0 DUPLIKATÓW</span>
-              <span>POŁĄCZONE Z IGDB</span>
-            </div>
           </div>
         );
 

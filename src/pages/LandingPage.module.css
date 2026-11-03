@@ -824,24 +824,6 @@
   color: var(--text3);
 }
 
-.uiFootTags {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.uiFootTags span {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 1px;
-  padding: 3px 8px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--text3);
-}
-
 /* UI 4: Heatmap */
 .uiHeatmap {
   display: flex;
