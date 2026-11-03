@@ -5,9 +5,8 @@
     "login": "ZALOGUJ SIĘ"
   },
   "hero": {
-    "titleLine1": "Twój dziennik rozgrywek",
-    "titleLine2": "Prowadzony automatycznie",
-    "lead": "Bot na Discordzie wykrywa, w co i jak długo grasz. Ty przeglądasz statystyki i porządkujesz bibliotekę w przeglądarce albo w aplikacji.",
+    "title": "Każda godzina gry, zapisana za Ciebie",
+    "lead": "GameTrace obserwuje Twój status na Discordzie i sam zapisuje sesje. Bez stoperów, bez tabelek. Po prostu otwierasz stronę lub aplikację i widzisz, na co poszedł Twój czas.",
     "start": "ROZPOCZNIJ"
   },
   "specimen": {

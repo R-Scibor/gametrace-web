@@ -14,7 +14,7 @@ beforeEach(() => {
 test('LandingPage renders ecosystem gateway sections', async () => {
   renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
 
-  expect(screen.getByRole('heading', { level: 1, name: /dziennik rozgrywek/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 1, name: /każda godzina gry/i })).toBeInTheDocument();
   const baldurs = screen.getByRole('complementary', { name: /Baldur’s Gate 3/i });
   expect(within(baldurs).getByText('Wykryto przez bota')).toBeInTheDocument();
   expect(within(baldurs).getByText('2h 14m')).toBeInTheDocument();

@@ -5,9 +5,8 @@
     "login": "LOG IN"
   },
   "hero": {
-    "titleLine1": "Your gameplay journal",
-    "titleLine2": "Kept automatically",
-    "lead": "A Discord bot detects what you play and for how long. You review your stats and organize your library in the browser or the app.",
+    "title": "Every hour you play, tracked for you",
+    "lead": "GameTrace watches your Discord status and logs your sessions on its own. No timers, no spreadsheets. Just open the web or the app and see where your time went.",
     "start": "GET STARTED"
   },
   "specimen": {

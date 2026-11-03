@@ -71,7 +71,7 @@ const restingCards: Array<[string, string]> = [
   ['components/dashboard/DashboardStatTiles.module.css', '.tile'],
   ['components/analytics/StatsOverview.module.css', '.tile'],
   ['pages/GameDetailPage.module.css', '.hero'],
-  ['pages/LandingPage.module.css', '.feed'],
+  ['pages/LandingPage.module.css', '.specimen'],
   ['pages/LandingPage.module.css', '.featureCard'],
   ['pages/LandingPage.module.css', '.metricTile'],
   ['pages/LandingPage.module.css', '.platformCard'],

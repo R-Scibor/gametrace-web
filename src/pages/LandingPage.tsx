@@ -254,7 +254,6 @@ export function LandingPage() {
       <div className={styles.content}>
         <div className={styles.topBar}>
           <span className={styles.topBarBrand}>
-            <span className={styles.topBarMark} aria-hidden />
             GAMETRACE<span className={styles.topBarSubtitle}>{t('topBar.subtitle')}</span>
           </span>
           <button
@@ -270,14 +269,12 @@ export function LandingPage() {
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
             <h1 className={styles.title}>
-              {t('hero.titleLine1')}<span className={styles.titleAccent}>.</span>
-              <br />
-              {t('hero.titleLine2')}<span className={styles.titleAccent}>.</span>
+              {t('hero.title')}<span className={styles.titleAccent}>.</span>
             </h1>
             <p className={styles.lead}>{t('hero.lead')}</p>
             <div className={styles.heroActions}>
               <Button
-                className={`${styles.heroStart} ${styles.ctaGlow}`}
+                className={styles.heroStart}
                 onClick={() => setOnboardingOpen(true)}
               >
                 {t('hero.start')}
@@ -416,7 +413,6 @@ export function LandingPage() {
       <footer className={styles.footer} role="contentinfo">
         <div className={styles.footerInner}>
           <div className={styles.footerLeft}>
-            <span className={styles.footerDot} aria-hidden />
             <span>GAMETRACE</span>
           </div>
           <div className={styles.footerRight}>
