@@ -22,29 +22,33 @@
     "platforms": "Bot, app, browser"
   },
   "features": {
+    "autoDetect": {
+      "tag": "DISCORD BOT",
+      "title": "Auto-Detect",
+      "body": "The bot sees when you play on Discord and logs the time in the background. You just play — no timers or manual clicks."
+    },
+    "voice": {
+      "tag": "VOICE & QUICK LOG",
+      "title": "Voice Session",
+      "body": "Say a single sentence after playing or type the time manually. GameTrace matches the game and prepares your entry."
+    },
+    "library": {
+      "tag": "IGDB CATALOG",
+      "title": "Game Library",
+      "body": "Cover art downloads, multi-platform duplicate merging, ignoring launchers, and trash. Your collection always tidy."
+    },
     "heatmap": {
-      "title": "Activity map",
-      "body": "A whole year of playing as a heat map. Streaks and dead weeks are visible at a glance."
+      "tag": "ANALYTICS & TRENDS",
+      "title": "Activity Map",
+      "body": "A full year of gaming as a heatmap. Streaks, session records, and week-over-week trends in clean charts."
     },
     "trends": {
       "title": "Streaks and trends",
       "body": "Your current streak, records, and week-over-week trend. You know whether you're playing more or less."
     },
-    "library": {
-      "title": "Game library",
-      "body": "Covers, merging duplicates, ignoring, and trash. Your collection always tidy."
-    },
     "rankings": {
       "title": "Breakdowns and rankings",
       "body": "Game ranking, genres, themes, studios, and release decades. Analysis from every angle."
-    },
-    "voice": {
-      "title": "Voice session",
-      "body": "Record what you played, and GameTrace turns it into a ready session to approve."
-    },
-    "autoDetect": {
-      "title": "Auto-detect",
-      "body": "The bot sees when you play and logs the time. You just fix the small details."
     }
   },
   "metrics": {

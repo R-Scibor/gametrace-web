@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui';
@@ -50,66 +49,38 @@ const MonitorIcon = () => (
   </svg>
 );
 
-const lineIcon = (paths: ReactNode) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden width="20" height="20">
-    {paths}
-  </svg>
-);
+interface HeatCell {
+  date: string;
+  hours: string;
+  level: number;
+}
 
-const HeatmapIcon = () =>
-  lineIcon(
-    <>
-      <rect x="3" y="3" width="5" height="5" rx="1" />
-      <rect x="9.5" y="3" width="5" height="5" rx="1" />
-      <rect x="16" y="3" width="5" height="5" rx="1" />
-      <rect x="3" y="9.5" width="5" height="5" rx="1" />
-      <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
-      <rect x="16" y="9.5" width="5" height="5" rx="1" />
-      <rect x="3" y="16" width="5" height="5" rx="1" />
-      <rect x="9.5" y="16" width="5" height="5" rx="1" />
-      <rect x="16" y="16" width="5" height="5" rx="1" />
-    </>,
-  );
-
-const TrendIcon = () =>
-  lineIcon(
-    <>
-      <polyline points="3 16 8 11 12 13 21 4" />
-      <polyline points="16 4 21 4 21 9" />
-    </>,
-  );
-
-const LibraryIcon = () =>
-  lineIcon(
-    <>
-      <rect x="3" y="3" width="7" height="8" rx="1" />
-      <rect x="14" y="3" width="7" height="8" rx="1" />
-      <rect x="3" y="13" width="7" height="8" rx="1" />
-      <rect x="14" y="13" width="7" height="8" rx="1" />
-    </>,
-  );
-
-const BarsIcon = () =>
-  lineIcon(
-    <>
-      <line x1="5" y1="21" x2="5" y2="13" />
-      <line x1="12" y1="21" x2="12" y2="6" />
-      <line x1="19" y1="21" x2="19" y2="15" />
-    </>,
-  );
-
-const MicIcon = () =>
-  lineIcon(
-    <>
-      <rect x="9" y="3" width="6" height="10" rx="3" />
-      <path d="M6 11a6 6 0 0 0 12 0" />
-      <line x1="12" y1="17" x2="12" y2="20.5" />
-      <line x1="9" y1="20.5" x2="15" y2="20.5" />
-    </>,
-  );
-
-const PulseIcon = () =>
-  lineIcon(<polyline points="2 12 7 12 10 5 14 19 17 12 22 12" />);
+const HEATMAP_PREVIEW_CELLS: HeatCell[] = (() => {
+  const levels = [
+    0, 1, 2, 0, 3, 4, 2, 1, 0, 0, 2, 3, 4, 3, 2, 1,
+    1, 2, 0, 1, 4, 3, 0, 2, 1, 0, 3, 4, 2, 0, 1, 3,
+    0, 0, 2, 3, 2, 1, 0, 1, 3, 4, 1, 2, 0, 1, 4, 2,
+    2, 3, 4, 1, 0, 2, 3, 0, 1, 2, 4, 3, 1, 0, 2, 1,
+    1, 0, 2, 4, 3, 1, 2, 3, 4, 2, 0, 1, 3, 4, 2, 0,
+    0, 2, 1, 3, 4, 2, 1, 0, 2, 4, 3, 1, 0, 2, 3, 4,
+    3, 4, 2, 1, 0, 3, 4, 2, 1, 0, 2, 3, 4, 1, 0, 2,
+  ];
+  const hoursMap: Record<number, string> = {
+    0: 'brak sesji',
+    1: '45m (1 sesja)',
+    2: '1h 50m (1 sesja)',
+    3: '3h 20m (2 sesje)',
+    4: '5h 40m (3 sesje)',
+  };
+  const months = ['lip', 'sie', 'wrz', 'paź', 'lis'];
+  const start = new Date(2026, 6, 15);
+  return levels.map((level, i) => {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const date = `${d.getDate()} ${months[d.getMonth() - 6]}`;
+    return { date, hours: hoursMap[level], level };
+  });
+})();
 
 export function LandingPage() {
   const { t } = useTranslation('welcome');
@@ -120,6 +91,7 @@ export function LandingPage() {
   const [onboardingOpen, setOnboardingOpen] = useState(
     () => searchParams.get('onboarding') === '1',
   );
+  const [hoveredHeatCell, setHoveredHeatCell] = useState<HeatCell | null>(null);
 
   useEffect(() => {
     if (searchParams.get('onboarding') !== '1') return;
@@ -186,45 +158,218 @@ export function LandingPage() {
 
   const features = [
     {
-      icon: <HeatmapIcon />,
-      title: t('features.heatmap.title'),
-      body: t('features.heatmap.body'),
+      id: 'autoDetect',
+      tag: t('features.autoDetect.tag'),
+      title: t('features.autoDetect.title'),
+      body: t('features.autoDetect.body'),
     },
     {
-      icon: <TrendIcon />,
-      title: t('features.trends.title'),
-      body: t('features.trends.body'),
-    },
-    {
-      icon: <LibraryIcon />,
-      title: t('features.library.title'),
-      body: t('features.library.body'),
-    },
-    {
-      icon: <BarsIcon />,
-      title: t('features.rankings.title'),
-      body: t('features.rankings.body'),
-    },
-    {
-      icon: <MicIcon />,
+      id: 'voice',
+      tag: t('features.voice.tag'),
       title: t('features.voice.title'),
       body: t('features.voice.body'),
     },
     {
-      icon: <PulseIcon />,
-      title: t('features.autoDetect.title'),
-      body: t('features.autoDetect.body'),
+      id: 'library',
+      tag: t('features.library.tag'),
+      title: t('features.library.title'),
+      body: t('features.library.body'),
+    },
+    {
+      id: 'heatmap',
+      tag: t('features.heatmap.tag'),
+      title: t('features.heatmap.title'),
+      body: t('features.heatmap.body'),
     },
   ];
 
-  const metrics = [
-    { value: '247h', label: t('metrics.totalTime') },
-    { value: '12 dni', label: t('metrics.streak') },
-    { value: '6h 20m', label: t('metrics.recordSession') },
-    { value: '1h 48m', label: t('metrics.avgSession') },
-    { value: '84', label: t('metrics.gamesInLibrary') },
-    { value: '1 320', label: t('metrics.sessions') },
-  ];
+  const renderFeaturePreview = (id: string) => {
+    switch (id) {
+      case 'autoDetect':
+        return (
+          <div className={styles.uiAutoDetect}>
+            <div className={styles.uiRow}>
+              <div className={styles.uiDiscordStatus}>
+                <span className={styles.uiDiscordDot} />
+                <span className={styles.uiDiscordName}>Discord Rich Presence</span>
+              </div>
+              <span className={styles.uiBadgeLive}>AKTYWNA</span>
+            </div>
+            <div className={styles.uiDetectedGame}>
+              <img
+                src="/landing/kingdom-come-deliverance-2.jpg"
+                alt=""
+                className={styles.uiGameThumb}
+              />
+              <div className={styles.uiDetectedInfo}>
+                <span className={styles.uiGameTitle}>Kingdom Come: Deliverance II</span>
+                <span className={styles.uiGameSub}>Wykryto proces gry • PC</span>
+              </div>
+              <div className={styles.uiLiveDuration}>
+                <span className={styles.uiLiveClock}>1h 45m</span>
+                <span className={styles.uiLiveLabel}>W GRZE</span>
+              </div>
+            </div>
+            <div className={styles.uiFootNote}>
+              <span>Czas zostanie przypisany do konta po wyłączeniu gry</span>
+            </div>
+          </div>
+        );
+
+      case 'voice':
+        return (
+          <div className={styles.uiVoice}>
+            <div className={styles.uiVoiceTranscript}>
+              <span className={styles.uiMicWave} aria-hidden>
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+              </span>
+              <span className={styles.uiTranscriptQuote}>
+                „Wiedźmin 3, dwie godziny, quest z Baronem”
+              </span>
+            </div>
+            <div className={styles.uiParsedCard}>
+              <div className={styles.uiParsedGame}>
+                <span className={styles.uiParsedLabel}>ROZPOZNANA GRA</span>
+                <span className={styles.uiParsedTitle}>Wiedźmin 3: Dziki Gon</span>
+              </div>
+              <div className={styles.uiParsedMeta}>
+                <div className={styles.uiParsedStat}>
+                  <span className={styles.uiParsedLabel}>CZAS SESJI</span>
+                  <span className={styles.uiParsedVal}>2h 00m</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.uiFootNote}>
+              <span>Transkrypcja trafi automatycznie do notatek sesji</span>
+            </div>
+          </div>
+        );
+
+      case 'library':
+        return (
+          <div className={styles.uiLibrary}>
+            <div className={styles.uiRow}>
+              <span className={styles.uiMetaTag}>KATALOG IGDB</span>
+              <span className={styles.uiCountTag}>KOLEKCJA GIER</span>
+            </div>
+            <div className={styles.uiLibStatsStrip}>
+              <div className={styles.uiStatItem}>
+                <span className={styles.uiStatVal}>84</span>
+                <span className={styles.uiStatLabel}>{t('metrics.gamesInLibrary')}</span>
+              </div>
+              <div className={styles.uiStatItem}>
+                <span className={styles.uiStatVal}>1 320</span>
+                <span className={styles.uiStatLabel}>{t('metrics.sessions')}</span>
+              </div>
+              <div className={styles.uiStatItem}>
+                <span className={styles.uiStatVal}>247h</span>
+                <span className={styles.uiStatLabel}>{t('metrics.totalTime')}</span>
+              </div>
+            </div>
+            <div className={styles.uiLibList}>
+              <div className={styles.uiLibItem}>
+                <img
+                  src="/landing/baldurs-gate-3.jpg"
+                  alt=""
+                  className={styles.uiLibCover}
+                />
+                <div className={styles.uiLibInfo}>
+                  <div className={styles.uiLibTitleRow}>
+                    <span className={styles.uiLibTitle}>Baldur’s Gate 3</span>
+                    <span className={styles.uiLibYear}>2023</span>
+                  </div>
+                  <span className={styles.uiLibStudio}>Larian Studios • RPG</span>
+                </div>
+                <div className={styles.uiLibStats}>
+                  <span className={styles.uiLibHours}>64h 12m</span>
+                  <span className={styles.uiLibSessions}>18 sesji</span>
+                </div>
+              </div>
+              <div className={styles.uiLibItem}>
+                <img
+                  src="/landing/kingdom-come-deliverance-2.jpg"
+                  alt=""
+                  className={styles.uiLibCover}
+                />
+                <div className={styles.uiLibInfo}>
+                  <div className={styles.uiLibTitleRow}>
+                    <span className={styles.uiLibTitle}>Kingdom Come: Deliverance II</span>
+                    <span className={styles.uiLibYear}>2025</span>
+                  </div>
+                  <span className={styles.uiLibStudio}>Warhorse Studios • Action RPG</span>
+                </div>
+                <div className={styles.uiLibStats}>
+                  <span className={styles.uiLibHours}>18h 30m</span>
+                  <span className={styles.uiLibSessions}>5 sesji</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.uiFootTags}>
+              <span>0 DUPLIKATÓW</span>
+              <span>POŁĄCZONE Z IGDB</span>
+            </div>
+          </div>
+        );
+
+      case 'heatmap':
+        return (
+          <div className={styles.uiHeatmap}>
+            <div className={styles.uiRow}>
+              <span className={styles.uiMetaTag}>
+                {hoveredHeatCell ? (
+                  <span className={styles.uiHeatHoverReadout}>
+                    <strong>{hoveredHeatCell.date}</strong>: {hoveredHeatCell.hours}
+                  </span>
+                ) : (
+                  'OSTATNIE 16 TYGODNI'
+                )}
+              </span>
+              <div className={styles.uiHeatLegend} aria-hidden>
+                <span>Mniej</span>
+                <span className={styles.heatL0} />
+                <span className={styles.heatL1} />
+                <span className={styles.heatL2} />
+                <span className={styles.heatL3} />
+                <span className={styles.heatL4} />
+                <span>Więcej</span>
+              </div>
+            </div>
+            <div className={styles.uiHeatGrid}>
+              {HEATMAP_PREVIEW_CELLS.map((cell, i) => (
+                <span
+                  key={i}
+                  className={`${styles.uiHeatCell} ${styles[`heatL${cell.level}`]}`}
+                  title={`${cell.date}: ${cell.hours}`}
+                  onMouseEnter={() => setHoveredHeatCell(cell)}
+                  onMouseLeave={() => setHoveredHeatCell(null)}
+                />
+              ))}
+            </div>
+            <div className={styles.uiHeatStats}>
+              <div className={styles.uiHeatStat}>
+                <span className={styles.uiHeatVal}>🔥 12 DNI</span>
+                <span className={styles.uiHeatSub}>{t('metrics.streak')}</span>
+              </div>
+              <div className={styles.uiHeatStat}>
+                <span className={styles.uiHeatVal}>6h 20m</span>
+                <span className={styles.uiHeatSub}>{t('metrics.recordSession')}</span>
+              </div>
+              <div className={styles.uiHeatStat}>
+                <span className={styles.uiHeatVal}>1h 48m</span>
+                <span className={styles.uiHeatSub}>{t('metrics.avgSession')}</span>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   const steps = [
     {
@@ -314,26 +459,16 @@ export function LandingPage() {
           </div>
           <div className={styles.featureGrid}>
             {features.map((f) => (
-              <article key={f.title} className={styles.featureCard}>
-                <span className={styles.featureIcon}>{f.icon}</span>
-                <h3 className={styles.featureTitle}>{f.title}</h3>
-                <p className={styles.featureBody}>{f.body}</p>
+              <article key={f.id} className={styles.featureCard}>
+                <div className={styles.featureCardTop}>
+                  <span className={styles.featureTag}>{f.tag}</span>
+                  <h3 className={styles.featureTitle}>{f.title}</h3>
+                  <p className={styles.featureBody}>{f.body}</p>
+                </div>
+                <div className={styles.featurePreview}>
+                  {renderFeaturePreview(f.id)}
+                </div>
               </article>
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.section} id="statystyki">
-          <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>{t('sections.metrics')}</h2>
-            <span className={styles.sectionRule} />
-          </div>
-          <div className={styles.metricGrid} aria-hidden>
-            {metrics.map((m) => (
-              <div key={m.label} className={styles.metricTile}>
-                <span className={styles.metricValue}>{m.value}</span>
-                <span className={styles.metricLabel}>{m.label}</span>
-              </div>
             ))}
           </div>
         </section>

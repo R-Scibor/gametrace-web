@@ -22,29 +22,33 @@
     "platforms": "Bot, aplikacja, przeglądarka"
   },
   "features": {
+    "autoDetect": {
+      "tag": "DISCORD BOT",
+      "title": "Auto-wykrywanie",
+      "body": "Bot sam widzi, kiedy grasz na Discordzie, i zapisuje czas w tle. Ty tylko grasz — bez stoperów i ręcznego klikania."
+    },
+    "voice": {
+      "tag": "GŁOS & SZYBKI ZAPIS",
+      "title": "Sesja głosowa",
+      "body": "Powiedz jedno zdanie po skończonej grze lub wpisz czas ręcznie. GameTrace sam dopasuje tytuł i przygotuje sesję."
+    },
+    "library": {
+      "tag": "KATALOG IGDB",
+      "title": "Biblioteka gier",
+      "body": "Pobieranie okładek, łączenie duplikatów z różnych platform, ignorowanie launcherów i kosz. Kolekcja zawsze uporządkowana."
+    },
     "heatmap": {
+      "tag": "ANALITYKA & TRENDY",
       "title": "Mapa aktywności",
-      "body": "Cały rok grania jako mapa ciepła. Serie i martwe tygodnie widać na pierwszy rzut oka."
+      "body": "Cały rok grania jako mapa ciepła. Serie, rekordy sesji i trendy tydzień do tygodnia na czytelnych wykresach."
     },
     "trends": {
       "title": "Passy i trendy",
       "body": "Aktualna passa, rekordy i trend tydzień do tygodnia. Wiesz, czy grasz więcej, czy mniej."
     },
-    "library": {
-      "title": "Biblioteka gier",
-      "body": "Okładki, łączenie duplikatów, ignorowanie i kosz. Kolekcja zawsze uporządkowana."
-    },
     "rankings": {
       "title": "Rozbicia i rankingi",
       "body": "Ranking gier, gatunki, motywy, studia i dekady premier. Analiza z każdej strony."
-    },
-    "voice": {
-      "title": "Sesja głosowa",
-      "body": "Nagraj, w co grałeś, a GameTrace zamieni to w gotową sesję do zatwierdzenia."
-    },
-    "autoDetect": {
-      "title": "Auto-wykrywanie",
-      "body": "Bot sam widzi, kiedy grasz, i zapisuje czas. Ty tylko poprawiasz drobiazgi."
     }
   },
   "metrics": {

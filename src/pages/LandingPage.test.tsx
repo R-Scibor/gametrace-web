@@ -29,7 +29,8 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   expect(screen.queryByText('this-week')).not.toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Jak zacząć' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Co potrafi GameTrace' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Statystyki, które dostajesz' })).toBeInTheDocument();
+  expect(screen.getByText('84')).toBeInTheDocument();
+  expect(screen.getByText('1 320')).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Mapa aktywności' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Bot, aplikacja, przeglądarka' })).toBeInTheDocument();
   expect(screen.getByText('APLIKACJA')).toBeInTheDocument();
