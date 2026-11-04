@@ -73,7 +73,7 @@ const restingCards: Array<[string, string]> = [
   ['pages/GameDetailPage.module.css', '.hero'],
   ['pages/LandingPage.module.css', '.specimen'],
   ['pages/LandingPage.module.css', '.metricTile'],
-  ['pages/LandingPage.module.css', '.platformCard'],
+  ['pages/LandingPage.module.css', '.clientCard'],
   ['pages/DownloadPage.module.css', '.handoff'],
   ['pages/DownloadPage.module.css', '.installDetails'],
 ];
