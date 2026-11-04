@@ -54,6 +54,12 @@
   animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+.topBarActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .topBarBrand {
   display: inline-flex;
   align-items: center;
@@ -98,6 +104,8 @@
 .topBarLogin {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 144px;
   gap: 8px;
   border: 1px solid var(--border-control);
   background: transparent;
@@ -1264,6 +1272,10 @@
 
   .topBarLogin {
     padding: 9px 13px;
+  }
+
+  .topBarActions {
+    gap: 8px;
   }
 
   .specimen {

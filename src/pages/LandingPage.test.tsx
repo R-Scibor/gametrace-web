@@ -169,3 +169,24 @@ test('LandingPage translates feature preview cards when language is English', as
     await i18n.changeLanguage('pl');
   });
 });
+
+test('LandingPage header segmented language toggle switches language', async () => {
+  const user = userEvent.setup();
+  const { unmount } = renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, {
+    route: '/welcome',
+    authenticated: false,
+  });
+
+  const enBtn = screen.getByRole('button', { name: 'English' });
+  expect(enBtn).toHaveAttribute('aria-pressed', 'false');
+
+  await user.click(enBtn);
+
+  expect(enBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('button', { name: 'Polski' })).toHaveAttribute('aria-pressed', 'false');
+
+  unmount();
+  await act(async () => {
+    await i18n.changeLanguage('pl');
+  });
+});

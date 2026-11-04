@@ -458,16 +458,23 @@ export function LandingPage() {
               Game<span className={styles.topBarAccent}>Trace</span>
             </span>
           </Link>
-          <button
-            type="button"
-            className={styles.topBarLogin}
-            onClick={() => navigate(isAuthenticated ? '/' : '/login')}
-          >
-            {isAuthenticated ? t('topBar.dashboard') : t('topBar.login')}
-            <span className={styles.topBarLoginArrow} aria-hidden>
-              <ArrowRightIcon />
-            </span>
-          </button>
+          <div className={styles.topBarActions}>
+            <LanguageSelect
+              value={currentLanguage}
+              onChange={(lng) => setActiveLanguage(lng)}
+              variant="segmented"
+            />
+            <button
+              type="button"
+              className={styles.topBarLogin}
+              onClick={() => navigate(isAuthenticated ? '/' : '/login')}
+            >
+              {isAuthenticated ? t('topBar.dashboard') : t('topBar.login')}
+              <span className={styles.topBarLoginArrow} aria-hidden>
+                <ArrowRightIcon />
+              </span>
+            </button>
+          </div>
         </div>
 
         <header className={styles.hero}>
@@ -610,10 +617,6 @@ export function LandingPage() {
             <span>GAMETRACE</span>
           </div>
           <div className={styles.footerRight}>
-            <LanguageSelect
-              value={currentLanguage}
-              onChange={(lng) => setActiveLanguage(lng)}
-            />
             <a
               href="/privacy"
               className={styles.footerLink}
