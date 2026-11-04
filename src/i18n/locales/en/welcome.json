@@ -19,7 +19,7 @@
     "features": "What GameTrace can do",
     "metrics": "The stats you get",
     "howToStart": "How to start",
-    "platforms": "Bot, app, browser"
+    "everywhere": "Your data, wherever you want"
   },
   "features": {
     "autoDetect": {
@@ -90,48 +90,37 @@
       "sessionHours_other": "{{time}} ({{count}} sessions)"
     }
   },
-  "steps": {
-    "server": {
-      "title": "Add the bot to Discord",
-      "body": "Invite the bot to your server or join a server where GameTrace is already running."
-    },
-    "login": {
-      "title": "Connect your account",
-      "body": "Log in with Discord in one click or generate a one-time code using the /login command in a channel."
-    },
-    "client": {
-      "title": "Explore your stats",
-      "body": "Open the web dashboard or download the Android APK. Your sessions and playtime stay in sync in real time."
-    }
+  "start": {
+    "eyebrow": "Start / Discord bot",
+    "title": "Add the bot or join the server",
+    "body": "GameTrace logs your playtime in the background through Discord Rich Presence. Nothing to install, not a single FPS lost.",
+    "joinServer": "Join the GameTrace server",
+    "addBot": "Add the bot to your server",
+    "benefit1": "Works with any game Discord can see",
+    "benefit2": "Nothing to install on your PC",
+    "benefit3": "Saved automatically when you quit"
   },
-  "platforms": {
-    "bot": {
-      "label": "BOT",
-      "status": "Detection",
-      "body": "A background service on your Discord server. Detects playtime via Rich Presence and logs sessions without manual tracking.",
-      "point1": "Continuous detection of running games",
-      "point2": "Zero impact on system performance",
-      "point3": "Instant registration via Discord"
+  "clients": {
+    "web": {
+      "eyebrow": "Web",
+      "title": "Browser",
+      "body": "The full dashboard on your computer: recent sessions, stats, streaks and a game library with covers.",
+      "feature1": "Weekly and monthly analytics",
+      "feature2": "Edit and merge sessions",
+      "feature3": "Covers and data from IGDB",
+      "login": "Log in with Discord",
+      "alt": "GameTrace dashboard in the browser"
     },
     "app": {
-      "label": "APP",
-      "status": "Android",
-      "body": "A handy companion in your pocket. Quick view of recent sessions, voice logging, and library access on the go.",
-      "point1": "Instant voice logging from microphone",
-      "point2": "Recent sessions and weekly balance",
-      "point3": "Game library and trash on your phone"
-    },
-    "web": {
-      "label": "BROWSER",
-      "status": "Desktop",
-      "body": "Full analytics hub on a large screen. Interactive activity map, advanced charts, trends, and library management.",
-      "point1": "Interactive activity heatmap and streaks",
-      "point2": "Catalog with IGDB metadata and covers",
-      "point3": "Detailed charts and library filters"
-    },
-    "addBot": "ADD BOT TO SERVER",
-    "checking": "CHECKING…",
-    "downloadApk": "DOWNLOAD APK"
+      "eyebrow": "Android",
+      "title": "Android app",
+      "body": "Your recent sessions, always at hand. Played away from your PC? Add a session by voice — just say what and for how long.",
+      "download": "Download APK",
+      "checking": "Checking…",
+      "soon": "Soon",
+      "loginNote": "Log in with Discord",
+      "alt": "GameTrace Android app"
+    }
   },
   "qr": {
     "defaultCaption": "Scan with your phone"
@@ -187,6 +176,14 @@
     "footerLogin": "Already have an account → Log in"
   },
   "footer": {
-    "privacy": "Privacy policy"
+    "tagline": "Your gaming journal, kept automatically.",
+    "product": "Product",
+    "community": "Community",
+    "info": "Info",
+    "download": "Download",
+    "login": "Log in",
+    "discord": "Discord server",
+    "privacy": "Privacy policy",
+    "igdb": "Game data and covers: IGDB"
   }
 }

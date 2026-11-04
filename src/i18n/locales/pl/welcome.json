@@ -19,7 +19,7 @@
     "features": "Co potrafi GameTrace",
     "metrics": "Statystyki, które dostajesz",
     "howToStart": "Jak zacząć",
-    "platforms": "Bot, aplikacja, przeglądarka"
+    "everywhere": "Twoje dane, gdzie chcesz"
   },
   "features": {
     "autoDetect": {
@@ -94,48 +94,37 @@
       "sessionHours_other": "{{time}} ({{count}} sesji)"
     }
   },
-  "steps": {
-    "server": {
-      "title": "Dodaj bota do Discorda",
-      "body": "Zaproś bota na swój serwer lub dołącz na serwer, gdzie GameTrace już działa."
-    },
-    "login": {
-      "title": "Połącz swoje konto",
-      "body": "Zaloguj się przez Discorda jednym kliknięciem lub wygeneruj kod jednorazowy komendą /login na kanale."
-    },
-    "client": {
-      "title": "Przeglądaj statystyki",
-      "body": "Otwórz panel w przeglądarce lub pobierz aplikację na Androida. Twoje sesje i czas gry synchronizują się na bieżąco."
-    }
+  "start": {
+    "eyebrow": "Start / Bot na Discordzie",
+    "title": "Dodaj bota lub dołącz do serwera",
+    "body": "GameTrace rejestruje Twój czas gry w tle przez status Discord Rich Presence. Nic nie instalujesz i nie tracisz ani jednego FPS.",
+    "joinServer": "Dołącz do serwera GameTrace",
+    "addBot": "Dodaj bota do swojego serwera",
+    "benefit1": "Działa z każdą grą widoczną na Discordzie",
+    "benefit2": "Zero instalacji na komputerze",
+    "benefit3": "Automatyczny zapis po wyłączeniu gry"
   },
-  "platforms": {
-    "bot": {
-      "label": "BOT",
-      "status": "Detekcja",
-      "body": "Cichy silnik na serwerze Discord. Wykrywa granie przez status Rich Presence i zapisuje czas sesji bez ręcznego pilnowania zegarka.",
-      "point1": "Ciągła detekcja uruchomionych gier",
-      "point2": "Zero wpływu na wydajność systemu",
-      "point3": "Błyskawiczna rejestracja przez Discord"
+  "clients": {
+    "web": {
+      "eyebrow": "Web",
+      "title": "Przeglądarka",
+      "body": "Pełny panel na komputerze: ostatnie sesje, statystyki, passa i biblioteka gier z okładkami.",
+      "feature1": "Analityka tygodni i miesięcy",
+      "feature2": "Edycja i scalanie sesji",
+      "feature3": "Okładki i dane z IGDB",
+      "login": "Zaloguj przez Discorda",
+      "alt": "Panel GameTrace w przeglądarce"
     },
     "app": {
-      "label": "APLIKACJA",
-      "status": "Android",
-      "body": "Wygodny companion w kieszeni. Szybki podgląd ostatnich sesji, dodawanie wpisów głosem i dostęp do biblioteki.",
-      "point1": "Błyskawiczne wprowadzanie sesji głosem",
-      "point2": "Ostatnie sesje i bilans tygodnia",
-      "point3": "Biblioteka gier i kosz na telefonie"
-    },
-    "web": {
-      "label": "PRZEGLĄDARKA",
-      "status": "Desktop",
-      "body": "Pełny panel analityczny na dużym ekranie. Interaktywna mapa aktywności, zaawansowane wykresy, trendy i zarządzanie kolekcją.",
-      "point1": "Interaktywna mapa aktywności i passy",
-      "point2": "Katalog z okładkami i metadanymi IGDB",
-      "point3": "Szczegółowe wykresy i filtry biblioteki"
-    },
-    "addBot": "DODAJ BOTA DO SERWERA",
-    "checking": "SPRAWDZANIE…",
-    "downloadApk": "POBIERZ APK"
+      "eyebrow": "Android",
+      "title": "Aplikacja na Androida",
+      "body": "Ostatnie sesje zawsze pod ręką. Grałeś poza PC? Dodaj sesję głosem — powiedz, w co i jak długo.",
+      "download": "Pobierz APK",
+      "checking": "Sprawdzanie…",
+      "soon": "Wkrótce",
+      "loginNote": "Logowanie przez Discorda",
+      "alt": "Aplikacja GameTrace na Androidzie"
+    }
   },
   "qr": {
     "defaultCaption": "Zeskanuj telefonem"
@@ -191,6 +180,14 @@
     "footerLogin": "Mam już konto → Zaloguj się"
   },
   "footer": {
-    "privacy": "Polityka prywatności"
+    "tagline": "Dziennik Twojej gry, prowadzony automatycznie.",
+    "product": "Produkt",
+    "community": "Społeczność",
+    "info": "Informacje",
+    "download": "Pobierz",
+    "login": "Zaloguj się",
+    "discord": "Serwer Discord",
+    "privacy": "Polityka prywatności",
+    "igdb": "Dane i okładki gier: IGDB"
   }
 }
