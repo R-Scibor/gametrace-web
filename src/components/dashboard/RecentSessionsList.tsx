@@ -12,6 +12,39 @@ interface RecentSessionsListProps {
   disabled?: boolean;
 }
 
+const HexagonIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="12"
+    height="12"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+  </svg>
+);
+
+const PencilIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="11"
+    height="11"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+    <path d="m15 5 4 4" />
+  </svg>
+);
+
 export function RecentSessionsList({ sessions, loading, disabled }: RecentSessionsListProps) {
   const { t } = useTranslation('dashboard');
   const { t: tCommon } = useTranslation('common');
@@ -52,7 +85,9 @@ export function RecentSessionsList({ sessions, loading, disabled }: RecentSessio
               <div className={styles.meta}>
                 <span className={styles.name}>{session.game.primary_name}</span>
                 <span className={styles.date}>
-                  {session.source === 'BOT' ? '⬡' : '✎'}{' '}
+                  <span className={styles.sourceIcon} aria-hidden>
+                    {session.source === 'BOT' ? <HexagonIcon /> : <PencilIcon />}
+                  </span>
                   {formatSessionWindow(session.start_time, session.end_time)}
                 </span>
               </div>

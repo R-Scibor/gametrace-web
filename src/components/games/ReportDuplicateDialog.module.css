@@ -71,11 +71,13 @@
   font-size: 14px;
 }
 .clearSelection {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   color: var(--text3);
   cursor: pointer;
-  font-size: 13px;
   padding: 2px 4px;
 }
 .clearSelection:hover,

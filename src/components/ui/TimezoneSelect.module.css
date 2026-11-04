@@ -163,11 +163,11 @@
 }
 
 .check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 8px;
   flex-shrink: 0;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 13px;
   color: var(--orange);
 }
 

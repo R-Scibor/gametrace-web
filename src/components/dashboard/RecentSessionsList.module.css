@@ -81,6 +81,13 @@
   letter-spacing: 0.5px;
   color: var(--text3);
 }
+.sourceIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
 .duration {
   font-family: var(--display);
   font-weight: 700;

@@ -63,6 +63,9 @@
 }
 
 .closeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   width: 36px;
   height: 36px;
@@ -70,8 +73,6 @@
   border-radius: 2px;
   background: rgba(0, 0, 0, 0.2);
   color: var(--text2);
-  font-size: 22px;
-  line-height: 1;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
 }

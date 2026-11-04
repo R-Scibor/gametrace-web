@@ -38,6 +38,22 @@ function zoneLabel(zone: string): string {
   return zone.replace(/_/g, ' ');
 }
 
+const CheckIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="14"
+    height="14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
 // eslint-disable-next-line react-refresh/only-export-components
 export function rankTimezones(
   zones: readonly string[] | string[],
@@ -282,7 +298,7 @@ export function TimezoneSelect({
                 <span className={styles.rowText}>{zoneLabel(zone)}</span>
                 {isSelected && (
                   <span className={styles.check} aria-hidden>
-                    ✓
+                    <CheckIcon />
                   </span>
                 )}
               </li>

@@ -17,6 +17,23 @@ interface ReportDuplicateDialogProps {
   source: { id: number; name: string };
 }
 
+const CloseIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="12"
+    height="12"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
 /**
  * Sends a "these two games are the same" report to the admin panel
  * (POST /reports). It never merges anything itself — merging is admin-only.
@@ -103,7 +120,7 @@ export function ReportDuplicateDialog({ open, onClose, source }: ReportDuplicate
               aria-label={t('report.clearSelection')}
               onClick={() => setSelected(null)}
             >
-              ✕
+              <CloseIcon />
             </button>
           </div>
         )}

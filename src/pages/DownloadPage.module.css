@@ -269,12 +269,21 @@
 }
 
 .installSummary::before {
-  content: '▸ ';
-  color: var(--orange);
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--orange);
+  border-bottom: 2px solid var(--orange);
+  transform: rotate(-45deg);
+  margin-right: 10px;
+  vertical-align: 2px;
+  transition: transform 0.15s ease;
 }
 
 .installDetails[open] .installSummary::before {
-  content: '▾ ';
+  transform: rotate(45deg);
+  vertical-align: 3px;
 }
 
 .installSummary:hover {

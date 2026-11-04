@@ -71,8 +71,8 @@
       "ERROR": "ERROR"
     },
     "source": {
-      "BOT": "⬡ BOT",
-      "MANUAL": "✎ MANUAL"
+      "BOT": "BOT",
+      "MANUAL": "MANUAL"
     }
   },
   "bot": {

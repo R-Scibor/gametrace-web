@@ -71,8 +71,8 @@
       "ERROR": "BŁĄD"
     },
     "source": {
-      "BOT": "⬡ BOT",
-      "MANUAL": "✎ RĘCZNA"
+      "BOT": "BOT",
+      "MANUAL": "RĘCZNA"
     }
   },
   "bot": {
