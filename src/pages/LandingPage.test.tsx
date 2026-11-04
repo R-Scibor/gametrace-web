@@ -33,16 +33,20 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   expect(screen.getByText('84')).toBeInTheDocument();
   expect(screen.getByText('1 320')).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: /mapa nawyków/i })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Bot, aplikacja, przeglądarka' })).toBeInTheDocument();
-  expect(screen.getByText('APLIKACJA')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Dodaj bota lub dołącz do serwera' })).toBeInTheDocument();
+  expect(screen.getByText('Działa z każdą grą widoczną na Discordzie')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Twoje dane, gdzie chcesz' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Przeglądarka' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Aplikacja na Androida' })).toBeInTheDocument();
+  expect(screen.getByAltText('Panel GameTrace w przeglądarce')).toHaveAttribute('src', '/landing/app-dashboard.webp');
+  expect(screen.getByAltText('Aplikacja GameTrace na Androidzie')).toHaveAttribute('src', '/landing/app-mobile.webp');
   await waitFor(() => {
     expect(screen.getAllByRole('button', { name: /pobierz apk/i }).length).toBeGreaterThanOrEqual(1);
   });
-  expect(screen.getAllByText('PRZEGLĄDARKA').length).toBeGreaterThan(0);
-  expect(screen.getByText(/komendą \/login na kanale/i)).toBeInTheDocument();
-  expect(screen.getByText(/Otwórz panel w przeglądarce lub pobierz aplikację/i)).toBeInTheDocument();
+  expect(screen.getByText('Logowanie przez Discorda')).toBeInTheDocument();
   expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-  expect(screen.getByText('GAMETRACE', { selector: 'footer span' })).toBeInTheDocument();
+  expect(screen.getByText(/© 2026 Rafał Ścibor/)).toBeInTheDocument();
+  expect(screen.getByText('Dane i okładki gier: IGDB')).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /polityka prywatności/i })).toHaveAttribute(
     'href',
     '/privacy',
@@ -58,6 +62,7 @@ test('LandingPage hides APK download when artifact is missing', async () => {
     const apkButtons = screen.getAllByRole('button', { name: /pobierz apk/i });
     expect(apkButtons.length).toBeGreaterThan(0);
     apkButtons.forEach((btn) => expect(btn).toBeDisabled());
+    expect(screen.getByText('Wkrótce')).toBeInTheDocument();
   });
 });
 
@@ -105,7 +110,7 @@ test('LandingPage navigates to login from platform card', async () => {
 
   const platforms = document.getElementById('platformy');
   expect(platforms).not.toBeNull();
-  await user.click(within(platforms!).getByRole('button', { name: /^Zaloguj się$/i }));
+  await user.click(within(platforms!).getByRole('button', { name: /^Zaloguj przez Discorda$/i }));
   expect(screen.getByText('Login Screen')).toBeInTheDocument();
 });
 

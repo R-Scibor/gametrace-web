@@ -8,10 +8,11 @@ import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { WelcomeOnboarding } from '../components/welcome/WelcomeOnboarding';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
-import { getDiscordBotInviteUrl } from '../lib/discordInvites';
+import { getDiscordBotInviteUrl, getDiscordServerJoinUrl } from '../lib/discordInvites';
 import styles from './LandingPage.module.css';
 
 const BOT_INVITE_URL = getDiscordBotInviteUrl();
+const SERVER_JOIN_URL = getDiscordServerJoinUrl();
 
 /** Example journals for the hero. Not a live account. */
 const SPECIMENS = [
@@ -37,18 +38,9 @@ const DiscordIcon = () => (
   </svg>
 );
 
-const PhoneIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden width="22" height="22">
-    <rect x="6" y="2.5" width="12" height="19" rx="2.5" />
-    <line x1="10.5" y1="18.5" x2="13.5" y2="18.5" />
-  </svg>
-);
-
-const MonitorIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden width="22" height="22">
-    <rect x="2.5" y="3.5" width="19" height="13" rx="2" />
-    <line x1="8.5" y1="20.5" x2="15.5" y2="20.5" />
-    <line x1="12" y1="16.5" x2="12" y2="20.5" />
+const CheckIcon = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M5 12.5l4.5 4.5L19 7.5" />
   </svg>
 );
 
@@ -151,62 +143,16 @@ export function LandingPage() {
     };
   }, []);
 
-  const platforms = [
-    {
-      id: 'bot',
-      icon: <DiscordIcon />,
-      label: t('platforms.bot.label'),
-      status: t('platforms.bot.status'),
-      body: t('platforms.bot.body'),
-      points: [
-        t('platforms.bot.point1'),
-        t('platforms.bot.point2'),
-        t('platforms.bot.point3'),
-      ],
-    },
-    {
-      id: 'app',
-      icon: <PhoneIcon />,
-      label: t('platforms.app.label'),
-      status: t('platforms.app.status'),
-      body: t('platforms.app.body'),
-      points: [
-        t('platforms.app.point1'),
-        t('platforms.app.point2'),
-        t('platforms.app.point3'),
-      ],
-    },
-    {
-      id: 'web',
-      icon: <MonitorIcon />,
-      label: t('platforms.web.label'),
-      status: t('platforms.web.status'),
-      body: t('platforms.web.body'),
-      points: [
-        t('platforms.web.point1'),
-        t('platforms.web.point2'),
-        t('platforms.web.point3'),
-      ],
-    },
-  ];
-
-  const steps = [
-    {
-      n: '01',
-      title: t('steps.server.title'),
-      body: t('steps.server.body'),
-    },
-    {
-      n: '02',
-      title: t('steps.login.title'),
-      body: t('steps.login.body'),
-    },
-    {
-      n: '03',
-      title: t('steps.client.title'),
-      body: t('steps.client.body'),
-    },
-  ];
+  const benefits = [t('start.benefit1'), t('start.benefit2'), t('start.benefit3')];
+  const goToLogin = () => navigate(isAuthenticated ? '/' : '/login');
+  const downloadApk = async () => {
+    if (await isApkDownloadReady()) {
+      window.location.assign(APK_DOWNLOAD_PATH);
+    } else {
+      setApkAvailable(false);
+    }
+  };
+  const openExternal = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
 
   return (
     <div className={styles.page}>
@@ -587,87 +533,181 @@ export function LandingPage() {
             <h2 className={styles.sectionTitle}>{t('sections.howToStart')}</h2>
             <span className={styles.sectionRule} />
           </div>
-          <ol className={styles.steps}>
-            {steps.map((step) => (
-              <li key={step.n} className={styles.step}>
-                <span className={styles.stepNum}>{step.n}</span>
-                <h3 className={styles.stepTitle}>{step.title}</h3>
-                <p className={styles.stepBody}>{step.body}</p>
+          <div className={styles.startGrid}>
+            <div className={styles.startCopy}>
+              <span className={styles.eyebrow}>{t('start.eyebrow')}</span>
+              <h3 className={styles.startTitle}>{t('start.title')}</h3>
+              <p className={styles.startBody}>{t('start.body')}</p>
+            </div>
+            <div className={styles.startActions}>
+              {SERVER_JOIN_URL ? (
+                <button
+                  type="button"
+                  className={`${styles.ctaBtn} ${styles.ctaPrimary}`}
+                  onClick={() => openExternal(SERVER_JOIN_URL)}
+                >
+                  <DiscordIcon />
+                  {t('start.joinServer')}
+                </button>
+              ) : null}
+              {BOT_INVITE_URL ? (
+                <button
+                  type="button"
+                  className={`${styles.ctaBtn} ${styles.ctaOutline}`}
+                  onClick={() => openExternal(BOT_INVITE_URL)}
+                >
+                  <DiscordIcon />
+                  {t('start.addBot')}
+                </button>
+              ) : null}
+            </div>
+          </div>
+          <ul className={styles.benefits}>
+            {benefits.map((item) => (
+              <li key={item}>
+                <CheckIcon />
+                {item}
               </li>
             ))}
-          </ol>
+          </ul>
         </section>
 
         <section className={styles.section} id="platformy">
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>{t('sections.platforms')}</h2>
+            <h2 className={styles.sectionTitle}>{t('sections.everywhere')}</h2>
             <span className={styles.sectionRule} />
           </div>
-          <div className={styles.platformGrid}>
-            {platforms.map((p) => (
-              <article key={p.id} className={styles.platformCard}>
-                <div className={styles.platformHead}>
-                  <span className={styles.platformIcon}>{p.icon}</span>
-                  <span className={styles.platformStatus}>{p.status}</span>
+          <div className={styles.clientGrid}>
+            <article className={styles.clientCard}>
+              <div className={styles.clientStage}>
+                <div className={styles.browserFrame}>
+                  <div className={styles.browserBar} aria-hidden>
+                    <span className={styles.browserDot} />
+                    <span className={styles.browserDot} />
+                    <span className={styles.browserDot} />
+                    <span className={styles.browserUrl}>gametrace.rscibor.dev</span>
+                  </div>
+                  <img
+                    src="/landing/app-dashboard.webp"
+                    alt={t('clients.web.alt')}
+                    loading="lazy"
+                    width={1280}
+                    height={800}
+                  />
                 </div>
-                <p className={styles.platformLabel}>{p.label}</p>
-                <p className={styles.platformBody}>{p.body}</p>
-                <ul className={styles.platformPoints}>
-                  {p.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
+                <div className={styles.clientFade} aria-hidden />
+              </div>
+              <div className={styles.clientBody}>
+                <span className={styles.eyebrow}>{t('clients.web.eyebrow')}</span>
+                <h3 className={styles.clientTitle}>{t('clients.web.title')}</h3>
+                <p className={styles.clientText}>{t('clients.web.body')}</p>
+                <ul className={styles.clientFeatures}>
+                  <li>{t('clients.web.feature1')}</li>
+                  <li>{t('clients.web.feature2')}</li>
+                  <li>{t('clients.web.feature3')}</li>
                 </ul>
-                {p.id === 'bot' && BOT_INVITE_URL ? (
-                  <Button
-                    variant="secondary"
-                    onClick={() => window.open(BOT_INVITE_URL, '_blank', 'noopener,noreferrer')}
+                <div className={styles.clientActions}>
+                  <button
+                    type="button"
+                    className={`${styles.ctaBtn} ${styles.ctaPrimary}`}
+                    onClick={goToLogin}
                   >
-                    {t('platforms.addBot')}
-                  </Button>
-                ) : null}
-                {p.id === 'app' && (
-                  <Button
-                    variant="secondary"
-                    disabled={apkAvailable !== true}
-                    onClick={async () => {
-                      if (await isApkDownloadReady()) {
-                        window.location.assign(APK_DOWNLOAD_PATH);
-                      } else {
-                        setApkAvailable(false);
-                      }
-                    }}
-                  >
-                    {apkAvailable === null ? t('platforms.checking') : t('platforms.downloadApk')}
-                  </Button>
-                )}
-                {p.id === 'web' && (
-                  <Button onClick={() => navigate(isAuthenticated ? '/' : '/login')}>
-                    {isAuthenticated ? t('topBar.dashboard') : t('topBar.login')}
-                  </Button>
-                )}
-              </article>
-            ))}
+                    {isAuthenticated ? null : <DiscordIcon />}
+                    {isAuthenticated ? t('topBar.dashboard') : t('clients.web.login')}
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article className={styles.clientCard}>
+              <div className={styles.clientStage}>
+                <div className={styles.phoneFrame}>
+                  <img
+                    src="/landing/app-mobile.webp"
+                    alt={t('clients.app.alt')}
+                    loading="lazy"
+                    width={600}
+                    height={1244}
+                  />
+                </div>
+                <div className={styles.clientFade} aria-hidden />
+              </div>
+              <div className={styles.clientBody}>
+                <span className={styles.eyebrow}>{t('clients.app.eyebrow')}</span>
+                <h3 className={styles.clientTitle}>{t('clients.app.title')}</h3>
+                <p className={styles.clientText}>{t('clients.app.body')}</p>
+                <div className={styles.clientActions}>
+                  {apkAvailable === true ? (
+                    <button
+                      type="button"
+                      className={`${styles.ctaBtn} ${styles.ctaOutline}`}
+                      onClick={downloadApk}
+                    >
+                      {t('clients.app.download')}
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className={`${styles.ctaBtn} ${styles.ctaDisabled}`}
+                        disabled
+                      >
+                        {apkAvailable === null ? t('clients.app.checking') : t('clients.app.download')}
+                      </button>
+                      {apkAvailable === false ? (
+                        <span className={styles.soonBadge}>{t('clients.app.soon')}</span>
+                      ) : null}
+                    </>
+                  )}
+                </div>
+                <p className={styles.clientNote}>{t('clients.app.loginNote')}</p>
+              </div>
+            </article>
           </div>
         </section>
-
       </div>
 
       <footer className={styles.footer} role="contentinfo">
         <div className={styles.footerInner}>
-          <div className={styles.footerLeft}>
-            <span>GAMETRACE</span>
+          <div className={styles.footerLead}>
+            <Link to="/welcome" className={styles.footerBrand} aria-label="GameTrace">
+              <img src="/logo-icon.png" alt="" width={43} height={24} />
+              <span>
+                Game<span className={styles.topBarAccent}>Trace</span>
+              </span>
+            </Link>
+            <p className={styles.footerTagline}>{t('footer.tagline')}</p>
           </div>
-          <div className={styles.footerRight}>
-            <a
-              href="/privacy"
-              className={styles.footerLink}
-              onClick={(e) => {
-                e.preventDefault();
-                navigate('/privacy');
-              }}
-            >
+          <nav className={styles.footerCol} aria-label={t('footer.product')}>
+            <h4>{t('footer.product')}</h4>
+            {apkAvailable === true ? (
+              <a href={APK_DOWNLOAD_PATH} className={styles.footerLink}>
+                {t('footer.download')}
+              </a>
+            ) : null}
+            <Link to={isAuthenticated ? '/' : '/login'} className={styles.footerLink}>
+              {isAuthenticated ? t('topBar.dashboard') : t('footer.login')}
+            </Link>
+          </nav>
+          {SERVER_JOIN_URL ? (
+            <nav className={styles.footerCol} aria-label={t('footer.community')}>
+              <h4>{t('footer.community')}</h4>
+              <a href={SERVER_JOIN_URL} className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+                {t('footer.discord')}
+              </a>
+            </nav>
+          ) : null}
+          <nav className={styles.footerCol} aria-label={t('footer.info')}>
+            <h4>{t('footer.info')}</h4>
+            <Link to="/privacy" className={styles.footerLink}>
               {t('footer.privacy')}
-            </a>
+            </Link>
+          </nav>
+        </div>
+        <div className={styles.footerBottom}>
+          <div>
+            © 2026 Rafał Ścibor
+            <small>{t('footer.igdb')}</small>
           </div>
         </div>
       </footer>
