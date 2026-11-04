@@ -448,11 +448,11 @@ export function LandingPage() {
         <div className={styles.topBar}>
           <Link to="/welcome" className={styles.topBarBrand} aria-label="GameTrace">
             <img
-              src="/splash-icon.png"
+              src="/logo-icon.png"
               alt=""
               className={styles.topBarLogo}
-              width={56}
-              height={56}
+              width={72}
+              height={40}
             />
             <span className={styles.topBarWordmark}>
               Game<span className={styles.topBarAccent}>Trace</span>
