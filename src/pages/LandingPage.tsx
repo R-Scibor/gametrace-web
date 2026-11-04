@@ -190,237 +190,6 @@ export function LandingPage() {
     },
   ];
 
-  const features = [
-    {
-      id: 'autoDetect',
-      tag: t('features.autoDetect.tag'),
-      title: t('features.autoDetect.title'),
-      body: t('features.autoDetect.body'),
-    },
-    {
-      id: 'voice',
-      tag: t('features.voice.tag'),
-      title: t('features.voice.title'),
-      body: t('features.voice.body'),
-    },
-    {
-      id: 'library',
-      tag: t('features.library.tag'),
-      title: t('features.library.title'),
-      body: t('features.library.body'),
-    },
-    {
-      id: 'heatmap',
-      tag: t('features.heatmap.tag'),
-      title: t('features.heatmap.title'),
-      body: t('features.heatmap.body'),
-    },
-  ];
-
-  const renderFeaturePreview = (id: string) => {
-    switch (id) {
-      case 'autoDetect':
-        return (
-          <div className={styles.uiAutoDetect}>
-            <div className={styles.uiRow}>
-              <div className={styles.uiDiscordStatus}>
-                <span className={styles.uiDiscordDot} />
-                <span className={styles.uiDiscordName}>Discord Rich Presence</span>
-              </div>
-              <span className={styles.uiBadgeLive}>{t('previews.autoDetect.liveBadge')}</span>
-            </div>
-            <div className={styles.uiDetectedGame}>
-              <img
-                src="/landing/kingdom-come-deliverance-2.jpg"
-                alt=""
-                className={styles.uiGameThumb}
-              />
-              <div className={styles.uiDetectedInfo}>
-                <span className={styles.uiGameTitle}>Kingdom Come: Deliverance II</span>
-                <span className={styles.uiGameSub}>{t('previews.autoDetect.processDetected')}</span>
-              </div>
-              <div className={styles.uiLiveDuration}>
-                <span className={styles.uiLiveClock}>1h 45m</span>
-                <span className={styles.uiLiveLabel}>{t('previews.autoDetect.inGame')}</span>
-              </div>
-            </div>
-            <div className={styles.uiFootNote}>
-              <span>{t('previews.autoDetect.footnote')}</span>
-            </div>
-          </div>
-        );
-
-      case 'voice':
-        return (
-          <div className={styles.uiVoice}>
-            <div className={styles.uiVoiceTranscript}>
-              <span className={styles.uiMicWave} aria-hidden>
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </span>
-              <span className={styles.uiTranscriptQuote}>
-                {t('previews.voice.quote')}
-              </span>
-            </div>
-            <div className={styles.uiParsedCard}>
-              <div className={styles.uiParsedGame}>
-                <span className={styles.uiParsedLabel}>{t('previews.voice.recognizedGame')}</span>
-                <span className={styles.uiParsedTitle}>{t('previews.voice.gameTitle')}</span>
-              </div>
-              <div className={styles.uiParsedMeta}>
-                <div className={styles.uiParsedStat}>
-                  <span className={styles.uiParsedLabel}>{t('previews.voice.sessionTime')}</span>
-                  <span className={styles.uiParsedVal}>2h 00m</span>
-                </div>
-              </div>
-            </div>
-            <div className={styles.uiFootNote}>
-              <span>{t('previews.voice.footnote')}</span>
-            </div>
-          </div>
-        );
-
-      case 'library':
-        return (
-          <div className={styles.uiLibrary}>
-            <div className={styles.uiRow}>
-              <span className={styles.uiMetaTag}>{t('previews.library.igdbCatalog')}</span>
-              <span className={styles.uiCountTag}>{t('previews.library.gameCollection')}</span>
-            </div>
-            <div className={styles.uiLibStatsGrid}>
-              <div className={styles.uiStatItem}>
-                <span className={styles.uiStatVal}>84</span>
-                <span className={styles.uiStatLabel}>{t('metrics.gamesInLibrary')}</span>
-              </div>
-              <div className={styles.uiStatItem}>
-                <span className={styles.uiStatVal}>1 320</span>
-                <span className={styles.uiStatLabel}>{t('metrics.sessions')}</span>
-              </div>
-              <div className={styles.uiStatItem}>
-                <span className={styles.uiStatVal}>247h</span>
-                <span className={styles.uiStatLabel}>{t('metrics.totalTime')}</span>
-              </div>
-              <div className={styles.uiStatItem}>
-                <span className={styles.uiStatVal}>1h 48m</span>
-                <span className={styles.uiStatLabel}>{t('metrics.avgSession')}</span>
-              </div>
-              <div className={styles.uiStatItem}>
-                <span className={styles.uiStatVal}>6h 20m</span>
-                <span className={styles.uiStatLabel}>{t('metrics.recordSession')}</span>
-              </div>
-              <div className={styles.uiStatItem}>
-                <span className={styles.uiStatVal}>
-                  {t('previews.library.streakDays', { count: 12 })}
-                </span>
-                <span className={styles.uiStatLabel}>{t('metrics.streak')}</span>
-              </div>
-            </div>
-            <div className={styles.uiLibList}>
-              <div className={styles.uiLibItem}>
-                <img
-                  src="/landing/baldurs-gate-3.jpg"
-                  alt=""
-                  className={styles.uiLibCover}
-                />
-                <div className={styles.uiLibInfo}>
-                  <div className={styles.uiLibTitleRow}>
-                    <span className={styles.uiLibTitle}>Baldur’s Gate 3</span>
-                    <span className={styles.uiLibYear}>2023</span>
-                  </div>
-                  <span className={styles.uiLibStudio}>Larian Studios • RPG</span>
-                </div>
-                <div className={styles.uiLibStats}>
-                  <span className={styles.uiLibHours}>64h 12m</span>
-                  <span className={styles.uiLibSessions}>
-                    {t('previews.library.sessionsCount', { count: 18 })}
-                  </span>
-                </div>
-              </div>
-              <div className={styles.uiLibItem}>
-                <img
-                  src="/landing/kingdom-come-deliverance-2.jpg"
-                  alt=""
-                  className={styles.uiLibCover}
-                />
-                <div className={styles.uiLibInfo}>
-                  <div className={styles.uiLibTitleRow}>
-                    <span className={styles.uiLibTitle}>Kingdom Come: Deliverance II</span>
-                    <span className={styles.uiLibYear}>2025</span>
-                  </div>
-                  <span className={styles.uiLibStudio}>Warhorse Studios • Action RPG</span>
-                </div>
-                <div className={styles.uiLibStats}>
-                  <span className={styles.uiLibHours}>18h 30m</span>
-                  <span className={styles.uiLibSessions}>
-                    {t('previews.library.sessionsCount', { count: 5 })}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'heatmap':
-        return (
-          <div className={styles.uiHeatmap}>
-            <div className={styles.uiRow}>
-              <span className={styles.uiMetaTag}>
-                {hoveredHeatCell ? (
-                  <span className={styles.uiHeatHoverReadout}>
-                    <strong>{hoveredHeatCell.date}</strong>: {hoveredHeatCell.hours}
-                  </span>
-                ) : (
-                  t('previews.heatmap.lastWeeks')
-                )}
-              </span>
-              <div className={styles.uiHeatLegend} aria-hidden>
-                <span>{t('previews.heatmap.less')}</span>
-                <span className={styles.heatL0} />
-                <span className={styles.heatL1} />
-                <span className={styles.heatL2} />
-                <span className={styles.heatL3} />
-                <span className={styles.heatL4} />
-                <span>{t('previews.heatmap.more')}</span>
-              </div>
-            </div>
-            <div className={styles.uiHeatGrid}>
-              {heatmapCells.map((cell, i) => (
-                <span
-                  key={i}
-                  className={`${styles.uiHeatCell} ${styles[`heatL${cell.level}`]}`}
-                  title={`${cell.date}: ${cell.hours}`}
-                  onMouseEnter={() => setHoveredHeatCell(cell)}
-                  onMouseLeave={() => setHoveredHeatCell(null)}
-                />
-              ))}
-            </div>
-            <div className={styles.uiHeatStats}>
-              <div className={styles.uiHeatStat}>
-                <span className={styles.uiHeatVal}>
-                  {t('previews.heatmap.streakVal', { count: 12 })}
-                </span>
-                <span className={styles.uiHeatSub}>{t('metrics.streak')}</span>
-              </div>
-              <div className={styles.uiHeatStat}>
-                <span className={styles.uiHeatVal}>6h 20m</span>
-                <span className={styles.uiHeatSub}>{t('metrics.recordSession')}</span>
-              </div>
-              <div className={styles.uiHeatStat}>
-                <span className={styles.uiHeatVal}>1h 48m</span>
-                <span className={styles.uiHeatSub}>{t('metrics.avgSession')}</span>
-              </div>
-            </div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
   const steps = [
     {
       n: '01',
@@ -525,19 +294,291 @@ export function LandingPage() {
             <h2 className={styles.sectionTitle}>{t('sections.features')}</h2>
             <span className={styles.sectionRule} />
           </div>
-          <div className={styles.featureGrid}>
-            {features.map((f) => (
-              <article key={f.id} className={styles.featureCard}>
-                <div className={styles.featureCardTop}>
-                  <span className={styles.featureTag}>{f.tag}</span>
-                  <h3 className={styles.featureTitle}>{f.title}</h3>
-                  <p className={styles.featureBody}>{f.body}</p>
+
+          <div className={styles.storyList}>
+            {/* Story 1: PC Discord Auto-Detect */}
+            <article className={styles.storyRow}>
+              <div className={styles.storyCopy}>
+                <span className={styles.storyEyebrow}>
+                  {currentLanguage === 'en' ? '01 / PC Auto-Detect' : '01 / Detekcja w tle'}
+                </span>
+                <h3 className={styles.storyHeading}>
+                  {currentLanguage === 'en'
+                    ? 'Play like you always do. We log the rest for you.'
+                    : 'Grasz jak zawsze. Resztę zapisujemy za ciebie.'}
+                </h3>
+                <p className={styles.storyDescription}>
+                  {currentLanguage === 'en'
+                    ? 'Launch any game on PC and GameTrace captures the session automatically via Discord Rich Presence. When you close the game, your playtime is stored on your profile with zero timers and zero performance impact.'
+                    : 'Odpalasz grę na PC, a GameTrace automatycznie rejestruje sesję przez Discord Rich Presence. Kiedy zamykasz grę, czas trafia prosto na Twoje konto. Bez stoperów, bez ręcznego wklepywania godzin i bez spadku FPS.'}
+                </p>
+                <ul className={styles.storyHighlights}>
+                  <li className={styles.storyHighlightItem}>
+                    <strong>{currentLanguage === 'en' ? 'Full automation ' : 'Pełna automatyzacja '}</strong>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'credits playtime to your account the moment the game closes'
+                        : 'zapisuje czas gry na Twoim koncie od razu po jej wyłączeniu'}
+                    </span>
+                  </li>
+                  <li className={styles.storyHighlightItem}>
+                    <strong>{currentLanguage === 'en' ? 'Zero performance impact ' : 'Zero wpływu na wydajność, '}</strong>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'with nothing to install on your PC'
+                        : 'bo niczego nie instalujesz na komputerze'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className={styles.storyVisual}>
+                <div className={styles.visualBar}>
+                  <div className={styles.visualChannelTag}>
+                    <span className={styles.visualDiscordDot} />
+                    <span>Discord Rich Presence</span>
+                  </div>
+                  <span className={styles.visualBadgeLive}>
+                    <span className={styles.visualDiscordDot} />
+                    {t('previews.autoDetect.liveBadge')}
+                  </span>
                 </div>
-                <div className={styles.featurePreview}>
-                  {renderFeaturePreview(f.id)}
+                <div className={styles.visualGameCard}>
+                  <img
+                    src="/landing/kingdom-come-deliverance-2.jpg"
+                    alt=""
+                    className={styles.visualGameCover}
+                  />
+                  <div className={styles.visualGameDetails}>
+                    <span className={styles.visualGameName}>Kingdom Come: Deliverance II</span>
+                    <span className={styles.visualGameMeta}>{t('previews.autoDetect.processDetected')}</span>
+                  </div>
+                  <div className={styles.visualTimerBlock}>
+                    <span className={styles.visualTimerValue}>1h 45m</span>
+                    <span className={styles.visualTimerLabel}>{t('previews.autoDetect.inGame')}</span>
+                  </div>
                 </div>
-              </article>
-            ))}
+                <div className={styles.visualNotice}>
+                  <span className={styles.visualNoticeDot} />
+                  <span>{t('previews.autoDetect.footnote')}</span>
+                </div>
+              </div>
+            </article>
+
+            {/* Story 2: Consoles & Offline Voice Log (Reversed) */}
+            <article className={`${styles.storyRow} ${styles.reverse}`}>
+              <div className={styles.storyCopy}>
+                <span className={styles.storyEyebrow}>
+                  {currentLanguage === 'en' ? '02 / Consoles & Offline' : '02 / Konsola & Offline'}
+                </span>
+                <h3 className={styles.storyHeading}>
+                  {currentLanguage === 'en'
+                    ? 'Playing off Discord? A single sentence is all it takes.'
+                    : 'Grasz poza Discordem? Wystarczy jedno zdanie.'}
+                </h3>
+                <p className={styles.storyDescription}>
+                  {currentLanguage === 'en'
+                    ? 'Playing on PlayStation, Nintendo Switch, Steam Deck, or off Discord? Speak a single sentence into your phone or log manually. We’ll recognize the game and duration, and save the rest as a note.'
+                    : 'Grasz na PlayStation, Switchu, Steam Decku albo bez uruchomionego Discorda? Powiedz jedno zdanie do telefonu lub dodaj wpis ręcznie. Rozpoznamy grę i czas, a resztę zapiszemy jako notatkę.'}
+                </p>
+                <ul className={styles.storyHighlights}>
+                  <li className={styles.storyHighlightItem}>
+                    <strong>{currentLanguage === 'en' ? 'Instant voice logging ' : 'Szybki zapis głosem '}</strong>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'lets you speak the title and duration naturally, without typing'
+                        : 'pozwala podyktować tytuł i czas naturalnie, bez stukania w klawiaturę'}
+                    </span>
+                  </li>
+                  <li className={styles.storyHighlightItem}>
+                    <strong>{currentLanguage === 'en' ? 'App in your pocket ' : 'Aplikacja w kieszeni '}</strong>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'makes logging sessions and checking your library seamless on mobile'
+                        : 'ułatwia dodawanie sesji i przeglądanie biblioteki prosto z telefonu'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className={styles.storyVisual}>
+                <div className={styles.visualBar}>
+                  <div className={styles.visualChannelTag}>
+                    <span className={styles.voiceWaveDot} />
+                    <span>{currentLanguage === 'en' ? 'Voice Recording · Mobile App' : 'Nagrywanie głosem · Aplikacja mobilna'}</span>
+                  </div>
+                  <span className={styles.voiceBadgeReady}>
+                    {currentLanguage === 'en' ? 'TRANSCRIBED' : 'ROZPOZNANO'}
+                  </span>
+                </div>
+                <div className={styles.voiceSpeechBubble}>
+                  <span className={styles.voiceWaveIcon} aria-hidden>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                  </span>
+                  <span className={styles.voiceQuoteText}>
+                    {t('previews.voice.quote')}
+                  </span>
+                </div>
+                <div className={styles.voiceFlowDivider}>
+                  <span>{currentLanguage === 'en' ? 'Session Logged' : 'Zapisana sesja'}</span>
+                </div>
+                <div className={styles.voiceResultCard}>
+                  <div className={styles.voiceResultInfo}>
+                    <div className={styles.voiceResultRow}>
+                      <span className={styles.voiceGameTitle}>{t('previews.voice.gameTitle')}</span>
+                      <span className={styles.voiceTimeBadge}>2h 00m</span>
+                    </div>
+                    <div className={styles.voiceNoteTag}>
+                      <strong>{currentLanguage === 'en' ? 'NOTE:' : 'NOTATKA:'}</strong>
+                      <span>{currentLanguage === 'en' ? 'Baron quest' : 'quest z Baronem'}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.visualNotice}>
+                  <span className={styles.visualNoticeDot} />
+                  <span>{t('previews.voice.footnote')}</span>
+                </div>
+              </div>
+            </article>
+
+            {/* Story 3: Library & Activity Heatmap */}
+            <article className={styles.storyRow}>
+              <div className={styles.storyCopy}>
+                <span className={styles.storyEyebrow}>
+                  {currentLanguage === 'en' ? '03 / Library & Analytics' : '03 / Biblioteka & Statystyki'}
+                </span>
+                <h3 className={styles.storyHeading}>
+                  {currentLanguage === 'en'
+                    ? 'Your game library and habit map. Zero spreadsheets.'
+                    : 'Twoja kolekcja i mapa nawyków. Bez Excela.'}
+                </h3>
+                <p className={styles.storyDescription}>
+                  {currentLanguage === 'en'
+                    ? 'Every game in your collection is enriched with official IGDB artwork, genres, studios, and release dates. Your hours automatically transform into an interactive GitHub-style heatmap, streaks, and marathon records.'
+                    : 'Każda gra w Twojej bibliotece otrzymuje oficjalną okładkę z IGDB, studio, gatunek i rok wydania. Twoje sesje tworzą interaktywną mapę aktywności w stylu GitHuba, pokazując dzienne passy i rekordy maratonów.'}
+                </p>
+                <ul className={styles.storyHighlights}>
+                  <li className={styles.storyHighlightItem}>
+                    <strong>{currentLanguage === 'en' ? 'Official IGDB catalog ' : 'Oficjalny katalog IGDB '}</strong>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'provides HD covers, studios, release years, and duplicate merging'
+                        : 'zapewnia okładki HD, studia, daty premier i łączenie duplikatów'}
+                    </span>
+                  </li>
+                  <li className={styles.storyHighlightItem}>
+                    <strong>{currentLanguage === 'en' ? 'Interactive activity map ' : 'Interaktywna mapa aktywności '}</strong>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'offers full clarity over your last 16 weeks of gaming habits'
+                        : 'daje przejrzysty wgląd w Twój rytm grania z ostatnich 16 tygodni'}
+                    </span>
+                  </li>
+                  <li className={styles.storyHighlightItem}>
+                    <strong>{currentLanguage === 'en' ? 'Streaks and marathon records ' : 'Passy i rekordy '}</strong>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'show which titles hooked you the longest'
+                        : 'pokazują, które tytuły wciągnęły Cię na najdłużej'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className={styles.storyVisual}>
+                <div className={styles.libraryStatsStrip}>
+                  <div className={styles.libraryStatCol}>
+                    <span className={styles.libraryStatVal}>84</span>
+                    <span className={styles.libraryStatLabel}>{t('metrics.gamesInLibrary')}</span>
+                  </div>
+                  <div className={styles.libraryStatCol}>
+                    <span className={styles.libraryStatVal}>1 320</span>
+                    <span className={styles.libraryStatLabel}>{t('metrics.sessions')}</span>
+                  </div>
+                  <div className={styles.libraryStatCol}>
+                    <span className={styles.libraryStatVal}>247h</span>
+                    <span className={styles.libraryStatLabel}>{t('metrics.totalTime')}</span>
+                  </div>
+                  <div className={styles.libraryStatCol}>
+                    <span className={styles.libraryStatVal}>
+                      {t('previews.library.streakDays', { count: 12 })}
+                    </span>
+                    <span className={styles.libraryStatLabel}>{t('metrics.streak')}</span>
+                  </div>
+                </div>
+
+                <div className={styles.heatmapContainer}>
+                  <div className={styles.uiRow}>
+                    <span className={styles.uiMetaTag}>
+                      {hoveredHeatCell ? (
+                        <span className={styles.uiHeatHoverReadout}>
+                          <strong>{hoveredHeatCell.date}</strong>: {hoveredHeatCell.hours}
+                        </span>
+                      ) : (
+                        t('previews.heatmap.lastWeeks')
+                      )}
+                    </span>
+                    <div className={styles.uiHeatLegend} aria-hidden>
+                      <span>{t('previews.heatmap.less')}</span>
+                      <span className={styles.heatL0} />
+                      <span className={styles.heatL1} />
+                      <span className={styles.heatL2} />
+                      <span className={styles.heatL3} />
+                      <span className={styles.heatL4} />
+                      <span>{t('previews.heatmap.more')}</span>
+                    </div>
+                  </div>
+                  <div className={styles.uiHeatGrid}>
+                    {heatmapCells.map((cell, i) => (
+                      <span
+                        key={i}
+                        className={`${styles.uiHeatCell} ${styles[`heatL${cell.level}`]}`}
+                        title={`${cell.date}: ${cell.hours}`}
+                        onMouseEnter={() => setHoveredHeatCell(cell)}
+                        onMouseLeave={() => setHoveredHeatCell(null)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className={styles.libraryPreviewList}>
+                  <div className={styles.libraryMiniGame}>
+                    <img
+                      src="/landing/baldurs-gate-3.jpg"
+                      alt=""
+                      className={styles.libraryMiniCover}
+                    />
+                    <div className={styles.libraryMiniInfo}>
+                      <span className={styles.libraryMiniTitle}>Baldur’s Gate 3</span>
+                      <span className={styles.libraryMiniMeta}>
+                        64h 12m
+                        <span className={styles.miniMetaDot} aria-hidden />
+                        18 {t('metrics.sessions').toLowerCase()}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.libraryMiniGame}>
+                    <img
+                      src="/landing/kingdom-come-deliverance-2.jpg"
+                      alt=""
+                      className={styles.libraryMiniCover}
+                    />
+                    <div className={styles.libraryMiniInfo}>
+                      <span className={styles.libraryMiniTitle}>Kingdom Come: Deliverance II</span>
+                      <span className={styles.libraryMiniMeta}>
+                        18h 30m
+                        <span className={styles.miniMetaDot} aria-hidden />
+                        5 {t('metrics.sessions').toLowerCase()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
           </div>
         </section>
 

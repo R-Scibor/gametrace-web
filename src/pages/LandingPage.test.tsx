@@ -32,7 +32,7 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   expect(screen.getByRole('heading', { name: 'Co potrafi GameTrace' })).toBeInTheDocument();
   expect(screen.getByText('84')).toBeInTheDocument();
   expect(screen.getByText('1 320')).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Mapa aktywności' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /mapa nawyków/i })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Bot, aplikacja, przeglądarka' })).toBeInTheDocument();
   expect(screen.getByText('APLIKACJA')).toBeInTheDocument();
   await waitFor(() => {
@@ -146,23 +146,21 @@ test('LandingPage translates feature preview cards when language is English', as
 
   // Voice
   expect(screen.getByText('“The Witcher 3, two hours, Baron quest”')).toBeInTheDocument();
-  expect(screen.getByText('RECOGNIZED GAME')).toBeInTheDocument();
+  expect(screen.getByText('TRANSCRIBED')).toBeInTheDocument();
   expect(screen.getByText('The Witcher 3: Wild Hunt')).toBeInTheDocument();
-  expect(screen.getByText('SESSION TIME')).toBeInTheDocument();
+  expect(screen.getByText('NOTE:')).toBeInTheDocument();
   expect(screen.getByText('Transcription is automatically saved into the session note')).toBeInTheDocument();
 
-  // Library
-  expect(screen.getAllByText('IGDB CATALOG').length).toBeGreaterThanOrEqual(1);
-  expect(screen.getByText('GAME COLLECTION')).toBeInTheDocument();
+  // Library & Analytics
+  expect(screen.getByText('GAMES IN LIBRARY')).toBeInTheDocument();
   expect(screen.getByText('12 days')).toBeInTheDocument();
-  expect(screen.getByText('18 sessions')).toBeInTheDocument();
-  expect(screen.getByText('5 sessions')).toBeInTheDocument();
+  expect(screen.getByText(/18 sessions/i)).toBeInTheDocument();
+  expect(screen.getByText(/5 sessions/i)).toBeInTheDocument();
 
   // Heatmap
   expect(screen.getByText('LAST 16 WEEKS')).toBeInTheDocument();
   expect(screen.getByText('Less')).toBeInTheDocument();
   expect(screen.getByText('More')).toBeInTheDocument();
-  expect(screen.getByText('🔥 12 DAYS')).toBeInTheDocument();
 
   unmount();
   await act(async () => {

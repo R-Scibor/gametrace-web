@@ -457,72 +457,505 @@
   color: var(--text2);
 }
 
-/* ---------- FEATURES (2x2 with Live UI) ---------- */
+/* ---------- FEATURES (Direction A: Alternating Story Blocks) ---------- */
 
-.featureGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.featureCard {
+.storyList {
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  gap: 88px;
+  margin-top: 48px;
 }
 
-.featureCard:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-bright);
+.storyRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
 }
 
-.featureCardTop {
-  margin-bottom: 20px;
+.storyRow.reverse {
+  grid-template-columns: 1fr 1fr;
 }
 
-.featureTag {
+.storyRow.reverse .storyCopy {
+  order: 2;
+}
+
+.storyRow.reverse .storyVisual {
+  order: 1;
+}
+
+.storyCopy {
+  display: flex;
+  flex-direction: column;
+}
+
+.storyEyebrow {
   display: inline-block;
-  margin-bottom: 8px;
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--orange);
+  margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
-.featureTitle {
-  margin: 0 0 8px;
+.storyHeading {
+  margin: 0 0 16px;
   font-family: var(--display);
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 700;
-  letter-spacing: -0.3px;
+  line-height: 1.18;
+  letter-spacing: -0.6px;
   color: var(--text);
 }
 
-.featureBody {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
+.storyDescription {
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.65;
   color: var(--text2);
 }
 
-.featurePreview {
-  margin-top: auto;
-  padding: 16px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  min-height: 168px;
+.storyHighlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 14px;
 }
 
-/* UI Specimen Shared */
+.storyHighlightItem {
+  position: relative;
+  padding-left: 14px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text2);
+}
+
+.storyHighlightItem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--orange);
+}
+
+.storyHighlightItem strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.storyVisual {
+  position: relative;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 32px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.storyVisual::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 122, 26, 0.35), transparent);
+}
+
+/* Visual 1: Discord Detection Showcase */
+.visualBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.visualChannelTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text2);
+}
+
+.visualDiscordDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #23a55a;
+  box-shadow: 0 0 8px rgba(35, 165, 90, 0.7);
+}
+
+.visualBadgeLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  border-radius: 2px;
+  background: rgba(35, 165, 90, 0.12);
+  color: #3ba55d;
+  border: 1px solid rgba(35, 165, 90, 0.35);
+}
+
+.visualGameCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 20px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.visualGameCover {
+  width: 76px;
+  height: 104px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+}
+
+.visualGameDetails {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.visualGameName {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.visualGameMeta {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.visualTimerBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+  padding-left: 18px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.visualTimerValue {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.visualTimerLabel {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--text3);
+}
+
+.visualNotice {
+  padding: 10px 12px;
+  background: rgba(255, 122, 26, 0.04);
+  border: 1px solid rgba(255, 122, 26, 0.18);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.visualNoticeDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+
+/* Visual 2: Voice Flow Showcase */
+.voiceWaveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--orange);
+  box-shadow: 0 0 8px rgba(255, 122, 26, 0.7);
+}
+
+.voiceBadgeReady {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  border-radius: 2px;
+  background: rgba(255, 122, 26, 0.12);
+  color: var(--orange);
+  border: 1px solid rgba(255, 122, 26, 0.35);
+}
+
+.voiceSpeechBubble {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.voiceWaveIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.voiceWaveIcon span {
+  width: 3px;
+  border-radius: 1px;
+  background: var(--orange);
+  animation: pulseHeight 1.4s infinite ease-in-out;
+}
+
+.voiceWaveIcon span:nth-child(1) { height: 10px; animation-delay: 0.1s; }
+.voiceWaveIcon span:nth-child(2) { height: 18px; animation-delay: 0.25s; }
+.voiceWaveIcon span:nth-child(3) { height: 20px; animation-delay: 0.4s; }
+.voiceWaveIcon span:nth-child(4) { height: 14px; animation-delay: 0.2s; }
+.voiceWaveIcon span:nth-child(5) { height: 8px; animation-delay: 0.05s; }
+
+@keyframes pulseHeight {
+  0%, 100% { transform: scaleY(0.7); opacity: 0.7; }
+  50% { transform: scaleY(1.15); opacity: 1; }
+}
+
+.voiceQuoteText {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.voiceFlowDivider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.voiceFlowDivider::before,
+.voiceFlowDivider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.voiceResultCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: rgba(255, 122, 26, 0.04);
+  border: 1px solid rgba(255, 122, 26, 0.22);
+  border-radius: 3px;
+}
+
+.voiceResultCover {
+  width: 52px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.voiceResultInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.voiceResultRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.voiceGameTitle {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.voiceTimeBadge {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange);
+  background: rgba(255, 122, 26, 0.1);
+  padding: 2px 7px;
+  border-radius: 2px;
+}
+
+.voiceNoteTag {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.voiceNoteTag strong {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+}
+
+/* Visual 3: Library & Activity Showcase */
+.libraryStatsStrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.libraryStatCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.libraryStatVal {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.libraryStatLabel {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.6px;
+  color: var(--text3);
+}
+
+.heatmapContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.libraryPreviewList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.libraryMiniGame {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.libraryMiniCover {
+  width: 28px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.libraryMiniInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.libraryMiniTitle {
+  font-family: var(--display);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.libraryMiniMeta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text3);
+}
+
+.miniMetaDot {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: var(--text3);
+  margin: 0 6px;
+  vertical-align: middle;
+}
+
+/* UI Specimen Shared (Heatmap) */
 .uiRow {
   display: flex;
   align-items: center;
@@ -537,358 +970,6 @@
   font-weight: 500;
   letter-spacing: 1px;
   color: var(--text3);
-}
-
-.uiFootNote {
-  margin-top: 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  color: var(--text3);
-}
-
-/* UI 1: Auto-Detect */
-.uiAutoDetect {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.uiDiscordStatus {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text2);
-}
-
-.uiDiscordDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #23a55a;
-  box-shadow: 0 0 8px rgba(35, 165, 90, 0.6);
-}
-
-.uiBadgeLive {
-  display: inline-block;
-  padding: 2px 7px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  border-radius: 2px;
-  background: rgba(35, 165, 90, 0.12);
-  color: #3ba55d;
-  border: 1px solid rgba(35, 165, 90, 0.35);
-}
-
-.uiDetectedGame {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 12px;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-}
-
-.uiGameThumb {
-  width: 38px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-.uiDetectedInfo {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.uiGameTitle {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.uiGameSub {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text3);
-}
-
-.uiLiveDuration {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-  flex-shrink: 0;
-}
-
-.uiLiveClock {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 17px;
-  color: var(--orange);
-  line-height: 1;
-}
-
-.uiLiveLabel {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: var(--text3);
-}
-
-/* UI 2: Voice */
-.uiVoice {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.uiVoiceTranscript {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 12px;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-}
-
-.uiMicWave {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-.uiMicWave span {
-  width: 2.5px;
-  border-radius: 1px;
-  background: var(--orange);
-}
-
-.uiMicWave span:nth-child(1) { height: 8px; }
-.uiMicWave span:nth-child(2) { height: 14px; }
-.uiMicWave span:nth-child(3) { height: 16px; }
-.uiMicWave span:nth-child(4) { height: 11px; }
-.uiMicWave span:nth-child(5) { height: 6px; }
-
-.uiTranscriptQuote {
-  font-size: 13px;
-  font-style: italic;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.uiParsedCard {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px;
-  background: rgba(255, 122, 26, 0.05);
-  border: 1px solid rgba(255, 122, 26, 0.25);
-  border-radius: 2px;
-}
-
-.uiParsedGame {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.uiParsedLabel {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: var(--text3);
-}
-
-.uiParsedTitle {
-  font-family: var(--display);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.uiParsedMeta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
-}
-
-.uiParsedStat {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-}
-
-.uiParsedVal {
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--orange);
-}
-
-/* UI 3: Library */
-.uiLibrary {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.uiCountTag {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--orange);
-  letter-spacing: 0.5px;
-}
-
-.uiLibStatsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px 12px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-}
-
-.uiStatItem {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.uiStatVal {
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--orange);
-  line-height: 1;
-}
-
-.uiStatLabel {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.8px;
-  color: var(--text3);
-}
-
-.uiLibList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.uiLibItem {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 7px 10px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-}
-
-.uiLibCover {
-  width: 32px;
-  height: 44px;
-  object-fit: cover;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-.uiLibTitleRow {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.uiLibYear {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text3);
-}
-
-.uiLibInfo {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.uiLibTitle {
-  font-family: var(--display);
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.uiLibStudio {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text3);
-}
-
-.uiLibStats {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-  flex-shrink: 0;
-}
-
-.uiLibHours {
-  font-family: var(--display);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.uiLibSessions {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text3);
-}
-
-/* UI 4: Heatmap */
-.uiHeatmap {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
 }
 
 .uiHeatLegend {
@@ -950,34 +1031,6 @@
 .heatL2 { background-color: rgba(255, 122, 26, 0.50); }
 .heatL3 { background-color: rgba(255, 122, 26, 0.75); }
 .heatL4 { background-color: #ff7a1a; box-shadow: 0 0 6px rgba(255, 122, 26, 0.4); }
-
-.uiHeatStats {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
-}
-
-.uiHeatStat {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.uiHeatVal {
-  font-family: var(--display);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.uiHeatSub {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.8px;
-  color: var(--text3);
-}
 
 /* ---------- METRICS SHOWCASE ---------- */
 
@@ -1242,8 +1295,22 @@
     grid-template-columns: 1fr;
   }
 
-  .featureGrid {
+  .storyRow,
+  .storyRow.reverse {
     grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .storyRow.reverse .storyCopy {
+    order: 1;
+  }
+
+  .storyRow.reverse .storyVisual {
+    order: 2;
+  }
+
+  .storyHeading {
+    font-size: 26px;
   }
 
   .metricGrid {
@@ -1253,6 +1320,14 @@
 }
 
 @media (max-width: 520px) {
+  .libraryStatsStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .libraryPreviewList {
+    grid-template-columns: 1fr;
+  }
+
   .metricGrid {
     grid-template-columns: repeat(2, 1fr);
   }
