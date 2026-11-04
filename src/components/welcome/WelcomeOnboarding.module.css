@@ -319,12 +319,26 @@
   border: 1px solid var(--border-bright);
   background-color: var(--bg3);
   color: var(--text);
-  box-shadow: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
 }
 
 .stepBtnNeutral:hover {
   background-color: var(--bg4);
   border-color: var(--text3);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.stepBtnNeutral:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .stepBtn:focus-visible {
