@@ -69,17 +69,24 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--border-bright);
+  border: 1px solid var(--border-control);
   background: transparent;
   border-radius: 2px;
   padding: 10px 16px;
   cursor: pointer;
-  font-family: var(--mono);
+  font-family: var(--display);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   color: var(--text2);
-  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
 }
 
 .topBarLoginArrow {
@@ -90,11 +97,23 @@
 .topBarLogin:hover {
   border-color: var(--orange);
   color: var(--orange);
-  box-shadow: 0 0 16px var(--orange-glow);
+  background-color: rgba(255, 122, 26, 0.04);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 14px var(--orange-glow),
+    0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .topBarLogin:hover .topBarLoginArrow {
   transform: translateX(3px);
+}
+
+.topBarLogin:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 0 8px var(--orange-glow);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .topBarLogin:focus-visible {
@@ -1244,7 +1263,9 @@
     transform: none !important;
   }
 
-  .heroStart {
+  .heroStart,
+  .topBarLogin,
+  .topBarLoginArrow {
     transition: none !important;
     transform: none !important;
   }
