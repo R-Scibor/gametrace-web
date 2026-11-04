@@ -129,16 +129,41 @@
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 2px;
+  text-transform: uppercase;
   color: var(--orange);
-  background: none;
+  background: transparent;
   border: 1px solid var(--orange);
   border-radius: 2px;
   padding: 10px 16px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
 }
-.retry:hover {
-  background-color: var(--orange-glow);
+
+.retry:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 14px var(--orange-glow),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.retry:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 0 8px var(--orange-glow);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.retry:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
 }
 
 @keyframes fadeUp {
@@ -172,9 +197,11 @@
   .header,
   .topRow,
   .topRowIdle,
-  .statusDot {
+  .statusDot,
+  .retry {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
   }
 }
