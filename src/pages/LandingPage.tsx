@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui';
@@ -49,6 +49,23 @@ const MonitorIcon = () => (
     <rect x="2.5" y="3.5" width="19" height="13" rx="2" />
     <line x1="8.5" y1="20.5" x2="15.5" y2="20.5" />
     <line x1="12" y1="16.5" x2="12" y2="20.5" />
+  </svg>
+);
+
+const ArrowRightIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="13"
+    height="13"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
   </svg>
 );
 
@@ -429,16 +446,27 @@ export function LandingPage() {
 
       <div className={styles.content}>
         <div className={styles.topBar}>
-          <span className={styles.topBarBrand}>
-            GAMETRACE<span className={styles.topBarSubtitle}>{t('topBar.subtitle')}</span>
-          </span>
+          <Link to="/welcome" className={styles.topBarBrand} aria-label="GameTrace">
+            <img
+              src="/splash-icon.png"
+              alt=""
+              className={styles.topBarLogo}
+              width={56}
+              height={56}
+            />
+            <span className={styles.topBarWordmark}>
+              Game<span className={styles.topBarAccent}>Trace</span>
+            </span>
+          </Link>
           <button
             type="button"
             className={styles.topBarLogin}
             onClick={() => navigate(isAuthenticated ? '/' : '/login')}
           >
             {isAuthenticated ? t('topBar.dashboard') : t('topBar.login')}
-            <span className={styles.topBarLoginArrow} aria-hidden>→</span>
+            <span className={styles.topBarLoginArrow} aria-hidden>
+              <ArrowRightIcon />
+            </span>
           </button>
         </div>
 

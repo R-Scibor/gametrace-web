@@ -57,12 +57,42 @@
 .topBarBrand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 3px;
-  color: var(--text3);
+  gap: 14px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.topBarBrand:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.topBarBrand:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+
+.topBarLogo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
+}
+
+.topBarWordmark {
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1.2px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.topBarAccent {
+  color: var(--orange);
 }
 
 .topBarLogin {
@@ -90,7 +120,9 @@
 }
 
 .topBarLoginArrow {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s ease;
 }
 
@@ -1218,11 +1250,16 @@
   }
 
   .topBarBrand {
-    letter-spacing: 2px;
+    gap: 12px;
   }
 
-  .topBarSubtitle {
-    display: none;
+  .topBarWordmark {
+    font-size: 26px;
+  }
+
+  .topBarLogo {
+    width: 40px;
+    height: 40px;
   }
 
   .topBarLogin {
