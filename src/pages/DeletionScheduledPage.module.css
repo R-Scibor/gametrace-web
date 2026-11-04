@@ -78,12 +78,30 @@
   color: var(--button-text-on-orange);
   background: var(--orange);
   border-radius: 2px;
-  transition: background 0.15s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.16s ease;
 }
 
 .primaryLink:hover,
 .primaryLink:focus-visible {
-  background: var(--orange-dim);
+  background: #ff8526;
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 0 14px var(--orange-glow),
+    0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
+.primaryLink:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    0 0 8px var(--orange-glow);
 }
 
 .secondaryLink {

@@ -11,20 +11,41 @@
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  transition: all 0.2s ease;
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
   width: 100%;
 }
 
 .primary {
   background-color: var(--orange);
   color: var(--button-text-on-orange);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.4);
 }
 .primary:hover:not(:disabled) {
-  background-color: var(--orange-dim);
+  background-color: #ff8526;
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 0 14px var(--orange-glow),
+    0 3px 8px rgba(0, 0, 0, 0.45);
+}
+.primary:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    0 0 8px var(--orange-glow);
 }
 .primary:disabled {
   background-color: var(--bg4);
   color: var(--text3);
+  box-shadow: none;
+  transform: none;
   cursor: not-allowed;
 }
 
@@ -46,4 +67,13 @@
 .secondary:focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .primary,
+  .secondary {
+    transition: none !important;
+    transform: none !important;
+  }
 }

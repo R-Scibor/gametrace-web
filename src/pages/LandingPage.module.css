@@ -970,11 +970,10 @@
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 4px;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  transition: border-color 0.25s ease;
 }
 
 .platformCard:hover {
-  transform: translateY(-4px);
   border-color: var(--border-bright);
 }
 
@@ -1247,5 +1246,6 @@
 
   .heroStart {
     transition: none !important;
+    transform: none !important;
   }
 }
