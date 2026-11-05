@@ -38,8 +38,8 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   expect(screen.getByRole('heading', { name: 'Twoje dane, gdzie chcesz' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Przeglądarka' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Aplikacja na Androida' })).toBeInTheDocument();
-  expect(screen.getByAltText('Panel GameTrace w przeglądarce')).toHaveAttribute('src', '/landing/app-dashboard.webp');
-  expect(screen.getByAltText('Aplikacja GameTrace na Androidzie')).toHaveAttribute('src', '/landing/app-mobile.webp');
+  expect(screen.getByAltText('Panel GameTrace w przeglądarce')).toHaveAttribute('src', '/landing/app-dashboard-pl.webp');
+  expect(screen.getByAltText('Aplikacja GameTrace na Androidzie')).toHaveAttribute('src', '/landing/app-mobile-pl.webp');
   await waitFor(() => {
     expect(screen.getAllByRole('button', { name: /pobierz apk/i }).length).toBeGreaterThanOrEqual(1);
   });
@@ -166,6 +166,15 @@ test('LandingPage translates feature preview cards when language is English', as
   expect(screen.getByText('LAST 16 WEEKS')).toBeInTheDocument();
   expect(screen.getByText('Less')).toBeInTheDocument();
   expect(screen.getByText('More')).toBeInTheDocument();
+
+  expect(screen.getByAltText('GameTrace dashboard in the browser')).toHaveAttribute(
+    'src',
+    '/landing/app-dashboard-en.webp',
+  );
+  expect(screen.getByAltText('GameTrace Android app')).toHaveAttribute(
+    'src',
+    '/landing/app-mobile-en.webp',
+  );
 
   unmount();
   await act(async () => {

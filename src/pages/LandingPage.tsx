@@ -588,7 +588,7 @@ export function LandingPage() {
                     <span className={styles.browserUrl}>gametrace.rscibor.dev</span>
                   </div>
                   <img
-                    src="/landing/app-dashboard.webp"
+                    src={`/landing/app-dashboard-${currentLanguage}.webp`}
                     alt={t('clients.web.alt')}
                     loading="lazy"
                     width={1280}
@@ -623,7 +623,7 @@ export function LandingPage() {
               <div className={styles.clientStage}>
                 <div className={styles.phoneFrame}>
                   <img
-                    src="/landing/app-mobile.webp"
+                    src={`/landing/app-mobile-${currentLanguage}.webp`}
                     alt={t('clients.app.alt')}
                     loading="lazy"
                     width={600}
