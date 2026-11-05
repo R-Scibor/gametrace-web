@@ -126,54 +126,59 @@
     "defaultCaption": "Scan with your phone"
   },
   "onboarding": {
-    "eyebrow": "SETUP",
-    "title": "Set up GameTrace",
-    "subtitle": "3 short steps — it only takes a moment.",
     "closeAria": "Close",
     "progressAria": "Setup progress",
-    "back": "← Back",
+    "back": "Back",
     "steps": {
-      "discord": "Discord",
-      "register": "Register",
-      "client": "Client"
+      "discord": "Step 1 of 3 · Discord",
+      "account": "Step 2 of 3 · Account",
+      "client": "Step 3 of 3 · Client"
     },
     "step1": {
-      "title": "Invite the bot or join a server",
-      "bodyBoth": "GameTrace runs on Discord. Invite the bot to your server or join a public server with the bot — both paths work the same.",
-      "bodyServerOnly": "GameTrace runs on Discord. Join a public server with the bot, or use a server that already has it.",
-      "bodyBotOnly": "GameTrace runs on Discord. Invite the bot to your server or join a server that already has it.",
-      "joinServer": "JOIN A SERVER WITH THE BOT",
-      "addBot": "ADD BOT TO SERVER",
-      "alreadyHaveBot": "ALREADY HAVE THE BOT → NEXT",
-      "hintServer": "Once you've joined the server, come back here and click next.",
-      "hintBot": "Once you've added the bot to your server, come back here and click next."
+      "eyebrow": "Start / Discord bot",
+      "title": "Add the bot or join a server",
+      "body": "GameTrace tracks your playtime in the background through Discord Rich Presence. You don’t install anything on your computer and you don’t lose a single FPS. You can join the public server where the bot is already present, or add it to your own — both work the same way.",
+      "joinServer": "Join the GameTrace server",
+      "addBot": "Add the bot to your server",
+      "alreadyHaveBot": "I already have the bot on a server",
+      "benefit1": "GameTrace works with every game Discord shows as your activity.",
+      "benefit2": "You don’t have to install an agent or an overlay on your computer.",
+      "benefit3": "When you quit the game, the session is saved automatically.",
+      "hintServer": "After joining the server, come back here and continue.",
+      "hintBot": "After adding the bot to your server, come back here and continue."
     },
     "step2": {
-      "title": "Introduce yourself to the bot",
-      "body": "In a server channel, send the command below. The bot will reply with a login code — don't message in a DM.",
+      "eyebrow": "Account",
+      "title": "How do you want to create an account",
+      "body": "You can sign in with Discord, or type the /login command on a server channel and use the code the bot sends you. In both cases you must be on the same server as the bot.",
+      "discordTitle": "With Discord",
+      "discordBody": "After you click, Discord’s site will open so you can confirm sign-in as usual.",
+      "discordButton": "Sign in with Discord",
+      "or": "OR",
+      "codeTitle": "Command on the server",
+      "codeBody": "Type the command below on a server channel. The bot will send you a code you can use to sign in. Don’t send this command as a private message — only on a channel where the bot is present.",
       "commandAria": "/login command",
+      "tagCopy": "COPY",
+      "tagCopied": "COPIED",
       "hintCopied": "Copied — paste it on Discord.",
-      "hintSelected": "Selected — press Ctrl+C / Cmd+C if it didn't copy automatically.",
-      "hintIdle": "Click the field to select the /login command.",
-      "haveCode": "ALREADY HAVE A CODE → NEXT",
-      "chooseTitle": "How do you want to create the account",
-      "chooseBody": "A channel code, or Discord login. Either way the bot has to share a server with you.",
-      "chooseCode": "CODE FROM /login",
-      "chooseDiscord": "DISCORD ACCOUNT"
+      "hintSelected": "Selected — Ctrl+C / Cmd+C if it didn't copy automatically.",
+      "hintIdle": "Click the field to copy the /login command.",
+      "haveCode": "I already have a code"
+    },
+    "discordConfirm": {
+      "eyebrow": "Sign in with Discord",
+      "lead": "Discord is about to open so you can confirm signing in to GameTrace.",
+      "button": "Continue to Discord",
+      "starting": "Opening Discord…"
     },
     "step3": {
       "title": "Choose a client",
-      "body": "One account — the same sessions in the browser and in the app.",
-      "webLabel": "BROWSER",
-      "webBody": "Sessions, library, and stats on a big screen — the same dashboard as in the app.",
-      "appLabel": "APP",
-      "appBody": "Sessions, library, and stats in your pocket — the same dashboard as in the browser.",
-      "openWeb": "OPEN IN BROWSER",
-      "loginWeb": "LOG IN VIA BROWSER",
-      "checking": "CHECKING…",
-      "downloadApk": "DOWNLOAD APK"
-    },
-    "footerLogin": "Already have an account → Log in"
+      "intro": "This is where you’ll see your stats in the browser and on your phone.",
+      "openWeb": "Open the dashboard",
+      "loginWeb": "Sign in in the browser",
+      "checking": "Checking…",
+      "downloadApk": "Download APK"
+    }
   },
   "footer": {
     "tagline": "Your gaming journal, kept automatically.",

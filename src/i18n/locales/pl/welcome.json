@@ -130,54 +130,59 @@
     "defaultCaption": "Zeskanuj telefonem"
   },
   "onboarding": {
-    "eyebrow": "KONFIGURACJA",
-    "title": "Uruchom GameTrace",
-    "subtitle": "3 krótkie kroki — zajmie to chwilę.",
     "closeAria": "Zamknij",
     "progressAria": "Postęp konfiguracji",
-    "back": "← Wstecz",
+    "back": "Wstecz",
     "steps": {
-      "discord": "Discord",
-      "register": "Rejestracja",
-      "client": "Klient"
+      "discord": "Krok 1 z 3 · Discord",
+      "account": "Krok 2 z 3 · Konto",
+      "client": "Krok 3 z 3 · Klient"
     },
     "step1": {
-      "title": "Zaproś bota albo dołącz na serwer",
-      "bodyBoth": "GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do publicznego serwera z botem — obie drogi działają tak samo.",
-      "bodyServerOnly": "GameTrace działa na Discordzie. Dołącz do publicznego serwera z botem albo użyj serwera, na którym bot już jest.",
-      "bodyBotOnly": "GameTrace działa na Discordzie. Zaproś bota na swój serwer albo dołącz do serwera, który już go ma.",
-      "joinServer": "DOŁĄCZ DO SERWERA Z BOTEM",
-      "addBot": "DODAJ BOTA DO SERWERA",
-      "alreadyHaveBot": "MAM JUŻ BOTA → DALEJ",
-      "hintServer": "Po dołączeniu do serwera wróć tutaj i kliknij dalej.",
-      "hintBot": "Po dodaniu bota do swojego serwera wróć tutaj i kliknij dalej."
+      "eyebrow": "Start / Bot na Discordzie",
+      "title": "Dodaj bota lub dołącz do serwera",
+      "body": "GameTrace rejestruje Twój czas gry w tle przez status Discord Rich Presence. Nic nie instalujesz na komputerze i nie tracisz ani jednego FPS. Możesz dołączyć do publicznego serwera, na którym bot już jest, albo dodać go do własnego — oba sposoby działają tak samo.",
+      "joinServer": "Dołącz do serwera GameTrace",
+      "addBot": "Dodaj bota do swojego serwera",
+      "alreadyHaveBot": "Mam już bota na serwerze",
+      "benefit1": "GameTrace działa z każdą grą, którą Discord pokazuje jako Twoją aktywność.",
+      "benefit2": "Nie musisz instalować agenta ani nakładki na komputerze.",
+      "benefit3": "Kiedy wyłączysz grę, sesja zapisze się automatycznie.",
+      "hintServer": "Po dołączeniu do serwera wróć tutaj i przejdź dalej.",
+      "hintBot": "Po dodaniu bota do swojego serwera wróć tutaj i przejdź dalej."
     },
     "step2": {
-      "title": "Przedstaw się botowi",
-      "body": "Na kanale serwera wyślij komendę poniżej. Bot odpowie kodem do logowania — nie pisz na privie.",
+      "eyebrow": "Konto",
+      "title": "Jak chcesz założyć konto",
+      "body": "Możesz zalogować się przez Discorda albo wpisać na kanale serwera komendę /login i użyć kodu, który bot Ci wyśle. W obu przypadkach musisz być na tym samym serwerze co bot.",
+      "discordTitle": "Przez Discorda",
+      "discordBody": "Po kliknięciu otworzy się strona Discorda, na której potwierdzisz logowanie tak, jak zwykle.",
+      "discordButton": "Zaloguj przez Discorda",
+      "or": "LUB",
+      "codeTitle": "Komenda na serwerze",
+      "codeBody": "Wpisz na kanale serwera komendę poniżej. Bot odeśle Ci kod, którym zalogujesz się do panelu. Nie wysyłaj tej komendy w prywatnej wiadomości — tylko na kanale, na którym bot jest obecny.",
       "commandAria": "Komenda /login",
+      "tagCopy": "KOPIUJ",
+      "tagCopied": "SKOPIOWANO",
       "hintCopied": "Skopiowano — wklej na Discordzie.",
       "hintSelected": "Zaznaczono — Ctrl+C / Cmd+C, jeśli nie skopiowało się samo.",
-      "hintIdle": "Kliknij pole, aby zaznaczyć komendę /login.",
-      "haveCode": "MAM JUŻ KOD → DALEJ",
-      "chooseTitle": "Jak chcesz założyć konto",
-      "chooseBody": "Kod z kanału albo logowanie przez Discord. W obu przypadkach bot musi być na wspólnym serwerze.",
-      "chooseCode": "KOD Z /login",
-      "chooseDiscord": "KONTO PRZEZ DISCORD"
+      "hintIdle": "Kliknij pole, aby skopiować komendę /login.",
+      "haveCode": "Mam już kod"
+    },
+    "discordConfirm": {
+      "eyebrow": "Logowanie przez Discorda",
+      "lead": "Zaraz otworzy się Discord, żeby potwierdzić logowanie do GameTrace.",
+      "button": "Przejdź do Discorda",
+      "starting": "Otwieranie Discorda…"
     },
     "step3": {
       "title": "Wybierz klienta",
-      "body": "Jedno konto — te same sesje w przeglądarce i w aplikacji.",
-      "webLabel": "PRZEGLĄDARKA",
-      "webBody": "Sesje, biblioteka i statystyki na dużym ekranie — ten sam Dashboard co w aplikacji.",
-      "appLabel": "APLIKACJA",
-      "appBody": "Sesje, biblioteka i statystyki w kieszeni — ten sam Dashboard co w przeglądarce.",
-      "openWeb": "OTWÓRZ W PRZEGLĄDARCE",
-      "loginWeb": "ZALOGUJ W PRZEGLĄDARCE",
-      "checking": "SPRAWDZANIE…",
-      "downloadApk": "POBIERZ APK"
-    },
-    "footerLogin": "Mam już konto → Zaloguj się"
+      "intro": "Tutaj zobaczysz swoje statystyki w przeglądarce i na telefonie.",
+      "openWeb": "Otwórz panel",
+      "loginWeb": "Zaloguj w przeglądarce",
+      "checking": "Sprawdzanie…",
+      "downloadApk": "Pobierz APK"
+    }
   },
   "footer": {
     "tagline": "Dziennik Twojej gry, prowadzony automatycznie.",
