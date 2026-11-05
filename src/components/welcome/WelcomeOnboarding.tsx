@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Button } from '../ui/Button';
 import { ApkQrCode } from './ApkQrCode';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../../lib/apkDownload';
 import { copyFromInput } from '../../lib/copyToClipboard';
@@ -46,6 +47,75 @@ const CheckIcon = () => (
   </svg>
 );
 
+const CloseIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="14"
+    height="14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
+const ArrowLeftIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="14"
+    height="14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <line x1="19" y1="12" x2="5" y2="12" />
+    <polyline points="12 19 5 12 12 5" />
+  </svg>
+);
+
+const ArrowRightIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="13"
+    height="13"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+const AlertIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+);
+
 interface WelcomeOnboardingProps {
   open: boolean;
   onClose: () => void;
@@ -75,6 +145,7 @@ export function WelcomeOnboarding({
   const [commandStatus, setCommandStatus] = useState<'idle' | 'selected' | 'copied'>('idle');
   const [botInviteOpened, setBotInviteOpened] = useState(false);
   const [serverJoinOpened, setServerJoinOpened] = useState(false);
+  const [showQr, setShowQr] = useState(false);
   const commandInputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
@@ -87,6 +158,7 @@ export function WelcomeOnboarding({
     setCommandStatus('idle');
     setBotInviteOpened(false);
     setServerJoinOpened(false);
+    setShowQr(false);
     onClose();
   };
 
@@ -95,6 +167,9 @@ export function WelcomeOnboarding({
       setStep2Mode('choose');
       setDiscordError(null);
       return;
+    }
+    if (step === 3) {
+      setShowQr(false);
     }
     setStep((current) => (current - 1) as StepId);
   };
@@ -167,6 +242,14 @@ export function WelcomeOnboarding({
         ? t('onboarding.steps.account')
         : t('onboarding.steps.client');
 
+  const discordPathOpened = botInviteOpened || serverJoinOpened;
+
+  const goToStep2 = () => {
+    setStep2Mode(defaultStep2Mode);
+    setDiscordError(null);
+    setStep(2);
+  };
+
   const isDiscordConfirm = step === 2 && step2Mode === 'discord';
 
   return (
@@ -179,22 +262,24 @@ export function WelcomeOnboarding({
         aria-label={progressLabel}
       >
         <div className={styles.top}>
-          {step > 1 && (
-            <button
-              type="button"
-              className={styles.backBtn}
-              onClick={handleBack}
-              aria-label={t('onboarding.back')}
-            >
-              ←
-            </button>
-          )}
+          <div className={styles.topLeft}>
+            {step > 1 && (
+              <button
+                type="button"
+                className={styles.backBtn}
+                onClick={handleBack}
+                aria-label={t('onboarding.back')}
+              >
+                <ArrowLeftIcon />
+              </button>
+            )}
 
-          <div className={styles.prog} aria-label={t('onboarding.progressAria')}>
-            <b className={[styles.progBar, step >= 1 ? styles.progBarOn : ''].filter(Boolean).join(' ')} />
-            <b className={[styles.progBar, step >= 2 ? styles.progBarOn : ''].filter(Boolean).join(' ')} />
-            <b className={[styles.progBar, step >= 3 ? styles.progBarOn : ''].filter(Boolean).join(' ')} />
-            <span className={styles.progText}>{progressLabel}</span>
+            <div className={styles.prog} aria-label={t('onboarding.progressAria')}>
+              <b className={[styles.progBar, step >= 1 ? styles.progBarOn : ''].filter(Boolean).join(' ')} />
+              <b className={[styles.progBar, step >= 2 ? styles.progBarOn : ''].filter(Boolean).join(' ')} />
+              <b className={[styles.progBar, step >= 3 ? styles.progBarOn : ''].filter(Boolean).join(' ')} />
+              <span className={styles.progText}>{progressLabel}</span>
+            </div>
           </div>
 
           <button
@@ -203,7 +288,7 @@ export function WelcomeOnboarding({
             onClick={resetAndClose}
             aria-label={t('onboarding.closeAria')}
           >
-            ✕
+            <CloseIcon />
           </button>
         </div>
 
@@ -215,45 +300,45 @@ export function WelcomeOnboarding({
 
             <div className={styles.step1Actions}>
               {SERVER_JOIN_URL ? (
-                <button
-                  type="button"
-                  className={`${styles.ctaBtn} ${styles.ctaOutline}`}
+                <Button
+                  className={styles.startBtn}
+                  variant={serverJoinOpened ? 'secondary' : 'primary'}
                   onClick={openServerJoin}
                 >
                   <DiscordIcon />
                   {t('onboarding.step1.joinServer')}
-                </button>
+                </Button>
               ) : null}
               {BOT_INVITE_URL ? (
-                <button
-                  type="button"
-                  className={`${styles.ctaBtn} ${styles.ctaOutline}`}
+                <Button
+                  className={styles.startBtn}
+                  variant={botInviteOpened ? 'secondary' : 'primary'}
                   onClick={openBotInvite}
                 >
                   <DiscordIcon />
                   {t('onboarding.step1.addBot')}
-                </button>
+                </Button>
               ) : null}
             </div>
 
-            <button
-              type="button"
-              className={styles.calmLink}
-              onClick={() => {
-                setStep2Mode(defaultStep2Mode);
-                setDiscordError(null);
-                setStep(2);
-              }}
-            >
-              {t('onboarding.step1.alreadyHaveBot')}
-            </button>
+            {discordPathOpened && (
+              <div className={styles.discordActivePanel}>
+                <p className={styles.discordActiveHint}>
+                  {serverJoinOpened ? t('onboarding.step1.hintServer') : t('onboarding.step1.hintBot')}
+                </p>
+              </div>
+            )}
 
-            {serverJoinOpened && (
-              <p className={styles.stepHint}>{t('onboarding.step1.hintServer')}</p>
-            )}
-            {botInviteOpened && (
-              <p className={styles.stepHint}>{t('onboarding.step1.hintBot')}</p>
-            )}
+            <Button
+              variant={discordPathOpened ? 'primary' : 'secondary'}
+              className={discordPathOpened ? styles.advanceBtnPrimary : styles.advanceBtnSecondary}
+              onClick={goToStep2}
+            >
+              {discordPathOpened
+                ? `${t('onboarding.step1.alreadyHaveBot')} — ${t('onboarding.step1.nextStep')}`
+                : t('onboarding.step1.alreadyHaveBot')}
+              <ArrowRightIcon />
+            </Button>
 
             <ul className={styles.checks}>
               <li>
@@ -278,9 +363,26 @@ export function WelcomeOnboarding({
               <p className={styles.eyebrow}>{t('onboarding.discordConfirm.eyebrow')}</p>
               <p className={styles.discordConfirmLead}>{t('onboarding.discordConfirm.lead')}</p>
               {discordError ? (
-                <p className={styles.stepError} role="alert">
-                  {discordError}
-                </p>
+                <div className={styles.discordNoticeBox} role="alert">
+                  <div className={styles.discordNoticeTitle}>
+                    <AlertIcon />
+                    <strong>{discordError}</strong>
+                  </div>
+                  <p className={styles.discordNoticeHint}>
+                    {t('onboarding.discordConfirm.insecureHint')}
+                  </p>
+                  <button
+                    type="button"
+                    className={styles.discordNoticeAction}
+                    onClick={() => {
+                      setDiscordError(null);
+                      setStep2Mode('choose');
+                    }}
+                  >
+                    <span>{t('onboarding.discordConfirm.tryCodeAlternative')}</span>
+                    <ArrowRightIcon />
+                  </button>
+                </div>
               ) : null}
               <div>
                 <button
@@ -304,8 +406,23 @@ export function WelcomeOnboarding({
 
               <div className={styles.step2Grid}>
                 <div className={styles.step2Col}>
+                  <span className={styles.step2Tag}>{t('onboarding.step2.option1')}</span>
                   <h3>{t('onboarding.step2.discordTitle')}</h3>
                   <p>{t('onboarding.step2.discordBody')}</p>
+                  <ul className={styles.oauthList}>
+                    <li className={styles.oauthItem}>
+                      <CheckIcon />
+                      <span>{t('onboarding.step2.oauthPoint1')}</span>
+                    </li>
+                    <li className={styles.oauthItem}>
+                      <CheckIcon />
+                      <span>{t('onboarding.step2.oauthPoint2')}</span>
+                    </li>
+                    <li className={styles.oauthItem}>
+                      <CheckIcon />
+                      <span>{t('onboarding.step2.oauthPoint3')}</span>
+                    </li>
+                  </ul>
                   <div className={styles.step2Bottom}>
                     <button
                       type="button"
@@ -318,9 +435,8 @@ export function WelcomeOnboarding({
                   </div>
                 </div>
 
-                <div className={styles.step2Lub}>{t('onboarding.step2.or')}</div>
-
                 <div className={styles.step2Col}>
+                  <span className={styles.step2Tag}>{t('onboarding.step2.option2')}</span>
                   <h3>{t('onboarding.step2.codeTitle')}</h3>
                   <p>{t('onboarding.step2.codeBody')}</p>
                   <div className={styles.step2Bottom}>
@@ -358,17 +474,16 @@ export function WelcomeOnboarding({
                       </small>
                     </div>
                     <p className={styles.hint}>{commandHint}</p>
+                    <Button
+                      className={styles.codeAdvanceBtn}
+                      onClick={() => setStep(3)}
+                    >
+                      {t('onboarding.step2.haveCode')}
+                      <ArrowRightIcon />
+                    </Button>
                   </div>
                 </div>
               </div>
-
-              <button
-                type="button"
-                className={styles.calmLink}
-                onClick={() => setStep(3)}
-              >
-                {t('onboarding.step2.haveCode')}
-              </button>
             </section>
           ))}
 
@@ -381,12 +496,6 @@ export function WelcomeOnboarding({
               <div className={styles.clientCol}>
                 <div className={styles.stage}>
                   <div className={styles.browserFrame}>
-                    <div className={styles.browserBar} aria-hidden>
-                      <i />
-                      <i />
-                      <i />
-                      <span>gametrace.app</span>
-                    </div>
                     <img
                       src={`/landing/app-dashboard-${currentLanguage}.webp`}
                       alt={t('clients.web.alt')}
@@ -401,29 +510,36 @@ export function WelcomeOnboarding({
                 </p>
                 <h3>{t('clients.web.title')}</h3>
                 <p className={styles.clientLead}>{t('clients.web.body')}</p>
-                <div>
-                  <button
-                    type="button"
-                    className={`${styles.ctaBtn} ${styles.ctaPrimary}`}
+                <div className={styles.webActions}>
+                  <Button
+                    className={styles.clientBtn}
                     onClick={isAuthenticated ? goToDashboard : goToLogin}
                   >
                     {isAuthenticated
                       ? t('onboarding.step3.openWeb')
                       : t('onboarding.step3.loginWeb')}
-                  </button>
+                  </Button>
                 </div>
               </div>
 
               <div className={styles.clientCol}>
                 <div className={styles.stage}>
-                  <div className={styles.phoneFrame}>
-                    <img
-                      src={`/landing/app-mobile-${currentLanguage}.webp`}
-                      alt={t('clients.app.alt')}
-                      width={600}
-                      height={1244}
-                    />
-                  </div>
+                  {showQr ? (
+                    <div className={styles.qrStage}>
+                      <ApkQrCode visible size={136} caption={t('qr.defaultCaption')} />
+                    </div>
+                  ) : (
+                    <div className={styles.phoneStage}>
+                      <div className={styles.phoneFrame}>
+                        <img
+                          src={`/landing/app-mobile-${currentLanguage}.webp`}
+                          alt={t('clients.app.alt')}
+                          width={600}
+                          height={1244}
+                        />
+                      </div>
+                    </div>
+                  )}
                   <div className={styles.fade} aria-hidden />
                 </div>
                 <p className={styles.eyebrow} style={{ margin: '18px 0 0' }}>
@@ -431,21 +547,33 @@ export function WelcomeOnboarding({
                 </p>
                 <h3>{t('clients.app.title')}</h3>
                 <p className={styles.clientLead}>{t('clients.app.body')}</p>
-                <div className={styles.clientRow}>
-                  <ApkQrCode visible={apkAvailable === true} size={64} caption="" />
-                  <button
-                    type="button"
-                    className={`${styles.ctaBtn} ${
-                      apkAvailable === true ? styles.ctaOutline : styles.ctaDisabled
-                    }`}
+                <div className={styles.androidActions}>
+                  <Button
+                    variant="secondary"
+                    className={styles.qrToggleBtn}
+                    disabled={apkAvailable !== true}
+                    onClick={() => setShowQr((p) => !p)}
+                  >
+                    {showQr
+                      ? t('onboarding.step3.qrButtonHide')
+                      : t('onboarding.step3.qrButton')}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className={styles.clientBtn}
                     disabled={apkAvailable !== true}
                     onClick={handleApkDownload}
                   >
                     {apkAvailable === null
                       ? t('onboarding.step3.checking')
                       : t('onboarding.step3.downloadApk')}
-                  </button>
+                  </Button>
                 </div>
+                {apkAvailable === false ? (
+                  <p className={styles.apkUnavailableHint}>
+                    {t('onboarding.step3.apkUnavailableNote')}
+                  </p>
+                ) : null}
               </div>
             </div>
           </section>

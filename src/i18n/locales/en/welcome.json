@@ -142,7 +142,8 @@
       "body": "GameTrace tracks your playtime in the background through Discord Rich Presence. You don’t install anything on your computer and you don’t lose a single FPS. You can join the public server where the bot is already present, or add it to your own — both work the same way.",
       "joinServer": "Join the GameTrace server",
       "addBot": "Add the bot to your server",
-      "alreadyHaveBot": "I already have the bot on a server",
+      "alreadyHaveBot": "I am already on a server with the bot",
+      "nextStep": "continue",
       "benefit1": "GameTrace works with every game Discord shows as your activity.",
       "benefit2": "You don’t have to install an agent or an overlay on your computer.",
       "benefit3": "When you quit the game, the session is saved automatically.",
@@ -153,8 +154,13 @@
       "eyebrow": "Account",
       "title": "How do you want to create an account",
       "body": "You can sign in with Discord, or type the /login command on a server channel and use the code the bot sends you. In both cases you must be on the same server as the bot.",
+      "option1": "Option 1 · Direct",
+      "option2": "Option 2 · Bot command",
       "discordTitle": "With Discord",
-      "discordBody": "After you click, Discord’s site will open so you can confirm sign-in as usual.",
+      "discordBody": "Quick sign-in through official Discord authorization (OAuth2) — no manual codes needed.",
+      "oauthPoint1": "You sign in directly on discord.com — GameTrace never sees or stores your password.",
+      "oauthPoint2": "We only receive your Discord ID, username, avatar, and server list (to verify bot presence).",
+      "oauthPoint3": "Zero access to your email, private messages (DMs), or ability to post from your account.",
       "discordButton": "Sign in with Discord",
       "or": "OR",
       "codeTitle": "Command on the server",
@@ -171,7 +177,9 @@
       "eyebrow": "Sign in with Discord",
       "lead": "Discord is about to open so you can confirm signing in to GameTrace.",
       "button": "Continue to Discord",
-      "starting": "Opening Discord…"
+      "starting": "Opening Discord…",
+      "insecureHint": "Discord requires a secure connection (HTTPS) for OAuth authorization. In a local environment or without an SSL certificate, you can sign in using the bot command on your server instead.",
+      "tryCodeAlternative": "Switch to sign in via /login command"
     },
     "step3": {
       "title": "Choose a client",
@@ -179,7 +187,10 @@
       "openWeb": "Open the dashboard",
       "loginWeb": "Sign in in the browser",
       "checking": "Checking…",
-      "downloadApk": "Download APK"
+      "downloadApk": "Download APK",
+      "qrButton": "QR Code",
+      "qrButtonHide": "Preview",
+      "apkUnavailableNote": "Mobile app coming soon — sign in via browser"
     }
   },
   "footer": {
@@ -191,6 +202,7 @@
     "login": "Log in",
     "discord": "Discord server",
     "privacy": "Privacy policy",
+    "faq": "FAQ",
     "igdb": "Game data and covers: IGDB"
   }
 }

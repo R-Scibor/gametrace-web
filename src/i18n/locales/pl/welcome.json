@@ -146,7 +146,8 @@
       "body": "GameTrace rejestruje Twój czas gry w tle przez status Discord Rich Presence. Nic nie instalujesz na komputerze i nie tracisz ani jednego FPS. Możesz dołączyć do publicznego serwera, na którym bot już jest, albo dodać go do własnego — oba sposoby działają tak samo.",
       "joinServer": "Dołącz do serwera GameTrace",
       "addBot": "Dodaj bota do swojego serwera",
-      "alreadyHaveBot": "Mam już bota na serwerze",
+      "alreadyHaveBot": "Jestem już na serwerze z botem",
+      "nextStep": "przejdź dalej",
       "benefit1": "GameTrace działa z każdą grą, którą Discord pokazuje jako Twoją aktywność.",
       "benefit2": "Nie musisz instalować agenta ani nakładki na komputerze.",
       "benefit3": "Kiedy wyłączysz grę, sesja zapisze się automatycznie.",
@@ -157,8 +158,13 @@
       "eyebrow": "Konto",
       "title": "Jak chcesz założyć konto",
       "body": "Możesz zalogować się przez Discorda albo wpisać na kanale serwera komendę /login i użyć kodu, który bot Ci wyśle. W obu przypadkach musisz być na tym samym serwerze co bot.",
+      "option1": "Opcja 1 · Bezpośrednio",
+      "option2": "Opcja 2 · Komenda bota",
       "discordTitle": "Przez Discorda",
-      "discordBody": "Po kliknięciu otworzy się strona Discorda, na której potwierdzisz logowanie tak, jak zwykle.",
+      "discordBody": "Szybkie logowanie przez oficjalną autoryzację Discord (OAuth2) — bez przepisywania kodów.",
+      "oauthPoint1": "Logujesz się na oficjalnej stronie discord.com — GameTrace nigdy nie widzi ani nie zapisuje Twojego hasła.",
+      "oauthPoint2": "Otrzymujemy jedynie Twój identyfikator (ID), nazwę, awatar oraz listę serwerów (by potwierdzić obecność bota).",
+      "oauthPoint3": "Zero dostępu do Twojego e-maila, prywatnych wiadomości (DM) czy możliwości pisania w Twoim imieniu.",
       "discordButton": "Zaloguj przez Discorda",
       "or": "LUB",
       "codeTitle": "Komenda na serwerze",
@@ -175,7 +181,9 @@
       "eyebrow": "Logowanie przez Discorda",
       "lead": "Zaraz otworzy się Discord, żeby potwierdzić logowanie do GameTrace.",
       "button": "Przejdź do Discorda",
-      "starting": "Otwieranie Discorda…"
+      "starting": "Otwieranie Discorda…",
+      "insecureHint": "Discord wymaga bezpiecznego połączenia (HTTPS) do autoryzacji OAuth. Jeśli korzystasz z GameTrace lokalnie lub bez certyfikatu SSL, możesz bez przeszkód skorzystać z komendy bota na serwerze.",
+      "tryCodeAlternative": "Przejdź do logowania komendą /login"
     },
     "step3": {
       "title": "Wybierz klienta",
@@ -183,7 +191,10 @@
       "openWeb": "Otwórz panel",
       "loginWeb": "Zaloguj w przeglądarce",
       "checking": "Sprawdzanie…",
-      "downloadApk": "Pobierz APK"
+      "downloadApk": "Pobierz APK",
+      "qrButton": "Kod QR",
+      "qrButtonHide": "Podgląd",
+      "apkUnavailableNote": "Wersja mobilna w przygotowaniu — zaloguj się w przeglądarce"
     }
   },
   "footer": {
@@ -195,6 +206,7 @@
     "login": "Zaloguj się",
     "discord": "Serwer Discord",
     "privacy": "Polityka prywatności",
+    "faq": "Często zadawane pytania",
     "igdb": "Dane i okładki gier: IGDB"
   }
 }
