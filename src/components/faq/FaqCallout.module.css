@@ -1,0 +1,83 @@
+.callout {
+  margin: 16px 0 4px;
+  padding: 14px 18px;
+  border-radius: 3px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  font-family: var(--body);
+}
+
+.tip {
+  border-left-color: var(--orange);
+  background-color: rgba(255, 122, 26, 0.05);
+}
+
+.gotcha {
+  border-left-color: var(--warn);
+  background-color: var(--warn-tint);
+}
+
+.warning {
+  border-left-color: #e05244;
+  background-color: rgba(224, 82, 68, 0.08);
+}
+
+.info {
+  border-left-color: var(--border-control);
+  background-color: var(--bg3);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.tip .badge {
+  background-color: rgba(255, 122, 26, 0.18);
+  color: var(--orange);
+}
+
+.gotcha .badge {
+  background-color: rgba(220, 185, 92, 0.18);
+  color: var(--warn);
+}
+
+.warning .badge {
+  background-color: rgba(224, 82, 68, 0.2);
+  color: #ff7668;
+}
+
+.info .badge {
+  background-color: rgba(148, 142, 130, 0.16);
+  color: var(--text2);
+}
+
+.title {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.2px;
+}
+
+.text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text2);
+}

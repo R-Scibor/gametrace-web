@@ -10,6 +10,7 @@ import { TimezoneSelect } from '../components/ui/TimezoneSelect';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { DeleteAccountRow } from '../components/settings/DeleteAccountRow';
 import { PrivacyNoticeRow } from '../components/settings/PrivacyNoticeRow';
+import { FaqNoticeRow } from '../components/settings/FaqNoticeRow';
 import { SettingsRow } from '../components/settings/SettingsRow';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import styles from './SettingsPage.module.css';
@@ -83,6 +84,7 @@ export function SettingsPage() {
 
       <div className={styles.panel}>
         <h3 className={styles.sectionTitle}>{t('sections.privacy')}</h3>
+        <FaqNoticeRow />
         <PrivacyNoticeRow />
       </div>
 

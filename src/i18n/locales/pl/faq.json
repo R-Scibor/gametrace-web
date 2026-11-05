@@ -1,0 +1,606 @@
+{
+  "documentTitle": "Często zadawane pytania — GameTrace",
+  "eyebrow": "BAZA WIEDZY I POMOC",
+  "title": "Często zadawane pytania",
+  "lead": "Wszystko o automatycznym śledzeniu gier, integracji z Discordem, transkrypcji głosu, statystykach oraz rozwiązywaniu typowych problemów.",
+  "searchPlaceholder": "Szukaj w pytaniach i odpowiedziach (np. 409, Discord, APK, mikrofon)...",
+  "searchAria": "Szukaj w bazie pytań",
+  "clearSearchAria": "Wyczyść wyszukiwanie",
+  "searchMatches": "Znaleziono: {{count}} z {{total}} pytań",
+  "searchMatches_one": "Znaleziono: {{count}} z {{total}} pytań",
+  "searchMatches_few": "Znaleziono: {{count}} z {{total}} pytań",
+  "searchMatches_many": "Znaleziono: {{count}} z {{total}} pytań",
+  "noMatches": "Nie znaleziono pytań pasujących do frazy „{{query}}”.",
+  "noMatchesHint": "Spróbuj wpisać inne słowo kluczowe lub wybierz kategorię „Wszystkie”.",
+  "allCategories": "Wszystkie tematy",
+  "clearFilters": "Wyczyść filtry",
+  "questionsInCategory": "{{count}} pytań w kategorii",
+  "questionsInCategory_one": "{{count}} pytanie w kategorii",
+  "questionsInCategory_few": "{{count}} pytania w kategorii",
+  "questionsInCategory_many": "{{count}} pytań w kategorii",
+  "questionsTotal": "{{count}} pytań łącznie",
+  "questionsTotal_one": "{{count}} pytanie łącznie",
+  "questionsTotal_few": "{{count}} pytania łącznie",
+  "questionsTotal_many": "{{count}} pytań łącznie",
+  "categoryFilterAria": "Wyszukiwanie i filtry",
+  "supportAria": "Wsparcie techniczne",
+  "languageAria": "Język",
+  "questionsCountAria": "{{count}} pytań",
+  "questionsCountAria_one": "{{count}} pytanie",
+  "questionsCountAria_few": "{{count}} pytania",
+  "questionsCountAria_many": "{{count}} pytań",
+  "expandAll": "Rozwiń wszystkie",
+  "collapseAll": "Zwiń wszystkie",
+  "copyLink": "Kopiuj link do pytania",
+  "linkCopied": "Skopiowano link do schowka",
+  "backHome": "← Strona główna",
+  "supportBannerTitle": "Nie znalazłeś odpowiedzi na swoje pytanie?",
+  "supportBannerText": "Dołącz do naszego oficjalnego serwera na Discordzie. Pomożemy Ci skonfigurować bota, zweryfikować status sesji lub zgłosić napotkany błąd.",
+  "joinDiscord": "Dołącz do Discorda",
+  "viewPrivacy": "Polityka prywatności",
+  "calloutLabels": {
+    "tip": "WSKAZÓWKA",
+    "gotcha": "PUŁAPKA / GOTCHA",
+    "warning": "WAŻNE OSTRZEŻENIE",
+    "info": "INFORMACJA TECHNICZNA"
+  },
+  "sections": [
+    {
+      "id": "getting-started",
+      "title": "Podstawy i pierwsze kroki",
+      "description": "Jak rozpocząć przygodę z GameTrace, czym różni się od innych narzędzi i jak działa bezhasłowe logowanie.",
+      "questions": [
+        {
+          "id": "what-is-gametrace",
+          "badge": "START",
+          "question": "Czym dokładnie jest GameTrace i czym różni się od innych trackerów czasu?",
+          "answer": [
+            "GameTrace to bezobsługowy system monitorowania czasu spędzonego w grach, stworzony z myślą o graczach ceniących precyzję bez konieczności pamiętania o włączaniu stoperów.",
+            "W przeciwieństwie do klasycznych programów śledzących, GameTrace nie wymaga instalowania żadnego oprogramowania szpiegującego ani nakładek na komputerze. Dla gier na PC wykorzystuje status aktywności aplikacji Discord (Rich Presence), a dla konsol i rozgrywki offline oferuje inteligentną transkrypcję głosu napędzaną sztuczną inteligencją.",
+            "Wszystkie dane trafiają do Twojej prywatnej biblioteki, gdzie gry są automatycznie wzbogacane o oficjalne okładki HD, twórców, gatunki i daty premier z bazy IGDB."
+          ],
+          "keywords": ["czym jest", "jak zacząć", "podstawy", "steam", "playnite"]
+        },
+        {
+          "id": "how-to-login",
+          "badge": "AUTH",
+          "question": "Jak zarejestrować się i zalogować kodem z Discorda?",
+          "answer": [
+            "GameTrace nie korzysta z tradycyjnych haseł podatnych na wycieki. Logowanie odbywa się za pomocą jednorazowego, 6-cyfrowego kodu generowanego bezpośrednio przez bota na Discordzie.",
+            "Po wpisaniu kodu w przeglądarce otrzymujesz bezpieczny token sesyjny, który automatycznie odświeża się podczas korzystania z aplikacji."
+          ],
+          "steps": [
+            "Otwórz Discorda na dowolnym serwerze, na którym znajduje się bot GameTrace (lub w kanale komend).",
+            "Wpisz komendę slash `/login` i naciśnij Enter.",
+            "Bot wyśle prywatną (widoczną tylko dla Ciebie) wiadomość z 6-cyfrowym kodem (np. 849 201).",
+            "Wróć do aplikacji GameTrace Web i wpisz otrzymany kod w formularzu logowania.",
+            "Zostaniesz natychmiast zalogowany, a Twoja strefa czasowa zostanie automatycznie zsynchronizowana."
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "Ważność kodu wynosi 5 minut",
+            "text": "Kod jest jednorazowy i wygasa po 300 sekundach. Jeśli minie ten czas, wystarczy ponownie wpisać `/login` na Discordzie, aby otrzymać świeży kod."
+          },
+          "keywords": ["logowanie", "kod", "rejestracja", "hasło", "link code", "discord"]
+        },
+        {
+          "id": "pc-requirements",
+          "badge": "BEZ INSTALACJI",
+          "question": "Czy do korzystania z GameTrace na PC muszę instalować jakikolwiek program?",
+          "answer": [
+            "Nie. Nie musisz instalować żadnego agenta w tle, pliku .exe ani nakładki ingerującej w pliki gry.",
+            "Wystarczy, że masz uruchomioną oficjalną aplikację Discord na komputerze. Bot GameTrace odbiera zdarzenia o uruchomieniu i zamknięciu gry bezpośrednio przez oficjalne API bramy Discorda (Gateway Presence Events). Twój system operacyjny pozostaje całkowicie czysty."
+          ],
+          "keywords": ["instalacja", "program", "klient", "bezpieczeństwo", "antywirus"]
+        },
+        {
+          "id": "session-token-lifetime",
+          "badge": "AUTH",
+          "question": "Jak długo ważna jest sesja logowania i czy muszę wpisywać kod za każdym razem?",
+          "answer": [
+            "Token logowania w GameTrace działa w modelu tzw. przesuwnego okna (Sliding Window) o długości 30 dni.",
+            "Oznacza to, że dopóki regularnie otwierasz aplikację webową (przynajmniej raz na miesiąc), Twoja sesja jest automatycznie przedłużana o kolejne 30 dni. Nie musisz generować nowego kodu na Discordzie przy każdej wizycie.",
+            "Wylogowanie następuje automatycznie dopiero po 30 dniach całkowitej bezczynności lub po ręcznym kliknięciu przycisku „Wyloguj” w menu."
+          ],
+          "keywords": ["token", "sesja", "wylogowanie", "remember me", "30 dni"]
+        }
+      ]
+    },
+    {
+      "id": "discord-pc",
+      "title": "Automatyczne śledzenie na PC (Discord)",
+      "description": "Zasady wykrywania gier w tle, konfiguracja statusu aktywności w Discordzie i mechanizm łączenia sesji.",
+      "questions": [
+        {
+          "id": "how-discord-detection-works",
+          "badge": "BOT",
+          "question": "W jaki sposób bot Discorda automatycznie wykrywa, w co gram na PC?",
+          "answer": [
+            "Gdy uruchamiasz grę na komputerze, aplikacja Discord Desktop rozpoznaje działający proces i publikuje zdarzenie obecności (Rich Presence) ze statusem typu 'Playing'.",
+            "Bot GameTrace nasłuchuje zdarzeń zmiany statusu na serwerze Discorda. W momencie wykrycia gry wysyła żądanie otwarcia sesji ze statusem ONGOING. Po wyłączeniu gry bot odbiera zdarzenie zakończenia obecności, oblicza łączny czas trwania i oznacza sesję jako COMPLETED."
+          ],
+          "callout": {
+            "type": "info",
+            "title": "Katalog aliasów procesów",
+            "text": "Jeśli nazwa procesu gry z Discorda różni się od oficjalnego tytułu (np. 'witcher3.exe'), system automatycznie mapuje ją za pomocą globalnej bazy aliasów na kanoniczny tytuł z bazy IGDB."
+          },
+          "keywords": ["wykrywanie", "proces", "rich presence", "działanie", "automat"]
+        },
+        {
+          "id": "bot-visibility-shared-server",
+          "badge": "WYMÓG",
+          "question": "Dlaczego bot wymaga przynajmniej jednego wspólnego serwera z użytkownikiem?",
+          "answer": [
+            "Wynika to bezpośrednio z architektury bezpieczeństwa platformy Discord. Discord z powodów ochrony prywatności nigdy nie przesyła zdarzeń obecności (statusu grania) poprzez wiadomości prywatne (DM).",
+            "Aby bot mógł widzieć Twój status gry, musisz znajdować się na przynajmniej jednym wspólnym serwerze z botem. Może to być nasz oficjalny serwer społeczności GameTrace lub Twój prywatny serwer, na który zaprosisz bota."
+          ],
+          "callout": {
+            "type": "gotcha",
+            "title": "Komunikat „Bot cię nie widzi” w aplikacji",
+            "text": "Jeśli zalogujesz się do GameTrace, ale opuścisz wszystkie serwery dzielone z botem, na pulpicie pojawi się ostrzeżenie. Gry nie będą śledzone, dopóki ponownie nie dołączysz do serwera z botem."
+          },
+          "keywords": ["serwer", "wspólny serwer", "bot nie widzi", "uprawnienia", "guild"]
+        },
+        {
+          "id": "discord-privacy-settings",
+          "badge": "USTAWIENIA",
+          "question": "Jakie opcje muszę włączyć w ustawieniach Discorda, aby gry były śledzone?",
+          "answer": [
+            "Aby Discord udostępniał botowi informację o uruchomionej grze, Twoje ustawienia prywatności muszą zezwalać na wyświetlanie aktywności."
+          ],
+          "steps": [
+            "W aplikacji Discord na PC kliknij ikonę zębatki (Ustawienia użytkownika) w lewym dolnym rogu.",
+            "W menu po lewej stronie przejdź do zakładki „Prywatność aktywności” (Activity Privacy).",
+            "Włącz opcję: „Wyświetlaj bieżącą aktywność jako status” (Display current activity as a status message).",
+            "Upewnij się, że opcja udostępniania statusu aktywności jest włączona również dla serwera, na którym znajduje się bot GameTrace.",
+            "Twój profil w Discordzie nie może mieć ustawionego statusu „Niewidoczny” (Invisible) — Discord w trybie niewidocznym ukrywa wszelkie gry."
+          ],
+          "callout": {
+            "type": "warning",
+            "title": "Status „Niewidoczny” blokuje śledzenie",
+            "text": "Gdy Twój profil na Discordzie ma status Niewidoczny (szara kropka), Discord ze względów prywatności nie emituje eventów grania. Ustaw status Online, Zaraz wracam lub Nie przeszkadzać."
+          },
+          "keywords": ["ustawienia", "prywatność", "activity privacy", "status", "niewidoczny"]
+        },
+        {
+          "id": "flicker-and-stitch",
+          "badge": "STITCH",
+          "question": "Co się stanie, jeśli gra się zawiesi, zminimalizuje lub zrestartuję ją po chwili?",
+          "answer": [
+            "W GameTrace zaimplementowano zaawansowany silnik stabilizacji sesji, odporny na chwilowe przerwy i błędy gier:",
+            "1. Tłumienie migotania (Flicker Suppression): Jeśli gra włączy się i wyłączy w czasie krótszym niż 3 minuty (180 sekund), np. z powodu natychmiastowego crasha, sesja jest oznaczana jako migotanie i nie zaśmieca Twojej biblioteki ani statystyk.",
+            "2. Zszywanie sesji (Stitch-on-Resume): Jeśli gra zostanie wyłączona, ale uruchomisz ją ponownie w ciągu 3 minut (np. restart po zmianie ustawień graficznych lub crash gry), bot nie tworzy nowego wpisu, lecz wznawia i „zszywa” poprzednią sesję w jedną spójną całość."
+          ],
+          "keywords": ["crash", "restart", "stitch", "flicker", "minimalizacja", "przerwa"]
+        },
+        {
+          "id": "performance-impact",
+          "badge": "WYDAJNOŚĆ",
+          "question": "Czy GameTrace obciąża komputer lub wpływa na liczbę klatek (FPS)?",
+          "answer": [
+            "Zero wpływu na wydajność. Ponieważ na komputerze nie działa żaden dedykowany program GameTrace, procesor (CPU) i pamięć RAM w 100% pozostają do dyspozycji gry.",
+            "Komunikacja odbywa się wyłącznie na linii Discord Gateway → serwer GameTrace w chmurze / homelabie. Nie ma mowy o żadnym spadku FPS, mikroprzycięciach czy opóźnieniach sieciowych."
+          ],
+          "keywords": ["fps", "wydajność", "obciążenie", "lagi", "ram", "cpu"]
+        }
+      ]
+    },
+    {
+      "id": "voice-consoles",
+      "title": "Konsole i zapis głosem",
+      "description": "Zapisywanie rozgrywki z PlayStation, Switcha, Xboxa i Steam Decka za pomocą mowy.",
+      "questions": [
+        {
+          "id": "how-console-tracking-works",
+          "badge": "KONSOLE",
+          "question": "Jak rejestrować sesje z konsol (PlayStation, Xbox, Switch, Steam Deck)?",
+          "answer": [
+            "Większość konsol nie posiada otwartego API do ciągłego śledzenia procesów w czasie rzeczywistym. W GameTrace rozwiązaliśmy to najszybszą możliwą metodą: notatką głosową w telefonie lub przeglądarce.",
+            "Po zakończeniu grania na kanapie wyciągasz telefon, przytrzymujesz przycisk nagrywania i mówisz jedno naturalne zdanie. Nasz moduł AI rozpoznaje tytuł gry, przelicza czas i automatycznie przygotowuje wpis do biblioteki."
+          ],
+          "keywords": ["ps5", "playstation", "xbox", "switch", "steam deck", "konsole"]
+        },
+        {
+          "id": "how-voice-transcription-works",
+          "badge": "AI STT",
+          "question": "Jak działa dyktowanie głosem w przeglądarce i aplikacji mobilnej?",
+          "answer": [
+            "1. Dźwięk jest rejestrowany za pomocą mikrofonu urządzenia (w formacie WebM w przeglądarce lub M4A na telefonie).",
+            "2. Model Whisper od OpenAI dokonuje precyzyjnej transkrypcji mowy, znakomicie radząc sobie ze zwrotami mieszanymi (np. polskie słowa z angielskimi tytułami gier).",
+            "3. Inteligentny moduł analizy językowej (Gemini Flash) otrzymuje treść transkrypcji wraz z kontekstem Twojej lokalnej strefy czasowej i listą gier z Twojej biblioteki.",
+            "4. Model wyodrębnia nazwę gry, datę, godzinę oraz czas trwania i uzupełnia formularz sesji, pozostawiając Ci ostateczne zatwierdzenie jednym kliknięciem."
+          ],
+          "keywords": ["whisper", "gemini", "ai", "transkrypcja", "mikrofon", "stt"]
+        },
+        {
+          "id": "voice-phrasing-tips",
+          "badge": "PRZYKŁADY",
+          "question": "W jakiej formie najlepiej wypowiadać zdanie przy nagrywaniu głosu?",
+          "answer": [
+            "Możesz mówić całkowicie swobodnie i potocznie. Nie musisz używać sztywnych komend. Oto przykłady zdań, które system rozpoznaje perfekcyjnie:"
+          ],
+          "steps": [
+            "„Grałem półtorej godziny w Baldur's Gate 3, skończyłem Akt 1”",
+            "„Dwie godziny w Kingdom Come 2 przed chwilą”",
+            "„Wczoraj od dwudziestej do dwudziestej drugiej w Cyberpunka, misja z Panam”",
+            "„Trzydzieści minut w Hadesa w pociągu”"
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "Dodatkowe notatki",
+            "text": "Wszystko, co powiesz poza tytułem i czasem trwania (np. 'misja w Novigradzie', 'boss pokonany'), trafi do pola notatki sesji, tworząc Twój osobisty dziennik gier."
+          },
+          "keywords": ["jak mówić", "dyktowanie", "przykłady", "zwroty", "komendy"]
+        },
+        {
+          "id": "voice-ambiguity",
+          "badge": "KONTROLA",
+          "question": "Co się stanie, jeśli model nie rozpozna tytułu lub czasu z nagrania?",
+          "answer": [
+            "Moduł transkrypcji nigdy nie zapisuje sesji 'w ciemno' bez Twojej wiedzy. Po przetworzeniu głosu zawsze lądujesz w przejrzystym formularzu nowej sesji (/sessions/new).",
+            "Jeśli tytuł gry był nietypowy lub niewyraźny, system pozostawi pole wyboru gry puste lub podpowie najbliższe dopasowanie z IGDB. Masz pełną możliwość skorygowania godziny, daty czy wybranej gry przed ostatecznym zapisem."
+          ],
+          "keywords": ["nierozpoznane", "błąd głosu", "korekta", "zatwierdzenie"]
+        }
+      ]
+    },
+    {
+      "id": "library-metadata",
+      "title": "Biblioteka gier i metadane IGDB",
+      "description": "Oficjalny katalog IGDB, status Do sprawdzenia, lokalne okładki i ignorowanie tytułów.",
+      "questions": [
+        {
+          "id": "igdb-enrichment",
+          "badge": "IGDB",
+          "question": "Skąd pochodzą okładki, opisy, gatunki i informacje o twórcach gier?",
+          "answer": [
+            "Gdy nowa gra pojawia się na Twoim koncie, asynchroniczny proces serwerowy czyści nazwę procesu i przeszukuje bazę IGDB (Internet Game Database) — oficjalnego katalogu gier należącego do Twitcha.",
+            "Pobierana jest oficjalna pionowa okładka w wysokiej rozdzielczości, lista gatunków, motywy, studia deweloperskie, wydawcy oraz rok premiery. W przypadku braku gry w IGDB system posiada zapasowe źródło w postaci oficjalnego katalogu Steam."
+          ],
+          "keywords": ["igdb", "okładki", "metadane", "gatunki", "studia", "steam"]
+        },
+        {
+          "id": "needs-review-status",
+          "badge": "DO SPRAWDZENIA",
+          "question": "Co oznacza status „Do sprawdzenia” w bibliotece i dlaczego gra tam trafia?",
+          "answer": [
+            "Jeśli gra na PC miała nietypową nazwę procesu (np. wersja beta, modyfikacja) lub w bazie IGDB istniały dwie identycznie nazwane gry (np. remake z 2023 r. i oryginał z 2014 r.), algorytm celowo nie zgaduje na ślepo.",
+            "Gra otrzymuje status 'Do sprawdzenia' i trafia do dedykowanej zakładki w bibliotece. Dopóki jej nie zaakceptujesz, jej czas nie wlicza się do Twoich statystyk i wykresów — dzięki temu przypadkowe programy użytkowe nie zanieczyszczają Twojej analityki. Wystarczy jedno kliknięcie, aby potwierdzić właściwy tytuł."
+          ],
+          "callout": {
+            "type": "info",
+            "title": "Izolacja statystyk",
+            "text": "Sesje gier oczekujących na weryfikację są bezpiecznie zachowane w bazie, ale stają się widoczne w wykresach i rankingach dopiero w momencie zaakceptowania gry."
+          },
+          "keywords": ["do sprawdzenia", "needs review", "niepewna gra", "weryfikacja", "duplikaty"]
+        },
+        {
+          "id": "custom-covers-storage",
+          "badge": "OKŁADKI",
+          "question": "Jak dodać własną okładkę do gry i dlaczego zapisywana jest lokalnie?",
+          "answer": [
+            "W widoku szczegółów gry (/library/:id) możesz w każdej chwili przesłać własny plik graficzny jako okładkę.",
+            "Zgodnie z architekturą bezpieczeństwa GameTrace, własne okładki użytkownika przechowywane są w pamięci lokalnej Twojej przeglądarki (localStorage). Dzięki temu możesz spersonalizować wygląd swojej biblioteki dowolnymi grafikami bez obciążania wspólnego serwera bazy danych."
+          ],
+          "callout": {
+            "type": "gotcha",
+            "title": "Pamięć podręczna przeglądarki",
+            "text": "Jeśli wyczyścisz dane witryny w przeglądarce, aplikacja powróci do wyświetlania domyślnej okładki z IGDB. Wystarczy wtedy ponownie ustawić ulubioną grafikę."
+          },
+          "keywords": ["własna okładka", "cover", "grafika", "local storage", "upload"]
+        },
+        {
+          "id": "game-ignore",
+          "badge": "IGNOROWANIE",
+          "question": "Co daje funkcja „Ignoruj grę” i jak wpływa na statystyki?",
+          "answer": [
+            "Jeśli grałeś w grę, której z jakiegoś powodu nie chcesz widzieć w swoich podsumowaniach (np. gra uruchomiona do testów sprzętu lub program użytkowy wykryty omyłkowo jako gra), możesz włączyć opcję „Ignoruj grę” na karcie szczegółów gry.",
+            "Po włączeniu ignorowania: cały czas spędzony w tej grze zostaje natychmiast wyłączony ze wszystkich wykresów, rankingów, map aktywności i passy. Gra znika z głównej biblioteki i trafia do zakładki 'Inne / Ukryte'. Twoje surowe sesje nie są jednak kasowane — wyłączenie ignorowania w dowolnej chwili przywraca pełne statystyki."
+          ],
+          "keywords": ["ignoruj", "ukryj", "usuń z wykresów", "wykluczenie", "filtr"]
+        }
+      ]
+    },
+    {
+      "id": "sessions-conflicts",
+      "title": "Zarządzanie sesjami, konflikty i kosz",
+      "description": "Rozwiązywanie nakładających się sesji (409), naprawianie sesji ERROR oraz retencja w koszu.",
+      "questions": [
+        {
+          "id": "error-409-conflict",
+          "badge": "BŁĄD 409",
+          "question": "Czym jest błąd 409 Conflict (nakładająca się sesja) i jak go rozwiązać?",
+          "answer": [
+            "Baza danych GameTrace rygorystycznie pilnuje spójności Twojej osi czasu za pomocą specjalnego więzu integralności (PostgreSQL Exclusion Constraint). Człowiek nie może fizycznie grać w dwie gry jednocześnie.",
+            "Błąd 409 pojawia się, gdy próbujesz dodać ręcznie sesję lub przywrócić sesję z kosza w godzinach, w których istnieje już zarejestrowana inna sesja zakończona sukcesem (COMPLETED) lub trwająca w tle (ONGOING)."
+          ],
+          "steps": [
+            "Gdy pojawi się błąd 409, aplikacja wyświetli baner z dokładnymi informacjami o kolidującej sesji (tytuł gry oraz przedział czasowy, np. 14:00 – 16:30).",
+            "Skoryguj godzinę rozpoczęcia lub zakończenia nowo dodawanej sesji tak, aby nie zachodziła na istniejącą.",
+            "Alternatywnie: przejdź do widoku kolidującej sesji i skróć jej czas trwania lub przenieś ją do kosza, jeśli została zarejestrowana omyłkowo."
+          ],
+          "callout": {
+            "type": "warning",
+            "title": "Brak fałszowania statystyk",
+            "text": "Integralność osi czasu gwarantuje, że Twoje statystyki, passy i wykresy trendów odzwierciedlają rzeczywisty czas."
+          },
+          "keywords": ["409", "conflict", "nakładanie", "kolizja", "dwie gry", "błąd zapisu"]
+        },
+        {
+          "id": "session-status-error",
+          "badge": "SESJA ERROR",
+          "question": "Dlaczego moja sesja ma status ERROR i jak mogę ją naprawić?",
+          "answer": [
+            "Status ERROR otrzymują sesje przerwane w sposób niejednoznaczny — najczęściej wtedy, gdy nastąpił nagły restart bota na serwerze podczas Twojej rozgrywki lub Discord nie przekazał zdarzenia wyłączenia gry przed zmianą na inny tytuł.",
+            "Sesje z błędem ERROR posiadają pustą godzinę zakończenia i nie wliczają się do czasu gry, dopóki ich nie zweryfikujesz. W nagłówku aplikacji zobaczysz wtedy żółty wskaźnik informujący o oczekujących problemach."
+          ],
+          "steps": [
+            "Kliknij powiadomienie o błędzie na pulpicie lub wejdź w edycję sesji oznaczonej statusem ERROR.",
+            "W polu notatki przeczytasz dokładną przyczynę zarejestrowaną przez system (np. 'Self-Healing: bot restarted, player is no longer in-game').",
+            "Opcja A (Naprawa): Wpisz przybliżoną godzinę zakończenia gry i kliknij 'Zapisz' — sesja natychmiast zmieni status na COMPLETED i zasili statystyki.",
+            "Opcja B (Odrzucenie): Jeśli wpis był pomyłką, kliknij 'Odrzuć' — sesja trafi prosto do kosza."
+          ],
+          "keywords": ["error", "błąd sesji", "naprawa", "niedokończona", "odrzuć", "self healing"]
+        },
+        {
+          "id": "trash-and-retention",
+          "badge": "KOSZ",
+          "question": "Jak działa Kosz, ile czasu sesje są przechowywane i jak działa przywracanie?",
+          "answer": [
+            "Usunięcie sesji z biblioteki nie powoduje jej natychmiastowego wymazania z bazy danych. Sesja trafia do Kosza (/trash) jako element usunięty 'miękko' (soft-delete).",
+            "Każdy element w koszu posiada zegar odliczający czas do ostatecznego usunięcia (retencja wynosi 30 dni). Po upływie tego okresu nocny proces porządkowy bezpowrotnie usuwa wiersze z bazy.",
+            "W ciągu 30 dni możesz w każdej chwili kliknąć 'Przywróć'. System ponownie zweryfikuje, czy w tych godzinach nie utworzyłeś innej sesji (ochrona przed błędem 409) i przywróci wpis do historii. Dostępna jest również opcja natychmiastowego, trwałego usunięcia z kosza."
+          ],
+          "keywords": ["kosz", "przywracanie", "usunięcie", "retencja", "30 dni", "trash"]
+        },
+        {
+          "id": "ongoing-session-immutable",
+          "badge": "BLOKADA",
+          "question": "Dlaczego nie mogę edytować ani usunąć aktualnie trwającej sesji (ONGOING)?",
+          "answer": [
+            "Sesja ONGOING to sesja 'żywa', zarządzana w czasie rzeczywistym bezpośrednio przez bota Discorda. Jej licznik tyka na żywo na górnym pasku aplikacji.",
+            "Ręczna ingerencja w trwającą sesję (zmiana czasu lub usunięcie) doprowadziłaby do desynchronizacji stanu z Discordem i błędów integralności danych w momencie wyłączenia gry. Edycja i usuwanie odblokowują się automatycznie w sekundzie, w której zamkniesz grę na PC i sesja przejdzie w status COMPLETED."
+          ],
+          "keywords": ["ongoing", "aktywna sesja", "edycja zablokowana", "stoper", "na żywo"]
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "title": "Statystyki i analityka",
+      "description": "Zasady działania heatmapy, obliczania passy (streak), wykresów trendów i podziałów na gatunki.",
+      "questions": [
+        {
+          "id": "heatmap-split",
+          "badge": "HEATMAPA",
+          "question": "Jak czytać mapę aktywności i w jaki sposób dzielone są nocne sesje?",
+          "answer": [
+            "Mapa aktywności to interaktywna siatka 7 dni tygodnia × 24 godziny, pokazująca intensywność Twojego grania w poszczególnych porach dnia. Cieplejsze, pomarańczowe pola oznaczają godziny, w których spędzasz najwięcej czasu przy grach.",
+            "Wszystkie godziny przeliczane są według Twojej osobistej strefy czasowej (np. Europe/Warsaw). Co ważne: jeśli grałeś w nocy np. od 23:30 w piątek do 01:30 w sobotę, GameTrace nie przypisuje całych 2 godzin do piątku. Algorytm precyzyjnie kroi sesję: 30 minut trafia do piątku o 23:00, 60 minut do soboty o północy, a 30 minut do soboty o 01:00."
+          ],
+          "keywords": ["heatmapa", "siatka", "godziny", "nocne granie", "strefa czasowa"]
+        },
+        {
+          "id": "streak-calculation",
+          "badge": "PASSA",
+          "question": "W jaki sposób obliczana jest passa (streak) i czy jeden dzień przerwy ją resetuje?",
+          "answer": [
+            "Dzień zalicza się do passy, jeśli w swojej strefie czasowej zarejestrowałeś przynajmniej jedną zakończoną sesję w nieignorowanej grze.",
+            "GameTrace posiada wbudowany mechanizm jednodniowej karencji (One-Day Grace Period): jeśli grałeś wczoraj, ale dzisiaj jeszcze nie odpaliłeś żadnej gry, Twoja passa NIE jest zerowana. Pozostaje zakotwiczona na stanie z wczoraj. Dopiero brak jakiejkolwiek gry zarówno wczoraj, jak i dzisiaj powoduje zresetowanie licznika bieżącej passy do zera."
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "Rekordowa passa",
+            "text": "Twój najwyższy osiągnięty wynik w historii pozostaje na zawsze zapisany jako 'Najdłuższa passa' w kafelku statystyk."
+          },
+          "keywords": ["passa", "streak", "dni z rzędu", "karencja", "rekord"]
+        },
+        {
+          "id": "genres-sum-exposure",
+          "badge": "GATUNKI",
+          "question": "Dlaczego suma godzin z poszczególnych gatunków jest większa niż mój łączny czas gry?",
+          "answer": [
+            "Wynika to z faktu, że większość nowoczesnych gier posiada przypisanych kilka gatunków jednocześnie w katalogu IGDB.",
+            "Przykładowo: 2 godziny spędzone w grze Wiedźmin 3 zasilają jednocześnie gatunek 'RPG', 'Akcja' oraz 'Otwarty świat'. Każdy wykres gatunków pokazuje całkowitą ekspozycję na dany motyw, dlatego sumowanie słupków ze wszystkich gatunków da wartość wyższą niż Twój rzeczywisty czas spędzony przed ekranem."
+          ],
+          "keywords": ["gatunki", "motywy", "suma godzin", "procenty", "ekspozycja"]
+        },
+        {
+          "id": "companies-rollup",
+          "badge": "STUDIA",
+          "question": "W jaki sposób grupowane są studia deweloperskie i wydawcy?",
+          "answer": [
+            "W zakładce Analityka możesz przełączać ranking pomiędzy twórcami (developerami) a wydawcami gier.",
+            "W przypadku wydawców system stosuje standaryzację korporacyjną (Company Rollup). Oznacza to, że spółki zależne są automatycznie zwijane do podmiotu nadrzędnego (np. różne oddziały wydawnicze koncernu Sony Interactive Entertainment czy Ubisoftu są sumowane razem). Studia deweloperskie pozostają rozdzielone, aby rzetelnie honorować pracę konkretnego zespołu programistów."
+          ],
+          "keywords": ["studia", "deweloperzy", "wydawcy", "firmy", "rollup"]
+        }
+      ]
+    },
+    {
+      "id": "mobile-apk",
+      "title": "Aplikacja mobilna Android (APK)",
+      "description": "Bezpośrednie pobieranie pliku APK, uprawnienia instalacji i ostrzeżenia Google Play Protect.",
+      "questions": [
+        {
+          "id": "where-to-download-apk",
+          "badge": "POBIERANIE",
+          "question": "Skąd pobrać aplikację mobilną i czy jest dostępna w Google Play?",
+          "answer": [
+            "Oficjalna aplikacja GameTrace na system Android dostępna jest do bezpośredniego pobrania w naszym centrum pobierania pod adresem /download.",
+            "Jako projekt niezależny typu open-source / homelab, aplikacja jest dystrybuowana w formie bezpośredniego pakietu instalacyjnego .apk. Nie wymaga zakładania konta w sklepie Google Play i jest całkowicie wolna od reklam czy trackerów analitycznych firm trzecich."
+          ],
+          "keywords": ["pobierz", "apk", "android", "google play", "skąd wziąć"]
+        },
+        {
+          "id": "unknown-sources-permission",
+          "badge": "ANDROID",
+          "question": "Jak nadać uprawnienie do instalowania aplikacji z nieznanych źródeł?",
+          "answer": [
+            "W nowożytnych wersjach systemu Android (od Android 8.0 wzwyż) uprawnienie instalacji nadaje się indywidualnie dla przeglądarki lub menedżera plików, z którego otwierasz pobrany plik APK."
+          ],
+          "steps": [
+            "Pobierz plik gametrace.apk z naszej strony /download na telefonie.",
+            "Dotknij pobranego pliku w powiadomieniach przeglądarki.",
+            "Gdy system wyświetli monit: 'Dla Twojego bezpieczeństwa telefon nie może instalować nieznanych aplikacji z tego źródła', stuknij 'Ustawienia'.",
+            "Zaznacz suwak przy opcji 'Zezwalaj z tego źródła' dla używanej przeglądarki (np. Chrome, Samsung Internet lub Firefox).",
+            "Wróć gestem wstecz i stuknij przycisk 'Zainstaluj'."
+          ],
+          "keywords": ["nieznane źródła", "uprawnienia", "instalacja", "android settings"]
+        },
+        {
+          "id": "play-protect-warning",
+          "badge": "BEZPIECZEŃSTWO",
+          "question": "Dlaczego Google Play Protect wyświetla ostrzeżenie przy instalacji i czy plik jest bezpieczny?",
+          "answer": [
+            "Monit Google Play Protect ('Zablokowano przez Play Protect' lub 'Aplikacja od nieznanego programisty') to standardowa procedura bezpieczeństwa w systemie Android dla każdego pliku APK instalowanego spoza oficjalnego sklepu Google Play.",
+            "Pakiet instalacyjny kompilowany jest bezpośrednio z naszego oficjalnego repozytorium kodu i podpisany naszym certyfikatem deweloperskim. Plik nie zawiera żadnego złośliwego kodu."
+          ],
+          "steps": [
+            "Gdy na ekranie pojawi się okno Play Protect z przyciskiem 'OK', nie zamykaj instalatora.",
+            "Stuknij w mały napis 'Więcej szczegółów' (More details) pod treścią komunikatu.",
+            "Następnie kliknij link 'Zainstaluj mimo to' (Install anyway).",
+            "Aplikacja zostanie poprawnie zainstalowana i jest gotowa do uruchomienia."
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "Weryfikacja sumy kontrolnej",
+            "text": "Zaawansowani użytkownicy mogą zweryfikować sumę kontrolną SHA-256 pobranego pliku APK z wartością podaną w oficjalnym wydaniu w repozytorium."
+          },
+          "keywords": ["play protect", "ostrzeżenie", "wirus", "bezpieczeństwo", "zainstaluj mimo to"]
+        },
+        {
+          "id": "mobile-web-sync",
+          "badge": "SYNCHRONIZACJA",
+          "question": "Czy aplikacja mobilna synchronizuje dane w czasie rzeczywistym z wersją webową?",
+          "answer": [
+            "Tak. Zarówno aplikacja na telefonie, jak i wersja webowa na komputerze łączą się z tą samą bazą danych poprzez to samo bezpieczne API.",
+            "Każda sesja dodana głosem na telefonie jest natychmiast widoczna w przeglądarce na komputerze. Podobnie gra wykryta przez bota na PC od razu pojawia się jako aktywna sesja w aplikacji mobilnej z działającym stoperem."
+          ],
+          "keywords": ["synchronizacja", "chmura", "telefon", "komputer", "czas rzeczywisty"]
+        }
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "Co może pójść nie tak? (Rozwiązywanie problemów)",
+      "description": "Najczęstsze problemy techniczne: błędy 502, brak wykrywania gier na PC, uprawnienia mikrofonu i restarty serwera.",
+      "questions": [
+        {
+          "id": "troubleshoot-502-bad-gateway",
+          "badge": "DIAGNOSTYKA",
+          "question": "Bot ma status OFFLINE lub strona pokazuje błąd połączenia (502 Bad Gateway) — co robić?",
+          "answer": [
+            "Błąd 502 Bad Gateway w środowisku homelab pojawia się najczęściej tuż po aktualizacji kontenera backendu API. Serwer proxy Nginx w kontenerze webowym potrafi zapamiętać stary, wewnętrzny adres IP z mostka sieciowego Dockera.",
+            "Zwykle problem rozwiązuje się samoczynnie w ciągu kilkudziesięciu sekund dzięki wbudowanemu mechanizmowi re-rozwiązywania DNS (Docker Embedded DNS z 30-sekundowym TTL)."
+          ],
+          "steps": [
+            "Odczekaj 30 sekund i odśwież stronę w przeglądarce (Ctrl+F5).",
+            "Sprawdź w menu Ustawienia (/settings) kafelek 'Status bota' — jeśli ma kolor pomarańczowy, połączenie zostało w pełni przywrócone.",
+            "Jeśli błąd nie ustępuje, a jesteś administratorem homelabu, wykonaj przeładowanie proxy poleceniem: `docker exec gametrace-web nginx -s reload`."
+          ],
+          "callout": {
+            "type": "gotcha",
+            "title": "Niezależność danych",
+            "text": "Nawet jeśli interfejs webowy przez chwilę wyświetla błąd 502, bot na Discordzie działa niezależnie w tle i nie traci żadnych trwających sesji gier."
+          },
+          "keywords": ["502", "bad gateway", "błąd połączenia", "bot offline", "serwer leży"]
+        },
+        {
+          "id": "troubleshoot-pc-game-not-detected",
+          "badge": "CHECKLISTA",
+          "question": "Gram w grę na PC, ale bot nie rejestruje sesji — lista kontrolna krok po kroku.",
+          "answer": [
+            "Jeśli uruchomiłeś grę na PC, ale na górnym pasku aplikacji nie pojawia się stoper aktywnej sesji, wykonaj poniższe kroki weryfikacyjne:"
+          ],
+          "steps": [
+            "Krok 1: Sprawdź swój status na Discordzie — upewnij się, że nie masz ustawionego statusu 'Niewidoczny' (musi być Dostępny, Zaraz wracam lub Nie przeszkadzać).",
+            "Krok 2: Sprawdź Ustawienia Discorda → Prywatność aktywności → upewnij się, że opcja 'Wyświetlaj bieżącą aktywność jako status' jest WŁĄCZONA.",
+            "Krok 3: Sprawdź, czy Discord w ogóle widzi grę — otwórz Discorda na PC i spójrz w lewy dolny róg nad swoim awatarem. Jeśli gra nie jest widoczna, wejdź w Ustawienia → Zarejestrowane gry i kliknij 'Dodaj ją!' wskazując proces gry.",
+            "Krok 4: Sprawdź wspólny serwer — czy jesteś na oficjalnym serwerze GameTrace lub serwerze, na którym obecny jest bot?",
+            "Krok 5: Sprawdź uprawnienia administratora — niektóre gry sieciowe z silnymi anty-cheatami (np. Vanguard, Easy Anti-Cheat) wymagają uruchomienia aplikacji Discord w trybie administratora, aby Discord mógł odczytać nazwę ich procesu."
+          ],
+          "keywords": ["nie wykrywa", "brak sesji", "gra nie działa", "czemu nie zapisuje", "anticheat"]
+        },
+        {
+          "id": "troubleshoot-mic-permission-denied",
+          "badge": "MIKROFON",
+          "question": "W sekcji Voice pojawia się komunikat o braku dostępu do mikrofonu — jak odblokować uprawnienie?",
+          "answer": [
+            "Przeglądarki internetowe wymagają bezpiecznego połączenia (HTTPS lub localhost) oraz jawnej zgody użytkownika na dostęp do Web Audio API.",
+            "Jeśli przypadkowo kliknąłeś 'Zablokuj' przy pytaniu o mikrofon, przeglądarka permanentnie blokuje nagrywanie dla tej domeny."
+          ],
+          "steps": [
+            "W pasku adresu przeglądarki kliknij ikonę kłódki lub suwaków (Ustawienia witryny) po lewej stronie adresu URL.",
+            "Odszukaj pozycję 'Mikrofon' na liście uprawnień.",
+            "Zmień wartość z 'Blokuj' na 'Zezwalaj' (lub zresetuj uprawnienia witryny).",
+            "Odśwież stronę klawiszem F5 i ponownie kliknij ikonę nagrywania sesji."
+          ],
+          "keywords": ["mikrofon", "permission denied", "brak dostępu", "zablokowany", "voice"]
+        },
+        {
+          "id": "troubleshoot-login-code-expired",
+          "badge": "KOD WYGASŁ",
+          "question": "Kod logowania wygasł lub pojawia się błąd „Invalid or expired code” — co zrobić?",
+          "answer": [
+            "Kod logowania z Discorda ma ścisły limit ważności wynoszący dokładnie 5 minut (300 sekund) i jest jednorazowy. Po jednokrotnym użyciu lub po wygenerowaniu nowego kodu poprzedni klucz ulega unieważnieniu.",
+            "Jeśli widzisz błąd autoryzacji: wróć na Discorda, wpisz ponownie `/login`, skopiuj nowy 6-cyfrowy kod i natychmiast wprowadź go na stronie logowania.",
+            "Uwaga: ze względów bezpieczeństwa po 10 nieudanych próbach wpisania kodu system nakłada 15-minutową blokadę adresu IP na próby logowania."
+          ],
+          "keywords": ["kod wygasł", "invalid code", "expired", "błąd logowania", "blokada ip"]
+        },
+        {
+          "id": "troubleshoot-bot-restart-self-healing",
+          "badge": "SELF-HEALING",
+          "question": "Co się stanie z moją sesją w przypadku restartu serwera lub awarii bota?",
+          "answer": [
+            "GameTrace wyposażony jest w automatyczną procedurę samonaprawiania (Self-Healing Engine). Bot celowo nie przerywa sesji w momencie zamykania kontenera, licząc na szybkie wdrożenie nowej wersji.",
+            "Zaraz po restarcie bot bada aktualny stan graczy na Discordzie:",
+            "1. Jeśli po restarcie bota nadal grasz w tę samą grę — Twoja sesja pozostaje aktywna (ONGOING) bez żadnej przerwy.",
+            "2. Jeśli wyłączyłeś grę w trakcie restartu serwera — sesja zostanie bezpiecznie oznaczona statusem ERROR z notatką techniczną, umożliwiając Ci podanie godziny zakończenia lub zatwierdzenie czasu.",
+            "3. Sesje starsze niż 12 godzin bez kontaktu z graczem są automatycznie zamykane, aby zapobiec sztucznemu nabijaniu setek godzin w przypadku awarii zasilania."
+          ],
+          "keywords": ["restart", "awaria", "self healing", "zerwanie połączenia", "utrata sesji"]
+        }
+      ]
+    },
+    {
+      "id": "privacy-security",
+      "title": "Prywatność i bezpieczeństwo danych",
+      "description": "Zakres przetwarzanych danych, transparentność bota, RODO oraz 7-dniowa procedura usuwania konta.",
+      "questions": [
+        {
+          "id": "what-data-bot-collects",
+          "badge": "PRYWATNOŚĆ",
+          "question": "Jakie dane zbiera bot i czy GameTrace ma dostęp do moich prywatnych wiadomości na Discordzie?",
+          "answer": [
+            "Kategorycznie NIE. Bot GameTrace nie ma technicznego dostępu do treści Twoich wiadomości prywatnych (DM), wiadomości na kanałach serwerowych ani listy Twoich znajomych.",
+            "Jedynym uprawnieniem bota jest odbieranie publicznych zdarzeń obecności (jaką grę aktualnie uruchomił Twój profil) oraz przetwarzanie komend slash (/login, /panel). Dane o grach są wykorzystywane wyłącznie do generowania Twoich prywatnych statystyk i nigdy nie są odsprzedawane podmiotom trzecim."
+          ],
+          "callout": {
+            "type": "info",
+            "title": "Zgodność z RODO",
+            "text": "Szczegółowy wykaz zbieranych informacji, podstaw prawnych oraz Twoich praw znajdziesz w naszej pełnej Polityce Prywatności pod adresem /privacy."
+          },
+          "keywords": ["dane", "prywatność", "szpiegowanie", "wiadomości", "rodo", "bezpieczeństwo"]
+        },
+        {
+          "id": "account-deletion-grace-period",
+          "badge": "USUWANIE KONTA",
+          "question": "Jak działa usuwanie konta i co oznacza 7-dniowy okres karencji?",
+          "answer": [
+            "W zakładce Ustawienia konta (/settings) możesz w każdej chwili złożyć dyspozycję trwałego usunięcia swojego konta i wszystkich powiązanych danych.",
+            "W GameTrace obowiązuje 7-dniowy okres karencji (Grace Period). W momencie złożenia wniosku: Twoje aktywne tokeny zostają unieważnione, bot natychmiast przestaje śledzić Twoje gry, a konto otrzymuje status oczekującego na usunięcie.",
+            "W ciągu tych 7 dni masz prawo zmienić zdanie: wystarczy zalogować się ponownie kodem z Discorda i kliknąć przycisk 'Anuluj usuwanie konta'. Po upływie 7 dni nocny proces bezpowrotnie kasuje wszystkie Twoje sesje, historię i preferencje."
+          ],
+          "callout": {
+            "type": "warning",
+            "title": "Konta administratorów",
+            "text": "Ze względów bezpieczeństwa infrastruktury konta posiadające uprawnienia administratora mają zablokowaną możliwość samozwańczego usunięcia konta przez interfejs."
+          },
+          "keywords": ["usuwanie konta", "karencja", "7 dni", "anulowanie", "prawo do bycia zapomnianym"]
+        }
+      ]
+    }
+  ]
+}

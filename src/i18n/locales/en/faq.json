@@ -1,0 +1,602 @@
+{
+  "documentTitle": "Frequently Asked Questions — GameTrace",
+  "eyebrow": "KNOWLEDGE BASE & SUPPORT",
+  "title": "Frequently Asked Questions",
+  "lead": "Everything you need to know about automated game tracking, Discord integration, voice transcription, analytics, and troubleshooting common issues.",
+  "searchPlaceholder": "Search questions and answers (e.g. 409, Discord, APK, microphone)...",
+  "searchAria": "Search knowledge base",
+  "clearSearchAria": "Clear search query",
+  "searchMatches": "Found: {{count}} of {{total}} questions",
+  "searchMatches_one": "Found: {{count}} of {{total}} questions",
+  "searchMatches_other": "Found: {{count}} of {{total}} questions",
+  "noMatches": "No questions found matching “{{query}}”.",
+  "noMatchesHint": "Try searching for a different keyword or switch to the “All topics” category.",
+  "allCategories": "All topics",
+  "clearFilters": "Clear filters",
+  "questionsInCategory": "{{count}} questions in category",
+  "questionsInCategory_one": "{{count}} question in category",
+  "questionsInCategory_other": "{{count}} questions in category",
+  "questionsTotal": "{{count}} questions total",
+  "questionsTotal_one": "{{count}} question total",
+  "questionsTotal_other": "{{count}} questions total",
+  "categoryFilterAria": "Search and filters",
+  "supportAria": "Technical support",
+  "languageAria": "Language",
+  "questionsCountAria": "{{count}} questions",
+  "questionsCountAria_one": "{{count}} question",
+  "questionsCountAria_other": "{{count}} questions",
+  "expandAll": "Expand all",
+  "collapseAll": "Collapse all",
+  "copyLink": "Copy link to question",
+  "linkCopied": "Link copied to clipboard",
+  "backHome": "← Back to Home",
+  "supportBannerTitle": "Didn't find what you were looking for?",
+  "supportBannerText": "Join our official Discord community server. We're happy to help you configure the bot, verify your session status, or triage any bug.",
+  "joinDiscord": "Join our Discord",
+  "viewPrivacy": "Privacy Policy",
+  "calloutLabels": {
+    "tip": "PRO TIP",
+    "gotcha": "GOTCHA / CAVEAT",
+    "warning": "IMPORTANT WARNING",
+    "info": "TECHNICAL NOTE"
+  },
+  "sections": [
+    {
+      "id": "getting-started",
+      "title": "Getting Started & Basics",
+      "description": "How to get started with GameTrace, how it differs from typical trackers, and how passwordless authentication works.",
+      "questions": [
+        {
+          "id": "what-is-gametrace",
+          "badge": "START",
+          "question": "What exactly is GameTrace and how does it differ from other time trackers?",
+          "answer": [
+            "GameTrace is a zero-friction game session tracking system built for players who want precision without having to manually start and stop timers.",
+            "Unlike traditional desktop trackers, GameTrace requires no background spyware or invasive overlays. For PC gaming, it hooks directly into Discord's official Rich Presence activity stream. For consoles and offline play, it provides an AI-assisted voice logging workflow.",
+            "All captured data populates your personal library, automatically enriched with high-resolution vertical covers, developers, genres, and release years via the official IGDB database."
+          ],
+          "keywords": ["what is", "how to start", "basics", "steam", "playnite"]
+        },
+        {
+          "id": "how-to-login",
+          "badge": "AUTH",
+          "question": "How do I register and sign in using a Discord link code?",
+          "answer": [
+            "GameTrace eliminates passwords entirely. Signing in is handled via a single-use, 6-digit numeric link code issued directly by the Discord bot.",
+            "Entering the code in your browser exchanges it for a secure bearer session token, which slidingly refreshes as you use the application."
+          ],
+          "steps": [
+            "Open Discord on any server where the GameTrace bot is present (or in bot commands).",
+            "Type the slash command `/login` and press Enter.",
+            "The bot sends an ephemeral (visible only to you) message containing a 6-digit code (e.g. 849 201).",
+            "Return to GameTrace Web and enter the code into the sign-in form.",
+            "You are authenticated immediately, and your browser timezone is synchronized automatically."
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "5-minute code expiration",
+            "text": "The link code is single-use and expires after 300 seconds. If it expires, run `/login` on Discord again to receive a fresh code."
+          },
+          "keywords": ["login", "code", "register", "password", "link code", "discord"]
+        },
+        {
+          "id": "pc-requirements",
+          "badge": "ZERO INSTALL",
+          "question": "Do I need to install any background program on my PC to use GameTrace?",
+          "answer": [
+            "No. You do not need to install any background agent, .exe file, or hook overlay into your game files.",
+            "As long as you have the official Discord desktop client running on your computer, the GameTrace server receives game launch and exit events directly over Discord's official WebSocket Gateway. Your operating system stays completely clean."
+          ],
+          "keywords": ["install", "client", "security", "antivirus", "agent"]
+        },
+        {
+          "id": "session-token-lifetime",
+          "badge": "AUTH",
+          "question": "How long does my sign-in session last and do I need to enter a code every time?",
+          "answer": [
+            "GameTrace auth tokens employ a 30-day sliding window model.",
+            "As long as you visit the web application at least once every 30 days, your session token is automatically extended for another 30 days. You do not have to generate a new Discord code on every visit.",
+            "You are only logged out after 30 consecutive days of inactivity, or if you explicitly click 'Log out' in the sidebar."
+          ],
+          "keywords": ["token", "session", "logout", "remember me", "30 days"]
+        }
+      ]
+    },
+    {
+      "id": "discord-pc",
+      "title": "Automated PC Tracking (Discord)",
+      "description": "Background presence detection, Discord privacy requirements, and session stitching.",
+      "questions": [
+        {
+          "id": "how-discord-detection-works",
+          "badge": "BOT",
+          "question": "How does the Discord bot automatically detect what I am playing on PC?",
+          "answer": [
+            "When you launch a game on your PC, the Discord desktop client identifies the running executable and broadcasts an activity update (Rich Presence) with 'Playing' status.",
+            "The GameTrace bot listens for presence changes across its servers. When a game start event is received, it opens a session with status ONGOING. When you quit the game, the bot receives the completion event, computes duration, and marks the session COMPLETED."
+          ],
+          "callout": {
+            "type": "info",
+            "title": "Executable alias mapping",
+            "text": "If Discord reports an executable name (e.g. 'witcher3.exe'), our server maps it through a global process alias dictionary to the canonical IGDB title."
+          },
+          "keywords": ["detection", "process", "rich presence", "how it works", "automatic"]
+        },
+        {
+          "id": "bot-visibility-shared-server",
+          "badge": "REQUIREMENT",
+          "question": "Why does the bot require at least one shared Discord server with me?",
+          "answer": [
+            "This is a fundamental security constraint of Discord's architecture. For user privacy, Discord never transmits presence events (game activity) through Direct Messages (DMs).",
+            "In order for the bot to see what game you are playing, you must be in at least one shared Discord server (guild) with the bot. This can be our official community server or any personal server where you invite the bot."
+          ],
+          "callout": {
+            "type": "gotcha",
+            "title": "„Bot cannot see you” banner",
+            "text": "If you sign into GameTrace but leave all servers where the bot resides, an alert banner appears on your dashboard. Games cannot be tracked until you rejoin a shared server."
+          },
+          "keywords": ["server", "shared server", "guild", "bot cannot see you", "visibility"]
+        },
+        {
+          "id": "discord-privacy-settings",
+          "badge": "SETTINGS",
+          "question": "Which Discord settings must be enabled for games to be tracked?",
+          "answer": [
+            "To allow Discord to broadcast your game activity to the bot, your account privacy settings must allow activity status sharing."
+          ],
+          "steps": [
+            "Open Discord on PC and click the gear icon (User Settings) in the bottom-left corner.",
+            "Navigate to 'Activity Privacy' in the left sidebar.",
+            "Enable 'Display current activity as a status message'.",
+            "Ensure activity sharing is permitted on the specific server where the GameTrace bot resides.",
+            "Make sure your profile status is NOT set to 'Invisible' — Discord completely hides game presence while invisible."
+          ],
+          "callout": {
+            "type": "warning",
+            "title": "Invisible status disables tracking",
+            "text": "When your Discord account is set to Invisible (gray dot), Discord does not emit game presence events. Set your status to Online, Idle, or Do Not Disturb."
+          },
+          "keywords": ["settings", "privacy", "activity privacy", "status", "invisible"]
+        },
+        {
+          "id": "flicker-and-stitch",
+          "badge": "STITCH",
+          "question": "What happens if a game crashes, minimizes, or is restarted shortly after?",
+          "answer": [
+            "GameTrace incorporates an intelligent session stabilization engine to prevent fragmented records:",
+            "1. Flicker Suppression: If a game opens and closes within 3 minutes (180 seconds)—such as an instant crash on launch—the session is marked as flicker and excluded from your library and analytics.",
+            "2. Stitch-on-Resume: If you exit a game and relaunch it within 3 minutes (e.g. changing graphics settings or rebooting after a crash), the bot does not create a disjointed second entry. It seamlessly resumes and stitches the previous session."
+          ],
+          "keywords": ["crash", "restart", "stitch", "flicker", "minimize", "pause"]
+        },
+        {
+          "id": "performance-impact",
+          "badge": "PERFORMANCE",
+          "question": "Does GameTrace impact gaming performance or cause FPS drops?",
+          "answer": [
+            "Zero impact. Because no GameTrace software runs on your computer, 100% of your CPU, GPU, and RAM remain dedicated to your games.",
+            "All processing occurs strictly between Discord's Gateway and the GameTrace backend container. There are no frame drops, micro-stutters, or added network latency."
+          ],
+          "keywords": ["fps", "performance", "cpu", "lag", "ram", "overhead"]
+        }
+      ]
+    },
+    {
+      "id": "voice-consoles",
+      "title": "Consoles & Voice Logging",
+      "description": "Logging sessions from PlayStation, Nintendo Switch, Xbox, and Steam Deck using natural speech.",
+      "questions": [
+        {
+          "id": "how-console-tracking-works",
+          "badge": "CONSOLES",
+          "question": "How do I log gaming sessions from consoles (PlayStation, Xbox, Switch, Steam Deck)?",
+          "answer": [
+            "Most gaming consoles lack open real-time activity APIs. In GameTrace, we solved this with the fastest alternative: voice capture on your phone or web browser.",
+            "When you finish playing from the couch, hold the record button and speak one natural sentence. Our AI pipeline identifies the game title, calculates duration, and stages the session ready to save."
+          ],
+          "keywords": ["ps5", "playstation", "xbox", "switch", "steam deck", "consoles"]
+        },
+        {
+          "id": "how-voice-transcription-works",
+          "badge": "AI STT",
+          "question": "How does voice transcription work under the hood?",
+          "answer": [
+            "1. Audio is recorded via the device microphone (WebM in modern browsers, M4A in the mobile app).",
+            "2. OpenAI Whisper performs speech-to-text, gracefully handling bilingual phrasing (e.g. Polish commentary with English game titles).",
+            "3. Gemini Flash receives the transcription along with context including your local timezone and games from your library history.",
+            "4. The model extracts the game name, date, start time, and duration, pre-filling the session form for your review."
+          ],
+          "keywords": ["whisper", "gemini", "ai", "transcription", "microphone", "stt"]
+        },
+        {
+          "id": "voice-phrasing-tips",
+          "badge": "EXAMPLES",
+          "question": "How should I phrase voice logs for optimal recognition?",
+          "answer": [
+            "You can speak naturally and casually. Strict syntax is not required. Here are examples of phrases that transcribe reliably:"
+          ],
+          "steps": [
+            "“Played an hour and a half of Baldur’s Gate 3, finished Act 1”",
+            "“Two hours of Kingdom Come 2 just now”",
+            "“Yesterday from 8 PM to 10 PM playing Cyberpunk, completed the Panam questline”",
+            "“Thirty minutes of Hades on the train”"
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "Session notes",
+            "text": "Any extra narrative you speak beyond the title and time (e.g. 'defeated the boss', 'found secret chest') is automatically saved into the session notes field."
+          },
+          "keywords": ["how to speak", "dictation", "examples", "phrasing", "prompts"]
+        },
+        {
+          "id": "voice-ambiguity",
+          "badge": "REVIEW",
+          "question": "What happens if the model is unsure of the title or duration?",
+          "answer": [
+            "Voice transcription never commits sessions silently without your confirmation. After processing, you are redirected to the pre-filled session form (/sessions/new).",
+            "If a game title was ambiguous or inaudible, the game picker remains open for your selection. You can easily adjust dates, times, or notes before clicking 'Save session'."
+          ],
+          "keywords": ["unrecognized", "voice error", "edit", "confirmation"]
+        }
+      ]
+    },
+    {
+      "id": "library-metadata",
+      "title": "Game Library & IGDB Metadata",
+      "description": "Artwork enrichment, Needs Review queue, custom local covers, and ignoring games.",
+      "questions": [
+        {
+          "id": "igdb-enrichment",
+          "badge": "IGDB",
+          "question": "Where do covers, descriptions, genres, and developer studios come from?",
+          "answer": [
+            "When a new game is detected on your account, an asynchronous worker queries the official IGDB database (Internet Game Database, operated by Twitch).",
+            "It retrieves vertical HD artwork, genre tags, themes, development studios, publishers, and original release years. If a title is not indexed on IGDB, the worker falls back to the official Steam Store catalog."
+          ],
+          "keywords": ["igdb", "covers", "metadata", "genres", "studios", "steam"]
+        },
+        {
+          "id": "needs-review-status",
+          "badge": "REVIEW",
+          "question": "What does the „Needs review” status in the library mean?",
+          "answer": [
+            "If an executable process name is ambiguous (e.g. a mod or beta build) or matches multiple titles with equal confidence (e.g. a 2014 original vs a 2023 remake), the system does not guess blindly.",
+            "The game is placed into the 'Needs review' tab. Until you accept it, its playtime is safely quarantined from your main analytics and heatmaps to avoid polluting your charts with unintended apps. One click confirms the correct title."
+          ],
+          "callout": {
+            "type": "info",
+            "title": "Analytics isolation",
+            "text": "Sessions for games pending review are stored safely, but only count toward your statistics once the title is accepted."
+          },
+          "keywords": ["needs review", "quarantine", "verification", "duplicates"]
+        },
+        {
+          "id": "custom-covers-storage",
+          "badge": "COVERS",
+          "question": "How do custom covers work and why are they stored locally?",
+          "answer": [
+            "On any game detail page (/library/:id), you can upload a custom image file to serve as that game's cover.",
+            "Per GameTrace's security architecture, user-uploaded custom covers are stored in browser local storage (`local-covers-storage`). This gives you full aesthetic freedom without inflating server storage limits."
+          ],
+          "callout": {
+            "type": "gotcha",
+            "title": "Browser cache clearing",
+            "text": "If you clear your browser site data, the app will fall back to the default IGDB artwork until you re-upload your preferred image."
+          },
+          "keywords": ["custom cover", "artwork", "local storage", "upload"]
+        },
+        {
+          "id": "game-ignore",
+          "badge": "IGNORE",
+          "question": "What does „Ignore game” do and how does it affect my stats?",
+          "answer": [
+            "If you played a title you do not wish to see in your reports (e.g. a hardware benchmarking utility or an accidental launch), toggle 'Ignore game' on its detail page.",
+            "When ignored, all playtime for that game is immediately removed from heatmaps, streaks, rankings, and charts. The game moves from the main library into the 'Other / Hidden' tab. Your underlying session records are never deleted; un-ignoring the game restores all statistics instantly."
+          ],
+          "keywords": ["ignore", "hide", "exclude", "filter", "benchmarking"]
+        }
+      ]
+    },
+    {
+      "id": "sessions-conflicts",
+      "title": "Session Conflicts, Error Recovery & Trash",
+      "description": "Understanding 409 overlaps, repairing ERROR sessions, and 30-day trash retention.",
+      "questions": [
+        {
+          "id": "error-409-conflict",
+          "badge": "ERROR 409",
+          "question": "What is an Error 409 Conflict (overlapping session) and how do I resolve it?",
+          "answer": [
+            "GameTrace enforces strict timeline integrity via database exclusion constraints (PostgreSQL GiST). A player cannot physically play two distinct games at the exact same moment.",
+            "A 409 Conflict occurs when you manually create a session, edit an end time, or restore a session from trash that overlaps with an already existing COMPLETED or ONGOING session."
+          ],
+          "steps": [
+            "When a 409 Conflict occurs, the notice displays the conflicting game title and its exact recorded time range (e.g. 2:00 PM – 4:30 PM).",
+            "Adjust the start or end time of the new session so it does not intersect with the existing range.",
+            "Alternatively, navigate to the conflicting session and trim its duration or move it to trash if it was recorded in error."
+          ],
+          "callout": {
+            "type": "warning",
+            "title": "Timeline truth",
+            "text": "Enforcing overlap prevention guarantees that your total hours, streaks, and trends represent verifiable reality."
+          },
+          "keywords": ["409", "conflict", "overlap", "two games", "collision"]
+        },
+        {
+          "id": "session-status-error",
+          "badge": "ERROR STATUS",
+          "question": "Why does a session have status ERROR and how can I repair it?",
+          "answer": [
+            "The ERROR status is assigned to sessions that were interrupted unexpectedly—most commonly when the bot container was restarted during gameplay or Discord missed an exit event before switching games.",
+            "ERROR sessions have an empty end time and do not count toward your playtime until resolved. An amber notification pill will appear in the top bar to alert you."
+          ],
+          "steps": [
+            "Click the pending error pill on the dashboard or edit the session marked ERROR.",
+            "Inspect the technical reason in the notes field (e.g. 'Self-Healing: bot restarted, player is no longer in-game').",
+            "Option A (Repair): Enter an approximate end time and click 'Save' — the session transitions to COMPLETED and counts toward your stats.",
+            "Option B (Discard): Click 'Discard' to move the incomplete session to trash."
+          ],
+          "keywords": ["error", "repair", "incomplete", "discard", "self healing"]
+        },
+        {
+          "id": "trash-and-retention",
+          "badge": "TRASH",
+          "question": "How does Trash work, how long are records kept, and how does Restore work?",
+          "answer": [
+            "Deleting a session from your library does not immediately erase it from the database; it moves to the Trash view (/trash) via a soft-delete mechanism.",
+            "Each trashed item has a 30-day countdown timer (`purges_at`). When the 30-day retention window elapses, a nightly garbage collector permanently sweeps it from disk.",
+            "At any point within 30 days, click 'Restore' to return the session to your history (re-validating that no new overlapping session has taken its timeslot). You can also permanently hard-delete items on demand."
+          ],
+          "keywords": ["trash", "restore", "retention", "30 days", "hard delete"]
+        },
+        {
+          "id": "ongoing-session-immutable",
+          "badge": "LOCKED",
+          "question": "Why can’t I edit or delete an ONGOING session?",
+          "answer": [
+            "An ONGOING session is currently live and actively tracked by the Discord bot, with its timer ticking in real time.",
+            "Allowing manual editing or deletion while a game is still running would create race conditions and timeline inconsistencies when Discord sends the exit event. Editing and deletion unlock automatically the moment you exit the game and the session completes."
+          ],
+          "keywords": ["ongoing", "active session", "locked", "live timer", "read only"]
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "title": "Analytics & Statistics",
+      "description": "How heatmaps slice overnight sessions, streak calculation rules, and genre exposure math.",
+      "questions": [
+        {
+          "id": "heatmap-split",
+          "badge": "HEATMAP",
+          "question": "How do I read the activity heatmap and how are overnight sessions handled?",
+          "answer": [
+            "The heatmap is an interactive 7 days × 24 hours grid illustrating gaming intensity throughout the week. Deeper orange tiles represent hours where you spend the most gaming time.",
+            "All timestamps are calculated in your user timezone. Importantly: if you play across midnight (e.g. 11:30 PM Friday to 1:30 AM Saturday), GameTrace slices the session proportionally: 30 minutes to Friday 11 PM, 60 minutes to Saturday midnight, and 30 minutes to Saturday 1 AM."
+          ],
+          "keywords": ["heatmap", "grid", "hours", "night", "timezone"]
+        },
+        {
+          "id": "streak-calculation",
+          "badge": "STREAK",
+          "question": "How is my streak calculated and does missing a day reset it immediately?",
+          "answer": [
+            "A calendar day counts toward your streak if at least one completed session was recorded in a non-ignored game in your local timezone.",
+            "GameTrace includes a built-in One-Day Grace Period: if you played yesterday but have not played yet today, your streak does NOT reset to zero. It remains anchored to yesterday. The streak only resets if both yesterday and today see zero gaming activity."
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "All-time record",
+            "text": "Your highest historical milestone is permanently preserved as your 'Longest streak' record tile."
+          },
+          "keywords": ["streak", "grace period", "consecutive days", "record"]
+        },
+        {
+          "id": "genres-sum-exposure",
+          "badge": "GENRES",
+          "question": "Why is the sum of hours across genres higher than my total playtime?",
+          "answer": [
+            "Most contemporary games carry multiple genre tags in IGDB.",
+            "For example, 2 hours played in The Witcher 3 simultaneously registers under 'RPG', 'Action', and 'Open World'. The genre panel measures your total thematic exposure, so the sum of individual genre bars naturally exceeds total screen time."
+          ],
+          "keywords": ["genres", "themes", "sum", "math", "exposure"]
+        },
+        {
+          "id": "companies-rollup",
+          "badge": "STUDIOS",
+          "question": "How are development studios and publishers categorized?",
+          "answer": [
+            "In Analytics, you can toggle between Developers and Publishers.",
+            "For publishers, our pipeline performs corporate rollup (subsidiary entities roll up into the parent corporate entity, e.g. PlayStation studios under Sony Interactive Entertainment). Development studios remain distinct to ensure credit is given to the creative team that authored the game."
+          ],
+          "keywords": ["studios", "developers", "publishers", "rollup"]
+        }
+      ]
+    },
+    {
+      "id": "mobile-apk",
+      "title": "Android Mobile App (APK)",
+      "description": "Direct APK downloads, unknown sources permissions, and Google Play Protect prompts.",
+      "questions": [
+        {
+          "id": "where-to-download-apk",
+          "badge": "DOWNLOAD",
+          "question": "Where can I download the mobile app and is it on Google Play?",
+          "answer": [
+            "The official GameTrace Android application is available as a direct package download from our hub at /download.",
+            "As an independent homelab project, the app is distributed directly as an APK. It requires no Google Play account and contains zero third-party tracking libraries or advertisements."
+          ],
+          "keywords": ["download", "apk", "android", "google play", "store"]
+        },
+        {
+          "id": "unknown-sources-permission",
+          "badge": "ANDROID",
+          "question": "How do I enable the „Install unknown apps” permission on Android?",
+          "answer": [
+            "On modern Android versions (Android 8.0 through Android 15), installation permissions are granted per application (the browser or file manager opening the APK)."
+          ],
+          "steps": [
+            "Download gametrace.apk from /download on your Android phone.",
+            "Tap the completed download notification.",
+            "When prompted with 'For your security, your phone is not allowed to install unknown apps from this source', tap 'Settings'.",
+            "Toggle 'Allow from this source' on for your browser (e.g. Chrome, Firefox, or Samsung Internet).",
+            "Return to the installer and tap 'Install'."
+          ],
+          "keywords": ["unknown sources", "permission", "installation", "settings"]
+        },
+        {
+          "id": "play-protect-warning",
+          "badge": "SECURITY",
+          "question": "Why does Google Play Protect display a warning during APK installation?",
+          "answer": [
+            "The Google Play Protect prompt ('Blocked by Play Protect' or 'Unrecognized app developer') is Android's standard cautionary dialog whenever an APK is sideloaded outside the Google Play Store.",
+            "The installation package is compiled cleanly from our source repository and signed with our development certificate. The file contains zero malicious code."
+          ],
+          "steps": [
+            "When the Play Protect alert dialog appears, do not tap 'OK'.",
+            "Tap the small 'More details' text link.",
+            "Tap 'Install anyway'.",
+            "The app will complete installation and is ready for use."
+          ],
+          "callout": {
+            "type": "tip",
+            "title": "Checksum verification",
+            "text": "Advanced users can verify the SHA-256 checksum of the downloaded file against the release manifest in the repository."
+          },
+          "keywords": ["play protect", "warning", "security", "install anyway", "safe"]
+        },
+        {
+          "id": "mobile-web-sync",
+          "badge": "SYNC",
+          "question": "Does the mobile app synchronize in real-time with the web application?",
+          "answer": [
+            "Yes. Both the mobile app and web frontend interface with the same secure backend database.",
+            "A session dictated by voice on your phone appears immediately on desktop. Likewise, a game detected on your PC displays as an active session in the mobile app with a live synchronized counter."
+          ],
+          "keywords": ["sync", "cloud", "phone", "desktop", "realtime"]
+        }
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "What Might Go Wrong? (Troubleshooting)",
+      "description": "Diagnosing 502 Bad Gateway errors, undetected PC games, microphone permissions, and server restarts.",
+      "questions": [
+        {
+          "id": "troubleshoot-502-bad-gateway",
+          "badge": "DIAGNOSTIC",
+          "question": "The bot shows OFFLINE or the app displays a 502 Bad Gateway error — what should I do?",
+          "answer": [
+            "A 502 Bad Gateway error in our homelab setup typically happens right after a backend container update, when the Nginx web proxy temporarily caches a previous internal Docker IP address.",
+            "In most cases, this self-resolves within 30 seconds as Nginx uses Docker's embedded DNS with short TTL."
+          ],
+          "steps": [
+            "Wait 30 seconds and refresh the browser tab (Ctrl+F5).",
+            "Check the 'Bot status' tile in Settings (/settings) — an orange indicator confirms the proxy has reconnected.",
+            "If you manage the homelab server and the issue persists, execute: `docker exec gametrace-web nginx -s reload`."
+          ],
+          "callout": {
+            "type": "gotcha",
+            "title": "Data resilience",
+            "text": "Even during temporary web proxy blips, the Discord bot service runs independently and preserves all in-flight gaming sessions."
+          },
+          "keywords": ["502", "bad gateway", "connection error", "bot offline", "down"]
+        },
+        {
+          "id": "troubleshoot-pc-game-not-detected",
+          "badge": "CHECKLIST",
+          "question": "I am playing on PC, but the bot is not recording my session — troubleshooting checklist.",
+          "answer": [
+            "If you are playing on PC but no active session timer appears in the app header, check the following:"
+          ],
+          "steps": [
+            "Step 1: Check your Discord presence — ensure your status is NOT 'Invisible' (must be Online, Idle, or Do Not Disturb).",
+            "Step 2: Check Discord User Settings → Activity Privacy → ensure 'Display current activity as a status message' is ENABLED.",
+            "Step 3: Check if Discord sees the executable — look at the status above your avatar in Discord. If missing, go to Settings → Registered Games and click 'Add it!'.",
+            "Step 4: Check server membership — confirm you share at least one Discord server with the GameTrace bot.",
+            "Step 5: Check admin permissions — certain games with aggressive anti-cheat engines (e.g. Vanguard, Easy Anti-Cheat) require running Discord as Administrator to read process names."
+          ],
+          "keywords": ["not detecting", "missing session", "game not tracking", "anticheat"]
+        },
+        {
+          "id": "troubleshoot-mic-permission-denied",
+          "badge": "MICROPHONE",
+          "question": "The Voice page displays a microphone permission error — how do I re-enable it?",
+          "answer": [
+            "Modern browsers mandate a secure context (HTTPS or localhost) and explicit user approval before granting access to the Web Audio API.",
+            "If you accidentally clicked 'Block' on the microphone prompt, the browser permanently remembers that rejection."
+          ],
+          "steps": [
+            "Click the lock or site settings icon on the left side of your browser URL address bar.",
+            "Locate 'Microphone' in the permissions list.",
+            "Change the setting from 'Block' to 'Allow' (or reset site permissions).",
+            "Reload the page (F5) and tap the record button again."
+          ],
+          "keywords": ["microphone", "permission denied", "blocked", "voice"]
+        },
+        {
+          "id": "troubleshoot-login-code-expired",
+          "badge": "EXPIRED CODE",
+          "question": "My link code expired or shows „Invalid or expired code” — what do I do?",
+          "answer": [
+            "Link codes issued via Discord `/login` have a strict 5-minute (300-second) TTL and are single-use. Generating a new code immediately voids previous ones.",
+            "If you receive an authorization error, return to Discord, run `/login` again, copy the fresh code, and submit it on the login page.",
+            "Note: to protect against brute-force attacks, the API temporarily locks out IP addresses after 10 failed attempts for 15 minutes."
+          ],
+          "keywords": ["code expired", "invalid code", "expired", "login error", "lockout"]
+        },
+        {
+          "id": "troubleshoot-bot-restart-self-healing",
+          "badge": "SELF-HEALING",
+          "question": "What happens to my session if the server restarts or the bot disconnects?",
+          "answer": [
+            "GameTrace incorporates an automated Self-Healing Engine. The bot intentionally leaves ongoing sessions open across server restarts to accommodate fast updates.",
+            "Immediately upon reconnection, the bot inspects player presence:",
+            "1. If you are still in the same game, your session continues uninterrupted with status ONGOING.",
+            "2. If you exited the game during server downtime, the session is safely saved with status ERROR, prompting you to review or confirm the end time.",
+            "3. Sessions older than 12 hours with no contact are closed to prevent artificial inflated durations."
+          ],
+          "keywords": ["restart", "crash", "self healing", "interrupted", "disconnection"]
+        }
+      ]
+    },
+    {
+      "id": "privacy-security",
+      "title": "Privacy & Data Security",
+      "description": "Data governance, bot permissions, GDPR compliance, and 7-day account deletion.",
+      "questions": [
+        {
+          "id": "what-data-bot-collects",
+          "badge": "PRIVACY",
+          "question": "What data does the bot collect and can it read my private Discord messages?",
+          "answer": [
+            "Categorically NO. The GameTrace bot has zero technical capability to read your Direct Messages (DMs), server channel chats, or friend lists.",
+            "The bot only receives public presence events (what game your profile launched) and slash commands (/login, /panel). Your data is utilized exclusively for personal analytics and is never monetized or shared with third parties."
+          ],
+          "callout": {
+            "type": "info",
+            "title": "GDPR Compliance",
+            "text": "For a complete legal inventory of data categories, purposes, and rights, view our Privacy Policy at /privacy."
+          },
+          "keywords": ["data", "privacy", "messages", "gdpr", "security"]
+        },
+        {
+          "id": "account-deletion-grace-period",
+          "badge": "DELETION",
+          "question": "How does account deletion work and what is the 7-day grace period?",
+          "answer": [
+            "Under Account Settings (/settings), you can schedule the permanent deletion of your account and all associated records at any time.",
+            "GameTrace provides a 7-day grace period. Upon request: auth tokens are revoked, tracking halts immediately, and the account enters pending deletion status.",
+            "Within those 7 days, you can change your mind by logging in and clicking 'Cancel deletion'. After 7 days, a nightly sweep permanently purges your sessions, preferences, and profile."
+          ],
+          "callout": {
+            "type": "warning",
+            "title": "Admin accounts",
+            "text": "To prevent infrastructure lockout, accounts designated as administrator cannot self-delete via the web interface."
+          },
+          "keywords": ["delete account", "grace period", "7 days", "gdpr", "cancel deletion"]
+        }
+      ]
+    }
+  ]
+}

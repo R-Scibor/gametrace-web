@@ -1,0 +1,76 @@
+.nav {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.scrollContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bright) transparent;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  height: 4px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 2px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background-color: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.pill:hover {
+  color: var(--text);
+  border-color: var(--border-bright);
+  background-color: var(--bg3);
+}
+
+.pill:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+.pill.active {
+  color: var(--button-text-on-orange);
+  background-color: var(--orange);
+  border-color: var(--orange);
+}
+
+.count {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: inherit;
+}
+
+.pill.active .count {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--button-text-on-orange);
+}

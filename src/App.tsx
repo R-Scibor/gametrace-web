@@ -10,6 +10,7 @@ import { DownloadPage } from './pages/DownloadPage';
 import { LoginPage } from './pages/LoginPage';
 import { DiscordCallbackPage } from './pages/DiscordCallbackPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { FaqPage } from './pages/FaqPage';
 import { DeleteAccountPage } from './pages/DeleteAccountPage';
 import { DeletionScheduledPage } from './pages/DeletionScheduledPage';
 import { PendingDeletionPage } from './pages/PendingDeletionPage';
@@ -59,6 +60,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/discord/callback" element={<DiscordCallbackPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/faq" element={<FaqPage />} />
         <Route path="/delete-account" element={<DeleteAccountPage />} />
         <Route path="/account/deletion-scheduled" element={<DeletionScheduledPage />} />
         <Route path="/account/pending-deletion" element={<PendingDeletionPage />} />

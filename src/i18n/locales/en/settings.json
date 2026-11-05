@@ -16,7 +16,10 @@
   },
   "privacy": {
     "policy": "Privacy policy",
-    "open": "Read"
+    "open": "Read",
+    "faq": "Frequently Asked Questions",
+    "faqSubtext": "Knowledge base, bot configuration, and troubleshooting",
+    "faqOpen": "Open"
   },
   "preferences": {
     "language": "Language",

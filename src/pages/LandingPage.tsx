@@ -683,6 +683,9 @@ export function LandingPage() {
           ) : null}
           <nav className={styles.footerCol} aria-label={t('footer.info')}>
             <h4>{t('footer.info')}</h4>
+            <Link to="/faq" className={styles.footerLink}>
+              {t('footer.faq')}
+            </Link>
             <Link to="/privacy" className={styles.footerLink}>
               {t('footer.privacy')}
             </Link>

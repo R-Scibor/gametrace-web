@@ -16,7 +16,10 @@
   },
   "privacy": {
     "policy": "Polityka prywatności",
-    "open": "Czytaj"
+    "open": "Czytaj",
+    "faq": "Często zadawane pytania",
+    "faqSubtext": "Baza wiedzy, konfiguracja bota i rozwiązywanie problemów",
+    "faqOpen": "Otwórz"
   },
   "preferences": {
     "language": "Język",

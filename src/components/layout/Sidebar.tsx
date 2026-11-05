@@ -88,6 +88,14 @@ const SettingsIcon = icon(
   </>,
 );
 
+const FaqIcon = icon(
+  <>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </>,
+);
+
 const LogoutIcon = icon(
   <>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -175,6 +183,7 @@ export function Sidebar() {
           <NavItem path="/trash" label={t('nav.trash')} icon={TrashIcon} />
           {isAdmin && <NavItem path="/admin" label={t('nav.admin')} icon={AdminIcon} />}
           <NavItem path="/settings" label={t('nav.settings')} icon={SettingsIcon} />
+          <NavItem path="/faq" label={t('nav.faq')} icon={FaqIcon} />
         </NavGroup>
       </nav>
       <div className={styles.footer}>
