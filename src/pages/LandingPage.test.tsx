@@ -34,7 +34,7 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   expect(screen.getByText('1 320')).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: /mapa nawyków/i })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Dodaj bota lub dołącz do serwera' })).toBeInTheDocument();
-  expect(screen.getByText('Działa z każdą grą widoczną na Discordzie')).toBeInTheDocument();
+  expect(screen.getByText(/bez stoperów, instalacji na PC i spadku wydajności/i)).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Twoje dane, gdzie chcesz' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Przeglądarka' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Aplikacja na Androida' })).toBeInTheDocument();
@@ -43,7 +43,8 @@ test('LandingPage renders ecosystem gateway sections', async () => {
   await waitFor(() => {
     expect(screen.getAllByRole('button', { name: /pobierz apk/i }).length).toBeGreaterThanOrEqual(1);
   });
-  expect(screen.getByText('Logowanie przez Discorda')).toBeInTheDocument();
+  expect(screen.getByText('Szczegółowa analityka tygodni, miesięcy i pass')).toBeInTheDocument();
+  expect(screen.getByText('Szybki zapis głosem — podyktuj grę i czas')).toBeInTheDocument();
   expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   expect(screen.getByText(/© 2026 Rafał Ścibor/)).toBeInTheDocument();
   expect(screen.getByText('Dane i okładki gier: IGDB')).toBeInTheDocument();
@@ -72,9 +73,10 @@ test('LandingPage opens onboarding wizard from onboarding query param', async ()
     authenticated: false,
   });
 
-  expect(screen.getByRole('dialog')).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Uruchom GameTrace' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Zaproś bota albo dołącz na serwer' })).toBeInTheDocument();
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeInTheDocument();
+  expect(within(dialog).getByRole('heading', { name: 'Dodaj bota lub dołącz do serwera' })).toBeInTheDocument();
+  expect(within(dialog).getByRole('button', { name: /Dołącz do serwera GameTrace/i })).toBeInTheDocument();
 });
 
 test('LandingPage opens onboarding wizard from hero CTA', async () => {
@@ -82,9 +84,10 @@ test('LandingPage opens onboarding wizard from hero CTA', async () => {
   renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
 
   await user.click(screen.getByRole('button', { name: /^Rozpocznij$/i }));
-  expect(screen.getByRole('dialog')).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Uruchom GameTrace' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'Zaproś bota albo dołącz na serwer' })).toBeInTheDocument();
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeInTheDocument();
+  expect(within(dialog).getByRole('heading', { name: 'Dodaj bota lub dołącz do serwera' })).toBeInTheDocument();
+  expect(within(dialog).getByRole('button', { name: /Dołącz do serwera GameTrace/i })).toBeInTheDocument();
 });
 
 test('LandingPage keeps start out of the steps section', () => {

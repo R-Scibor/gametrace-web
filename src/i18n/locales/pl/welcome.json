@@ -95,9 +95,8 @@
     }
   },
   "start": {
-    "eyebrow": "Start / Bot na Discordzie",
     "title": "Dodaj bota lub dołącz do serwera",
-    "body": "GameTrace rejestruje Twój czas gry w tle przez status Discord Rich Presence. Nic nie instalujesz i nie tracisz ani jednego FPS.",
+    "body": "GameTrace rejestruje Twój czas gry automatycznie przez status Discord Rich Presence — bez stoperów, instalacji na PC i spadku wydajności. Wystarczy dołączyć do serwera lub dodać bota.",
     "joinServer": "Dołącz do serwera GameTrace",
     "addBot": "Dodaj bota do swojego serwera",
     "benefit1": "Działa z każdą grą widoczną na Discordzie",
@@ -109,9 +108,9 @@
       "eyebrow": "Web",
       "title": "Przeglądarka",
       "body": "Pełny panel na komputerze: ostatnie sesje, statystyki, passa i biblioteka gier z okładkami.",
-      "feature1": "Analityka tygodni i miesięcy",
-      "feature2": "Edycja i scalanie sesji",
-      "feature3": "Okładki i dane z IGDB",
+      "feature1": "Szczegółowa analityka tygodni, miesięcy i pass",
+      "feature2": "Wygodna edycja, scalanie i usuwanie sesji",
+      "feature3": "Katalog z oficjalnymi okładkami i danymi z IGDB",
       "login": "Zaloguj się",
       "alt": "Panel GameTrace w przeglądarce"
     },
@@ -119,6 +118,9 @@
       "eyebrow": "Android",
       "title": "Aplikacja na Androida",
       "body": "Ostatnie sesje zawsze pod ręką. Grałeś poza PC? Dodaj sesję głosem — powiedz, w co i jak długo.",
+      "feature1": "Szybki zapis głosem — podyktuj grę i czas",
+      "feature2": "Biblioteka i historia sesji zawsze w kieszeni",
+      "feature3": "Błyskawiczna synchronizacja z kontem",
       "download": "Pobierz APK",
       "checking": "Sprawdzanie…",
       "soon": "Wkrótce",

@@ -715,7 +715,7 @@
   align-items: center;
   gap: 10px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 1px;
   color: var(--text3);
   text-transform: uppercase;
@@ -791,7 +791,7 @@
 
 .voiceNoteTag strong {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--text3);
   letter-spacing: 0.5px;
 }
@@ -823,7 +823,7 @@
 
 .libraryStatLabel {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.6px;
   color: var(--text3);
 }
@@ -878,7 +878,7 @@
 
 .libraryMiniMeta {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--text3);
 }
 
@@ -1023,7 +1023,7 @@
 }
 
 .startTitle {
-  margin: 12px 0 14px;
+  margin: 10px 0 14px;
   font-family: var(--display);
   font-size: 32px;
   font-weight: 700;
@@ -1034,7 +1034,7 @@
 
 .startBody {
   margin: 0;
-  max-width: 470px;
+  max-width: 520px;
   font-size: 15px;
   line-height: 1.65;
   color: var(--text2);
@@ -1063,47 +1063,33 @@
   white-space: nowrap;
 }
 
-.benefits {
-  list-style: none;
-  margin: 28px 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  font-size: 14px;
-  color: var(--text2);
-}
-
-.benefits li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.benefits svg {
-  color: var(--orange);
-  flex: none;
-}
-
 /* ---------- CLIENTS (browser / android) ---------- */
 
 .clientGrid {
   display: grid;
   grid-template-columns: 1.55fr 1fr;
-  gap: 24px;
+  gap: 32px;
 }
 
-.clientCard {
-  position: relative;
+.clientItem {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  gap: 22px;
 }
 
-.clientCard::before {
+.clientStage {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 110%, rgba(255, 122, 26, 0.16), transparent 70%),
+    rgba(0, 0, 0, 0.25);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
+
+.clientStage::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1111,16 +1097,6 @@
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255, 122, 26, 0.35), transparent);
-}
-
-.clientStage {
-  position: relative;
-  height: 400px;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-  background:
-    radial-gradient(ellipse 80% 70% at 50% 110%, rgba(255, 122, 26, 0.16), transparent 70%),
-    rgba(0, 0, 0, 0.2);
 }
 
 .browserFrame {
@@ -1142,40 +1118,7 @@
   height: auto;
 }
 
-.browserBar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 12px;
-  background: var(--bg3);
-  border-bottom: 1px solid var(--border);
-}
 
-.browserDot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--bg4);
-}
-
-.browserDot:first-child {
-  background: var(--orange-dim);
-}
-
-.browserUrl {
-  flex: 1;
-  max-width: 260px;
-  margin-left: 10px;
-  padding: 4px 9px;
-  overflow: hidden;
-  white-space: nowrap;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  color: var(--text2);
-}
 
 .phoneFrame {
   position: absolute;
@@ -1217,15 +1160,15 @@
   pointer-events: none;
 }
 
-.clientBody {
+.clientInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 24px 28px 28px;
+  padding: 4px 2px 0;
 }
 
 .clientTitle {
-  margin: 10px 0 8px;
+  margin: 8px 0 8px;
   font-family: var(--display);
   font-size: 24px;
   font-weight: 700;
@@ -1242,22 +1185,28 @@
 
 .clientFeatures {
   list-style: none;
-  margin: 0 0 22px;
+  margin: 12px 0 28px;
   padding: 0;
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14.5px;
+  line-height: 1.55;
   color: var(--text2);
 }
 
 .clientFeatures li {
-  padding: 3px 0;
+  position: relative;
+  padding-left: 18px;
 }
 
 .clientFeatures li::before {
   content: '';
-  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 8px;
   width: 5px;
   height: 5px;
-  margin: 0 10px 2px 0;
   border-radius: 50%;
   background: var(--orange);
 }
@@ -1276,19 +1225,13 @@
   border-radius: 2px;
   background: var(--warn-tint, rgba(220, 185, 92, 0.1));
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--warn, #dcb95c);
 }
 
-.clientNote {
-  margin: 10px 0 0;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  color: var(--text3);
-}
+
 
 /* ---------- FOOTER ---------- */
 
@@ -1394,14 +1337,9 @@
     letter-spacing: 1.2px;
   }
 
-  .benefits {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 24px;
-  }
-
   .clientGrid {
     grid-template-columns: 1fr;
+    gap: 48px;
   }
 
   .clientStage {
@@ -1419,8 +1357,8 @@
     width: 180px;
   }
 
-  .clientBody {
-    padding: 22px 20px 24px;
+  .clientInfo {
+    padding: 0;
   }
 
   .footerInner {

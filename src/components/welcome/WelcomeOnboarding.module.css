@@ -291,7 +291,7 @@
 
 .stepError {
   margin: 0 0 16px;
-  color: var(--warn, #ff5c5c);
+  color: var(--warn);
   font-size: 13px;
 }
 

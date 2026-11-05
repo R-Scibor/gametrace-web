@@ -91,9 +91,8 @@
     }
   },
   "start": {
-    "eyebrow": "Start / Discord bot",
     "title": "Add the bot or join the server",
-    "body": "GameTrace logs your playtime in the background through Discord Rich Presence. Nothing to install, not a single FPS lost.",
+    "body": "GameTrace logs your playtime automatically through Discord Rich Presence — zero timers, zero PC software, and zero performance impact. Simply join the server or add the bot.",
     "joinServer": "Join the GameTrace server",
     "addBot": "Add the bot to your server",
     "benefit1": "Works with any game Discord can see",
@@ -105,9 +104,9 @@
       "eyebrow": "Web",
       "title": "Browser",
       "body": "The full dashboard on your computer: recent sessions, stats, streaks and a game library with covers.",
-      "feature1": "Weekly and monthly analytics",
-      "feature2": "Edit and merge sessions",
-      "feature3": "Covers and data from IGDB",
+      "feature1": "Detailed weekly, monthly and streak analytics",
+      "feature2": "Easy editing, merging and session cleanup",
+      "feature3": "Library catalog with official IGDB metadata",
       "login": "Log in",
       "alt": "GameTrace dashboard in the browser"
     },
@@ -115,6 +114,9 @@
       "eyebrow": "Android",
       "title": "Android app",
       "body": "Your recent sessions, always at hand. Played away from your PC? Add a session by voice — just say what and for how long.",
+      "feature1": "Quick voice logging — just speak title and hours",
+      "feature2": "Your library and session history in your pocket",
+      "feature3": "Instant real-time sync with your account",
       "download": "Download APK",
       "checking": "Checking…",
       "soon": "Soon",

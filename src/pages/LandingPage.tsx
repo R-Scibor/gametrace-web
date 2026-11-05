@@ -38,12 +38,6 @@ const DiscordIcon = () => (
   </svg>
 );
 
-const CheckIcon = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-    <path d="M5 12.5l4.5 4.5L19 7.5" />
-  </svg>
-);
-
 const ArrowRightIcon = () => (
   <svg
     viewBox="0 0 24 24"
@@ -143,7 +137,6 @@ export function LandingPage() {
     };
   }, []);
 
-  const benefits = [t('start.benefit1'), t('start.benefit2'), t('start.benefit3')];
   const goToLogin = () => navigate(isAuthenticated ? '/' : '/login');
   const downloadApk = async () => {
     if (await isApkDownloadReady()) {
@@ -535,7 +528,9 @@ export function LandingPage() {
           </div>
           <div className={styles.startGrid}>
             <div className={styles.startCopy}>
-              <span className={styles.eyebrow}>{t('start.eyebrow')}</span>
+              <span className={styles.eyebrow}>
+                {currentLanguage === 'en' ? 'Discord Integration' : 'Integracja z Discordem'}
+              </span>
               <h3 className={styles.startTitle}>{t('start.title')}</h3>
               <p className={styles.startBody}>{t('start.body')}</p>
             </div>
@@ -561,14 +556,6 @@ export function LandingPage() {
               ) : null}
             </div>
           </div>
-          <ul className={styles.benefits}>
-            {benefits.map((item) => (
-              <li key={item}>
-                <CheckIcon />
-                {item}
-              </li>
-            ))}
-          </ul>
         </section>
 
         <section className={styles.section} id="platformy">
@@ -577,15 +564,9 @@ export function LandingPage() {
             <span className={styles.sectionRule} />
           </div>
           <div className={styles.clientGrid}>
-            <article className={styles.clientCard}>
+            <article className={styles.clientItem}>
               <div className={styles.clientStage}>
                 <div className={styles.browserFrame}>
-                  <div className={styles.browserBar} aria-hidden>
-                    <span className={styles.browserDot} />
-                    <span className={styles.browserDot} />
-                    <span className={styles.browserDot} />
-                    <span className={styles.browserUrl}>gametrace.rscibor.dev</span>
-                  </div>
                   <img
                     src={`/landing/app-dashboard-${currentLanguage}.webp`}
                     alt={t('clients.web.alt')}
@@ -596,10 +577,11 @@ export function LandingPage() {
                 </div>
                 <div className={styles.clientFade} aria-hidden />
               </div>
-              <div className={styles.clientBody}>
-                <span className={styles.eyebrow}>{t('clients.web.eyebrow')}</span>
+              <div className={styles.clientInfo}>
+                <span className={styles.eyebrow}>
+                  {currentLanguage === 'en' ? 'Desktop' : 'Na komputerze'}
+                </span>
                 <h3 className={styles.clientTitle}>{t('clients.web.title')}</h3>
-                <p className={styles.clientText}>{t('clients.web.body')}</p>
                 <ul className={styles.clientFeatures}>
                   <li>{t('clients.web.feature1')}</li>
                   <li>{t('clients.web.feature2')}</li>
@@ -616,7 +598,7 @@ export function LandingPage() {
               </div>
             </article>
 
-            <article className={styles.clientCard}>
+            <article className={styles.clientItem}>
               <div className={styles.clientStage}>
                 <div className={styles.phoneFrame}>
                   <img
@@ -629,10 +611,16 @@ export function LandingPage() {
                 </div>
                 <div className={styles.clientFade} aria-hidden />
               </div>
-              <div className={styles.clientBody}>
-                <span className={styles.eyebrow}>{t('clients.app.eyebrow')}</span>
+              <div className={styles.clientInfo}>
+                <span className={styles.eyebrow}>
+                  {currentLanguage === 'en' ? 'Mobile' : 'W kieszeni'}
+                </span>
                 <h3 className={styles.clientTitle}>{t('clients.app.title')}</h3>
-                <p className={styles.clientText}>{t('clients.app.body')}</p>
+                <ul className={styles.clientFeatures}>
+                  <li>{t('clients.app.feature1')}</li>
+                  <li>{t('clients.app.feature2')}</li>
+                  <li>{t('clients.app.feature3')}</li>
+                </ul>
                 <div className={styles.clientActions}>
                   {apkAvailable === true ? (
                     <Button
@@ -657,7 +645,6 @@ export function LandingPage() {
                     </>
                   )}
                 </div>
-                <p className={styles.clientNote}>{t('clients.app.loginNote')}</p>
               </div>
             </article>
           </div>
