@@ -119,3 +119,48 @@ test('sends a scheduled account to the blocking screen instead of the dashboard'
 
   await waitFor(() => expect(screen.getByText('blocking screen')).toBeInTheDocument());
 });
+
+test('submit button is inactive until exactly six digits are entered', async () => {
+  renderLogin();
+
+  const input = screen.getByLabelText(/Kod logowania/i);
+  const button = screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i });
+
+  // Initially empty -> disabled
+  expect(button).toBeDisabled();
+
+  // 5 digits -> still disabled
+  await userEvent.type(input, '12345');
+  expect(button).toBeDisabled();
+
+  // 6th digit -> enabled
+  await userEvent.type(input, '6');
+  expect(button).toBeEnabled();
+
+  // backspace -> disabled again
+  await userEvent.type(input, '{backspace}');
+  expect(button).toBeDisabled();
+});
+
+test('language switcher changes interface language to English and Polish', async () => {
+  renderLogin();
+
+  // Initially in Polish
+  expect(screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i })).toBeInTheDocument();
+  expect(screen.getByLabelText(/Kod logowania/i)).toBeInTheDocument();
+
+  // Click EN segment
+  const enButton = screen.getByRole('button', { name: 'English' });
+  await userEvent.click(enButton);
+
+  expect(screen.getByRole('button', { name: /^LOG IN$/i })).toBeInTheDocument();
+  expect(screen.getByLabelText(/LOGIN CODE/i)).toBeInTheDocument();
+
+  // Switch back to PL
+  const plButton = screen.getByRole('button', { name: 'Polski' });
+  await userEvent.click(plButton);
+
+  expect(screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i })).toBeInTheDocument();
+  expect(screen.getByLabelText(/Kod logowania/i)).toBeInTheDocument();
+});
+
