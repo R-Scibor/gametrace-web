@@ -541,24 +541,23 @@ export function LandingPage() {
             </div>
             <div className={styles.startActions}>
               {SERVER_JOIN_URL ? (
-                <button
-                  type="button"
-                  className={`${styles.ctaBtn} ${styles.ctaPrimary}`}
+                <Button
+                  className={styles.startBtn}
                   onClick={() => openExternal(SERVER_JOIN_URL)}
                 >
                   <DiscordIcon />
                   {t('start.joinServer')}
-                </button>
+                </Button>
               ) : null}
               {BOT_INVITE_URL ? (
-                <button
-                  type="button"
-                  className={`${styles.ctaBtn} ${styles.ctaOutline}`}
+                <Button
+                  variant="secondary"
+                  className={styles.startBtn}
                   onClick={() => openExternal(BOT_INVITE_URL)}
                 >
                   <DiscordIcon />
                   {t('start.addBot')}
-                </button>
+                </Button>
               ) : null}
             </div>
           </div>
@@ -607,14 +606,12 @@ export function LandingPage() {
                   <li>{t('clients.web.feature3')}</li>
                 </ul>
                 <div className={styles.clientActions}>
-                  <button
-                    type="button"
-                    className={`${styles.ctaBtn} ${styles.ctaPrimary}`}
+                  <Button
+                    className={styles.clientBtn}
                     onClick={goToLogin}
                   >
-                    {isAuthenticated ? null : <DiscordIcon />}
                     {isAuthenticated ? t('topBar.dashboard') : t('clients.web.login')}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </article>
@@ -638,22 +635,22 @@ export function LandingPage() {
                 <p className={styles.clientText}>{t('clients.app.body')}</p>
                 <div className={styles.clientActions}>
                   {apkAvailable === true ? (
-                    <button
-                      type="button"
-                      className={`${styles.ctaBtn} ${styles.ctaOutline}`}
+                    <Button
+                      variant="secondary"
+                      className={styles.clientBtn}
                       onClick={downloadApk}
                     >
                       {t('clients.app.download')}
-                    </button>
+                    </Button>
                   ) : (
                     <>
-                      <button
-                        type="button"
-                        className={`${styles.ctaBtn} ${styles.ctaDisabled}`}
+                      <Button
+                        variant="secondary"
+                        className={styles.clientBtn}
                         disabled
                       >
                         {apkAvailable === null ? t('clients.app.checking') : t('clients.app.download')}
-                      </button>
+                      </Button>
                       {apkAvailable === false ? (
                         <span className={styles.soonBadge}>{t('clients.app.soon')}</span>
                       ) : null}

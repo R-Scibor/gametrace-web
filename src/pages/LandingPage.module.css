@@ -1046,60 +1046,21 @@
   gap: 12px;
 }
 
-.ctaBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px 20px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  background: none;
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: box-shadow 0.15s, border-color 0.15s, color 0.15s;
+.startBtn {
+  width: 100%;
 }
 
-.ctaBtn svg {
-  width: 16px;
-  height: 16px;
+.startBtn svg {
+  width: 18px;
+  height: 18px;
   flex: none;
 }
 
-.ctaBtn:focus-visible {
-  outline: 2px solid var(--orange);
-  outline-offset: 3px;
-}
-
-.ctaPrimary {
-  background: var(--orange);
-  color: var(--button-text-on-orange, #1a1410);
-  box-shadow: 0 0 20px var(--orange-glow), 0 0 40px rgba(255, 122, 26, 0.18);
-}
-
-.ctaPrimary:hover {
-  box-shadow: 0 0 26px var(--orange-glow), 0 0 52px rgba(255, 122, 26, 0.28);
-}
-
-.ctaOutline {
-  border-color: var(--orange-dim);
-  color: var(--orange);
-}
-
-.ctaOutline:hover {
-  border-color: var(--orange);
-}
-
-.ctaDisabled,
-.ctaDisabled:disabled {
-  border-color: var(--border-bright);
-  color: var(--text3);
-  cursor: not-allowed;
+.clientBtn {
+  width: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  white-space: nowrap;
 }
 
 .benefits {
@@ -1426,7 +1387,7 @@
     font-size: 26px;
   }
 
-  .startActions .ctaBtn {
+  .startActions .startBtn {
     padding-left: 12px;
     padding-right: 12px;
     font-size: 12px;

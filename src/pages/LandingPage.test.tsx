@@ -110,8 +110,30 @@ test('LandingPage navigates to login from platform card', async () => {
 
   const platforms = document.getElementById('platformy');
   expect(platforms).not.toBeNull();
-  await user.click(within(platforms!).getByRole('button', { name: /^Zaloguj przez Discorda$/i }));
+  const loginButton = within(platforms!).getByRole('button', { name: /^Zaloguj się$/i });
+  expect(loginButton.querySelector('svg')).toBeNull();
+  await user.click(loginButton);
   expect(screen.getByText('Login Screen')).toBeInTheDocument();
+});
+
+test('LandingPage how to start and your data buttons use app button styling', () => {
+  renderAppRoutes(<Route path="/welcome" element={<LandingPage />} />, { route: '/welcome', authenticated: false });
+
+  const stepsSection = document.getElementById('jak-zaczac');
+  expect(stepsSection).not.toBeNull();
+  const startButtons = within(stepsSection!).getAllByRole('button');
+  expect(startButtons.length).toBeGreaterThanOrEqual(1);
+  startButtons.forEach((btn) => {
+    expect(btn.className).toMatch(/button/);
+  });
+
+  const platformsSection = document.getElementById('platformy');
+  expect(platformsSection).not.toBeNull();
+  const platformButtons = within(platformsSection!).getAllByRole('button');
+  expect(platformButtons.length).toBeGreaterThanOrEqual(1);
+  platformButtons.forEach((btn) => {
+    expect(btn.className).toMatch(/button/);
+  });
 });
 
 test('LandingPage keeps wizard as primary CTA when authenticated', async () => {
@@ -175,6 +197,11 @@ test('LandingPage translates feature preview cards when language is English', as
     'src',
     '/landing/app-mobile-en.webp',
   );
+
+  const webCard = screen.getByRole('heading', { name: 'Browser' }).closest('article')!;
+  const enLoginBtn = within(webCard).getByRole('button', { name: /^Log in$/i });
+  expect(enLoginBtn).toBeInTheDocument();
+  expect(enLoginBtn.querySelector('svg')).toBeNull();
 
   unmount();
   await act(async () => {
