@@ -118,7 +118,12 @@ cache.
 | `/welcome`          | Landing          | Public onboarding — what GameTrace is, how to get started. Footer links to privacy policy. |
 | `/download`         | Download hub     | Public APK download + install help (also `/download/`). |
 | `/login`            | Auth             | Link-code form (default); optional dev username mode. Redirects to `/` when already authed. Footer links to privacy policy. |
+| `/auth/discord/callback` | OAuth callback | Public Discord OAuth PKCE authentication callback. |
+| `/faq`              | Knowledge base   | **Public** (no auth). PL/EN via `faq` i18n namespace. Interactive FAQ accordion with live search, category navigation, permalinks, and troubleshooting guides. |
 | `/privacy`          | Privacy policy   | **Public** (no auth). PL/EN via `privacy` i18n namespace. Full GDPR notice (`https://gametrace.rscibor.dev/privacy`). Language switcher on-page. Contact + 7-day account deletion note. |
+| `/delete-account`   | Delete request   | **Public** (no auth). Self-service account deletion request initiating 7-day grace period. |
+| `/account/deletion-scheduled` | Deletion scheduled | Public confirmation screen after requesting account deletion. |
+| `/account/pending-deletion`   | Pending deletion   | Blocking intercept screen for accounts pending deletion (with cancel option). |
 | `/`                 | Dashboard        | Active-session card (live timer, 30s poll) · today/7d/avg-session tiles · idle hero spotlight · pending-error banner · recent sessions (last 5, COMPLETED+ERROR). |
 | `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia / Inne**; server-side search; pagination; click → detail. |
 | `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · **local cover** (everyone) · **ignore toggle**. No admin controls here — merge and global cover live only in the admin catalog. |
