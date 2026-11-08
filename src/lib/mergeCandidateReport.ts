@@ -1,4 +1,5 @@
 import type { ReportContext } from '../types/api';
+import { EMPTY_VALUE } from './format';
 
 export type MergeCandidateGameRef = { id: number; name: string };
 
@@ -7,7 +8,7 @@ export const REPORT_MESSAGE_MAX = 4000;
 export const MERGE_NOTE_MAX = 1000;
 
 function normalizeName(name: string): string {
-  return name.replace(/\s+/g, ' ').trim() || '—';
+  return name.replace(/\s+/g, ' ').trim() || EMPTY_VALUE;
 }
 
 /**

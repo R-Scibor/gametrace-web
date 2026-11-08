@@ -1,7 +1,8 @@
 import i18n from '../i18n';
+import { EMPTY_VALUE } from './format';
 
 export function formatUptime(s: number | null): string {
-  if (s == null) return '—';
+  if (s == null) return EMPTY_VALUE;
   const d = Math.floor(s / 86400);
   const h = Math.floor((s % 86400) / 3600);
   const m = Math.floor((s % 3600) / 60);

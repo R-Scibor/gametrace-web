@@ -11,8 +11,10 @@ export interface FormatOptions {
  */
 const locale = () => intlLocale(i18n.language);
 
+export const EMPTY_VALUE = '–';
+
 export function formatDuration(seconds: number | null | undefined): string {
-  if (!seconds) return '—';
+  if (!seconds) return EMPTY_VALUE;
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   if (h > 0) return `${h}h ${m}m`;
@@ -105,7 +107,7 @@ export function formatSessionWindow(
 ): string {
   const startDate = formatDateShort(startIso, options);
   const startTime = formatTimeShort(startIso, options);
-  if (!endIso) return `${startDate}, ${startTime} → —`;
+  if (!endIso) return `${startDate}, ${startTime} → ${EMPTY_VALUE}`;
   const endDate = formatDateShort(endIso, options);
   const endTime = formatTimeShort(endIso, options);
   if (startDate === endDate) return `${startDate}, ${startTime} → ${endTime}`;

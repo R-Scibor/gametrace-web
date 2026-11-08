@@ -1,5 +1,6 @@
 import { test, expect, vi, afterEach } from 'vitest';
 import {
+  EMPTY_VALUE,
   formatDuration,
   formatHours,
   formatDate,
@@ -15,8 +16,8 @@ afterEach(() => {
 });
 
 test('formatDuration formats hours and minutes', () => {
-  expect(formatDuration(0)).toBe('—');
-  expect(formatDuration(null)).toBe('—');
+  expect(formatDuration(0)).toBe(EMPTY_VALUE);
+  expect(formatDuration(null)).toBe(EMPTY_VALUE);
   expect(formatDuration(45 * 60)).toBe('45m');
   expect(formatDuration(2 * 3600 + 30 * 60)).toBe('2h 30m');
 });
