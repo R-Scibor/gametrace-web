@@ -8,6 +8,7 @@ import {
 } from '../../lib/mergeCandidateReport';
 import { useToastStore } from '../../store/toastStore';
 import { Button, Modal } from '../ui';
+import { EMPTY_VALUE } from '../../lib/format';
 import type { Game } from '../../types/api';
 import styles from './ReportDuplicateDialog.module.css';
 
@@ -95,7 +96,7 @@ export function ReportDuplicateDialog({ open, onClose, source }: ReportDuplicate
 
       <div>
         <p className={styles.fieldLabel}>{t('report.source')}</p>
-        <p className={styles.sourceName}>{source.name.trim() || '—'}</p>
+        <p className={styles.sourceName}>{source.name.trim() || EMPTY_VALUE}</p>
       </div>
 
       <div className={styles.field}>

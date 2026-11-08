@@ -13,6 +13,7 @@ import { PrivacyNoticeRow } from '../components/settings/PrivacyNoticeRow';
 import { FaqNoticeRow } from '../components/settings/FaqNoticeRow';
 import { SettingsRow } from '../components/settings/SettingsRow';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
+import { EMPTY_VALUE } from '../lib/format';
 import styles from './SettingsPage.module.css';
 
 /** Shown off and inert. Does not read or write the stored preference. */
@@ -74,7 +75,7 @@ export function SettingsPage() {
               : undefined
           }
         >
-          <span className={styles.value}>{profile?.username ?? user?.username ?? '—'}</span>
+          <span className={styles.value}>{profile?.username ?? user?.username ?? EMPTY_VALUE}</span>
         </SettingsRow>
         <DeleteAccountRow
           username={profile?.username ?? user?.username ?? ''}
@@ -143,7 +144,7 @@ export function SettingsPage() {
             className={styles.statusValue}
             style={{ color: health ? botColor(health.bot.status) : undefined }}
           >
-            {health ? formatBotStatus(health.bot.status) : '—'}
+            {health ? formatBotStatus(health.bot.status) : EMPTY_VALUE}
           </span>
         </SettingsRow>
         {health?.bot.uptime_seconds != null && (
@@ -152,13 +153,13 @@ export function SettingsPage() {
           </SettingsRow>
         )}
         <SettingsRow label={t('status.apiVersion')}>
-          <span className={styles.statusValue}>{health?.version ?? '—'}</span>
+          <span className={styles.statusValue}>{health?.version ?? EMPTY_VALUE}</span>
         </SettingsRow>
       </div>
 
       <footer className={styles.footer}>
         <span className={styles.footerLine} />
-        <span className={styles.version}>GAMETRACE {health?.version ?? '—'}</span>
+        <span className={styles.version}>GAMETRACE {health?.version ?? EMPTY_VALUE}</span>
         <span className={styles.footerLine} />
       </footer>
     </div>

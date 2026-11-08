@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { GameStats, Session } from '../../types/api';
 import { Cover } from '../Cover';
 import { useFormat } from '../../hooks/useFormat';
+import { EMPTY_VALUE } from '../../lib/format';
 import styles from './HeroSpotlight.module.css';
 
 interface HeroSpotlightProps {
@@ -17,9 +18,9 @@ export function HeroSpotlight({ session, stats, disabled }: HeroSpotlightProps) 
 
   const avgSeconds =
     stats && stats.session_count > 0 ? stats.total_seconds / stats.session_count : null;
-  const total = stats ? formatHours(stats.total_seconds) : '—';
-  const sessionCount = stats ? String(stats.session_count) : '—';
-  const avg = avgSeconds != null ? `${formatHours(avgSeconds)}h` : '—';
+  const total = stats ? formatHours(stats.total_seconds) : EMPTY_VALUE;
+  const sessionCount = stats ? String(stats.session_count) : EMPTY_VALUE;
+  const avg = avgSeconds != null ? `${formatHours(avgSeconds)}h` : EMPTY_VALUE;
   const recency = formatRecency(session.end_time ?? session.start_time);
 
   const body = (
@@ -38,7 +39,13 @@ export function HeroSpotlight({ session, stats, disabled }: HeroSpotlightProps) 
             <span className={styles.name}>{session.game.primary_name}</span>
             <span className={styles.mark}>{recency}</span>
           </div>
-          <span className={styles.hours}>{stats ? `${total}h` : total}</span>
+          <span
+            className={[styles.hours, !stats && styles.hoursEmpty]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            {stats ? `${total}h` : total}
+          </span>
           <span className={styles.leadNote}>{t('hero.total')}</span>
           <span className={styles.details}>{t('active.details')}</span>
         </div>

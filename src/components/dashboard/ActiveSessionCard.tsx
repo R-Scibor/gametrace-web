@@ -4,6 +4,7 @@ import type { ActiveSessionBrief, GameStats } from '../../types/api';
 import { Cover } from '../Cover';
 import { LiveTimer } from '../LiveTimer';
 import { useFormat } from '../../hooks/useFormat';
+import { EMPTY_VALUE } from '../../lib/format';
 import styles from './ActiveSessionCard.module.css';
 
 interface ActiveSessionCardProps {
@@ -16,8 +17,8 @@ export function ActiveSessionCard({ session, stats }: ActiveSessionCardProps) {
   const { formatHours, formatTimeShort } = useFormat();
   const avgSeconds =
     stats && stats.session_count > 0 ? stats.total_seconds / stats.session_count : null;
-  const sessionCount = stats ? String(stats.session_count) : '—';
-  const avg = avgSeconds != null ? `${formatHours(avgSeconds)}h` : '—';
+  const sessionCount = stats ? String(stats.session_count) : EMPTY_VALUE;
+  const avg = avgSeconds != null ? `${formatHours(avgSeconds)}h` : EMPTY_VALUE;
 
   return (
     <Link to={`/library/${session.game_id}`} className={styles.card}>

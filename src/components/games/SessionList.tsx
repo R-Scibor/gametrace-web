@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { Session } from '../../types/api';
 import { SESSION_SOURCE_LABEL, SESSION_STATUS_LABEL } from '../../lib/sessionLabels';
 import { useFormat } from '../../hooks/useFormat';
+import { EMPTY_VALUE } from '../../lib/format';
 import { EmptyState } from '../ui';
 import styles from './SessionList.module.css';
 
@@ -39,7 +40,7 @@ export function SessionList({ sessions }: SessionListProps) {
             <span className={styles.date}>{formatDateShort(session.start_time)}</span>
             <span className={styles.time}>{formatTimeShort(session.start_time)}</span>
             <span className={styles.duration}>
-              {session.duration_seconds ? formatDuration(session.duration_seconds) : '—'}
+              {session.duration_seconds ? formatDuration(session.duration_seconds) : EMPTY_VALUE}
             </span>
             <span className={styles.statusCell}>
               {statusLabel ? (
@@ -55,7 +56,9 @@ export function SessionList({ sessions }: SessionListProps) {
                   {statusLabel}
                 </span>
               ) : (
-                <span className={styles.statusMuted}>—</span>
+                <span className={styles.statusMuted} aria-label={t('history.statusCompleted', { defaultValue: 'Zakończona' })}>
+                  {EMPTY_VALUE}
+                </span>
               )}
             </span>
             <span

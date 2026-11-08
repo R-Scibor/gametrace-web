@@ -155,6 +155,9 @@
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
+.metricValueEmpty {
+  color: var(--text3);
+}
 .metricLabel {
   font-family: var(--mono);
   font-size: 10px;

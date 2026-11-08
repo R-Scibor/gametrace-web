@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useGame, useUpdateGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
 import { useGameStats } from '../hooks/useGameStats';
-import { formatDuration, formatDateShort, formatRecency } from '../lib/format';
+import { formatDuration, formatDateShort, formatRecency, EMPTY_VALUE } from '../lib/format';
 import { Cover } from '../components/Cover';
 import { GameActionsMenu } from '../components/games/GameActionsMenu';
 import { CoverDialog } from '../components/games/CoverDialog';
@@ -71,12 +71,12 @@ export function GameDetailPage() {
   const metrics = [
     { label: t('metrics.sessions'), value: String(sessionCount) },
     { label: t('metrics.total'), value: formatDuration(totalSeconds) },
-    { label: t('metrics.avg'), value: sessionCount ? formatDuration(avgSeconds) : '—' },
+    { label: t('metrics.avg'), value: sessionCount ? formatDuration(avgSeconds) : EMPTY_VALUE },
     {
       label: t('metrics.firstPlayed'),
-      value: stats?.first_played ? formatDateShort(stats.first_played) : '—',
+      value: stats?.first_played ? formatDateShort(stats.first_played) : EMPTY_VALUE,
     },
-    { label: t('metrics.lastPlayed'), value: lastPlayed ? formatDateShort(lastPlayed) : '—' },
+    { label: t('metrics.lastPlayed'), value: lastPlayed ? formatDateShort(lastPlayed) : EMPTY_VALUE },
   ];
 
   return (
@@ -129,7 +129,16 @@ export function GameDetailPage() {
             <div className={styles.metrics}>
               {metrics.map((m) => (
                 <div key={m.label} className={styles.metric}>
-                  <span className={styles.metricValue}>{m.value}</span>
+                  <span
+                    className={[
+                      styles.metricValue,
+                      m.value === EMPTY_VALUE && styles.metricValueEmpty,
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                  >
+                    {m.value}
+                  </span>
                   <span className={styles.metricLabel}>{m.label}</span>
                 </div>
               ))}

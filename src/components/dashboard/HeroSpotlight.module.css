@@ -93,6 +93,10 @@
   font-variant-numeric: tabular-nums;
 }
 
+.hoursEmpty {
+  color: var(--text3);
+}
+
 .leadNote {
   display: block;
   margin-top: 4px;

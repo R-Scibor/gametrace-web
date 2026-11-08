@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useFormat } from '../../hooks/useFormat';
+import { EMPTY_VALUE } from '../../lib/format';
 import styles from './DashboardStatTiles.module.css';
 
 interface DashboardStatTilesProps {
@@ -30,8 +31,8 @@ export function DashboardStatTiles({
   const { formatHours } = useFormat();
 
   const avgValue =
-    avgLoading || avgSessionSeconds == null ? '—' : formatHours(avgSessionSeconds);
-  const streakValue = streakDays == null ? '—' : String(streakDays);
+    avgLoading || avgSessionSeconds == null ? EMPTY_VALUE : formatHours(avgSessionSeconds);
+  const streakValue = streakDays == null ? EMPTY_VALUE : String(streakDays);
 
   const tiles: Tile[] = [
     { key: 'today', label: t('tiles.today'), value: formatHours(todaySeconds), unit: 'h' },
@@ -40,13 +41,13 @@ export function DashboardStatTiles({
       key: 'avg',
       label: t('tiles.avgSession'),
       value: avgValue,
-      unit: avgValue === '—' ? undefined : 'h',
+      unit: avgValue === EMPTY_VALUE ? undefined : 'h',
     },
     {
       key: 'streak',
       label: t('tiles.streak'),
       value: streakValue,
-      unit: streakValue === '—' ? undefined : t('tiles.daysUnit'),
+      unit: streakValue === EMPTY_VALUE ? undefined : t('tiles.daysUnit'),
     },
   ];
 
@@ -56,7 +57,14 @@ export function DashboardStatTiles({
         <div key={tile.key} className={styles.tile}>
           <span className={styles.accent} aria-hidden />
           <span className={styles.label}>{tile.label}</span>
-          <span className={styles.value}>
+          <span
+            className={[
+              styles.value,
+              tile.value === EMPTY_VALUE && styles.valueEmpty,
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
             {tile.value}
             {tile.unit && <span className={styles.unit}>{tile.unit}</span>}
           </span>

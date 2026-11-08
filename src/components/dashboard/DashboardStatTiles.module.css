@@ -63,6 +63,10 @@
   color: var(--orange);
 }
 
+.valueEmpty {
+  color: var(--text3);
+}
+
 .unit {
   font-family: var(--display);
   font-weight: 700;

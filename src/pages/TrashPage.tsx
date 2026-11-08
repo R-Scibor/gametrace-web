@@ -11,6 +11,7 @@ import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog } from '../c
 import { parseConflict } from '../lib/conflict';
 import { SESSION_SOURCE_LABEL, SESSION_STATUS_LABEL } from '../lib/sessionLabels';
 import { useFormat } from '../hooks/useFormat';
+import { EMPTY_VALUE } from '../lib/format';
 import styles from './TrashPage.module.css';
 
 function TrashSkeleton() {
@@ -118,7 +119,7 @@ export function TrashPage() {
                   )}
                 </div>
                 <span className={styles.metaCell}>
-                  {session.deleted_at ? formatDate(session.deleted_at) : '—'}
+                  {session.deleted_at ? formatDate(session.deleted_at) : EMPTY_VALUE}
                 </span>
                 <span className={styles.metaCell}>{formatDaysUntil(session.purges_at)}</span>
                 <div className={styles.actions}>
