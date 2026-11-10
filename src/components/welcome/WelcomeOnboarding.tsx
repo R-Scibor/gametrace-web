@@ -302,7 +302,7 @@ export function WelcomeOnboarding({
               {SERVER_JOIN_URL ? (
                 <Button
                   className={styles.startBtn}
-                  variant={serverJoinOpened ? 'secondary' : 'primary'}
+                  variant={discordPathOpened ? 'secondary' : 'primary'}
                   onClick={openServerJoin}
                 >
                   <DiscordIcon />
@@ -312,7 +312,7 @@ export function WelcomeOnboarding({
               {BOT_INVITE_URL ? (
                 <Button
                   className={styles.startBtn}
-                  variant={botInviteOpened ? 'secondary' : 'primary'}
+                  variant={!discordPathOpened && !SERVER_JOIN_URL ? 'primary' : 'secondary'}
                   onClick={openBotInvite}
                 >
                   <DiscordIcon />

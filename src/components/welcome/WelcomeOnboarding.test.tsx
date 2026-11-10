@@ -47,11 +47,14 @@ test('WelcomeOnboarding step 1 opens bot invite and advances', async () => {
   expect(joinServerBtn).toBeInTheDocument();
   expect(addBotBtn).toBeInTheDocument();
   expect(nextBtn).toBeInTheDocument();
-  expect(addBotBtn.className).toMatch(/primary/);
   expect(joinServerBtn.className).toMatch(/primary/);
+  expect(addBotBtn.className).toMatch(/secondary/);
+  expect(nextBtn.className).toMatch(/secondary/);
 
   await user.click(addBotBtn);
+  expect(joinServerBtn.className).toMatch(/secondary/);
   expect(addBotBtn.className).toMatch(/secondary/);
+  expect(nextBtn.className).toMatch(/primary/);
   expect(window.open).toHaveBeenCalledWith(
     'https://discord.com/oauth2/authorize?client_id=test&permissions=2048&integration_type=0&scope=bot+applications.commands',
     '_blank',
@@ -86,16 +89,142 @@ test('WelcomeOnboarding step 1 opens public server join invite', async () => {
   );
 
   const joinServerBtn = screen.getByRole('button', { name: /Dołącz do serwera GameTrace/i });
+  const addBotBtn = screen.getByRole('button', { name: /Dodaj bota do swojego serwera/i });
+  const nextBtn = screen.getByRole('button', { name: /Jestem już na serwerze z botem/i });
+
   expect(joinServerBtn.className).toMatch(/primary/);
+  expect(addBotBtn.className).toMatch(/secondary/);
+  expect(nextBtn.className).toMatch(/secondary/);
 
   await user.click(joinServerBtn);
   expect(joinServerBtn.className).toMatch(/secondary/);
+  expect(addBotBtn.className).toMatch(/secondary/);
+  expect(nextBtn.className).toMatch(/primary/);
   expect(window.open).toHaveBeenCalledWith(
     'https://discord.gg/test-invite',
     '_blank',
     'noopener,noreferrer',
   );
   expect(screen.getByText(/po dołączeniu do serwera wróć tutaj/i)).toBeInTheDocument();
+});
+
+test('WelcomeOnboarding step 1 has only one element with a primary class at a time', async () => {
+  const user = userEvent.setup();
+
+  const { container } = renderAppRoutes(
+    <Route
+      path="/welcome"
+      element={
+        <WelcomeOnboarding
+          open
+          onClose={vi.fn()}
+          apkAvailable={false}
+          isAuthenticated={false}
+          onApkUnavailable={vi.fn()}
+        />
+      }
+    />,
+    {
+      route: '/welcome',
+      authenticated: false,
+    },
+  );
+
+  const getPrimaryElements = () =>
+    Array.from(container.querySelectorAll<HTMLElement>('*')).filter((el) =>
+      typeof el.className === 'string' && el.className.split(/\s+/).some((cls) => cls.includes('primary')),
+    );
+
+  const joinServerBtn = screen.getByRole('button', { name: /Dołącz do serwera GameTrace/i });
+  const addBotBtn = screen.getByRole('button', { name: /Dodaj bota do swojego serwera/i });
+  const nextBtn = screen.getByRole('button', { name: /Jestem już na serwerze z botem/i });
+
+  // Initially: exactly one primary (join server)
+  expect(getPrimaryElements()).toEqual([joinServerBtn]);
+
+  // After clicking add bot: exactly one primary (advance button)
+  await user.click(addBotBtn);
+  expect(getPrimaryElements()).toEqual([nextBtn]);
+});
+
+test('WelcomeOnboarding step 1 has only one element with a primary class after clicking join server', async () => {
+  const user = userEvent.setup();
+
+  const { container } = renderAppRoutes(
+    <Route
+      path="/welcome"
+      element={
+        <WelcomeOnboarding
+          open
+          onClose={vi.fn()}
+          apkAvailable={false}
+          isAuthenticated={false}
+          onApkUnavailable={vi.fn()}
+        />
+      }
+    />,
+    {
+      route: '/welcome',
+      authenticated: false,
+    },
+  );
+
+  const getPrimaryElements = () =>
+    Array.from(container.querySelectorAll<HTMLElement>('*')).filter((el) =>
+      typeof el.className === 'string' && el.className.split(/\s+/).some((cls) => cls.includes('primary')),
+    );
+
+  const joinServerBtn = screen.getByRole('button', { name: /Dołącz do serwera GameTrace/i });
+  const nextBtn = screen.getByRole('button', { name: /Jestem już na serwerze z botem/i });
+
+  expect(getPrimaryElements()).toEqual([joinServerBtn]);
+
+  await user.click(joinServerBtn);
+  expect(getPrimaryElements()).toEqual([nextBtn]);
+});
+
+test('WelcomeOnboarding step 1 makes add bot primary when SERVER_JOIN_URL is empty', async () => {
+  const user = userEvent.setup();
+  vi.stubEnv('VITE_DISCORD_SERVER_INVITE_URL', '');
+  vi.resetModules();
+  const { WelcomeOnboarding: IsolatedComponent } = await import('./WelcomeOnboarding');
+
+  const { container } = renderAppRoutes(
+    <Route
+      path="/welcome"
+      element={
+        <IsolatedComponent
+          open
+          onClose={vi.fn()}
+          apkAvailable={false}
+          isAuthenticated={false}
+          onApkUnavailable={vi.fn()}
+        />
+      }
+    />,
+    {
+      route: '/welcome',
+      authenticated: false,
+    },
+  );
+
+  const getPrimaryElements = () =>
+    Array.from(container.querySelectorAll<HTMLElement>('*')).filter((el) =>
+      typeof el.className === 'string' && el.className.split(/\s+/).some((cls) => cls.includes('primary')),
+    );
+
+  expect(screen.queryByRole('button', { name: /Dołącz do serwera GameTrace/i })).not.toBeInTheDocument();
+  const addBotBtn = screen.getByRole('button', { name: /Dodaj bota do swojego serwera/i });
+  const nextBtn = screen.getByRole('button', { name: /Jestem już na serwerze z botem/i });
+
+  expect(addBotBtn.className).toMatch(/primary/);
+  expect(nextBtn.className).toMatch(/secondary/);
+  expect(getPrimaryElements()).toEqual([addBotBtn]);
+
+  await user.click(addBotBtn);
+  expect(addBotBtn.className).toMatch(/secondary/);
+  expect(nextBtn.className).toMatch(/primary/);
+  expect(getPrimaryElements()).toEqual([nextBtn]);
 });
 
 test('WelcomeOnboarding shows bot hint after invite and supports back navigation', async () => {
