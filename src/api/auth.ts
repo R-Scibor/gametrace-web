@@ -13,17 +13,18 @@ export const linkLogin = async (code: string, timezone = 'UTC'): Promise<LoginRe
 // Complete the Discord OAuth2 flow. The backend does the confidential token
 // exchange (the client secret stays server-side); we only forward the auth
 // code, the PKCE verifier, and the exact redirect_uri used to authorize.
-// Backend dependency: DiscordCallbackRequest takes no `timezone`, so a Discord
-// login cannot set the user's timezone the way /auth/link does.
+// The timezone seeds a new account (and fixes an old UTC default), like /auth/link.
 export const discordLogin = async (
   code: string,
   codeVerifier: string,
   redirectUri: string,
+  timezone?: string,
 ): Promise<LoginResponse> => {
   const response = await client.post<LoginResponse>('/auth/discord', {
     code,
     code_verifier: codeVerifier,
     redirect_uri: redirectUri,
+    timezone,
   });
   return response.data;
 };
