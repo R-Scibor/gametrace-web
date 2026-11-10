@@ -493,6 +493,7 @@
 }
 
 .cmdPill {
+  white-space: nowrap;
   font-family: var(--mono);
   background-color: var(--bg3);
   border: 1px solid var(--border-bright);
