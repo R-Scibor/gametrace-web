@@ -512,15 +512,13 @@
   line-height: 1.4;
 }
 
-.helperLink {
-  color: var(--orange-dim);
-  text-decoration: none;
-  transition: color 0.15s ease;
+.helperNoteText {
+  margin: 0 0 8px;
 }
 
-.helperLink:hover {
-  color: var(--orange);
-  text-decoration: underline;
+.wizardBtn {
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 /* Footer */

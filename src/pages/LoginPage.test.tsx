@@ -44,7 +44,7 @@ test('LoginPage renders link code form by default', () => {
   expect(screen.getByText(/Skąd wziąć kod/i)).toBeInTheDocument();
   expect(screen.getByText(/panelu GameTrace/i)).toBeInTheDocument();
   expect(screen.getByText('🔑 Weź kod')).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /konfiguracji na stronie powitalnej/i })).toHaveAttribute(
+  expect(screen.getByRole('link', { name: /przejdź do konfiguracji/i })).toHaveAttribute(
     'href',
     '/welcome?onboarding=1',
   );

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useHealth } from '../hooks/useHealth';
 import { Button } from '../components/ui';
+import buttonStyles from '../components/ui/Button.module.css';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
@@ -207,13 +208,15 @@ export function LoginPage() {
                 <span>{t('helperStep3')}</span>
               </li>
             </ol>
-            <p className={styles.helperNote}>
-              {t('helperNoteBefore')}{' '}
-              <Link to="/welcome?onboarding=1" className={styles.helperLink}>
+            <div className={styles.helperNote}>
+              <p className={styles.helperNoteText}>{t('helperNoteBefore')}</p>
+              <Link
+                to="/welcome?onboarding=1"
+                className={`${buttonStyles.button} ${buttonStyles.secondary} ${styles.wizardBtn}`}
+              >
                 {t('helperNoteLink')}
               </Link>
-              {t('helperNoteAfter')}
-            </p>
+            </div>
           </div>
         </main>
 
