@@ -44,7 +44,7 @@
     "logoutConfirm": "LOG OUT"
   },
   "logout": {
-    "message": "Are you sure you want to log out? Afterwards you can log in with a code from /login or via Discord."
+    "message": "Are you sure you want to log out? Afterwards you can log in with a code from the panel (or /login) or via Discord."
   },
   "errors": {
     "connectionLabel": "CONNECTION ERROR",
