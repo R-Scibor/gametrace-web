@@ -148,14 +148,14 @@
       "benefit2": "You don’t have to install an agent or an overlay on your computer.",
       "benefit3": "When you quit the game, the session is saved automatically.",
       "hintServer": "After joining the server, come back here and continue.",
-      "hintBot": "After adding the bot to your server, come back here and continue."
+      "hintBot": "After adding the bot, type /panel on the channel where the panel should hang (you only need this if you invited the bot to your own server — on the GameTrace server the panel is already there). Then come back here and continue."
     },
     "step2": {
       "eyebrow": "Account",
       "title": "How do you want to create an account",
-      "body": "You can sign in with Discord, or type the /login command on a server channel and use the code the bot sends you. In both cases you must be on the same server as the bot.",
+      "body": "You can sign in with Discord, or use a code from the panel on the server (or the /login command). In both cases you must be on the same server as the bot.",
       "option1": "Option 1 · Direct",
-      "option2": "Option 2 · Bot command",
+      "option2": "Option 2 · Panel on the server",
       "discordTitle": "With Discord",
       "discordBody": "Quick sign-in through official Discord authorization (OAuth2) — no manual codes needed.",
       "oauthPoint1": "You sign in directly on discord.com — GameTrace never sees or stores your password.",
@@ -163,14 +163,9 @@
       "oauthPoint3": "Zero access to your email, private messages (DMs), or ability to post from your account.",
       "discordButton": "Sign in with Discord",
       "or": "OR",
-      "codeTitle": "Command on the server",
-      "codeBody": "Type the command below on a server channel. The bot will send you a code you can use to sign in. Don’t send this command as a private message — only on a channel where the bot is present.",
-      "commandAria": "/login command",
-      "tagCopy": "COPY",
-      "tagCopied": "COPIED",
-      "hintCopied": "Copied — paste it on Discord.",
-      "hintSelected": "Selected — Ctrl+C / Cmd+C if it didn't copy automatically.",
-      "hintIdle": "Click the field to copy the /login command.",
+      "codeTitle": "Panel on the server",
+      "codeBody": "Go to the GameTrace panel channel, click ▶ START, then 🔑 Weź kod, and enter the code.",
+      "codeAlternative": "You can also type /login on a server channel.",
       "haveCode": "I already have a code"
     },
     "discordConfirm": {
@@ -179,7 +174,7 @@
       "button": "Continue to Discord",
       "starting": "Opening Discord…",
       "insecureHint": "Discord requires a secure connection (HTTPS) for OAuth authorization. In a local environment or without an SSL certificate, you can sign in using the bot command on your server instead.",
-      "tryCodeAlternative": "Switch to sign in via /login command"
+      "tryCodeAlternative": "Sign in with a code from the panel"
     },
     "step3": {
       "title": "Choose a client",

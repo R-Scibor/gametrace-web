@@ -1,10 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/Button';
 import { ApkQrCode } from './ApkQrCode';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../../lib/apkDownload';
-import { copyFromInput } from '../../lib/copyToClipboard';
 import { getDiscordBotInviteUrl, getDiscordServerJoinUrl } from '../../lib/discordInvites';
 import {
   isDiscordLoginEnabled,
@@ -142,11 +141,9 @@ export function WelcomeOnboarding({
   const [step2Mode, setStep2Mode] = useState<Step2Mode>(defaultStep2Mode);
   const [discordStarting, setDiscordStarting] = useState(false);
   const [discordError, setDiscordError] = useState<string | null>(null);
-  const [commandStatus, setCommandStatus] = useState<'idle' | 'selected' | 'copied'>('idle');
   const [botInviteOpened, setBotInviteOpened] = useState(false);
   const [serverJoinOpened, setServerJoinOpened] = useState(false);
   const [showQr, setShowQr] = useState(false);
-  const commandInputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
 
@@ -155,7 +152,6 @@ export function WelcomeOnboarding({
     setStep2Mode(defaultStep2Mode);
     setDiscordStarting(false);
     setDiscordError(null);
-    setCommandStatus('idle');
     setBotInviteOpened(false);
     setServerJoinOpened(false);
     setShowQr(false);
@@ -211,15 +207,6 @@ export function WelcomeOnboarding({
     navigate('/');
   };
 
-  const handleCommandField = async () => {
-    const input = commandInputRef.current;
-    if (!input) return;
-
-    const copied = await copyFromInput(input);
-    setCommandStatus(copied ? 'copied' : 'selected');
-    window.setTimeout(() => setCommandStatus('idle'), copied ? 2000 : 4000);
-  };
-
   const handleApkDownload = async () => {
     if (await isApkDownloadReady()) {
       window.location.assign(APK_DOWNLOAD_PATH);
@@ -227,13 +214,6 @@ export function WelcomeOnboarding({
     }
     onApkUnavailable();
   };
-
-  const commandHint =
-    commandStatus === 'copied'
-      ? t('onboarding.step2.hintCopied')
-      : commandStatus === 'selected'
-        ? t('onboarding.step2.hintSelected')
-        : t('onboarding.step2.hintIdle');
 
   const progressLabel =
     step === 1
@@ -440,40 +420,7 @@ export function WelcomeOnboarding({
                   <h3>{t('onboarding.step2.codeTitle')}</h3>
                   <p>{t('onboarding.step2.codeBody')}</p>
                   <div className={styles.step2Bottom}>
-                    <div
-                      className={styles.chip}
-                      onClick={handleCommandField}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handleCommandField();
-                        }
-                      }}
-                    >
-                      <input
-                        ref={commandInputRef}
-                        readOnly
-                        value="/login"
-                        className={styles.chipInput}
-                        aria-label={t('onboarding.step2.commandAria')}
-                        onFocus={(e) => {
-                          e.target.select();
-                          setCommandStatus('selected');
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleCommandField();
-                        }}
-                      />
-                      <small>
-                        {commandStatus === 'copied'
-                          ? t('onboarding.step2.tagCopied')
-                          : t('onboarding.step2.tagCopy')}
-                      </small>
-                    </div>
-                    <p className={styles.hint}>{commandHint}</p>
+                    <p className={styles.codeAlternative}>{t('onboarding.step2.codeAlternative')}</p>
                     <Button
                       className={styles.codeAdvanceBtn}
                       onClick={() => setStep(3)}
