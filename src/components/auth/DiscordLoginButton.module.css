@@ -28,34 +28,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
+  padding: 13px 18px;
+  border: none;
   border-radius: 2px;
-  background-color: transparent;
-  color: var(--text2);
-  font-family: var(--display);
-  font-size: 11px;
-  letter-spacing: 2px;
+  background: var(--blurple, #5865f2);
+  color: #fff;
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: background-color 0.15s, opacity 0.15s;
 }
-.button:hover:not(:disabled),
-.button:focus-visible {
-  border-color: var(--orange);
-  color: var(--text);
+.button:hover:not(:disabled) {
+  background: #4752c4;
 }
 .button:focus-visible {
-  outline: 2px solid var(--orange);
+  outline: 2px solid #fff;
   outline-offset: 2px;
 }
 .button:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 .icon {
-  width: 18px;
-  height: 14px;
+  width: 22px;
+  height: 17px;
+  color: #fff;
   flex-shrink: 0;
 }
