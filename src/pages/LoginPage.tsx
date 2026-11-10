@@ -189,7 +189,10 @@ export function LoginPage() {
                 <span>
                   {t('helperStep1Before')} <strong>{t('helperStep1Strong')}</strong>{' '}
                   {t('helperStep1Mid')}{' '}
-                  <span className={styles.cmdPill}>/login</span>
+                  <span className={styles.cmdPill}>{t('helperStep1Btn')}</span>{' '}
+                  {t('helperStep1Alt')}{' '}
+                  <span className={styles.cmdPill}>/login</span>{' '}
+                  {t('helperStep1After')}
                 </span>
               </li>
               <li className={styles.helperStep}>
