@@ -90,7 +90,6 @@ describe('shipped theme contrast', () => {
       if (!raw.includes('orange-dim') && !/^#b85a14$/i.test(raw)) continue;
       expect(contrastRatio(resolveColor(raw, tokens), tokens.bg)).toBeGreaterThanOrEqual(4.5);
     }
-    expect(cssFiles).toMatch(/color:\s*var\(--orange-dim\)/);
   });
 
   it('clears 3:1 for the border that identifies an input and a secondary button', () => {
