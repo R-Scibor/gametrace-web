@@ -152,14 +152,14 @@
       "benefit2": "Nie musisz instalować agenta ani nakładki na komputerze.",
       "benefit3": "Kiedy wyłączysz grę, sesja zapisze się automatycznie.",
       "hintServer": "Po dołączeniu do serwera wróć tutaj i przejdź dalej.",
-      "hintBot": "Po dodaniu bota do swojego serwera wpisz /panel na kanale, na którym ma wisieć panel (potrzebne tylko wtedy, gdy zapraszasz bota na własny serwer — na serwerze GameTrace panel już jest). Potem wróć tutaj i przejdź dalej."
+      "hintBot": "Po dodaniu bota do swojego serwera wpisz /panel na kanale, na którym ma wisieć panel (potrzebne tylko wtedy, gdy zapraszasz bota na własny serwer, bo na serwerze GameTrace panel już jest). Potem wróć tutaj i przejdź dalej."
     },
     "step2": {
       "eyebrow": "Konto",
       "title": "Jak chcesz założyć konto",
       "body": "Możesz zalogować się przez Discorda albo użyć kodu z panelu na serwerze (lub komendy /login). W obu przypadkach musisz być na tym samym serwerze co bot.",
-      "option1": "Opcja 1 · Bezpośrednio",
-      "option2": "Opcja 2 · Panel na serwerze",
+      "option1": "Opcja 1: Bezpośrednio",
+      "option2": "Opcja 2: Panel na serwerze",
       "discordTitle": "Przez Discorda",
       "discordBody": "Szybkie logowanie przez oficjalną autoryzację Discord (OAuth2) — bez przepisywania kodów.",
       "oauthPoint1": "Logujesz się na oficjalnej stronie discord.com — GameTrace nigdy nie widzi ani nie zapisuje Twojego hasła.",

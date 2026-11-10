@@ -148,14 +148,14 @@
       "benefit2": "You don’t have to install an agent or an overlay on your computer.",
       "benefit3": "When you quit the game, the session is saved automatically.",
       "hintServer": "After joining the server, come back here and continue.",
-      "hintBot": "After adding the bot, type /panel on the channel where the panel should hang (you only need this if you invited the bot to your own server — on the GameTrace server the panel is already there). Then come back here and continue."
+      "hintBot": "After adding the bot, type /panel on the channel where the panel should hang (you only need this if you invited the bot to your own server, since on the GameTrace server the panel is already there). Then come back here and continue."
     },
     "step2": {
       "eyebrow": "Account",
       "title": "How do you want to create an account",
       "body": "You can sign in with Discord, or use a code from the panel on the server (or the /login command). In both cases you must be on the same server as the bot.",
-      "option1": "Option 1 · Direct",
-      "option2": "Option 2 · Panel on the server",
+      "option1": "Option 1: Direct",
+      "option2": "Option 2: Panel on the server",
       "discordTitle": "With Discord",
       "discordBody": "Quick sign-in through official Discord authorization (OAuth2) — no manual codes needed.",
       "oauthPoint1": "You sign in directly on discord.com — GameTrace never sees or stores your password.",
