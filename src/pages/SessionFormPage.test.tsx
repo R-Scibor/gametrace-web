@@ -328,3 +328,40 @@ test('ERROR open longer than 48 hours warns and rejects an end of now', async ()
   await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
   await waitFor(() => expect(patched).toBe(true));
 });
+
+test('a mapped duration 422 shows the field message and no toast', async () => {
+  server.use(http.post('/api/v1/sessions', () =>
+    HttpResponse.json({ detail: 'session duration exceeds 48 hours' }, { status: 422 })));
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/sessions/new" element={<SessionFormPage />} />, { route: '/sessions/new' });
+  await pickFirstGame(user);
+  setTime('session-start', localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000)));
+  setTime('session-end', localInput(FROZEN));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  expect(await screen.findByText('Sesja nie może trwać dłużej niż 48 godzin.')).toBeInTheDocument();
+  expect(screen.queryByText('session duration exceeds 48 hours')).not.toBeInTheDocument();
+  expect(useToastStore.getState().toasts).toHaveLength(0);
+});
+
+test('a pydantic list 422 toasts the generic save failure', async () => {
+  server.use(http.post('/api/v1/sessions', () =>
+    HttpResponse.json({
+      detail: [{
+        type: 'value_error',
+        loc: ['body', 'start_time'],
+        msg: 'Value error, datetime must include a timezone offset',
+      }],
+    }, { status: 422 })));
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/sessions/new" element={<SessionFormPage />} />, { route: '/sessions/new' });
+  await pickFirstGame(user);
+  setTime('session-start', localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000)));
+  setTime('session-end', localInput(FROZEN));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  await waitFor(() => {
+    expect(useToastStore.getState().toasts[0]?.message).toBe('Nie udało się zapisać sesji.');
+  });
+  expect(screen.queryByText(/Value error/)).not.toBeInTheDocument();
+  expect(screen.queryByText('Sesja nie może trwać dłużej niż 48 godzin.')).not.toBeInTheDocument();
+});
+

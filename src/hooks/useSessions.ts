@@ -9,6 +9,7 @@ import {
 } from '../api/sessions';
 import i18n from '../i18n';
 import { qk } from '../lib/queryKeys';
+import { parseSessionBound } from '../lib/sessionBounds';
 import { useToastStore } from '../store/toastStore';
 import type { SessionCreate, SessionPatch } from '../types/api';
 
@@ -47,6 +48,7 @@ export function useCreateSession() {
     },
     onError: (err) => {
       if (axios.isAxiosError(err) && err.response?.status === 409) return;
+      if (parseSessionBound(err)) return;
       pushToast({ type: 'error', message: i18n.t('sessions:toast.saveFailed') });
     },
   });
@@ -63,7 +65,8 @@ export function usePatchSession(sessionId: number, gameId?: number) {
       invalidateAfterSessionChange(queryClient, gameId);
       pushToast({ type: 'success', message: i18n.t('sessions:toast.changesSaved') });
     },
-    onError: () => {
+    onError: (err) => {
+      if (parseSessionBound(err)) return;
       pushToast({ type: 'error', message: i18n.t('sessions:toast.changesFailed') });
     },
   });

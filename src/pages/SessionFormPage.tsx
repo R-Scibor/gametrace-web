@@ -16,6 +16,7 @@ import { parseConflict } from '../lib/conflict';
 import { consumeVoiceTranscriptPrefill } from '../lib/voicePrefill';
 import {
   legalCreateRange,
+  parseSessionBound,
   SESSION_MAX_DURATION_MS,
   validateManualSessionBounds,
 } from '../lib/sessionBounds';
@@ -161,8 +162,10 @@ export function SessionFormPage() {
   const pending =
     createMut.isPending || updateMut.isPending || discardMut.isPending || deleteMut.isPending;
 
-  const isStartError = boundCode === 'lookback' || boundCode === 'futureStart';
-  const isEndError = boundCode !== null && !isStartError;
+  const serverCode = parseSessionBound(createMut.error) ?? parseSessionBound(updateMut.error);
+  const shown = boundCode ?? serverCode;
+  const isStartError = shown === 'lookback' || shown === 'futureStart';
+  const isEndError = shown !== null && !isStartError;
   const isLongOpen =
     isEditing &&
     session?.status === 'ERROR' &&
@@ -209,7 +212,7 @@ export function SessionFormPage() {
           />
           {isStartError && (
             <p id="session-start-error" className={styles.fieldError} role="alert">
-              {t(`bounds.${boundCode}`)}
+              {shown && t(`bounds.${shown}`)}
             </p>
           )}
         </div>
@@ -239,7 +242,7 @@ export function SessionFormPage() {
           />
           {isEndError && (
             <p id="session-end-error" className={styles.fieldError} role="alert">
-              {t(`bounds.${boundCode}`)}
+              {shown && t(`bounds.${shown}`)}
             </p>
           )}
           {isLongOpen && (

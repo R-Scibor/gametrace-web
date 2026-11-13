@@ -4,7 +4,7 @@ import { test, expect, beforeEach, vi } from 'vitest';
 import { server } from '../../test/server';
 import { createTestQueryClient, renderHookWithProviders, resetStores } from '../../test/utils';
 import { fixtures } from '../../test/fixtures';
-import { useCreateSession, useRecentSessions, useRestoreSession } from './useSessions';
+import { useCreateSession, usePatchSession, useRecentSessions, useRestoreSession } from './useSessions';
 import { useToastStore } from '../store/toastStore';
 import { qk } from '../lib/queryKeys';
 
@@ -107,4 +107,51 @@ test('invalidates the games lists after creating a session', async () => {
 
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
   expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: qk.gamesPrefix });
+});
+
+test('useCreateSession does not toast a mapped duration 422', async () => {
+  server.use(http.post('/api/v1/sessions', () =>
+    HttpResponse.json({ detail: 'session duration exceeds 48 hours' }, { status: 422 })));
+  const { result } = renderHookWithProviders(() => useCreateSession());
+  await act(async () => {
+    result.current.mutate({
+      game_id: 1,
+      start_time: '2026-06-15T10:00:00.000Z',
+      end_time: '2026-06-15T12:00:00.000Z',
+    });
+  });
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  expect(useToastStore.getState().toasts).toHaveLength(0);
+});
+
+test('useCreateSession still toasts a pydantic list 422', async () => {
+  server.use(http.post('/api/v1/sessions', () =>
+    HttpResponse.json({
+      detail: [{
+        type: 'value_error',
+        loc: ['body', 'start_time'],
+        msg: 'Value error, datetime must include a timezone offset',
+      }],
+    }, { status: 422 })));
+  const { result } = renderHookWithProviders(() => useCreateSession());
+  await act(async () => {
+    result.current.mutate({
+      game_id: 1,
+      start_time: '2026-06-15T10:00:00.000Z',
+      end_time: '2026-06-15T12:00:00.000Z',
+    });
+  });
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  expect(useToastStore.getState().toasts[0]?.message).toBe('Nie udało się zapisać sesji.');
+});
+
+test('usePatchSession does not toast a mapped duration 422', async () => {
+  server.use(http.patch('/api/v1/sessions/7', () =>
+    HttpResponse.json({ detail: 'session duration exceeds 48 hours' }, { status: 422 })));
+  const { result } = renderHookWithProviders(() => usePatchSession(7, 1));
+  await act(async () => {
+    result.current.mutate({ end_time: '2026-06-15T12:00:00.000Z' });
+  });
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  expect(useToastStore.getState().toasts).toHaveLength(0);
 });
