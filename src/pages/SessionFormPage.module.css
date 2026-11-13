@@ -41,12 +41,25 @@
   outline: none;
   border-color: var(--orange);
 }
+.input[aria-invalid='true'] {
+  border-color: var(--warn);
+}
 .input:disabled, .textarea:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 .textarea {
   resize: vertical;
+}
+.fieldError {
+  color: var(--warn);
+  font-size: 14px;
+  margin: 0;
+}
+.fieldHint {
+  color: var(--text2);
+  font-size: 14px;
+  margin: 0;
 }
 .notesHint {
   margin: 0;

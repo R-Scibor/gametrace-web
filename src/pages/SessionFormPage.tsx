@@ -14,6 +14,12 @@ import {
 } from '../hooks/useSessions';
 import { parseConflict } from '../lib/conflict';
 import { consumeVoiceTranscriptPrefill } from '../lib/voicePrefill';
+import {
+  legalCreateRange,
+  SESSION_MAX_DURATION_MS,
+  validateManualSessionBounds,
+} from '../lib/sessionBounds';
+import type { SessionBoundCode } from '../lib/sessionBounds';
 
 import styles from './SessionFormPage.module.css';
 
@@ -49,6 +55,7 @@ export function SessionFormPage() {
   const [initialized, setInitialized] = useState(false);
   const [dismissedConflict, setDismissedConflict] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [boundCode, setBoundCode] = useState<SessionBoundCode | 'errorNeedsEnd' | null>(null);
 
   const { data: session, isLoading } = useSession(sessionId, isEditing);
 
@@ -82,10 +89,9 @@ export function SessionFormPage() {
         setStartTime(qStart);
         if (qEnd) setEndTime(qEnd);
       } else {
-        const now = new Date();
-        setStartTime(toLocalDatetime(now.toISOString()));
-        now.setHours(now.getHours() + 1);
-        setEndTime(toLocalDatetime(now.toISOString()));
+        const range = legalCreateRange(new Date(), toLocalDatetime);
+        setStartTime(range.start);
+        setEndTime(range.end);
       }
       setInitialized(true);
     }
@@ -115,6 +121,26 @@ export function SessionFormPage() {
     createMut.reset();
     updateMut.reset();
 
+    if (isEditing && session?.status === 'ERROR' && !endTime) {
+      setBoundCode('errorNeedsEnd');
+      return;
+    }
+    if (!endTime) return;
+    const startInstant = isEditing && session
+      ? new Date(session.start_time)
+      : new Date(startTime);
+    const endInstant = new Date(endTime);
+    const code = validateManualSessionBounds({
+      start: startInstant,
+      end: endInstant,
+      isCreate: !isEditing,
+    });
+    if (code) {
+      setBoundCode(code);
+      return;
+    }
+    setBoundCode(null);
+
     if (isEditing) {
       updateMut.mutate(
         { end_time: endTime ? new Date(endTime).toISOString() : undefined },
@@ -134,6 +160,14 @@ export function SessionFormPage() {
 
   const pending =
     createMut.isPending || updateMut.isPending || discardMut.isPending || deleteMut.isPending;
+
+  const isStartError = boundCode === 'lookback' || boundCode === 'futureStart';
+  const isEndError = boundCode !== null && !isStartError;
+  const isLongOpen =
+    isEditing &&
+    session?.status === 'ERROR' &&
+    // eslint-disable-next-line react-hooks/purity -- advisory evaluated at render from stored start
+    Date.now() - new Date(session.start_time).getTime() > SESSION_MAX_DURATION_MS;
 
   return (
     <div className={styles.container}>
@@ -160,11 +194,24 @@ export function SessionFormPage() {
             id="session-start"
             type="datetime-local"
             value={startTime}
-            onChange={(e) => { setStartTime(e.target.value); clearConflict(); }}
+            onChange={(e) => {
+              setStartTime(e.target.value);
+              setBoundCode(null);
+              createMut.reset();
+              updateMut.reset();
+              clearConflict();
+            }}
             className={styles.input}
             disabled={isEditing || pending}
             required
+            aria-invalid={isStartError ? true : undefined}
+            aria-describedby={isStartError ? 'session-start-error' : undefined}
           />
+          {isStartError && (
+            <p id="session-start-error" className={styles.fieldError} role="alert">
+              {t(`bounds.${boundCode}`)}
+            </p>
+          )}
         </div>
 
         <div className={styles.inputGroup}>
@@ -173,11 +220,33 @@ export function SessionFormPage() {
             id="session-end"
             type="datetime-local"
             value={endTime}
-            onChange={(e) => { setEndTime(e.target.value); clearConflict(); }}
+            onChange={(e) => {
+              setEndTime(e.target.value);
+              setBoundCode(null);
+              createMut.reset();
+              updateMut.reset();
+              clearConflict();
+            }}
             className={styles.input}
             disabled={pending}
             required={!isEditing}
+            aria-invalid={isEndError ? true : undefined}
+            aria-describedby={
+              [isEndError && 'session-end-error', isLongOpen && 'session-long-open']
+                .filter(Boolean)
+                .join(' ') || undefined
+            }
           />
+          {isEndError && (
+            <p id="session-end-error" className={styles.fieldError} role="alert">
+              {t(`bounds.${boundCode}`)}
+            </p>
+          )}
+          {isLongOpen && (
+            <p id="session-long-open" className={styles.fieldHint}>
+              {t('bounds.errorTooLong')}
+            </p>
+          )}
         </div>
 
         {isEditing && session?.notes && (

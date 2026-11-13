@@ -29,6 +29,7 @@ export function validateManualSessionBounds(input: {
   const start = input.start.getTime();
   const end = input.end.getTime();
   const nowMs = now.getTime();
+  if (Number.isNaN(start) || Number.isNaN(end)) return 'endBeforeStart';
   if (end <= start) return 'endBeforeStart';
   if (input.isCreate && start < nowMs - SESSION_MAX_LOOKBACK_MS) return 'lookback';
   if (end - start > SESSION_MAX_DURATION_MS) return 'duration';

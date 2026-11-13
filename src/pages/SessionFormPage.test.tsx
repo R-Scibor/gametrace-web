@@ -1,17 +1,44 @@
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route } from 'react-router-dom';
 import { http, HttpResponse } from 'msw';
-import { test, expect, beforeEach } from 'vitest';
+import { test, expect, beforeEach, afterEach, vi } from 'vitest';
 import { SessionFormPage } from './SessionFormPage';
 import { renderAppRoutes, renderWithProviders, resetStores } from '../../test/utils';
 import { server } from '../../test/server';
 import { fixtures } from '../../test/fixtures';
 import { setVoiceTranscriptPrefill } from '../lib/voicePrefill';
+import { useToastStore } from '../store/toastStore';
+import { SESSION_MAX_DURATION_MS } from '../lib/sessionBounds';
+
+const FROZEN = new Date('2026-06-15T12:00:00.000Z');
 
 beforeEach(() => {
   resetStores();
+  vi.useFakeTimers({ toFake: ['Date'] });
+  vi.setSystemTime(FROZEN);
 });
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+async function pickFirstGame(user: ReturnType<typeof userEvent.setup>) {
+  const gameInput = await screen.findByRole('combobox');
+  await user.click(gameInput);
+  await user.type(gameInput, 'Wiedź');
+  const options = await screen.findAllByRole('option');
+  await user.click(options[0]);
+}
+
+function localInput(date: Date) {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function setTime(id: string, value: string) {
+  fireEvent.change(document.getElementById(id) as HTMLInputElement, { target: { value } });
+}
 
 test('SessionFormPage create shows 409 ConflictNotice', async () => {
   server.use(
@@ -30,12 +57,9 @@ test('SessionFormPage create shows 409 ConflictNotice', async () => {
 
   await screen.findByText('Dodaj sesję');
 
-  const gameInput = await screen.findByRole('combobox');
-  await user.click(gameInput);
-  await user.type(gameInput, 'Wiedź');
-  const options = await screen.findAllByRole('option');
-  await user.click(options[0]);
-
+  await pickFirstGame(user);
+  setTime('session-start', localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000)));
+  setTime('session-end', localInput(FROZEN));
   await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
 
   expect(await screen.findByText('Nakładające się sesje')).toBeInTheDocument();
@@ -128,4 +152,179 @@ test('seeds the game picker from a voice gameName param', async () => {
 
   expect(await screen.findByRole('combobox')).toHaveValue('hades');
   expect(await screen.findByText('Hades')).toBeInTheDocument();
+});
+
+test('untouched create prefill posts and does not show a future-end error', async () => {
+  let posted = false;
+  server.use(http.post('/api/v1/sessions', async () => {
+    posted = true;
+    return HttpResponse.json(fixtures.session, { status: 201 });
+  }));
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+      <Route path="/" element={<div>Dashboard</div>} />
+    </>,
+    { route: '/sessions/new' },
+  );
+  await pickFirstGame(user);
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  await waitFor(() => expect(posted).toBe(true));
+  expect(screen.queryByText('Zakończenie może być najwyżej 5 minut w przyszłości.')).not.toBeInTheDocument();
+  expect(screen.queryByText('Zakończenie musi być późniejsze niż rozpoczęcie.')).not.toBeInTheDocument();
+});
+
+test('create with end equal to start shows endBeforeStart and does not post', async () => {
+  let posted = false;
+  server.use(http.post('/api/v1/sessions', () => {
+    posted = true;
+    return HttpResponse.json(fixtures.session, { status: 201 });
+  }));
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/sessions/new" element={<SessionFormPage />} />, { route: '/sessions/new' });
+  await pickFirstGame(user);
+  const value = localInput(FROZEN);
+  setTime('session-start', value);
+  setTime('session-end', value);
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  expect(await screen.findByText('Zakończenie musi być późniejsze niż rozpoczęcie.')).toBeInTheDocument();
+  expect(posted).toBe(false);
+});
+
+test('create longer than 48 hours shows the duration message and does not post', async () => {
+  let posted = false;
+  server.use(http.post('/api/v1/sessions', () => {
+    posted = true;
+    return HttpResponse.json(fixtures.session, { status: 201 });
+  }));
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/sessions/new" element={<SessionFormPage />} />, { route: '/sessions/new' });
+  await pickFirstGame(user);
+  setTime('session-start', localInput(new Date(FROZEN.getTime() - 49 * 60 * 60 * 1000)));
+  setTime('session-end', localInput(FROZEN));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  expect(await screen.findByText('Sesja nie może trwać dłużej niż 48 godzin.')).toBeInTheDocument();
+  expect(posted).toBe(false);
+});
+
+test('create older than 30 days shows lookback and does not post', async () => {
+  let posted = false;
+  server.use(http.post('/api/v1/sessions', () => {
+    posted = true;
+    return HttpResponse.json(fixtures.session, { status: 201 });
+  }));
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/sessions/new" element={<SessionFormPage />} />, { route: '/sessions/new' });
+  await pickFirstGame(user);
+  const start = new Date(FROZEN.getTime() - 31 * 24 * 60 * 60 * 1000);
+  setTime('session-start', localInput(start));
+  setTime('session-end', localInput(new Date(start.getTime() + 60 * 60 * 1000)));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  expect(await screen.findByText('Początek nie może być starszy niż 30 dni.')).toBeInTheDocument();
+  expect(posted).toBe(false);
+});
+
+test('create ending six minutes ahead is blocked and four minutes ahead posts Z', async () => {
+  let body: { start_time?: string; end_time?: string } | null = null;
+  server.use(http.post('/api/v1/sessions', async ({ request }) => {
+    body = await request.json() as { start_time: string; end_time: string };
+    return HttpResponse.json(fixtures.session, { status: 201 });
+  }));
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+      <Route path="/" element={<div>Dashboard</div>} />
+    </>,
+    { route: '/sessions/new' },
+  );
+  await pickFirstGame(user);
+  setTime('session-start', localInput(FROZEN));
+  setTime('session-end', localInput(new Date(FROZEN.getTime() + 6 * 60_000)));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  expect(await screen.findByText('Zakończenie może być najwyżej 5 minut w przyszłości.')).toBeInTheDocument();
+  expect(body).toBeNull();
+
+  setTime('session-end', localInput(new Date(FROZEN.getTime() + 4 * 60_000)));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  await waitFor(() => expect(body).not.toBeNull());
+  expect(body!.start_time).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+  expect(body!.end_time).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+});
+
+test('ERROR with an empty end does not patch and asks for an end', async () => {
+  let patched = false;
+  server.use(
+    http.get('/api/v1/sessions/2', () => HttpResponse.json(fixtures.sessionError)),
+    http.patch('/api/v1/sessions/2', () => {
+      patched = true;
+      return HttpResponse.json(fixtures.sessionError);
+    }),
+  );
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/sessions/:id/edit" element={<SessionFormPage />} />, { route: '/sessions/2/edit' });
+  await screen.findByText('Edytuj sesję');
+  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+  expect(await screen.findByText('Podaj zakończenie albo odrzuć sesję.')).toBeInTheDocument();
+  expect(patched).toBe(false);
+  expect(useToastStore.getState().toasts).toHaveLength(0);
+});
+
+test('ERROR older than 30 days with a one hour end still patches', async () => {
+  let body: Record<string, unknown> | null = null;
+  const start = new Date(FROZEN.getTime() - 40 * 24 * 60 * 60 * 1000);
+  server.use(
+    http.get('/api/v1/sessions/2', () => HttpResponse.json({
+      ...fixtures.sessionError,
+      start_time: start.toISOString(),
+      end_time: null,
+    })),
+    http.patch('/api/v1/sessions/2', async ({ request }) => {
+      body = await request.json() as Record<string, unknown>;
+      return HttpResponse.json(fixtures.sessionError);
+    }),
+  );
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/" element={<div>Dashboard</div>} />
+    </>,
+    { route: '/sessions/2/edit' },
+  );
+  await screen.findByText('Edytuj sesję');
+  setTime('session-end', localInput(new Date(start.getTime() + 60 * 60 * 1000)));
+  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+  await waitFor(() => expect(body).not.toBeNull());
+  expect(body).not.toHaveProperty('start_time');
+  expect(String(body!.end_time)).toMatch(/Z$/);
+  expect(screen.queryByText('Początek nie może być starszy niż 30 dni.')).not.toBeInTheDocument();
+});
+
+test('ERROR open longer than 48 hours warns and rejects an end of now', async () => {
+  let patched = false;
+  const start = new Date(FROZEN.getTime() - SESSION_MAX_DURATION_MS - 60_000);
+  server.use(
+    http.get('/api/v1/sessions/2', () => HttpResponse.json({
+      ...fixtures.sessionError,
+      start_time: start.toISOString(),
+      end_time: null,
+    })),
+    http.patch('/api/v1/sessions/2', () => {
+      patched = true;
+      return HttpResponse.json(fixtures.sessionError);
+    }),
+  );
+  const user = userEvent.setup();
+  renderAppRoutes(<Route path="/sessions/:id/edit" element={<SessionFormPage />} />, { route: '/sessions/2/edit' });
+  expect(await screen.findByText(/Ta sesja trwa już ponad 48 godzin/)).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Odrzuć sesję/i })).toBeInTheDocument();
+  setTime('session-end', localInput(FROZEN));
+  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+  expect(await screen.findByText('Sesja nie może trwać dłużej niż 48 godzin.')).toBeInTheDocument();
+  expect(patched).toBe(false);
+  setTime('session-end', localInput(new Date(start.getTime() + 60 * 60 * 1000)));
+  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+  await waitFor(() => expect(patched).toBe(true));
 });

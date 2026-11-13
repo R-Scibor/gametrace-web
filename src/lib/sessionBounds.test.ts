@@ -16,6 +16,8 @@ function bounds(start: Date, end: Date, isCreate: boolean) {
 
 test('end equal to start is endBeforeStart and one minute later passes', () => {
   expect(bounds(now, now, true)).toBe('endBeforeStart');
+  expect(bounds(new Date('invalid'), now, true)).toBe('endBeforeStart');
+  expect(bounds(now, new Date('invalid'), true)).toBe('endBeforeStart');
   expect(bounds(new Date(now.getTime() - 60_000), now, true)).toBeNull();
 });
 

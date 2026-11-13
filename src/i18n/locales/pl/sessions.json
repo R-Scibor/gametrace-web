@@ -15,6 +15,15 @@
     "transcriptPreview": "Podgląd transkrypcji",
     "transcriptHint": "Tylko podgląd — nie zapisuje się w sesji."
   },
+  "bounds": {
+    "endBeforeStart": "Zakończenie musi być późniejsze niż rozpoczęcie.",
+    "lookback": "Początek nie może być starszy niż 30 dni.",
+    "duration": "Sesja nie może trwać dłużej niż 48 godzin.",
+    "futureStart": "Rozpoczęcie może być najwyżej 5 minut w przyszłości.",
+    "futureEnd": "Zakończenie może być najwyżej 5 minut w przyszłości.",
+    "errorTooLong": "Ta sesja trwa już ponad 48 godzin. Nie da się zamknąć jej na teraz — podaj zakończenie w ciągu 48 godzin od startu albo odrzuć sesję.",
+    "errorNeedsEnd": "Podaj zakończenie albo odrzuć sesję."
+  },
   "actions": {
     "saving": "ZAPISYWANIE...",
     "saveChanges": "ZAPISZ ZMIANY",

@@ -15,6 +15,15 @@
     "transcriptPreview": "Transcript preview",
     "transcriptHint": "Preview only — it isn't saved with the session."
   },
+  "bounds": {
+    "endBeforeStart": "End must be after start.",
+    "lookback": "Start can't be more than 30 days ago.",
+    "duration": "A session can't be longer than 48 hours.",
+    "futureStart": "Start can be at most 5 minutes in the future.",
+    "futureEnd": "End can be at most 5 minutes in the future.",
+    "errorTooLong": "This session has already run past 48 hours. It can't be closed at the current time — set an end within 48 hours of the start, or discard it.",
+    "errorNeedsEnd": "Set an end time, or discard the session."
+  },
   "actions": {
     "saving": "SAVING...",
     "saveChanges": "SAVE CHANGES",
