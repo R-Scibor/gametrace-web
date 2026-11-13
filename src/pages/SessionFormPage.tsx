@@ -12,7 +12,7 @@ import {
   useDiscardSession,
   useDeleteSession,
 } from '../hooks/useSessions';
-import { parseConflict } from '../lib/conflict';
+import { classifyConflict, parseConflict } from '../lib/conflict';
 import { consumeVoiceTranscriptPrefill } from '../lib/voicePrefill';
 import {
   legalCreateRange,
@@ -176,7 +176,12 @@ export function SessionFormPage() {
     <div className={styles.container}>
       <SectionHeader title={isEditing ? t('title.edit') : t('title.add')} />
 
-      {conflict && <ConflictNotice conflict={conflict} />}
+      {conflict && (
+        <ConflictNotice
+          conflict={conflict}
+          kind={classifyConflict(conflict, isEditing ? sessionId : undefined)}
+        />
+      )}
 
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputGroup}>

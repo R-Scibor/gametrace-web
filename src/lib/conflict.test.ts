@@ -1,6 +1,6 @@
 import { AxiosError, AxiosHeaders } from 'axios';
 import { test, expect } from 'vitest';
-import { parseConflict } from './conflict';
+import { classifyConflict, parseConflict } from './conflict';
 import { fixtures } from '../../test/fixtures';
 
 test('parseConflict returns conflict body on 409', () => {
@@ -29,4 +29,22 @@ test('parseConflict returns null for non-409 errors', () => {
 
 test('parseConflict returns null for non-axios errors', () => {
   expect(parseConflict(new Error('nope'))).toBeNull();
+});
+
+test('writer string is writer even when the ids differ', () => {
+  expect(classifyConflict({
+    ...fixtures.writerConflictResponse,
+    conflicting_session: { ...fixtures.writerConflictResponse.conflicting_session, id: 99 },
+  }, 1)).toBe('writer');
+});
+
+test('overlap string with a different id is overlap', () => {
+  expect(classifyConflict(fixtures.conflictResponse, 1)).toBe('overlap');
+});
+
+test('same id with an unexpected detail is writer on the edit form', () => {
+  expect(classifyConflict({
+    detail: 'something else',
+    conflicting_session: fixtures.session,
+  }, fixtures.session.id)).toBe('writer');
 });

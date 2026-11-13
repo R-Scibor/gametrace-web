@@ -35,6 +35,36 @@ test('TrashPage restore 409 shows ConflictNotice', async () => {
   await user.click(screen.getByRole('button', { name: /Przywróć/i }));
 
   expect(await screen.findByText('Nakładające się sesje')).toBeInTheDocument();
+  expect(screen.getByText('Ten przedział nachodzi na inną sesję.')).toBeInTheDocument();
+});
+
+test('TrashPage restore 409 with ongoing conflicting session links to library', async () => {
+  server.use(
+    http.post('/api/v1/sessions/:id/restore', () =>
+      HttpResponse.json({
+        detail: {
+          ...fixtures.conflictResponse,
+          conflicting_session: {
+            ...fixtures.conflictResponse.conflicting_session,
+            status: 'ONGOING',
+            end_time: null,
+          },
+        },
+      }, { status: 409 }),
+    ),
+  );
+
+  const user = userEvent.setup();
+  renderPage(<TrashPage />, { route: '/trash' });
+
+  await screen.findByText('Wiedźmin 3');
+  await user.click(screen.getByRole('button', { name: /Przywróć/i }));
+
+  expect(await screen.findByText('Nakładające się sesje')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Zobacz grę/i })).toHaveAttribute(
+    'href',
+    `/library/${fixtures.game.id}`,
+  );
 });
 
 test('TrashPage hard-delete confirms and removes session', async () => {

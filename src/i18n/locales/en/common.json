@@ -64,7 +64,13 @@
   },
   "conflict": {
     "heading": "Overlapping sessions",
-    "edit": "Edit →"
+    "message": "This time range overlaps another session.",
+    "ongoing": "That session is still running, so it can't be edited here. End it in the bot, then save again.",
+    "edit": "Edit →",
+    "viewGame": "View game →",
+    "writerHeading": "Session changed",
+    "writerMessage": "This session was saved in another tab, in the app, or by the bot. Refresh the page and try again.",
+    "writerTrashed": "This session is in the trash. It can't be saved here."
   },
   "session": {
     "status": {

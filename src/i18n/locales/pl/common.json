@@ -64,7 +64,13 @@
   },
   "conflict": {
     "heading": "Nakładające się sesje",
-    "edit": "Edytuj →"
+    "message": "Ten przedział nachodzi na inną sesję.",
+    "ongoing": "Ta sesja nadal trwa, więc nie da się jej tu edytować. Zakończ ją w bocie, a potem zapisz ponownie.",
+    "edit": "Edytuj →",
+    "viewGame": "Zobacz grę →",
+    "writerHeading": "Sesja zmieniona",
+    "writerMessage": "Ta sesja została zapisana w innej karcie, w aplikacji albo przez bota. Odśwież stronę i spróbuj ponownie.",
+    "writerTrashed": "Ta sesja jest w koszu. Nie da się jej tu zapisać."
   },
   "session": {
     "status": {

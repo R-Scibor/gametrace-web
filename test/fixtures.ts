@@ -100,12 +100,38 @@ export const sessionError: Session = {
 };
 
 export const conflictResponse: ConflictResponse = {
-  detail: 'Sesja nakłada się z istniejącą sesją.',
+  detail: 'Session overlaps with an existing session',
   conflicting_session: {
     ...session,
     id: 42,
+    status: 'COMPLETED',
     start_time: '2026-06-10T19:00:00Z',
     end_time: '2026-06-10T21:00:00Z',
+  },
+};
+
+export const writerConflictResponse: ConflictResponse = {
+  detail: 'Session was updated by another writer',
+  conflicting_session: { ...session, id: 1, deleted_at: null },
+};
+
+export const writerOngoingConflictResponse: ConflictResponse = {
+  detail: 'Session was updated by another writer',
+  conflicting_session: {
+    ...session,
+    id: 1,
+    status: 'ONGOING',
+    end_time: null,
+    deleted_at: null,
+  },
+};
+
+export const writerTrashedConflictResponse: ConflictResponse = {
+  detail: 'Session was updated by another writer',
+  conflicting_session: {
+    ...session,
+    id: 1,
+    deleted_at: '2026-06-15T12:00:00.000Z',
   },
 };
 
@@ -312,6 +338,9 @@ export const fixtures = {
   recentSessions: [session, sessionError],
   trash: [trashSession],
   conflictResponse,
+  writerConflictResponse,
+  writerOngoingConflictResponse,
+  writerTrashedConflictResponse,
   statsSummary,
   statsSummary7d,
   heatmap,

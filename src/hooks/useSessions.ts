@@ -66,6 +66,7 @@ export function usePatchSession(sessionId: number, gameId?: number) {
       pushToast({ type: 'success', message: i18n.t('sessions:toast.changesSaved') });
     },
     onError: (err) => {
+      if (axios.isAxiosError(err) && err.response?.status === 409) return;
       if (parseSessionBound(err)) return;
       pushToast({ type: 'error', message: i18n.t('sessions:toast.changesFailed') });
     },

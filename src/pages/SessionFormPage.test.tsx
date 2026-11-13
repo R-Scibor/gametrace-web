@@ -63,7 +63,130 @@ test('SessionFormPage create shows 409 ConflictNotice', async () => {
   await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
 
   expect(await screen.findByText('Nakładające się sesje')).toBeInTheDocument();
-  expect(screen.getByText(fixtures.conflictResponse.detail)).toBeInTheDocument();
+  expect(screen.getByText('Ten przedział nachodzi na inną sesję.')).toBeInTheDocument();
+  expect(screen.queryByText('Session overlaps with an existing session')).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Edytuj/i })).toHaveAttribute('href', '/sessions/42/edit');
+});
+
+test('SessionFormPage create 409 with ongoing conflicting session links to library', async () => {
+  server.use(
+    http.post('/api/v1/sessions', () =>
+      HttpResponse.json({
+        detail: {
+          ...fixtures.conflictResponse,
+          conflicting_session: {
+            ...fixtures.conflictResponse.conflicting_session,
+            status: 'ONGOING',
+            end_time: null,
+            game: { id: 1, primary_name: 'Wiedźmin 3', cover_image_url: null },
+          },
+        },
+      }, { status: 409 }),
+    ),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/new' },
+  );
+
+  await screen.findByText('Dodaj sesję');
+  await pickFirstGame(user);
+  setTime('session-start', localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000)));
+  setTime('session-end', localInput(FROZEN));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+
+  expect(await screen.findByText('Nakładające się sesje')).toBeInTheDocument();
+  expect(screen.getByText('Ta sesja nadal trwa, więc nie da się jej tu edytować. Zakończ ją w bocie, a potem zapisz ponownie.')).toBeInTheDocument();
+  const link = screen.getByRole('link', { name: /Zobacz grę/i });
+  expect(link).toHaveAttribute('href', '/library/1');
+  expect(link).not.toHaveAttribute('href', '/sessions/42/edit');
+  expect(screen.queryByRole('link', { name: /Edytuj/i })).not.toBeInTheDocument();
+});
+
+test('SessionFormPage edit PATCH 409 with writer conflict shows writer notice and no link', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+    http.patch('/api/v1/sessions/1', () =>
+      HttpResponse.json({ detail: fixtures.writerConflictResponse }, { status: 409 }),
+    ),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  await screen.findByText('Test session');
+  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+
+  expect(await screen.findByText('Sesja zmieniona')).toBeInTheDocument();
+  expect(screen.getByText('Ta sesja została zapisana w innej karcie, w aplikacji albo przez bota. Odśwież stronę i spróbuj ponownie.')).toBeInTheDocument();
+  expect(screen.queryByText(/Ktoś inny/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Someone else/i)).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /Edytuj/i })).not.toBeInTheDocument();
+  expect(document.querySelector('a[href="/sessions/1/edit"]')).toBeNull();
+  expect(useToastStore.getState().toasts).toHaveLength(0);
+});
+
+test('SessionFormPage edit PATCH 409 with writer ongoing conflict links to library and hides writer message', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+    http.patch('/api/v1/sessions/1', () =>
+      HttpResponse.json({ detail: fixtures.writerOngoingConflictResponse }, { status: 409 }),
+    ),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  await screen.findByText('Test session');
+  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+
+  expect(await screen.findByText('Sesja zmieniona')).toBeInTheDocument();
+  expect(screen.getByText('Ta sesja nadal trwa, więc nie da się jej tu edytować. Zakończ ją w bocie, a potem zapisz ponownie.')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Zobacz grę/i })).toHaveAttribute('href', '/library/1');
+  expect(screen.queryByText('Ta sesja została zapisana w innej karcie, w aplikacji albo przez bota. Odśwież stronę i spróbuj ponownie.')).not.toBeInTheDocument();
+});
+
+test('SessionFormPage edit PATCH 409 with writer trashed conflict shows trashed message without links', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+    http.patch('/api/v1/sessions/1', () =>
+      HttpResponse.json({ detail: fixtures.writerTrashedConflictResponse }, { status: 409 }),
+    ),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  await screen.findByText('Test session');
+  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+
+  expect(await screen.findByText('Sesja zmieniona')).toBeInTheDocument();
+  expect(screen.getByText('Ta sesja jest w koszu. Nie da się jej tu zapisać.')).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /Edytuj/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /Zobacz grę/i })).not.toBeInTheDocument();
+  expect(screen.queryByText('Ta sesja została zapisana w innej karcie, w aplikacji albo przez bota. Odśwież stronę i spróbuj ponownie.')).not.toBeInTheDocument();
 });
 
 test('SessionFormPage edit prefills session data', async () => {

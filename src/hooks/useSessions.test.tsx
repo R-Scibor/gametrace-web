@@ -52,6 +52,17 @@ test('useCreateSession does not toast on 409 conflict', async () => {
   expect(useToastStore.getState().toasts).toHaveLength(0);
 });
 
+test('usePatchSession does not toast on 409', async () => {
+  server.use(http.patch('/api/v1/sessions/7', () =>
+    HttpResponse.json({ detail: fixtures.conflictResponse }, { status: 409 })));
+  const { result } = renderHookWithProviders(() => usePatchSession(7, 1));
+  await act(async () => {
+    result.current.mutate({ end_time: '2026-06-15T12:00:00.000Z' });
+  });
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  expect(useToastStore.getState().toasts).toHaveLength(0);
+});
+
 test('useRecentSessions fetches COMPLETED and ERROR sessions', async () => {
   let capturedUrl = '';
   server.use(

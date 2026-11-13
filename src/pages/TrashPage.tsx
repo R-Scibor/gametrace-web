@@ -56,7 +56,7 @@ export function TrashPage() {
     <div className={styles.container}>
       <SectionHeader title={t('title')} />
 
-      {restoreConflict && <ConflictNotice conflict={restoreConflict} />}
+      {restoreConflict && <ConflictNotice conflict={restoreConflict} kind="overlap" />}
 
       {isLoading && <TrashSkeleton />}
 
