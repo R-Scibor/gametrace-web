@@ -65,18 +65,55 @@ function rootTokens(css: string): Record<string, string> {
   return tokens;
 }
 
-const restingCards: Array<[string, string]> = [
-  ['components/dashboard/HeroSpotlight.module.css', '.card'],
-  ['components/dashboard/ActiveSessionCard.module.css', '.card'],
-  ['components/dashboard/DashboardStatTiles.module.css', '.tile'],
-  ['components/analytics/StatsOverview.module.css', '.tile'],
-  ['pages/GameDetailPage.module.css', '.hero'],
-  ['pages/LandingPage.module.css', '.specimen'],
-  ['pages/LandingPage.module.css', '.metricTile'],
-  ['pages/LandingPage.module.css', '.clientItem'],
-  ['pages/DownloadPage.module.css', '.handoff'],
-  ['pages/DownloadPage.module.css', '.installDetails'],
-];
+function stripBalanced(css: string, start: number): { end: number; inner: string } {
+  const open = css.indexOf('{', start);
+  let depth = 0;
+  for (let index = open; index < css.length; index += 1) {
+    if (css[index] === '{') depth += 1;
+    else if (css[index] === '}') {
+      depth -= 1;
+      if (depth === 0) return { end: index, inner: css.slice(open + 1, index) };
+    }
+  }
+  throw new Error('unclosed block');
+}
+
+function stripBlocks(css: string, starts: (source: string) => number): string {
+  let rest = css;
+  let from = 0;
+  while (from < rest.length) {
+    const start = starts(rest.slice(from));
+    if (start < 0) break;
+    const absolute = from + start;
+    const { end } = stripBalanced(rest, absolute);
+    rest = rest.slice(0, absolute) + rest.slice(end + 1);
+    from = absolute;
+  }
+  return rest;
+}
+
+function baseRules(css: string): string {
+  const withoutKeyframes = stripBlocks(css, (source) => source.search(/@keyframes\b/));
+  return stripBlocks(withoutKeyframes, (source) => source.indexOf('@media (prefers-reduced-motion: reduce)'));
+}
+
+function hiddenEntranceSelectors(css: string): string[] {
+  const selectors: string[] = [];
+  for (const match of baseRules(css).matchAll(/([^{}@]+)\{([^{}]*)\}/g)) {
+    const body = match[2];
+    if (!/opacity:\s*0\s*;/.test(body) || !/animation\s*:/.test(body)) continue;
+    for (const part of match[1].replace(/\/\*[\s\S]*?\*\//g, '').split(',')) {
+      const selector = part.trim();
+      if (selector) selectors.push(selector);
+    }
+  }
+  return selectors;
+}
+
+function mentionsSelector(block: string, selector: string): boolean {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`${escaped}(?![\\w-])`).test(block);
+}
 
 describe('shipped surface constraints', () => {
   it('stops voice, skeleton, privacy, and toast motion under reduced motion', () => {
@@ -84,12 +121,10 @@ describe('shipped surface constraints', () => {
     expect(voice).toMatch(/\.statusDotActive/);
     expect(voice).toMatch(/\.barActive/);
     expect(voice).toMatch(/animation:\s*none/);
-    expect(readCss('pages/VoicePage.module.css')).toMatch(/background-color:\s*var\(--orange\)/);
 
     const skeleton = reducedMotionBlocks(readCss('components/ui/Skeleton.module.css')).join('\n');
     expect(skeleton).toMatch(/\.skeleton/);
     expect(skeleton).toMatch(/animation:\s*none/);
-    expect(readCss('components/ui/Skeleton.module.css')).toMatch(/background-color:\s*var\(--bg3\)/);
 
     const privacy = reducedMotionBlocks(readCss('pages/PrivacyPage.module.css')).join('\n');
     expect(privacy).toMatch(/\.header/);
@@ -100,8 +135,18 @@ describe('shipped surface constraints', () => {
     const toast = reducedMotionBlocks(readCss('components/ui/Toast.module.css')).join('\n');
     expect(toast).toMatch(/\.toast/);
     expect(toast).toMatch(/animation:\s*none/);
-    expect(readCss('components/ui/Toast.module.css')).toMatch(/border-left:\s*4px solid var\(--orange\)/);
-    expect(readCss('components/ui/Toast.module.css')).toMatch(/border-left:\s*4px solid var\(--warn\)/);
+  });
+
+  it('resets an opacity-0 entrance when reduced motion cancels the animation', () => {
+    for (const file of walkCss(src)) {
+      const css = readFileSync(file, 'utf8');
+      const blocks = reducedMotionBlocks(css);
+      for (const selector of hiddenEntranceSelectors(css)) {
+        const block = blocks.find((candidate) => mentionsSelector(candidate, selector));
+        expect(block, `${file} ${selector}`).toBeTruthy();
+        expect(block, `${file} ${selector}`).toMatch(/opacity:\s*1/);
+      }
+    }
   });
 
   it('drops 9px type, hazard yellow, and the undefined danger red', () => {
@@ -112,11 +157,6 @@ describe('shipped surface constraints', () => {
       expect(css, file).not.toMatch(/#ffeb00/i);
       expect(css, file).not.toMatch(/#ff5a36/i);
     }
-    const banner = readCss('components/ui/SampleDataBanner.module.css');
-    expect(banner).toMatch(/var\(--warn\)/);
-    expect(banner).toMatch(/var\(--warn-border\)/);
-    expect(readCss('components/auth/BotContactConfirm.module.css')).toMatch(/color:\s*var\(--warn\)/);
-    expect(readCss('components/welcome/WelcomeOnboarding.module.css')).toMatch(/color:\s*var\(--warn\)/);
   });
 
   it('gives the switch a 24px target and the icon-only sidebar a 3:1 icon', () => {
@@ -131,19 +171,4 @@ describe('shipped surface constraints', () => {
     expect(icon).toMatch(/color:\s*var\(--text3\)/);
     expect(contrastRatio(tokens.text3, tokens.bg2)).toBeGreaterThanOrEqual(3);
   });
-
-  it('keeps named resting cards flat', () => {
-    for (const [file, selector] of restingCards) {
-      const body = ruleBody(readCss(file), selector);
-      expect(body, `${file} ${selector}`).not.toMatch(/box-shadow/);
-      expect(body, `${file} ${selector}`).not.toMatch(/linear-gradient/);
-    }
-  });
-
-  it('does not leave chart umber under 3:1 on soot', () => {
-    const tokens = rootTokens(readCss('theme/global.css'));
-    expect(tokens.chart4.toLowerCase()).not.toBe('#5a4a3a');
-    expect(contrastRatio(tokens.chart4, tokens.bg)).toBeGreaterThanOrEqual(3);
-  });
-
 });

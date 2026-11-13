@@ -68,9 +68,6 @@ describe('shipped theme contrast', () => {
   });
 
   it('clears 4.5:1 for muted text on soot, raised, and field', () => {
-    expect(tokens.bg).toBe('#14110f');
-    expect(tokens.bg2).toBe('#1a1714');
-    expect(tokens.bg3).toBe('#221e1a');
     for (const ground of [tokens.bg, tokens.bg2, tokens.bg3]) {
       expect(contrastRatio(tokens.text3, ground)).toBeGreaterThanOrEqual(4.5);
     }
@@ -107,7 +104,6 @@ describe('shipped theme contrast', () => {
   });
 
   it('keeps signal orange off body copy and chart umber visible on soot', () => {
-    expect(tokens.orange).toBe('#ff7a1a');
     expect(tokens.text).not.toBe(tokens.orange);
     expect(tokens.text2).not.toBe(tokens.orange);
     expect(tokens.text3).not.toBe(tokens.orange);

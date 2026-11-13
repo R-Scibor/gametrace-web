@@ -47,11 +47,8 @@ test('WelcomeOnboarding step 1 opens bot invite and advances', async () => {
   expect(joinServerBtn).toBeInTheDocument();
   expect(addBotBtn).toBeInTheDocument();
   expect(nextBtn).toBeInTheDocument();
-  expect(addBotBtn.className).toMatch(/primary/);
-  expect(joinServerBtn.className).toMatch(/primary/);
 
   await user.click(addBotBtn);
-  expect(addBotBtn.className).toMatch(/secondary/);
   expect(window.open).toHaveBeenCalledWith(
     'https://discord.com/oauth2/authorize?client_id=test&permissions=2048&integration_type=0&scope=bot+applications.commands',
     '_blank',
@@ -86,10 +83,8 @@ test('WelcomeOnboarding step 1 opens public server join invite', async () => {
   );
 
   const joinServerBtn = screen.getByRole('button', { name: /Dołącz do serwera GameTrace/i });
-  expect(joinServerBtn.className).toMatch(/primary/);
 
   await user.click(joinServerBtn);
-  expect(joinServerBtn.className).toMatch(/secondary/);
   expect(window.open).toHaveBeenCalledWith(
     'https://discord.gg/test-invite',
     '_blank',

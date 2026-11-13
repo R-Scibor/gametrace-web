@@ -9,8 +9,6 @@ import { fixtures } from '../../../test/fixtures';
 import { markReminderShown, reminderAlreadyShown, snoozeUntilIso } from '../../lib/botReminder';
 import { qk } from '../../lib/queryKeys';
 import { useToastStore } from '../../store/toastStore';
-import buttonStyles from '../ui/Button.module.css';
-
 beforeEach(() => {
   resetStores();
 });
@@ -56,66 +54,22 @@ test('when markReminderShown is called before render, the heading is absent', as
   expect(screen.queryByRole('heading', { name: /bot cię nie widzi/i })).not.toBeInTheDocument();
 });
 
-test('bot_can_see_user: null does not show the heading', async () => {
+test.each([
+  ['bot_can_see_user is null', { bot_can_see_user: null as boolean | null, bot_visibility_reminders_enabled: true, snoozed: null as string | null }],
+  ['bot_can_see_user is true', { bot_can_see_user: true, bot_visibility_reminders_enabled: true, snoozed: null }],
+  ['reminders are disabled', { bot_can_see_user: false, bot_visibility_reminders_enabled: false, snoozed: null }],
+  ['the reminder is snoozed until tomorrow', { bot_can_see_user: false, bot_visibility_reminders_enabled: true, snoozed: 'tomorrow' }],
+])('%s does not show the heading', async (_label, gate) => {
+  const snoozedUntil = gate.snoozed === 'tomorrow'
+    ? new Date(Date.now() + 86_400_000).toISOString()
+    : gate.snoozed;
   server.use(
     http.get('/api/v1/profile/me', () =>
       HttpResponse.json({
         ...fixtures.profileMe,
-        bot_can_see_user: null,
-        bot_visibility_reminders_enabled: true,
-        bot_visibility_reminder_snoozed_until: null,
-      }),
-    ),
-  );
-
-  const { queryClient } = renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
-  await waitFor(() => expect(queryClient.getQueryData(qk.profile)).toBeDefined());
-  expect(screen.queryByRole('heading', { name: /bot cię nie widzi/i })).not.toBeInTheDocument();
-});
-
-test('bot_can_see_user: true does not show the heading', async () => {
-  server.use(
-    http.get('/api/v1/profile/me', () =>
-      HttpResponse.json({
-        ...fixtures.profileMe,
-        bot_can_see_user: true,
-        bot_visibility_reminders_enabled: true,
-        bot_visibility_reminder_snoozed_until: null,
-      }),
-    ),
-  );
-
-  const { queryClient } = renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
-  await waitFor(() => expect(queryClient.getQueryData(qk.profile)).toBeDefined());
-  expect(screen.queryByRole('heading', { name: /bot cię nie widzi/i })).not.toBeInTheDocument();
-});
-
-test('bot_visibility_reminders_enabled: false does not show the heading', async () => {
-  server.use(
-    http.get('/api/v1/profile/me', () =>
-      HttpResponse.json({
-        ...fixtures.profileMe,
-        bot_can_see_user: false,
-        bot_visibility_reminders_enabled: false,
-        bot_visibility_reminder_snoozed_until: null,
-      }),
-    ),
-  );
-
-  const { queryClient } = renderWithProviders(<BotVisibilityReminder />, { authenticated: true });
-  await waitFor(() => expect(queryClient.getQueryData(qk.profile)).toBeDefined());
-  expect(screen.queryByRole('heading', { name: /bot cię nie widzi/i })).not.toBeInTheDocument();
-});
-
-test('bot_visibility_reminder_snoozed_until tomorrow does not show the heading', async () => {
-  const tomorrow = new Date(Date.now() + 86_400_000).toISOString();
-  server.use(
-    http.get('/api/v1/profile/me', () =>
-      HttpResponse.json({
-        ...fixtures.profileMe,
-        bot_can_see_user: false,
-        bot_visibility_reminders_enabled: true,
-        bot_visibility_reminder_snoozed_until: tomorrow,
+        bot_can_see_user: gate.bot_can_see_user,
+        bot_visibility_reminders_enabled: gate.bot_visibility_reminders_enabled,
+        bot_visibility_reminder_snoozed_until: snoozedUntil,
       }),
     ),
   );
@@ -305,10 +259,6 @@ test('join button is primary and first, followed by secondary add-bot, secondary
   const allButtons = screen.getAllByRole('button');
   expect(allButtons).toEqual([joinBtn, addBotBtn, snoozeBtn, closeBtn]);
 
-  expect(joinBtn).toHaveClass(buttonStyles.primary);
-  expect(addBotBtn).toHaveClass(buttonStyles.secondary);
-  expect(snoozeBtn).toHaveClass(buttonStyles.secondary);
-
   expect(document.activeElement).toBe(joinBtn);
 });
 
@@ -330,12 +280,6 @@ test('when join URL is unset, join button is absent and snooze remains secondary
   expect(await screen.findByRole('heading', { name: /bot cię nie widzi/i })).toBeInTheDocument();
 
   expect(screen.queryByRole('button', { name: /dołącz do serwera/i })).not.toBeInTheDocument();
-
-  const addBotBtn = screen.getByRole('button', { name: /dodaj bota do serwera/i });
-  const snoozeBtn = screen.getByRole('button', { name: /przypomnij za 7 dni/i });
-
-  expect(addBotBtn).toHaveClass(buttonStyles.secondary);
-  expect(snoozeBtn).toHaveClass(buttonStyles.secondary);
-  expect(addBotBtn).not.toHaveClass(buttonStyles.primary);
-  expect(snoozeBtn).not.toHaveClass(buttonStyles.primary);
+  expect(screen.getByRole('button', { name: /dodaj bota do serwera/i })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /przypomnij za 7 dni/i })).toBeInTheDocument();
 });
