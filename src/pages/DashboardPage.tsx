@@ -25,10 +25,7 @@ function DashboardSkeleton() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div>
-          <Skeleton height={12} width={120} />
-          <Skeleton height={12} width={200} style={{ marginTop: 8 }} />
-        </div>
+        <Skeleton height={12} width={240} />
         <Skeleton height={12} width={80} />
       </div>
       <div className={styles.topRow}>
@@ -49,7 +46,7 @@ function DashboardSkeleton() {
 
 export function DashboardPage() {
   const { t } = useTranslation('dashboard');
-  const { formatHeaderDate, formatHours } = useFormat();
+  const { formatHeaderDate } = useFormat();
   const { data, isLoading, isError, refetch } = useDashboard();
   const { data: weekStats, isLoading: weekStatsLoading } = useStatsSummary(7);
   const { data: streak } = useStreak();
@@ -87,7 +84,7 @@ export function DashboardPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headLeft}>
-          <span className={styles.statusLine}>
+          <span className={styles.statusLine} data-live={isLive ? 'true' : 'false'}>
             <span
               className={styles.statusDot}
               data-live={isLive ? 'true' : 'false'}
@@ -98,12 +95,6 @@ export function DashboardPage() {
         </div>
         <div className={styles.headRight}>
           <span className={styles.headDate}>{formatHeaderDate()}</span>
-          <span className={styles.headMetric}>
-            <span className={styles.headMetricLabel}>{t('header.thisWeek')}</span>
-            <span className={styles.headMetricValue}>
-              {formatHours(showPreview ? SAMPLE_DASHBOARD.total_seconds_7d : data.total_seconds_7d)}h
-            </span>
-          </span>
         </div>
       </header>
 

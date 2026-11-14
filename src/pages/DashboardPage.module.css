@@ -29,7 +29,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding-bottom: 18px;
+  padding-bottom: 22px;
   border-bottom: 1px solid var(--border);
   background-image: linear-gradient(90deg, var(--orange), transparent 60%);
   background-size: 100% 1px;
@@ -59,11 +59,16 @@
 .statusLine {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 1.5px;
-  color: var(--text2);
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.statusLine[data-live='true'] {
+  color: var(--orange);
 }
 
 .headRight {
@@ -79,27 +84,6 @@
   letter-spacing: 1px;
   color: var(--text3);
   white-space: nowrap;
-}
-
-.headMetric {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
-}
-.headMetricLabel {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  color: var(--text3);
-}
-.headMetricValue {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 17px;
-  letter-spacing: -0.3px;
-  color: var(--orange);
-  line-height: 1;
 }
 
 /* ---------- HERO ROW ---------- */
