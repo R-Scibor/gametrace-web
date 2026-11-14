@@ -70,8 +70,8 @@
             "Po wpisaniu kodu w przeglądarce otrzymujesz bezpieczny token sesyjny, który automatycznie odświeża się podczas korzystania z aplikacji."
           ],
           "steps": [
-            "Otwórz Discorda na dowolnym serwerze, na którym znajduje się bot GameTrace (lub w kanale komend).",
-            "Wpisz komendę slash `/login` i naciśnij Enter.",
+            "Otwórz Discorda na serwerze, na którym znajduje się bot GameTrace, i przejdź do kanału z panelem bota.",
+            "W panelu kliknij ▶ START (nowe konto potwierdza informację i może wybrać polski albo angielski), a potem kliknij 🔑 Get a code albo 🔑 Weź kod. Możesz też wpisać komendę /login na kanale.",
             "Bot wyśle prywatną (widoczną tylko dla Ciebie) wiadomość z 6-cyfrowym kodem (np. 849 201).",
             "Wróć do aplikacji GameTrace Web i wpisz otrzymany kod w formularzu logowania.",
             "Zostaniesz natychmiast zalogowany, a Twoja strefa czasowa zostanie automatycznie zsynchronizowana."
@@ -79,7 +79,7 @@
           "callout": {
             "type": "tip",
             "title": "Ważność kodu wynosi 5 minut",
-            "text": "Kod jest jednorazowy i wygasa po 300 sekundach. Jeśli minie ten czas, wystarczy ponownie wpisać `/login` na Discordzie, aby otrzymać świeży kod."
+            "text": "Kod jest jednorazowy i wygasa po 300 sekundach. Jeśli minie ten czas, kliknij ponownie 🔑 Get a code albo 🔑 Weź kod w panelu na Discordzie lub wpisz /login, aby otrzymać świeży kod."
           },
           "keywords": ["logowanie", "kod", "rejestracja", "hasło", "link code", "discord"]
         },
@@ -544,7 +544,7 @@
           "question": "Kod logowania wygasł lub pojawia się błąd „Invalid or expired code” — co zrobić?",
           "answer": [
             "Kod logowania z Discorda ma ścisły limit ważności wynoszący dokładnie 5 minut (300 sekund) i jest jednorazowy. Po jednokrotnym użyciu lub po wygenerowaniu nowego kodu poprzedni klucz ulega unieważnieniu.",
-            "Jeśli widzisz błąd autoryzacji: wróć na Discorda, wpisz ponownie `/login`, skopiuj nowy 6-cyfrowy kod i natychmiast wprowadź go na stronie logowania.",
+            "Jeśli widzisz błąd autoryzacji, wróć na Discorda, kliknij 🔑 Get a code albo 🔑 Weź kod w panelu (albo wpisz ponownie /login), skopiuj nowy 6-cyfrowy kod i natychmiast wprowadź go na stronie logowania.",
             "Uwaga: ze względów bezpieczeństwa po 10 nieudanych próbach wpisania kodu system nakłada 15-minutową blokadę adresu IP na próby logowania."
           ],
           "keywords": ["kod wygasł", "invalid code", "expired", "błąd logowania", "blokada ip"]

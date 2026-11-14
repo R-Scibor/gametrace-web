@@ -66,8 +66,8 @@
             "Entering the code in your browser exchanges it for a secure bearer session token, which slidingly refreshes as you use the application."
           ],
           "steps": [
-            "Open Discord on any server where the GameTrace bot is present (or in bot commands).",
-            "Type the slash command `/login` and press Enter.",
+            "Open Discord on a server where the GameTrace bot is present and go to the panel channel.",
+            "In the panel, click ▶ START (a new account confirms the notice and can choose English or Polish), then press 🔑 Get a code or 🔑 Weź kod. You can also type /login on a server channel.",
             "The bot sends an ephemeral (visible only to you) message containing a 6-digit code (e.g. 849 201).",
             "Return to GameTrace Web and enter the code into the sign-in form.",
             "You are authenticated immediately, and your browser timezone is synchronized automatically."
@@ -75,7 +75,7 @@
           "callout": {
             "type": "tip",
             "title": "5-minute code expiration",
-            "text": "The link code is single-use and expires after 300 seconds. If it expires, run `/login` on Discord again to receive a fresh code."
+            "text": "The link code is single-use and expires after 300 seconds. If it expires, press 🔑 Get a code or 🔑 Weź kod in the Discord panel again, or run /login to receive a fresh code."
           },
           "keywords": ["login", "code", "register", "password", "link code", "discord"]
         },
@@ -539,8 +539,8 @@
           "badge": "EXPIRED CODE",
           "question": "My link code expired or shows „Invalid or expired code” — what do I do?",
           "answer": [
-            "Link codes issued via Discord `/login` have a strict 5-minute (300-second) TTL and are single-use. Generating a new code immediately voids previous ones.",
-            "If you receive an authorization error, return to Discord, run `/login` again, copy the fresh code, and submit it on the login page.",
+            "Link codes issued via Discord have a strict 5-minute (300-second) TTL and are single-use. Generating a new code immediately voids previous ones.",
+            "If you receive an authorization error, return to Discord, press 🔑 Get a code or 🔑 Weź kod in the panel (or run /login again), copy the fresh code, and submit it on the login page.",
             "Note: to protect against brute-force attacks, the API temporarily locks out IP addresses after 10 failed attempts for 15 minutes."
           ],
           "keywords": ["code expired", "invalid code", "expired", "login error", "lockout"]
