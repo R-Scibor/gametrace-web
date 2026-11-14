@@ -7,9 +7,9 @@
 .label {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 2px;
-  color: var(--text3);
+  color: var(--text2);
   text-transform: uppercase;
   white-space: nowrap;
 }
