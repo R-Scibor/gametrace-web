@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useGamesPaginated } from '../hooks/useGames';
-import { SectionHeader, EmptyState, ErrorBanner, Skeleton, Button, SampleDataBanner } from '../components/ui';
+import { EmptyState, ErrorBanner, Skeleton, Button, SampleDataBanner, Switch } from '../components/ui';
 import { GameCard } from '../components/games/GameCard';
 import { useGamesStore } from '../store/gamesStore';
 import { useAuthStore } from '../store/authStore';
@@ -13,7 +13,9 @@ import {
   getFilterPrefix,
   getGameSorts,
   parseFacetFilter,
+  parseLibraryCoversOnly,
   parseLibrarySort,
+  persistLibraryCoversOnly,
   persistLibrarySort,
 } from '../lib/libraryParams';
 import type { EnrichmentStatus, GameSort } from '../types/api';
@@ -61,6 +63,7 @@ export function LibraryPage() {
   const [tab, setTab] = useState<LibraryTab>('all');
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [coversOnly, setCoversOnlyState] = useState(() => parseLibraryCoversOnly());
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const gamesStale = useGamesStore((s) => s.stale);
@@ -70,6 +73,11 @@ export function LibraryPage() {
   const sort = useMemo(() => parseLibrarySort(searchParams), [searchParams]);
   const activeTab: LibraryTab = facet ? 'all' : tab;
   const gameSorts = getGameSorts();
+
+  const setCoversOnly = (next: boolean) => {
+    setCoversOnlyState(next);
+    persistLibraryCoversOnly(next);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 300);
@@ -133,7 +141,6 @@ export function LibraryPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <SectionHeader title={t('title')} style={{ margin: 0 }} />
         <div className={styles.tabs}>
           <button
             type="button"
@@ -156,6 +163,16 @@ export function LibraryPage() {
           >
             {t('tabs.other')}
           </button>
+        </div>
+
+        <div className={styles.coversOnlyToggle}>
+          <span className={styles.toggleLabel}>{t('coversOnly')}</span>
+          <Switch
+            id="library-covers-only"
+            checked={coversOnly}
+            onChange={setCoversOnly}
+            label={t('coversOnly')}
+          />
         </div>
       </div>
 
@@ -222,7 +239,7 @@ export function LibraryPage() {
           <SampleDataBanner onDismiss={() => setPreviewDismissed(true)} />
           <div className={styles.grid}>
             {SAMPLE_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} disabled />
+              <GameCard key={game.id} game={game} disabled coversOnly={coversOnly} />
             ))}
           </div>
         </>
@@ -236,7 +253,7 @@ export function LibraryPage() {
           </p>
           <div className={styles.grid}>
             {games.map((game) => (
-              <GameCard key={game.id} game={game} sort={sort} />
+              <GameCard key={game.id} game={game} sort={sort} coversOnly={coversOnly} />
             ))}
           </div>
           {hasNextPage && (

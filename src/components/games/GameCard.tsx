@@ -9,6 +9,7 @@ interface GameCardProps {
   game: Game;
   sort?: GameSort;
   disabled?: boolean;
+  coversOnly?: boolean;
 }
 
 const AlertIcon = () => (
@@ -29,7 +30,7 @@ const AlertIcon = () => (
   </svg>
 );
 
-export function GameCard({ game, sort = 'name', disabled }: GameCardProps) {
+export function GameCard({ game, sort = 'name', disabled, coversOnly = false }: GameCardProps) {
   const { t } = useTranslation('library');
   const { formatDuration, formatRecency } = useFormat();
   const needsReview =
@@ -65,19 +66,35 @@ export function GameCard({ game, sort = 'name', disabled }: GameCardProps) {
         )}
         {game.is_ignored && <span className={styles.ignoredBadge}>{t('card.ignored')}</span>}
       </div>
-      <div className={styles.title} title={game.primary_name}>
-        {game.primary_name}
-      </div>
-      {meta && <div className={styles.meta}>{meta}</div>}
+      {!coversOnly && (
+        <div className={styles.details}>
+          <div className={styles.title} title={game.primary_name}>
+            {game.primary_name}
+          </div>
+          {meta && <div className={styles.meta}>{meta}</div>}
+        </div>
+      )}
     </>
   );
 
+  const cardClassName = [styles.card, coversOnly ? styles.cardCoversOnly : ''].filter(Boolean).join(' ');
+
   if (disabled) {
-    return <div className={styles.card}>{body}</div>;
+    return (
+      <div className={cardClassName} title={game.primary_name} aria-label={game.primary_name}>
+        {body}
+      </div>
+    );
   }
 
   return (
-    <Link to={`/library/${game.id}`} state={{ game }} className={styles.card}>
+    <Link
+      to={`/library/${game.id}`}
+      state={{ game }}
+      className={cardClassName}
+      title={game.primary_name}
+      aria-label={game.primary_name}
+    >
       {body}
     </Link>
   );

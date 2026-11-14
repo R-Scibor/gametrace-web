@@ -1,32 +1,42 @@
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
   background-color: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 12px;
+  overflow: hidden;
   text-decoration: none;
   color: var(--text);
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
+
 .card:hover {
   border-color: var(--orange);
   transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
+
+.cardCoversOnly {
+  /* When covers only, no details footer rendered */
+}
+
 .coverWrapper {
   position: relative;
   aspect-ratio: 3/4;
   width: 100%;
   overflow: hidden;
-  border-radius: 2px;
+  background-color: var(--bg3);
 }
+
 .coverReview {
   outline: 1px solid var(--warn-border);
 }
+
 .coverIgnored {
   opacity: 0.75;
 }
+
 .reviewBadge {
   position: absolute;
   top: 6px;
@@ -42,6 +52,7 @@
   border: 1px solid var(--warn-border);
   border-radius: 2px;
 }
+
 .ignoredBadge {
   position: absolute;
   bottom: 6px;
@@ -58,15 +69,27 @@
   border-radius: 2px;
   padding: 4px 6px;
 }
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px 10px;
+  background-color: var(--bg2);
+}
+
 .title {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13.5px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text);
+  line-height: 1.25;
 }
+
 .meta {
   font-size: 11px;
   color: var(--text3);

@@ -26,3 +26,9 @@ test('GameCard disabled renders no link', () => {
   expect(screen.queryByRole('link')).not.toBeInTheDocument();
   expect(screen.getByText(/baldur/i)).toBeInTheDocument();
 });
+
+test('GameCard with coversOnly hides title text but keeps link accessible', () => {
+  renderWithProviders(<GameCard game={game} coversOnly />);
+  expect(screen.queryByText("Baldur's Gate 3")).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /baldur/i })).toHaveAttribute('href', '/library/-1');
+});

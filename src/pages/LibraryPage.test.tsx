@@ -27,10 +27,26 @@ test('LibraryPage shows error banner with retry on fetch failure', async () => {
 test('LibraryPage renders main library games by default', async () => {
   renderPage(<LibraryPage />, { route: '/library' });
 
-  expect(await screen.findByText('Biblioteka')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: 'Wszystkie' })).toBeInTheDocument();
   expect(await screen.findByText('Wiedźmin 3')).toBeInTheDocument();
   expect(screen.getByText('Cyberpunk 2077')).toBeInTheDocument();
   expect(screen.queryByText('Nieznana Gra')).not.toBeInTheDocument();
+});
+
+test('LibraryPage toggles covers-only mode', async () => {
+  const user = userEvent.setup();
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  expect(await screen.findByText('Wiedźmin 3')).toBeInTheDocument();
+  const toggle = screen.getByRole('switch', { name: 'Tylko okładki' });
+  expect(toggle).toHaveAttribute('aria-checked', 'false');
+
+  await user.click(toggle);
+
+  expect(toggle).toHaveAttribute('aria-checked', 'true');
+  // In covers-only mode, the visible title element is removed, but the card link still exists
+  expect(screen.queryByText('Wiedźmin 3')).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Wiedźmin 3' })).toBeInTheDocument();
 });
 
 test('LibraryPage search queries server with debounce', async () => {

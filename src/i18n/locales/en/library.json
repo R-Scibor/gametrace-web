@@ -1,5 +1,6 @@
 {
   "title": "Library",
+  "coversOnly": "Covers only",
   "tabs": {
     "all": "All",
     "review": "Needs review",

@@ -3,11 +3,14 @@ import {
   clearFacetParams,
   libraryDrillUrl,
   parseFacetFilter,
+  parseLibraryCoversOnly,
   parseLibrarySort,
+  persistLibraryCoversOnly,
 } from './libraryParams';
 
 beforeEach(() => {
   sessionStorage.clear();
+  localStorage.clear();
 });
 
 test('parseFacetFilter reads the first facet param', () => {
@@ -30,4 +33,12 @@ test('clearFacetParams removes facet keys only', () => {
   expect(next.get('genre')).toBeNull();
   expect(next.get('sort')).toBe('playtime');
   expect(next.get('q')).toBe('witch');
+});
+
+test('parseLibraryCoversOnly reads from localStorage and falls back to false', () => {
+  expect(parseLibraryCoversOnly()).toBe(false);
+  persistLibraryCoversOnly(true);
+  expect(parseLibraryCoversOnly()).toBe(true);
+  persistLibraryCoversOnly(false);
+  expect(parseLibraryCoversOnly()).toBe(false);
 });

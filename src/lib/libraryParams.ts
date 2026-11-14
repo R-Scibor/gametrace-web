@@ -2,6 +2,23 @@ import type { GameSort, LibraryFilter } from '../types/api';
 import i18n from '../i18n';
 
 export const LIBRARY_SORT_KEY = 'library-sort';
+export const LIBRARY_COVERS_ONLY_KEY = 'library-covers-only';
+
+export function parseLibraryCoversOnly(): boolean {
+  try {
+    return localStorage.getItem(LIBRARY_COVERS_ONLY_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export function persistLibraryCoversOnly(coversOnly: boolean): void {
+  try {
+    localStorage.setItem(LIBRARY_COVERS_ONLY_KEY, String(coversOnly));
+  } catch {
+    // ignore
+  }
+}
 
 const SORT_VALUES: GameSort[] = ['name', 'playtime', 'last_played'];
 
