@@ -131,6 +131,9 @@
 .activityRail {
   flex: 1 1 0;
   min-width: 0;
+  min-height: 0;
+  max-height: 660px;
+  overflow: hidden;
 }
 
 /* ---------- SECTION DIVIDERS (title + orange rule, matching landing) ---------- */
