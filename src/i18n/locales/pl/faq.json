@@ -33,7 +33,7 @@
   "collapseAll": "Zwiń wszystkie",
   "copyLink": "Kopiuj link do pytania",
   "linkCopied": "Skopiowano link do schowka",
-  "backHome": "← Strona główna",
+  "backHome": "Strona główna",
   "supportBannerTitle": "Nie znalazłeś odpowiedzi na swoje pytanie?",
   "supportBannerText": "Dołącz do naszego oficjalnego serwera na Discordzie. Pomożemy Ci skonfigurować bota, zweryfikować status sesji lub zgłosić napotkany błąd.",
   "joinDiscord": "Dołącz do Discorda",
@@ -179,7 +179,7 @@
           "question": "Czy GameTrace obciąża komputer lub wpływa na liczbę klatek (FPS)?",
           "answer": [
             "Zero wpływu na wydajność. Ponieważ na komputerze nie działa żaden dedykowany program GameTrace, procesor (CPU) i pamięć RAM w 100% pozostają do dyspozycji gry.",
-            "Komunikacja odbywa się wyłącznie na linii Discord Gateway → serwer GameTrace w chmurze / homelabie. Nie ma mowy o żadnym spadku FPS, mikroprzycięciach czy opóźnieniach sieciowych."
+            "Komunikacja odbywa się wyłącznie na linii Discord Gateway a serwer GameTrace w chmurze / homelabie. Nie ma mowy o żadnym spadku FPS, mikroprzycięciach czy opóźnieniach sieciowych."
           ],
           "keywords": ["fps", "wydajność", "obciążenie", "lagi", "ram", "cpu"]
         }
@@ -515,8 +515,8 @@
           ],
           "steps": [
             "Krok 1: Sprawdź swój status na Discordzie — upewnij się, że nie masz ustawionego statusu 'Niewidoczny' (musi być Dostępny, Zaraz wracam lub Nie przeszkadzać).",
-            "Krok 2: Sprawdź Ustawienia Discorda → Prywatność aktywności → upewnij się, że opcja 'Wyświetlaj bieżącą aktywność jako status' jest WŁĄCZONA.",
-            "Krok 3: Sprawdź, czy Discord w ogóle widzi grę — otwórz Discorda na PC i spójrz w lewy dolny róg nad swoim awatarem. Jeśli gra nie jest widoczna, wejdź w Ustawienia → Zarejestrowane gry i kliknij 'Dodaj ją!' wskazując proces gry.",
+            "Krok 2: Sprawdź Ustawienia Discorda / Prywatność aktywności — upewnij się, że opcja 'Wyświetlaj bieżącą aktywność jako status' jest WŁĄCZONA.",
+            "Krok 3: Sprawdź, czy Discord w ogóle widzi grę — otwórz Discorda na PC i spójrz w lewy dolny róg nad swoim awatarem. Jeśli gra nie jest widoczna, wejdź w Ustawienia / Zarejestrowane gry i kliknij 'Dodaj ją!' wskazując proces gry.",
             "Krok 4: Sprawdź wspólny serwer — czy jesteś na oficjalnym serwerze GameTrace lub serwerze, na którym obecny jest bot?",
             "Krok 5: Sprawdź uprawnienia administratora — niektóre gry sieciowe z silnymi anty-cheatami (np. Vanguard, Easy Anti-Cheat) wymagają uruchomienia aplikacji Discord w trybie administratora, aby Discord mógł odczytać nazwę ich procesu."
           ],

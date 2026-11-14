@@ -17,7 +17,7 @@ describe('QueuePreview', () => {
         <PreviewRow
           to="/admin/reports?status=open&report=17"
           primary="Nie mogę dodać sesji"
-          secondary="testuser · dziś"
+          secondary="testuser / dziś"
         />
       </QueuePreview>,
     );

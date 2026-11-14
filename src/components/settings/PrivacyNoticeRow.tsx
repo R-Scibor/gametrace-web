@@ -19,7 +19,7 @@ export function PrivacyNoticeRow() {
   const version = tPrivacy('versionLabel', { version: PRIVACY_POLICY_VERSION });
 
   return (
-    <SettingsRow label={t('privacy.policy')} subtext={`${version} · ${tPrivacy('lastUpdated')}`}>
+    <SettingsRow label={t('privacy.policy')} subtext={`${version} / ${tPrivacy('lastUpdated')}`}>
       <Link className={styles.link} to="/privacy">
         {t('privacy.open')}
       </Link>

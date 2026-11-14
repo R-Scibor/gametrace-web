@@ -1,7 +1,7 @@
 {
-  "back": "← Biblioteka",
+  "back": "Biblioteka",
   "eyebrow": {
-    "lastPlayed": "OSTATNIO GRANE · {{recency}}",
+    "lastPlayed": "OSTATNIO GRANE: {{recency}}",
     "inLibrary": "W BIBLIOTECE"
   },
   "badges": {

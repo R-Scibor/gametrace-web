@@ -6,7 +6,7 @@
  * gate on `isPkceSupported()` and tell the user instead.
  */
 
-const VERIFIER_BYTES = 64; // → 86 base64url chars, inside RFC 7636's 43-128.
+const VERIFIER_BYTES = 64; // -> 86 base64url chars, inside RFC 7636's 43-128.
 const STATE_BYTES = 16;
 
 function base64url(bytes: Uint8Array): string {

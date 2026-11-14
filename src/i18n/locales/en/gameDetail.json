@@ -1,7 +1,7 @@
 {
-  "back": "← Library",
+  "back": "Library",
   "eyebrow": {
-    "lastPlayed": "LAST PLAYED · {{recency}}",
+    "lastPlayed": "LAST PLAYED: {{recency}}",
     "inLibrary": "IN LIBRARY"
   },
   "badges": {

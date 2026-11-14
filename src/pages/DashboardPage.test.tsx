@@ -68,7 +68,7 @@ test('DashboardPage shows pending errors banner', async () => {
   renderPage(<DashboardPage />, { route: '/' });
 
   expect(await screen.findByText(/nieudana sesja wymaga uwagi/i)).toBeInTheDocument();
-  expect(screen.getByText('NAPRAW →')).toBeInTheDocument();
+  expect(screen.getByText('NAPRAW')).toBeInTheDocument();
 });
 
 test('DashboardPage shows the sample preview for a brand-new empty account', async () => {

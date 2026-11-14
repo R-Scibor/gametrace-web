@@ -26,7 +26,7 @@ export function BotStatusPill() {
   return (
     <div className={styles.pill}>
       <div className={styles.dot} style={{ backgroundColor: color }} />
-      <span>BOT {formatBotStatus(status)} • {uptime}</span>
+      <span>BOT {formatBotStatus(status)} / {uptime}</span>
     </div>
   );
 }

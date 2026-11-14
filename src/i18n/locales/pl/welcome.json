@@ -1,6 +1,6 @@
 {
   "topBar": {
-    "subtitle": " · SYSTEM ŚLEDZENIA SESJI",
+    "subtitle": " / SYSTEM ŚLEDZENIA SESJI",
     "dashboard": "DASHBOARD",
     "login": "ZALOGUJ SIĘ"
   },
@@ -62,7 +62,7 @@
   "previews": {
     "autoDetect": {
       "liveBadge": "AKTYWNA",
-      "processDetected": "Wykryto proces gry • PC",
+      "processDetected": "Wykryto proces gry / PC",
       "inGame": "W GRZE",
       "footnote": "Czas zostanie przypisany do konta po wyłączeniu gry"
     },
@@ -86,7 +86,7 @@
       "lastWeeks": "OSTATNIE 16 TYGODNI",
       "less": "Mniej",
       "more": "Więcej",
-      "streakVal": "🔥 {{count}} DNI",
+      "streakVal": "{{count}} DNI",
       "noSessions": "brak sesji",
       "sessionHours_one": "{{time}} ({{count}} sesja)",
       "sessionHours_few": "{{time}} ({{count}} sesje)",
@@ -136,9 +136,9 @@
     "progressAria": "Postęp konfiguracji",
     "back": "Wstecz",
     "steps": {
-      "discord": "Krok 1 z 3 · Discord",
-      "account": "Krok 2 z 3 · Konto",
-      "client": "Krok 3 z 3 · Klient"
+      "discord": "Krok 1 z 3: Discord",
+      "account": "Krok 2 z 3: Konto",
+      "client": "Krok 3 z 3: Klient"
     },
     "step1": {
       "eyebrow": "Start / Bot na Discordzie",

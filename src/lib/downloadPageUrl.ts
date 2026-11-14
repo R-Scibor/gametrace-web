@@ -1,6 +1,6 @@
 /**
  * Public SPA path for the APK download hub (not the binary).
- * Trailing slash is canonical — nginx 302s `/download` → `/download/`, and the
+ * Trailing slash is canonical — nginx 302s `/download` -> `/download/`, and the
  * SPA registers both so in-app navigation never hits the ProtectedRoute catch-all.
  */
 export const DOWNLOAD_PAGE_PATH = '/download/';

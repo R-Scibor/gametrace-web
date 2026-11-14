@@ -1,10 +1,10 @@
 {
-  "documentTitle": "Privacy policy · GameTrace",
+  "documentTitle": "Privacy policy / GameTrace",
   "eyebrow": "GAMETRACE",
   "title": "Privacy policy",
   "lastUpdated": "Last updated: 12 August 2026",
   "versionLabel": "Version {{version}}",
-  "backHome": "← Home",
+  "backHome": "Home",
   "languageLabel": "Language",
   "tocLabel": "On this page",
   "sections": [
@@ -324,7 +324,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "You can delete your account yourself in Settings (web or Android) under Account → Delete account. Deletion is not instant: there is a grace period so you can change your mind, and then the data has to age out of the backups."
+          "text": "You can delete your account yourself in Settings (web or Android) under Account / Delete account. Deletion is not instant: there is a grace period so you can change your mind, and then the data has to age out of the backups."
         },
         {
           "type": "table",

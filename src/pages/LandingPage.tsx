@@ -344,7 +344,7 @@ export function LandingPage() {
                 <div className={styles.visualBar}>
                   <div className={styles.visualChannelTag}>
                     <span className={styles.voiceWaveDot} />
-                    <span>{currentLanguage === 'en' ? 'Voice Recording · Mobile App' : 'Nagrywanie głosem · Aplikacja mobilna'}</span>
+                    <span>{currentLanguage === 'en' ? 'Voice Recording / Mobile App' : 'Nagrywanie głosem / Aplikacja mobilna'}</span>
                   </div>
                   <span className={styles.voiceBadgeReady}>
                     {currentLanguage === 'en' ? 'TRANSCRIBED' : 'ROZPOZNANO'}

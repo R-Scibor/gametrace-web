@@ -4,8 +4,8 @@
     "retry": "SPRÓBUJ PONOWNIE"
   },
   "status": {
-    "active": "SYSTEM AKTYWNY · SESJA W TOKU",
-    "idle": "SYSTEM GOTOWY · BRAK AKTYWNEJ SESJI"
+    "active": "SYSTEM AKTYWNY — SESJA W TOKU",
+    "idle": "SYSTEM GOTOWY — BRAK AKTYWNEJ SESJI"
   },
   "header": {
     "thisWeek": "TEN TYDZIEŃ"
@@ -26,16 +26,16 @@
   },
   "active": {
     "label": "AKTYWNA SESJA",
-    "live": "● LIVE",
+    "live": "LIVE",
     "startedAt": "od {{time}}",
-    "details": "szczegóły →"
+    "details": "szczegóły"
   },
   "errors": {
     "count_one": "{{count}} nieudana sesja wymaga uwagi",
     "count_few": "{{count}} nieudane sesje wymagają uwagi",
     "count_many": "{{count}} nieudanych sesji wymaga uwagi",
     "sub": "Bot mógł zostawić otwarte sesje",
-    "fix": "NAPRAW →"
+    "fix": "NAPRAW"
   },
   "empty": "Brak sesji do wyświetlenia"
 }

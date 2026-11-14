@@ -5,7 +5,7 @@
   },
   "ongoing": {
     "message": "You can't edit an active session.",
-    "back": "← Back to game"
+    "back": "Back to game"
   },
   "fields": {
     "game": "Game",

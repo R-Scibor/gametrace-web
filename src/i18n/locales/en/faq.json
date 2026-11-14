@@ -29,7 +29,7 @@
   "collapseAll": "Collapse all",
   "copyLink": "Copy link to question",
   "linkCopied": "Link copied to clipboard",
-  "backHome": "← Back to Home",
+  "backHome": "Back to Home",
   "supportBannerTitle": "Didn't find what you were looking for?",
   "supportBannerText": "Join our official Discord community server. We're happy to help you configure the bot, verify your session status, or triage any bug.",
   "joinDiscord": "Join our Discord",
@@ -511,8 +511,8 @@
           ],
           "steps": [
             "Step 1: Check your Discord presence — ensure your status is NOT 'Invisible' (must be Online, Idle, or Do Not Disturb).",
-            "Step 2: Check Discord User Settings → Activity Privacy → ensure 'Display current activity as a status message' is ENABLED.",
-            "Step 3: Check if Discord sees the executable — look at the status above your avatar in Discord. If missing, go to Settings → Registered Games and click 'Add it!'.",
+            "Step 2: Check Discord User Settings / Activity Privacy — ensure 'Display current activity as a status message' is ENABLED.",
+            "Step 3: Check if Discord sees the executable — look at the status above your avatar in Discord. If missing, go to Settings / Registered Games and click 'Add it!'.",
             "Step 4: Check server membership — confirm you share at least one Discord server with the GameTrace bot.",
             "Step 5: Check admin permissions — certain games with aggressive anti-cheat engines (e.g. Vanguard, Easy Anti-Cheat) require running Discord as Administrator to read process names."
           ],

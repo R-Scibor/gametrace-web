@@ -269,7 +269,7 @@ describe('AdminReportsPage', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /Otwórz ponownie/i }));
 
-    // Status left the closed bucket → selection cleared → select prompt.
+    // Status left the closed bucket -> selection cleared -> select prompt.
     await waitFor(() => {
       expect(screen.getByText(/Wybierz zgłoszenie z listy/i)).toBeInTheDocument();
     });

@@ -41,7 +41,7 @@ export function CatalogInspector({ item, missingId, onShowAll, onMerged }: Catal
 
   return (
     <Panel
-      eyebrow={`#${item.id} · ${ENRICHMENT_STATUS_LABELS[item.enrichment_status]} · ${sessionsLabel(item.session_count)}`}
+      eyebrow={`#${item.id} / ${ENRICHMENT_STATUS_LABELS[item.enrichment_status]} / ${sessionsLabel(item.session_count)}`}
       title={item.primary_name}
       headerExtra={
         item.cover_image_url ? (

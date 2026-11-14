@@ -170,7 +170,7 @@ test('LandingPage translates feature preview cards when language is English', as
 
   // Auto-Detect
   expect(screen.getByText('ACTIVE')).toBeInTheDocument();
-  expect(screen.getByText('Game process detected • PC')).toBeInTheDocument();
+  expect(screen.getByText('Game process detected / PC')).toBeInTheDocument();
   expect(screen.getByText('IN-GAME')).toBeInTheDocument();
   expect(screen.getByText('Playtime is logged to your account when the game closes')).toBeInTheDocument();
 

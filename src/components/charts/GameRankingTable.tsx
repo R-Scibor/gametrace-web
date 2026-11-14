@@ -14,9 +14,24 @@ interface GameRankingTableProps {
   disabled?: boolean;
 }
 
-function sortIndicator(active: boolean, dir: SortDir): string {
-  if (!active) return '';
-  return dir === 'asc' ? ' ↑' : ' ↓';
+function SortIndicator({ active, dir }: { active: boolean; dir: SortDir }) {
+  if (!active) return null;
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ marginLeft: 5, verticalAlign: 'middle', display: 'inline-block' }}
+      aria-hidden
+    >
+      {dir === 'asc' ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
+    </svg>
+  );
 }
 
 export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
@@ -62,7 +77,7 @@ export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
           aria-sort={sortKey === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           {t('ranking.game')}
-          {sortIndicator(sortKey === 'name', sortDir)}
+          <SortIndicator active={sortKey === 'name'} dir={sortDir} />
         </button>
         <button
           type="button"
@@ -71,7 +86,7 @@ export function GameRankingTable({ games, disabled }: GameRankingTableProps) {
           aria-sort={sortKey === 'time' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
         >
           {t('ranking.time')}
-          {sortIndicator(sortKey === 'time', sortDir)}
+          <SortIndicator active={sortKey === 'time'} dir={sortDir} />
         </button>
       </div>
       {sorted.map((game) => {

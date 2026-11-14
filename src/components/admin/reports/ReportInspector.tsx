@@ -69,7 +69,7 @@ export function ReportInspector({ item, onPatch, onDelete, isPending }: ReportIn
 
   return (
     <Panel
-      eyebrow={`#${item.id} · ${reportStatusLabel(item.status)} · ${formatDate(item.created_at)}`}
+      eyebrow={`#${item.id} / ${reportStatusLabel(item.status)} / ${formatDate(item.created_at)}`}
       title={item.username ?? item.user_id}
     >
       <p className={styles.message}>{item.message}</p>

@@ -116,7 +116,7 @@ export function AdminOverviewPage() {
                 key={item.id}
                 to={`/admin/reports?status=open&report=${item.id}`}
                 primary={item.message}
-                secondary={`${item.username ?? item.user_id} · ${formatRecency(item.created_at)}`}
+                secondary={`${item.username ?? item.user_id} / ${formatRecency(item.created_at)}`}
               />
             ))}
           </QueuePreview>
@@ -134,7 +134,7 @@ export function AdminOverviewPage() {
                 key={item.id}
                 to={`/admin/catalog?status=NEEDS_REVIEW&game=${item.id}`}
                 primary={item.primary_name}
-                secondary={`#${item.id} · ${sessionsLabel(item.session_count)}`}
+                secondary={`#${item.id} / ${sessionsLabel(item.session_count)}`}
               />
             ))}
           </QueuePreview>

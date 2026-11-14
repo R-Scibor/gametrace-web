@@ -4,8 +4,8 @@
     "retry": "TRY AGAIN"
   },
   "status": {
-    "active": "SYSTEM ACTIVE · SESSION IN PROGRESS",
-    "idle": "SYSTEM READY · NO ACTIVE SESSION"
+    "active": "SYSTEM ACTIVE — SESSION IN PROGRESS",
+    "idle": "SYSTEM READY — NO ACTIVE SESSION"
   },
   "header": {
     "thisWeek": "THIS WEEK"
@@ -26,15 +26,15 @@
   },
   "active": {
     "label": "ACTIVE SESSION",
-    "live": "● LIVE",
+    "live": "LIVE",
     "startedAt": "since {{time}}",
-    "details": "details →"
+    "details": "details"
   },
   "errors": {
     "count_one": "{{count}} failed session needs attention",
     "count_other": "{{count}} failed sessions need attention",
     "sub": "The bot may have left sessions open",
-    "fix": "FIX →"
+    "fix": "FIX"
   },
   "empty": "No sessions to display"
 }

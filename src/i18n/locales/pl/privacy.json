@@ -1,10 +1,10 @@
 {
-  "documentTitle": "Polityka prywatności · GameTrace",
+  "documentTitle": "Polityka prywatności / GameTrace",
   "eyebrow": "GAMETRACE",
   "title": "Polityka prywatności",
   "lastUpdated": "Ostatnia aktualizacja: 12 sierpnia 2026",
   "versionLabel": "Wersja {{version}}",
-  "backHome": "← Strona główna",
+  "backHome": "Strona główna",
   "languageLabel": "Język",
   "tocLabel": "Na tej stronie",
   "sections": [
@@ -324,7 +324,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Konto możesz usunąć samodzielnie w Ustawieniach (web lub Android): Konto → Usuń konto. Usunięcie nie jest natychmiastowe: obowiązuje okres karencji, w którym możesz zmienić zdanie, a potem dane muszą jeszcze wypaść z kopii zapasowych."
+          "text": "Konto możesz usunąć samodzielnie w Ustawieniach (web lub Android): Konto / Usuń konto. Usunięcie nie jest natychmiastowe: obowiązuje okres karencji, w którym możesz zmienić zdanie, a potem dane muszą jeszcze wypaść z kopii zapasowych."
         },
         {
           "type": "table",

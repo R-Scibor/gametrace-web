@@ -88,7 +88,7 @@
     transform: translateX(0);
   }
   to {
-    /* four identical segments → shift by one segment (25%) for seamless loop */
+    /* four identical segments -> shift by one segment (25%) for seamless loop */
     transform: translateX(-25%);
   }
 }
@@ -147,15 +147,6 @@
 .cta:focus-visible {
   color: var(--button-text-on-orange);
   background-color: var(--warn);
-}
-
-.arrow {
-  transition: transform 0.15s ease;
-}
-
-.cta:hover .arrow,
-.cta:focus-visible .arrow {
-  transform: translateX(3px);
 }
 
 .dismiss {

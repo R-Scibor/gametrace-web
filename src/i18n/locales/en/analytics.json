@@ -20,7 +20,7 @@
     "total": "Total",
     "avgSession": "AVG. SESSION",
     "newGames": "NEW GAMES",
-    "recordLabel": "Record · longest session",
+    "recordLabel": "Record: longest session",
     "recordAria": "Record: {{name}}",
     "recordFallback": "longest session"
   },

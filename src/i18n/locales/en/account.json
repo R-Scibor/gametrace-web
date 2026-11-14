@@ -57,7 +57,7 @@
     "stepsTitle": "How to delete your account",
     "steps": [
       "Sign in on the web or in the Android app (code from the Discord panel via 🔑 Get a code or 🔑 Weź kod, or /login, or Discord login).",
-      "Go to Settings → Account.",
+      "Go to Settings / Account.",
       "Choose \"Delete account\" and confirm as prompted (on the web, by typing your username)."
     ],
     "graceTitle": "What happens next",
@@ -88,7 +88,7 @@
     "partialContact": "For anything else, including a copy of your data or deletion of specific records, write to the address below. The aim is to answer within one month.",
     "noAccessTitle": "Cannot sign in?",
     "noAccessBody": "Email the address below from the Discord account linked to GameTrace and we will delete the account manually.",
-    "backHome": "← Home",
+    "backHome": "Home",
     "privacyLink": "Privacy policy",
     "languageLabel": "Language"
   }

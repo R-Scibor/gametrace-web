@@ -74,7 +74,7 @@ export function UnifiedHeroCard({
 
           <div className={styles.headerRight}>
             {isLive ? (
-              <span className={styles.liveBadge}>● LIVE</span>
+              <span className={styles.liveBadge}>{t('active.live')}</span>
             ) : (
               <span className={styles.recency}>{recency}</span>
             )}

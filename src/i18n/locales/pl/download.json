@@ -1,5 +1,5 @@
 {
-  "eyebrow": "GAMETRACE · APLIKACJA ANDROID",
+  "eyebrow": "GAMETRACE / APLIKACJA ANDROID",
   "titleLine1": "Pobierz aplikację",
   "titleLine2": "Ten sam dziennik, w kieszeni",
   "lead": "Oficjalny APK GameTrace — sesje, biblioteka i statystyki jak w przeglądarce. Konto zakładasz przez Discorda.",
@@ -14,8 +14,8 @@
     "ready": "APK GOTOWY",
     "unavailable": "NIEDOSTĘPNE"
   },
-  "goToDashboard": "PRZEJDŹ DO DASHBOARD →",
-  "seeInBrowser": "ZOBACZ GAMETRACE W PRZEGLĄDARCE →",
+  "goToDashboard": "PRZEJDŹ DO DASHBOARD",
+  "seeInBrowser": "ZOBACZ GAMETRACE W PRZEGLĄDARCE",
   "handoff": {
     "ariaLabel": "Przenieś link na telefon",
     "title": "PRZENIEŚ NA TELEFON",

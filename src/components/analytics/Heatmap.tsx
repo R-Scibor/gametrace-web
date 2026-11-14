@@ -90,7 +90,7 @@ export function Heatmap({ data }: HeatmapProps) {
             <div className={styles.readoutText}>
               <span className={styles.readoutEyebrow}>{t('heatmap.selectedField')}</span>
               <span className={styles.readoutSlot}>
-                {dayFull[selected.dow]} · {selected.hour}:00–{selected.hour + 1}:00
+                {dayFull[selected.dow]}, {selected.hour}:00 - {selected.hour + 1}:00
               </span>
             </div>
             <span className={styles.readoutValue}>

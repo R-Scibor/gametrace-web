@@ -107,18 +107,18 @@ export function formatSessionWindow(
 ): string {
   const startDate = formatDateShort(startIso, options);
   const startTime = formatTimeShort(startIso, options);
-  if (!endIso) return `${startDate}, ${startTime} → ${EMPTY_VALUE}`;
+  if (!endIso) return `${startDate}, ${startTime} - ${EMPTY_VALUE}`;
   const endDate = formatDateShort(endIso, options);
   const endTime = formatTimeShort(endIso, options);
-  if (startDate === endDate) return `${startDate}, ${startTime} → ${endTime}`;
-  return `${startDate}, ${startTime} → ${endDate}, ${endTime}`;
+  if (startDate === endDate) return `${startDate}, ${startTime} - ${endTime}`;
+  return `${startDate}, ${startTime} - ${endDate}, ${endTime}`;
 }
 
 export function formatPeriodDelta(total: number, previous: number): string | null {
   if (previous <= 0) return null;
   const delta = (total - previous) / previous;
   const up = delta >= 0;
-  return `${up ? '↑' : '↓'}${Math.abs(Math.round(delta * 100))}%`;
+  return `${up ? '+' : '-'}${Math.abs(Math.round(delta * 100))}%`;
 }
 
 export function formatAnalyticsPeriodSubtitle(days: number): string {

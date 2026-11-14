@@ -52,9 +52,9 @@ function App() {
   return (
     <Suspense fallback={<PageFallback />}>
       <Routes>
-        {/* Public — must stay outside ProtectedRoute (unauth → /welcome) */}
+        {/* Public — must stay outside ProtectedRoute (unauth -> /welcome) */}
         <Route path="/welcome" element={<LandingPage />} />
-        {/* Both forms: full-page /download is 302→/download/ in nginx; in-app links may use either */}
+        {/* Both forms: full-page /download is 302 -> /download/ in nginx; in-app links may use either */}
         <Route path="/download" element={<DownloadPage />} />
         <Route path="/download/" element={<DownloadPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -84,7 +84,7 @@ function App() {
             </Route>
           </Route>
         </Route>
-        {/* Unmatched → home; ProtectedRoute sends unauth users to /welcome */}
+        {/* Unmatched -> home; ProtectedRoute sends unauth users to /welcome */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

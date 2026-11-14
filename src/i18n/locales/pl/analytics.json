@@ -20,7 +20,7 @@
     "total": "Łącznie",
     "avgSession": "ŚR. SESJA",
     "newGames": "NOWE GRY",
-    "recordLabel": "Rekord · najdłuższa sesja",
+    "recordLabel": "Rekord: najdłuższa sesja",
     "recordAria": "Rekord: {{name}}",
     "recordFallback": "najdłuższa sesja"
   },

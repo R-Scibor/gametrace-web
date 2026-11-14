@@ -58,7 +58,7 @@
     "stepsTitle": "Jak usunąć konto",
     "steps": [
       "Zaloguj się w aplikacji web lub w aplikacji na Androida (kod z panelu na Discordzie przez 🔑 Get a code albo 🔑 Weź kod, lub komendę /login, albo logowanie przez Discord).",
-      "Przejdź do Ustawienia → Konto.",
+      "Przejdź do Ustawienia / Konto.",
       "Wybierz „Usuń konto” i potwierdź zgodnie z komunikatem (w aplikacji web — wpisując nazwę użytkownika)."
     ],
     "graceTitle": "Co się dzieje potem",
@@ -89,7 +89,7 @@
     "partialContact": "W pozostałych sprawach, w tym po kopię danych lub usunięcie konkretnych wpisów, napisz na adres poniżej. Odpowiedź powinna nastąpić w ciągu miesiąca.",
     "noAccessTitle": "Nie możesz się zalogować?",
     "noAccessBody": "Napisz na adres poniżej z konta Discord powiązanego z GameTrace — usuniemy konto ręcznie.",
-    "backHome": "← Strona główna",
+    "backHome": "Strona główna",
     "privacyLink": "Polityka prywatności",
     "languageLabel": "Język"
   }

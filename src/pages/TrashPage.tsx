@@ -27,7 +27,7 @@ function TrashSkeleton() {
 function sessionSummary(session: TrashSession, formatDuration: (s: number | null | undefined) => string) {
   const duration = formatDuration(session.duration_seconds);
   const source = SESSION_SOURCE_LABEL[session.source];
-  return [duration, source].filter(Boolean).join(' · ');
+  return [duration, source].filter(Boolean).join(' / ');
 }
 
 export function TrashPage() {

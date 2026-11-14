@@ -110,8 +110,8 @@ test('AnalyticsPage shows mobile parity insight tiles', async () => {
 test('AnalyticsPage shows comparison delta and longest session link', async () => {
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
-  expect(await screen.findByText('↑20%')).toBeInTheDocument();
-  const recordLink = screen.getByText('Rekord · najdłuższa sesja').closest('a');
+  expect(await screen.findByText('+20%')).toBeInTheDocument();
+  const recordLink = screen.getByText('Rekord: najdłuższa sesja').closest('a');
   expect(recordLink).toHaveAttribute('href', '/library/1');
 });
 

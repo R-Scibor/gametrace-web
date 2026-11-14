@@ -1,6 +1,6 @@
 {
   "topBar": {
-    "subtitle": " · SESSION TRACKING SYSTEM",
+    "subtitle": " / SESSION TRACKING SYSTEM",
     "dashboard": "DASHBOARD",
     "login": "LOG IN"
   },
@@ -62,7 +62,7 @@
   "previews": {
     "autoDetect": {
       "liveBadge": "ACTIVE",
-      "processDetected": "Game process detected • PC",
+      "processDetected": "Game process detected / PC",
       "inGame": "IN-GAME",
       "footnote": "Playtime is logged to your account when the game closes"
     },
@@ -84,7 +84,7 @@
       "lastWeeks": "LAST 16 WEEKS",
       "less": "Less",
       "more": "More",
-      "streakVal": "🔥 {{count}} DAYS",
+      "streakVal": "{{count}} DAYS",
       "noSessions": "no sessions",
       "sessionHours_one": "{{time}} ({{count}} session)",
       "sessionHours_other": "{{time}} ({{count}} sessions)"
@@ -132,9 +132,9 @@
     "progressAria": "Setup progress",
     "back": "Back",
     "steps": {
-      "discord": "Step 1 of 3 · Discord",
-      "account": "Step 2 of 3 · Account",
-      "client": "Step 3 of 3 · Client"
+      "discord": "Step 1 of 3: Discord",
+      "account": "Step 2 of 3: Account",
+      "client": "Step 3 of 3: Client"
     },
     "step1": {
       "eyebrow": "Start / Discord bot",

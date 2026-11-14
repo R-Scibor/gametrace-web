@@ -29,7 +29,7 @@ describe('DeleteAccountPage', () => {
 
   it('lists the steps and the contact email', () => {
     renderWithProviders(<DeleteAccountPage />, { authenticated: false });
-    expect(screen.getByText(/Ustawienia → Konto/)).toBeInTheDocument();
+    expect(screen.getByText(/Ustawienia \/ Konto/)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /sciborr08@gmail.com/ })).toBeInTheDocument();
   });
 

@@ -20,20 +20,20 @@ export function SampleDataBanner({ className, onDismiss }: SampleDataBannerProps
             <span className={styles.tagSegment}>
               <span className={styles.tagText}>{tag}</span>
               <span className={styles.tagSep} aria-hidden="true">
-                ◆
+                /
               </span>
             </span>
             <span className={styles.tagSegment} aria-hidden="true">
               <span className={styles.tagText}>{tag}</span>
-              <span className={styles.tagSep}>◆</span>
+              <span className={styles.tagSep}>/</span>
             </span>
             <span className={styles.tagSegment} aria-hidden="true">
               <span className={styles.tagText}>{tag}</span>
-              <span className={styles.tagSep}>◆</span>
+              <span className={styles.tagSep}>/</span>
             </span>
             <span className={styles.tagSegment} aria-hidden="true">
               <span className={styles.tagText}>{tag}</span>
-              <span className={styles.tagSep}>◆</span>
+              <span className={styles.tagSep}>/</span>
             </span>
           </span>
         </span>
@@ -42,9 +42,6 @@ export function SampleDataBanner({ className, onDismiss }: SampleDataBannerProps
       <div className={styles.actions}>
         <Link to="/sessions/new" className={styles.cta}>
           <span>{t('sampleData.cta')}</span>
-          <span className={styles.arrow} aria-hidden="true">
-            →
-          </span>
         </Link>
         {onDismiss && (
           <button type="button" className={styles.dismiss} onClick={onDismiss}>
