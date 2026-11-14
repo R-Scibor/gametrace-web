@@ -79,9 +79,7 @@ test('useAuth maps expired link code to Polish error', async () => {
 
   expect(ok).toBe(false);
   await waitFor(() =>
-    expect(result.current.error).toBe(
-      'Nieprawidłowy lub wygasły kod. Uruchom /login na Discordzie ponownie.',
-    ),
+    expect(result.current.error).toBe(i18n.t('auth:errors.invalidCode')),
   );
 });
 test('useAuth stores token on successful Discord login', async () => {
