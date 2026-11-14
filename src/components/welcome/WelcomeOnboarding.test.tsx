@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Route } from 'react-router-dom';
 import { test, expect, beforeEach, afterEach, vi } from 'vitest';
 import { WelcomeOnboarding } from './WelcomeOnboarding';
-import * as copyToClipboard from '../../lib/copyToClipboard';
+import i18n from '../../i18n';
 import * as discordOAuth from '../../lib/discordOAuth';
 import { renderAppRoutes, resetStores } from '../../../test/utils';
 
@@ -57,7 +57,7 @@ test('WelcomeOnboarding step 1 opens bot invite and advances', async () => {
 
   await user.click(nextBtn);
   expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
-  expect(screen.getByLabelText('Komenda /login')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Mam już kod/i })).toBeInTheDocument();
 });
 
 test('WelcomeOnboarding step 1 opens public server join invite', async () => {
@@ -125,11 +125,10 @@ test('WelcomeOnboarding shows bot hint after invite and supports back navigation
   expect(screen.getByText(/po dodaniu bota do swojego serwera/i)).toBeInTheDocument();
 });
 
-test('WelcomeOnboarding selects /login command field on click', async () => {
+test('WelcomeOnboarding step 2 explains panel flow and mentions /login fallback', async () => {
   const user = userEvent.setup();
-  const copySpy = vi.spyOn(copyToClipboard, 'copyFromInput').mockResolvedValue(true);
 
-  renderAppRoutes(
+  const { unmount } = renderAppRoutes(
     <Route
       path="/welcome"
       element={
@@ -149,14 +148,55 @@ test('WelcomeOnboarding selects /login command field on click', async () => {
   );
 
   await user.click(screen.getByRole('button', { name: /Jestem już na serwerze z botem/i }));
-  const commandField = screen.getByLabelText('Komenda /login');
-  expect(commandField).toHaveValue('/login');
 
-  await user.click(commandField);
-  expect(copySpy).toHaveBeenCalled();
-  expect(screen.getByText('SKOPIOWANO')).toBeInTheDocument();
-  expect(screen.getByText(/Skopiowano — wklej na Discordzie/i)).toBeInTheDocument();
-  copySpy.mockRestore();
+  // Default locale (PL): shows ▶ START, both buttons, /login fallback
+  expect(screen.getByText(/▶ START/)).toBeInTheDocument();
+  expect(screen.getByText(/🔑 Get a code/)).toBeInTheDocument();
+  expect(screen.getByText(/🔑 Weź kod/)).toBeInTheDocument();
+  expect(screen.getByText(/Możesz też wpisać \/login na kanale serwera\./i)).toBeInTheDocument();
+
+  // have-code button still works
+  const haveCodeBtn = screen.getByRole('button', { name: /Mam już kod/i });
+  expect(haveCodeBtn).toBeInTheDocument();
+  await user.click(haveCodeBtn);
+  expect(screen.getByRole('heading', { name: 'Przeglądarka' })).toBeInTheDocument();
+
+  unmount();
+
+  // English locale: shows ▶ START, both buttons, /login fallback
+  await i18n.changeLanguage('en');
+  try {
+    renderAppRoutes(
+      <Route
+        path="/welcome"
+        element={
+          <WelcomeOnboarding
+            open
+            onClose={vi.fn()}
+            apkAvailable={false}
+            isAuthenticated={false}
+            onApkUnavailable={vi.fn()}
+          />
+        }
+      />,
+      {
+        route: '/welcome',
+        authenticated: false,
+      },
+    );
+
+    await user.click(screen.getByRole('button', { name: /I am already on a server with the bot/i }));
+    expect(screen.getByText(/▶ START/)).toBeInTheDocument();
+    expect(screen.getByText(/🔑 Get a code/)).toBeInTheDocument();
+    expect(screen.getByText(/🔑 Weź kod/)).toBeInTheDocument();
+    expect(screen.getByText(/You can also type \/login on a server channel\./i)).toBeInTheDocument();
+    const haveCodeBtnEn = screen.getByRole('button', { name: /I already have a code/i });
+    expect(haveCodeBtnEn).toBeInTheDocument();
+    await user.click(haveCodeBtnEn);
+    expect(screen.getByRole('heading', { name: 'Browser' })).toBeInTheDocument();
+  } finally {
+    await i18n.changeLanguage('pl');
+  }
 });
 
 test('WelcomeOnboarding step 2 advances to client picker', async () => {
@@ -276,7 +316,7 @@ test('Discord choice opens the shared-server confirm and does not redirect yet',
   await user.click(screen.getByRole('button', { name: /Zaloguj przez Discorda/i }));
   expect(screen.getByRole('button', { name: /Przejdź do Discorda/i })).toBeInTheDocument();
   expect(screen.getByText(/Zaraz otworzy się Discord/i)).toBeInTheDocument();
-  expect(screen.queryByLabelText('Komenda /login')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /Mam już kod/i })).not.toBeInTheDocument();
   expect(redirectSpy).not.toHaveBeenCalled();
 });
 
@@ -297,10 +337,10 @@ test('back button returns from code mode and from discord mode to choose, then t
     />,
     { route: '/welcome', authenticated: false },
   );
-  // From step 1 to step 2 (shows code / /login chip)
+  // From step 1 to step 2 (shows code / panel flow)
   await user.click(screen.getByRole('button', { name: /Jestem już na serwerze z botem/i }));
   expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
-  expect(screen.getByLabelText('Komenda /login')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Mam już kod/i })).toBeInTheDocument();
 
   // Back from step 2 to step 1
   await user.click(screen.getByRole('button', { name: /Wstecz/i }));
@@ -340,7 +380,7 @@ test('skips choose mode when Discord login is not enabled', async () => {
   );
   await user.click(screen.getByRole('button', { name: /Jestem już na serwerze z botem/i }));
   expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
-  expect(screen.getByLabelText('Komenda /login')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Mam już kod/i })).toBeInTheDocument();
   expect(screen.queryByRole('heading', { name: 'Przedstaw się botowi' })).not.toBeInTheDocument();
 });
 
@@ -399,12 +439,12 @@ test('Discord choice in insecure context displays HTTPS error and blocks redirec
   expect(alert).toHaveTextContent(/wymaga połączenia HTTPS/i);
   expect(redirectSpy).not.toHaveBeenCalled();
 
-  const tryCodeBtn = screen.getByRole('button', { name: /Przejdź do logowania komendą \/login/i });
+  const tryCodeBtn = screen.getByRole('button', { name: /Zaloguj kodem z panelu/i });
   expect(tryCodeBtn).toBeInTheDocument();
   await user.click(tryCodeBtn);
 
   expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
-  expect(screen.getByLabelText('Komenda /login')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Mam już kod/i })).toBeInTheDocument();
 });
 
 test('back button returns from discord mode to choose mode', async () => {
@@ -430,5 +470,5 @@ test('back button returns from discord mode to choose mode', async () => {
 
   await user.click(screen.getByRole('button', { name: /Wstecz/i }));
   expect(screen.getByRole('heading', { name: 'Jak chcesz założyć konto' })).toBeInTheDocument();
-  expect(screen.getByLabelText('Komenda /login')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Mam już kod/i })).toBeInTheDocument();
 });

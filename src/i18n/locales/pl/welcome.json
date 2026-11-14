@@ -152,14 +152,14 @@
       "benefit2": "Nie musisz instalować agenta ani nakładki na komputerze.",
       "benefit3": "Kiedy wyłączysz grę, sesja zapisze się automatycznie.",
       "hintServer": "Po dołączeniu do serwera wróć tutaj i przejdź dalej.",
-      "hintBot": "Po dodaniu bota do swojego serwera wróć tutaj i przejdź dalej."
+      "hintBot": "Po dodaniu bota do swojego serwera wpisz /panel na kanale, na którym ma wisieć panel (potrzebne tylko wtedy, gdy zapraszasz bota na własny serwer, bo na serwerze GameTrace panel już jest). Potem wróć tutaj i przejdź dalej."
     },
     "step2": {
       "eyebrow": "Konto",
       "title": "Jak chcesz założyć konto",
-      "body": "Możesz zalogować się przez Discorda albo wpisać na kanale serwera komendę /login i użyć kodu, który bot Ci wyśle. W obu przypadkach musisz być na tym samym serwerze co bot.",
-      "option1": "Opcja 1 · Bezpośrednio",
-      "option2": "Opcja 2 · Komenda bota",
+      "body": "Możesz zalogować się przez Discorda albo użyć kodu z panelu na serwerze (lub komendy /login). W obu przypadkach musisz być na tym samym serwerze co bot.",
+      "option1": "Opcja 1: Bezpośrednio",
+      "option2": "Opcja 2: Panel na serwerze",
       "discordTitle": "Przez Discorda",
       "discordBody": "Szybkie logowanie przez oficjalną autoryzację Discord (OAuth2) — bez przepisywania kodów.",
       "oauthPoint1": "Logujesz się na oficjalnej stronie discord.com — GameTrace nigdy nie widzi ani nie zapisuje Twojego hasła.",
@@ -167,14 +167,9 @@
       "oauthPoint3": "Zero dostępu do Twojego e-maila, prywatnych wiadomości (DM) czy możliwości pisania w Twoim imieniu.",
       "discordButton": "Zaloguj przez Discorda",
       "or": "LUB",
-      "codeTitle": "Komenda na serwerze",
-      "codeBody": "Wpisz na kanale serwera komendę poniżej. Bot odeśle Ci kod, którym zalogujesz się do panelu. Nie wysyłaj tej komendy w prywatnej wiadomości — tylko na kanale, na którym bot jest obecny.",
-      "commandAria": "Komenda /login",
-      "tagCopy": "KOPIUJ",
-      "tagCopied": "SKOPIOWANO",
-      "hintCopied": "Skopiowano — wklej na Discordzie.",
-      "hintSelected": "Zaznaczono — Ctrl+C / Cmd+C, jeśli nie skopiowało się samo.",
-      "hintIdle": "Kliknij pole, aby skopiować komendę /login.",
+      "codeTitle": "Panel na serwerze",
+      "codeBody": "Przejdź na kanał z panelem GameTrace i kliknij ▶ START. Nowe konto potwierdza informację i może wybrać polski albo angielski. Potem kliknij 🔑 Get a code albo 🔑 Weź kod i wpisz kod.",
+      "codeAlternative": "Możesz też wpisać /login na kanale serwera.",
       "haveCode": "Mam już kod"
     },
     "discordConfirm": {
@@ -183,7 +178,7 @@
       "button": "Przejdź do Discorda",
       "starting": "Otwieranie Discorda…",
       "insecureHint": "Discord wymaga bezpiecznego połączenia (HTTPS) do autoryzacji OAuth. Jeśli korzystasz z GameTrace lokalnie lub bez certyfikatu SSL, możesz bez przeszkód skorzystać z komendy bota na serwerze.",
-      "tryCodeAlternative": "Przejdź do logowania komendą /login"
+      "tryCodeAlternative": "Zaloguj kodem z panelu"
     },
     "step3": {
       "title": "Wybierz klienta",
