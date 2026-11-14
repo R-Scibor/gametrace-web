@@ -28,7 +28,6 @@ test('AnalyticsPage renders stat panels', async () => {
 
   await screen.findByRole('group', { name: 'Okres' });
   await waitFor(() => {
-    expect(screen.getByText('Przegląd')).toBeInTheDocument();
     expect(screen.getByText('ŚR. SESJA')).toBeInTheDocument();
     expect(screen.getByText('NOWE GRY')).toBeInTheDocument();
     expect(screen.getByText('Ranking gier')).toBeInTheDocument();
@@ -137,7 +136,7 @@ test('AnalyticsPage isolates panel errors', async () => {
 
   await screen.findByRole('group', { name: 'Okres' });
   await waitFor(() => {
-    expect(screen.getByText('Przegląd')).toBeInTheDocument();
+    expect(screen.getByText('ŚR. SESJA')).toBeInTheDocument();
     expect(screen.getByText('Mapa aktywności')).toBeInTheDocument();
     expect(screen.getByText('BŁĄD POŁĄCZENIA')).toBeInTheDocument();
   });

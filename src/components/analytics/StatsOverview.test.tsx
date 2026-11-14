@@ -6,7 +6,7 @@ import { SAMPLE_STATS_SUMMARY } from '../../lib/sampleData';
 
 test('StatsOverview renders sampleData without fetching and without a record link', () => {
   renderWithProviders(<StatsOverview days={30} sampleData={SAMPLE_STATS_SUMMARY} />);
-  expect(screen.getByText('Przegląd')).toBeInTheDocument();
+  expect(screen.getByText('ŚR. SESJA')).toBeInTheDocument();
   expect(screen.getByText('NOWE GRY')).toBeInTheDocument();
   expect(screen.queryByRole('link')).not.toBeInTheDocument();
 });

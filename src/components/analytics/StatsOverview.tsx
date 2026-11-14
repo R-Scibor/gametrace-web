@@ -34,18 +34,10 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
 
   const rootClass = [styles.root, className].filter(Boolean).join(' ');
 
-  const heading = (
-    <div className={styles.sectionLabel}>
-      <span className={styles.sectionText}>{t('overview.title')}</span>
-      <span className={styles.sectionRule} aria-hidden />
-    </div>
-  );
-
   if (sampleData == null) {
     if (isLoading) {
       return (
         <div className={rootClass}>
-          {heading}
           <div className={styles.row}>
             {[0, 1, 2, 3].map((i) => (
               <Skeleton key={i} height={88} />
@@ -57,7 +49,6 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
     if (isError || !liveData) {
       return (
         <div className={rootClass}>
-          {heading}
           <ErrorBanner />
         </div>
       );
@@ -72,8 +63,6 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
 
   return (
     <div className={rootClass}>
-      {heading}
-
       <div className={showRecord ? styles.row : styles.rowThree}>
         <section className={styles.tile} aria-label={t('overview.totalAria')}>
           <span className={styles.accent} aria-hidden />

@@ -200,6 +200,10 @@
     width: 100%;
     justify-content: space-between;
   }
+  .periodPill {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

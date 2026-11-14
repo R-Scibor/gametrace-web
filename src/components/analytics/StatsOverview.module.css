@@ -9,30 +9,6 @@
   min-width: 0;
 }
 
-/* Matches AnalyticsPage .sectionLabel / .sectionText / .sectionRule */
-.sectionLabel {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.sectionText {
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text2);
-  white-space: nowrap;
-}
-
-.sectionRule {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--orange), transparent);
-  opacity: 0.45;
-}
-
 .row,
 .rowThree {
   display: grid;
