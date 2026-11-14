@@ -37,6 +37,8 @@
     "companies": "Studia / Wydawcy",
     "developer": "DEWELOPER",
     "publisher": "WYDAWCA",
+    "developers": "Deweloperzy",
+    "publishers": "Wydawcy",
     "decades": "Dekady premier",
     "timeSeries": "Czas",
     "gameCount_one": "{{count}} gra",

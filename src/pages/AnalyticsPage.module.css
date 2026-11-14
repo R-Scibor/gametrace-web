@@ -106,11 +106,18 @@
 .span2 {
   grid-column: span 2;
 }
+.span3 {
+  grid-column: span 3;
+}
 .span4 {
   grid-column: span 4;
 }
 .span6 {
   grid-column: span 6;
+}
+.releaseYearsPanel {
+  align-self: start;
+  height: auto;
 }
 
 /* ---------- ACTIVITY BLOCK (Idea A: heatmap + trend stacked, ranking as a tall rail) ---------- */
@@ -175,6 +182,7 @@
     grid-template-columns: 1fr;
   }
   .span2,
+  .span3,
   .span4,
   .span6 {
     grid-column: span 1;

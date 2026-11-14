@@ -120,7 +120,7 @@ export function AnalyticsPage() {
         <ThemesPanel days={days} className={styles.span2} sampleData={showPreview ? SAMPLE_THEMES : undefined} />
         <ReleaseYearsPanel
           days={days}
-          className={styles.span2}
+          className={[styles.span2, styles.releaseYearsPanel].join(' ')}
           sampleData={showPreview ? SAMPLE_RELEASE_YEARS : undefined}
         />
 
@@ -130,13 +130,16 @@ export function AnalyticsPage() {
         </div>
 
         <CompaniesPanel
+          role="developer"
           days={days}
-          className={styles.span6}
-          sampleData={
-            showPreview
-              ? { developer: SAMPLE_COMPANIES_DEVELOPER, publisher: SAMPLE_COMPANIES_PUBLISHER }
-              : undefined
-          }
+          className={styles.span3}
+          sampleData={showPreview ? SAMPLE_COMPANIES_DEVELOPER : undefined}
+        />
+        <CompaniesPanel
+          role="publisher"
+          days={days}
+          className={styles.span3}
+          sampleData={showPreview ? SAMPLE_COMPANIES_PUBLISHER : undefined}
         />
       </div>
     </div>

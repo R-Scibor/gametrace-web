@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
@@ -209,60 +208,40 @@ export function ThemesPanel({
 }
 
 export function CompaniesPanel({
+  role = 'developer',
   days,
   className,
   sampleData,
 }: {
+  role?: 'developer' | 'publisher';
   days: number;
   className?: string;
-  sampleData?: { developer: CompaniesResponse; publisher: CompaniesResponse };
+  sampleData?: CompaniesResponse;
 }) {
   const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
-  const [role, setRole] = useState<'developer' | 'publisher'>('developer');
   const { data: liveData, isLoading, isError } = useCompanies(role, 10, days, { enabled: sampleData == null });
 
-  const roleToggle = (
-    <div className={panelStyles.roleToggle}>
-      <button
-        type="button"
-        className={[panelStyles.roleBtn, role === 'developer' ? panelStyles.roleBtnActive : '']
-          .filter(Boolean)
-          .join(' ')}
-        onClick={() => setRole('developer')}
-      >
-        {t('panels.developer')}
-      </button>
-      <button
-        type="button"
-        className={[panelStyles.roleBtn, role === 'publisher' ? panelStyles.roleBtnActive : '']
-          .filter(Boolean)
-          .join(' ')}
-        onClick={() => setRole('publisher')}
-      >
-        {t('panels.publisher')}
-      </button>
-    </div>
-  );
+  const title = role === 'developer' ? t('panels.developers') : t('panels.publishers');
 
   if (sampleData == null) {
     if (isLoading) {
       return (
-        <Panel title={t('panels.companies')} headerExtra={roleToggle} className={className}>
+        <Panel title={title} className={className}>
           <Skeleton height={200} />
         </Panel>
       );
     }
     if (isError || !liveData) {
       return (
-        <Panel title={t('panels.companies')} headerExtra={roleToggle} className={className}>
+        <Panel title={title} className={className}>
           <ErrorBanner />
         </Panel>
       );
     }
   }
 
-  const data = sampleData ? sampleData[role] : liveData!;
+  const data = sampleData ?? liveData!;
   const max = Math.max(...data.items.map((i) => i.total_seconds), 1);
   const items = data.items.map((i) => ({
     id: i.name,
@@ -273,7 +252,7 @@ export function CompaniesPanel({
   }));
 
   return (
-    <Panel title={t('panels.companies')} headerExtra={roleToggle} className={className}>
+    <Panel title={title} className={className}>
       <BarList items={items} onItemClick={sampleData == null ? (item) => drill(role, item.label) : undefined} />
     </Panel>
   );

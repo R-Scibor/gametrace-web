@@ -37,6 +37,8 @@
     "companies": "Studios / Publishers",
     "developer": "DEVELOPER",
     "publisher": "PUBLISHER",
+    "developers": "Developers",
+    "publishers": "Publishers",
     "decades": "Release decades",
     "timeSeries": "Time",
     "gameCount_one": "{{count}} game",
