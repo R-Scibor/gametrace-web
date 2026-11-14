@@ -141,7 +141,6 @@
   font-size: 12px;
   letter-spacing: 2px;
   color: var(--orange);
-  animation: pulse 2.2s ease-in-out infinite;
 }
 
 /* Row 2: Game Title */

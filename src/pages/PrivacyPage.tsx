@@ -61,7 +61,6 @@ export function PrivacyPage() {
             </div>
           </div>
           <p className={styles.eyebrow}>
-            <span className={styles.eyebrowPulse} aria-hidden />
             {t('eyebrow')}
           </p>
           <h1 className={styles.title}>
@@ -71,7 +70,7 @@ export function PrivacyPage() {
           <p className={styles.meta}>
             <span>{t('lastUpdated')}</span>
             <span className={styles.metaSep} aria-hidden>
-              ·
+              /
             </span>
             <span>{t('versionLabel', { version: PRIVACY_POLICY_VERSION })}</span>
           </p>

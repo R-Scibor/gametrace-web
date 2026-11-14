@@ -58,7 +58,6 @@ export function AnalyticsPage() {
 
       <div className={styles.toolbar}>
         <span className={styles.statusLine}>
-          <span className={styles.statusDot} aria-hidden />
           {periodContextLabel}
         </span>
         <div className={styles.periodRow} role="group" aria-label={t('period.ariaLabel')}>

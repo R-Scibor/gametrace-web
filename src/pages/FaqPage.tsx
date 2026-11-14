@@ -210,7 +210,6 @@ export function FaqPage() {
           </div>
 
           <p className={styles.eyebrow}>
-            <span className={styles.eyebrowPulse} aria-hidden />
             {t('eyebrow')}
           </p>
           <h1 className={styles.title}>
@@ -324,7 +323,7 @@ export function FaqPage() {
               </Button>
             )}
             <Link to="/privacy" className={styles.privacyLink}>
-              {t('viewPrivacy')} →
+              {t('viewPrivacy')}
             </Link>
           </div>
         </aside>

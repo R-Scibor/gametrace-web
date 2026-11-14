@@ -93,14 +93,6 @@
   color: var(--text3);
 }
 
-.eyebrowPulse {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--orange);
-  box-shadow: 0 0 10px var(--orange-glow);
-}
-
 .title {
   margin: 0;
   font-family: var(--display);

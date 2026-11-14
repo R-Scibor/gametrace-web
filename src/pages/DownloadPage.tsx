@@ -80,7 +80,6 @@ export function DownloadPage() {
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}>
-              <span className={styles.eyebrowPulse} />
               {t('eyebrow')}
             </p>
             <h1 className={styles.title}>
@@ -145,7 +144,6 @@ export function DownloadPage() {
                   .filter(Boolean)
                   .join(' ')}
               >
-                {apkAvailable === true ? '● ' : ''}
                 {statusLabel}
               </span>
             </div>
@@ -154,7 +152,7 @@ export function DownloadPage() {
               <p className={styles.handoffHint}>{t('handoff.hint')}</p>
             </div>
             <div className={styles.handoffFoot}>
-              <span>gametrace · download</span>
+              <span>gametrace / download</span>
               <span className={styles.handoffFootValue}>/download/</span>
             </div>
           </aside>
