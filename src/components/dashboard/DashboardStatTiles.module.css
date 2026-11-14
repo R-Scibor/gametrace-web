@@ -1,6 +1,5 @@
 .rail,
 .row {
-  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, monospace;
   display: grid;
   gap: 12px;
 }
@@ -21,15 +20,16 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 14px;
+  gap: 10px;
   min-height: 88px;
-  padding: 16px 16px 15px;
+  padding: 14px 18px 12px;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 2px;
   background: var(--bg2);
   transition: transform 0.22s ease, border-color 0.22s ease;
 }
+
 .tile:hover {
   transform: translateY(-2px);
   border-color: var(--border-bright);
@@ -44,23 +44,30 @@
   background: var(--orange);
 }
 
+/* Bigger, prominent uppercase stamp */
 .label {
-  font-family: var(--mono);
-  font-size: 11px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
   letter-spacing: 1.5px;
-  color: var(--text3);
+  text-transform: uppercase;
+  color: var(--text2);
 }
 
+/* Big bold right-aligned figures */
 .value {
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  justify-content: flex-end;
+  align-self: flex-end;
+  gap: 5px;
   font-family: var(--display);
   font-weight: 700;
-  font-size: clamp(22px, 2.4vw, 28px);
+  font-size: 38px;
   letter-spacing: -0.5px;
-  line-height: 1;
-  color: var(--orange);
+  line-height: 0.95;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 
 .valueEmpty {
@@ -70,7 +77,7 @@
 .unit {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 17px;
   letter-spacing: 0;
   color: var(--text3);
 }
