@@ -1,8 +1,10 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { http, HttpResponse } from 'msw';
 import { useGameLadder } from './useGameLadder';
 import { createTestQueryClient, resetStores, seedAuth } from '../../test/utils';
+import { server } from '../../test/server';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 function wrapper({ children }: { children: React.ReactNode }) {
@@ -25,6 +27,87 @@ describe('useGameLadder browse rung', () => {
 
     expect(result.current.libraryMatches.map((g) => g.primary_name)).toEqual([
       'Cyberpunk 2077',
+    ]);
+  });
+
+  it('orders by last_played descending with nulls last and name tiebreaker when empty, and keeps name order when query is typed', async () => {
+    server.use(
+      http.get('/api/v1/games', () => {
+        return HttpResponse.json({
+          total: 4,
+          items: [
+            {
+              id: 10,
+              primary_name: 'Alpha Game',
+              cover_image_url: null,
+              cover_source: 'EXTERNAL',
+              enrichment_status: 'ENRICHED',
+              is_ignored: false,
+              is_accepted: true,
+              total_seconds: 0,
+              last_played: null,
+            },
+            {
+              id: 11,
+              primary_name: 'Beta Game',
+              cover_image_url: null,
+              cover_source: 'EXTERNAL',
+              enrichment_status: 'ENRICHED',
+              is_ignored: false,
+              is_accepted: true,
+              total_seconds: 100,
+              last_played: '2026-01-01T12:00:00Z',
+            },
+            {
+              id: 12,
+              primary_name: 'Delta Game',
+              cover_image_url: null,
+              cover_source: 'EXTERNAL',
+              enrichment_status: 'ENRICHED',
+              is_ignored: false,
+              is_accepted: true,
+              total_seconds: 200,
+              last_played: '2026-05-01T12:00:00Z',
+            },
+            {
+              id: 13,
+              primary_name: 'Gamma Game',
+              cover_image_url: null,
+              cover_source: 'EXTERNAL',
+              enrichment_status: 'ENRICHED',
+              is_ignored: false,
+              is_accepted: true,
+              total_seconds: 300,
+              last_played: '2026-05-01T12:00:00Z',
+            },
+          ],
+        });
+      }),
+    );
+
+    const { result } = renderHook(() => useGameLadder(vi.fn()), { wrapper });
+    await waitFor(() => expect(result.current.isPickerLoading).toBe(false));
+
+    expect(result.current.libraryMatches.map((g) => g.primary_name)).toEqual([
+      'Delta Game',
+      'Gamma Game',
+      'Beta Game',
+      'Alpha Game',
+    ]);
+    expect(result.current.pickerGames.map((g) => g.primary_name)).toEqual([
+      'Alpha Game',
+      'Beta Game',
+      'Delta Game',
+      'Gamma Game',
+    ]);
+
+    act(() => result.current.setQuery('Game'));
+
+    expect(result.current.libraryMatches.map((g) => g.primary_name)).toEqual([
+      'Alpha Game',
+      'Beta Game',
+      'Delta Game',
+      'Gamma Game',
     ]);
   });
 

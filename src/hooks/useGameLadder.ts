@@ -10,6 +10,19 @@ import type {
 const MAX_LOCAL_RESULTS = 50;
 const SUGGEST_DEBOUNCE_MS = 250;
 
+function compareByLastPlayed(a: Game, b: Game): number {
+  if (a.last_played && b.last_played) {
+    const diff = b.last_played.localeCompare(a.last_played);
+    if (diff !== 0) return diff;
+  } else if (a.last_played) {
+    return -1;
+  } else if (b.last_played) {
+    return 1;
+  }
+  // Ties keep the server's name order (Array.prototype.sort is stable).
+  return 0;
+}
+
 export type LadderMode = 'browse' | 'searching' | 'online' | 'error';
 
 export interface LadderError {
@@ -76,7 +89,9 @@ export function useGameLadder(onResolved: (gameId: number) => void): GameLadder 
   const localMatches = useMemo(() => {
     const all = pickerGames ?? [];
     const q = trimmed.toLowerCase();
-    const base = q ? all.filter((g) => g.primary_name.toLowerCase().includes(q)) : all;
+    const base = q
+      ? all.filter((g) => g.primary_name.toLowerCase().includes(q))
+      : [...all].sort(compareByLastPlayed);
     return base.slice(0, MAX_LOCAL_RESULTS);
   }, [pickerGames, trimmed]);
 
