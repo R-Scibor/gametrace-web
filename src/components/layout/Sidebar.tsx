@@ -132,6 +132,10 @@ function NavItem({ path, label, icon }: { path: string; label: string; icon: Rea
     <NavLink
       to={path}
       end={path === '/'}
+      // Below 1100px the label is hidden and only the icon shows, so the link keeps
+      // its name for screen readers and gets a hover tooltip.
+      aria-label={label}
+      title={label}
       className={({ isActive }) => [styles.link, isActive ? styles.active : ''].filter(Boolean).join(' ')}
     >
       {icon}

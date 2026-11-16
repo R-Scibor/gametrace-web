@@ -44,6 +44,13 @@ test('Sidebar renders nav links in groups', () => {
   expect(within(tools).getByText('Ustawienia')).toBeInTheDocument();
 });
 
+test('Sidebar nav links keep a name and tooltip when the label is hidden', () => {
+  renderWithProviders(<Sidebar />, { authenticated: true });
+  const library = screen.getByRole('link', { name: 'Biblioteka' });
+  expect(library).toHaveAttribute('aria-label', 'Biblioteka');
+  expect(library).toHaveAttribute('title', 'Biblioteka');
+});
+
 test('Sidebar shows Administracja only for admins', () => {
   seedAuth(true);
   const client = createTestQueryClient();
