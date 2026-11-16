@@ -107,5 +107,10 @@
     "yesterday": "played yesterday",
     "daysAgo": "played {{days}} days ago",
     "onDate": "played {{date}}"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This address does not exist or was moved.",
+    "dashboardCta": "Go to dashboard"
   }
 }

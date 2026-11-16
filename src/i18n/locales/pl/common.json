@@ -108,5 +108,10 @@
     "yesterday": "grano wczoraj",
     "daysAgo": "grano {{days}} dni temu",
     "onDate": "grano {{date}}"
+  },
+  "notFound": {
+    "title": "Nie znaleziono strony",
+    "description": "Ten adres nie istnieje albo został przeniesiony.",
+    "dashboardCta": "Przejdź do Dashboardu"
   }
 }

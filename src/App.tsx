@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { AdminRoute } from './components/AdminRoute';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
@@ -37,6 +37,9 @@ const AdminCatalogPage = lazy(() =>
 );
 const AdminReportsPage = lazy(() =>
   import('./pages/admin/AdminReportsPage').then(m => ({ default: m.AdminReportsPage }))
+);
+const NotFoundPage = lazy(() =>
+  import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage }))
 );
 
 function PageFallback() {
@@ -84,8 +87,8 @@ function App() {
             </Route>
           </Route>
         </Route>
-        {/* Unmatched -> home; ProtectedRoute sends unauth users to /welcome */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Unmatched -> 404 */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );
