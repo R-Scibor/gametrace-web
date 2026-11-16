@@ -201,3 +201,21 @@ test('LoginPage displays FieldError under the input when link login fails', asyn
   expect(alert.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
 });
 
+test('LoginPage renders version when health reports a release', async () => {
+  renderLogin();
+  expect(await screen.findByText('v1.0.0-test')).toBeInTheDocument();
+});
+
+test('LoginPage hides version when health reports a non-release branch', async () => {
+  server.use(
+    http.get('/api/v1/health', () =>
+      HttpResponse.json({ status: 'ok', version: 'main' }),
+    ),
+  );
+  renderLogin();
+  expect(await screen.findByRole('link', { name: /polityka prywatno/i })).toBeInTheDocument();
+  expect(screen.queryByText('vmain')).not.toBeInTheDocument();
+  expect(screen.queryByText(/^v\d/i)).not.toBeInTheDocument();
+});
+
+

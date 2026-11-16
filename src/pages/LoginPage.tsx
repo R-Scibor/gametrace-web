@@ -9,6 +9,7 @@ import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { DiscordLoginButton } from '../components/auth/DiscordLoginButton';
 import { formatLinkCode, isCompleteLinkCode, normalizeLinkCode } from '../lib/linkCode';
+import { releaseVersion } from '../lib/version';
 import { useAuthStore } from '../store/authStore';
 import { WALL_COLUMNS } from './loginWallData';
 import styles from './LoginPage.module.css';
@@ -17,6 +18,7 @@ export function LoginPage() {
   const { t, i18n } = useTranslation(['auth', 'common']);
   const { isAuthenticated, handleLinkLogin, loading, error, setError } = useAuth();
   const { data: health } = useHealth();
+  const version = releaseVersion(health?.version);
   const [code, setCode] = useState('');
   const pendingDeletion = useAuthStore((s) => s.pendingDeletion);
 
@@ -223,7 +225,7 @@ export function LoginPage() {
         <footer className={styles.footer}>
           <div className={styles.footerLeft}>
             <span className={styles.footerBrand}>GameTrace</span>
-            <span>v{health?.version ?? '...'}</span>
+            {version && <span>v{version}</span>}
           </div>
           <Link to="/privacy" className={styles.footerLink}>
             {t('privacyLink')}

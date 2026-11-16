@@ -74,3 +74,29 @@ test('DownloadPage shows dashboard link when authenticated', async () => {
 
   expect(screen.getByRole('link', { name: /przejdź do dashboard/i })).toHaveAttribute('href', '/');
 });
+
+test('DownloadPage renders version when health reports a release', async () => {
+  renderAppRoutes(<Route path="/download" element={<DownloadPage />} />, {
+    route: '/download',
+    authenticated: false,
+  });
+
+  expect(await screen.findByText('v1.0.0-test')).toBeInTheDocument();
+});
+
+test('DownloadPage hides version when health reports a non-release branch', async () => {
+  server.use(
+    http.get('/api/v1/health', () =>
+      HttpResponse.json({ status: 'ok', version: 'main' }),
+    ),
+  );
+
+  renderAppRoutes(<Route path="/download" element={<DownloadPage />} />, {
+    route: '/download',
+    authenticated: false,
+  });
+
+  expect(await screen.findByRole('contentinfo')).toBeInTheDocument();
+  expect(screen.queryByText('vmain')).not.toBeInTheDocument();
+  expect(screen.queryByText(/^v\d/i)).not.toBeInTheDocument();
+});

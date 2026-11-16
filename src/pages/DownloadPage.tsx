@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../components/ui';
 import { ApkQrCode } from '../components/welcome/ApkQrCode';
 import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
+import { releaseVersion } from '../lib/version';
 import { useHealth } from '../hooks/useHealth';
 import { useAuthStore } from '../store/authStore';
 import styles from './DownloadPage.module.css';
@@ -13,6 +14,7 @@ export function DownloadPage() {
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { data: health } = useHealth();
+  const version = releaseVersion(health?.version);
   const [apkAvailable, setApkAvailable] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -182,7 +184,7 @@ export function DownloadPage() {
             <span className={styles.footerDot} aria-hidden />
             <span>GAMETRACE</span>
           </div>
-          <span className={styles.footerMeta}>v{health?.version ?? '…'}</span>
+          {version && <span className={styles.footerMeta}>v{version}</span>}
         </div>
       </footer>
     </div>

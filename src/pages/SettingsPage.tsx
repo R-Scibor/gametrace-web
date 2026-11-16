@@ -14,6 +14,7 @@ import { FaqNoticeRow } from '../components/settings/FaqNoticeRow';
 import { SettingsRow } from '../components/settings/SettingsRow';
 import { formatBotStatus, formatUptime, botColor } from '../lib/bot';
 import { EMPTY_VALUE } from '../lib/format';
+import { releaseVersion } from '../lib/version';
 import styles from './SettingsPage.module.css';
 
 /** Shown off and inert. Does not read or write the stored preference. */
@@ -37,6 +38,7 @@ export function SettingsPage() {
   const { user } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { data: health } = useHealth();
+  const version = releaseVersion(health?.version);
   // Fallback for a failed /profile/me: defaulting to false would hand an admin
   // an enabled Delete button and a retry-forever error, since the backend 403s
   // admin self-deletion. This flag is known synchronously from login.
@@ -152,7 +154,7 @@ export function SettingsPage() {
 
       <footer className={styles.footer}>
         <span className={styles.footerLine} />
-        <span className={styles.version}>GAMETRACE {health?.version ?? EMPTY_VALUE}</span>
+        <span className={styles.version}>{version ? `GAMETRACE ${version}` : 'GAMETRACE'}</span>
         <span className={styles.footerLine} />
       </footer>
     </div>

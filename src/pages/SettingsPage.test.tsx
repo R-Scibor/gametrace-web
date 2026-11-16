@@ -27,6 +27,33 @@ test('SettingsPage renders profile and bot status', async () => {
   expect(await screen.findByText('testuser')).toBeInTheDocument();
   expect(screen.getByText('ONLINE')).toBeInTheDocument();
   expect(screen.getByText('1.0.0-test')).toBeInTheDocument();
+  expect(screen.getByText('GAMETRACE 1.0.0-test')).toBeInTheDocument();
+});
+
+test('SettingsPage renders release version in footer but hides non-release strings', async () => {
+  server.use(
+    http.get('/api/v1/health', () =>
+      HttpResponse.json({
+        status: 'ok',
+        version: 'main',
+        commit_sha: 'abc123',
+        build_time: '2026-01-01T00:00:00Z',
+        api: { uptime_seconds: 3600 },
+        bot: { status: 'online', uptime_seconds: 1800, last_heartbeat_seconds_ago: 5 },
+      }),
+    ),
+  );
+  renderAppRoutes(
+    <>
+      <Route path="/settings" element={<SettingsPage />} />
+    </>,
+    { route: '/settings' },
+  );
+
+  expect(await screen.findByText('testuser')).toBeInTheDocument();
+  expect(screen.getByText('main')).toBeInTheDocument();
+  expect(screen.getByText('GAMETRACE')).toBeInTheDocument();
+  expect(screen.queryByText(/GAMETRACE main/)).not.toBeInTheDocument();
 });
 
 test('SettingsPage timezone change calls settings API', async () => {
