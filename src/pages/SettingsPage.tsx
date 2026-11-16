@@ -18,12 +18,13 @@ import { releaseVersion } from '../lib/version';
 import styles from './SettingsPage.module.css';
 
 /** Shown off and inert. Does not read or write the stored preference. */
-function LockedToggle({ label }: { label: string }) {
+function LockedToggle({ label, describedBy }: { label: string; describedBy?: string }) {
   return (
     <label className={styles.toggle}>
       <input
         type="checkbox"
         aria-label={label}
+        aria-describedby={describedBy}
         checked={false}
         disabled
         onChange={() => {}}
@@ -119,16 +120,18 @@ export function SettingsPage() {
         <SettingsRow
           label={t('preferences.weeklyReport')}
           subtext={t('preferences.unavailable')}
+          subtextId="weekly-report-status"
           badge={t('preferences.inDevelopment')}
         >
-          <LockedToggle label={t('preferences.weeklyReport')} />
+          <LockedToggle label={t('preferences.weeklyReport')} describedBy="weekly-report-status" />
         </SettingsRow>
         <SettingsRow
           label={t('preferences.push')}
           subtext={t('preferences.unavailable')}
+          subtextId="push-status"
           badge={t('preferences.inDevelopment')}
         >
-          <LockedToggle label={t('preferences.push')} />
+          <LockedToggle label={t('preferences.push')} describedBy="push-status" />
         </SettingsRow>
       </div>
 

@@ -30,6 +30,19 @@ test('SettingsPage renders profile and bot status', async () => {
   expect(screen.getByText('GAMETRACE 1.0.0-test')).toBeInTheDocument();
 });
 
+test('SettingsPage locked toggles explain why they are disabled', async () => {
+  renderAppRoutes(
+    <>
+      <Route path="/settings" element={<SettingsPage />} />
+    </>,
+    { route: '/settings' },
+  );
+
+  const weekly = await screen.findByRole('checkbox', { name: 'Raport tygodniowy' });
+  expect(weekly).toBeDisabled();
+  expect(weekly).toHaveAccessibleDescription('Jeszcze niedostępne');
+});
+
 test('SettingsPage renders release version in footer but hides non-release strings', async () => {
   server.use(
     http.get('/api/v1/health', () =>

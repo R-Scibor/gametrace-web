@@ -7,11 +7,13 @@ interface SettingsRowProps {
   badge?: string;
   /** Escape hatch for rows that tint their label (e.g. the destructive one). */
   labelClassName?: string;
+  /** id for the subtext, so a control can point at it with aria-describedby. */
+  subtextId?: string;
   children: React.ReactNode;
 }
 
 /** One label/subtext + control line inside a settings panel. */
-export function SettingsRow({ label, subtext, badge, labelClassName, children }: SettingsRowProps) {
+export function SettingsRow({ label, subtext, badge, labelClassName, subtextId, children }: SettingsRowProps) {
   return (
     <div className={styles.row}>
       <div className={styles.info}>
@@ -19,7 +21,7 @@ export function SettingsRow({ label, subtext, badge, labelClassName, children }:
           <span className={[styles.label, labelClassName].filter(Boolean).join(' ')}>{label}</span>
           {badge && <span className={styles.badge}>{badge}</span>}
         </span>
-        {subtext && <span className={styles.subtext}>{subtext}</span>}
+        {subtext && <span id={subtextId} className={styles.subtext}>{subtext}</span>}
       </div>
       <div className={styles.control}>{children}</div>
     </div>
