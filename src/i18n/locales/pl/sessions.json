@@ -39,6 +39,12 @@
     "message": "Przenieść sesję do kosza? Możesz ją później przywrócić.",
     "confirm": "USUŃ SESJĘ"
   },
+  "discardConfirm": {
+    "title": "PORZUCIĆ ZMIANY?",
+    "message": "Zmiany w tej sesji nie zostały zapisane.",
+    "confirm": "PORZUĆ",
+    "cancel": "EDYTUJ DALEJ"
+  },
   "toast": {
     "saved": "Sesja zapisana.",
     "saveFailed": "Nie udało się zapisać sesji.",

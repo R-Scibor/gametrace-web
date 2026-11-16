@@ -39,6 +39,12 @@
     "message": "Move this session to trash? You can restore it later.",
     "confirm": "DELETE SESSION"
   },
+  "discardConfirm": {
+    "title": "DISCARD CHANGES?",
+    "message": "Your changes to this session are not saved.",
+    "confirm": "DISCARD",
+    "cancel": "KEEP EDITING"
+  },
   "toast": {
     "saved": "Session saved.",
     "saveFailed": "Couldn't save the session.",

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import type { FormEvent } from 'react';
+import type { FormEvent, MouseEvent } from 'react';
 import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSession } from '../hooks/useSession';
@@ -31,6 +31,12 @@ const toLocalDatetime = (iso: string) => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
+interface InitialValues {
+  gameId: number | '';
+  startTime: string;
+  endTime: string;
+}
+
 function SessionFormSkeleton() {
   return (
     <div className={styles.container}>
@@ -54,8 +60,11 @@ export function SessionFormPage() {
   const [endTime, setEndTime] = useState('');
   const [voiceNote, setVoiceNote] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
+  const [initialValues, setInitialValues] = useState<InitialValues | null>(null);
   const [dismissedConflict, setDismissedConflict] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [discardConfirmOpen, setDiscardConfirmOpen] = useState(false);
+  const [discardTarget, setDiscardTarget] = useState<string | -1 | null>(null);
   const [boundCode, setBoundCode] = useState<SessionBoundCode | 'errorNeedsEnd' | null>(null);
 
   const { data: session, isLoading } = useSession(sessionId, isEditing);
@@ -73,33 +82,104 @@ export function SessionFormPage() {
   /* eslint-disable react-hooks/set-state-in-effect -- one-time form hydration from fetched session */
   useEffect(() => {
     if (session && isEditing && !initialized) {
-      setGameId(session.game_id);
-      setStartTime(toLocalDatetime(session.start_time));
-      if (session.end_time) setEndTime(toLocalDatetime(session.end_time));
+      const initGameId = session.game_id;
+      const initStart = toLocalDatetime(session.start_time);
+      const initEnd = session.end_time ? toLocalDatetime(session.end_time) : '';
+      setGameId(initGameId);
+      setStartTime(initStart);
+      if (session.end_time) setEndTime(initEnd);
+      setInitialValues({ gameId: initGameId, startTime: initStart, endTime: initEnd });
       setInitialized(true);
     } else if (!isEditing && !initialized) {
       const qGameId = searchParams.get('gameId');
       const qStart = searchParams.get('startTime');
       const qEnd = searchParams.get('endTime');
-      if (qGameId) setGameId(Number(qGameId));
+      let initGameId: number | '' = '';
+      if (qGameId) {
+        initGameId = Number(qGameId);
+        setGameId(initGameId);
+      }
       const qGameName = searchParams.get('gameName');
       if (qGameName) setGameName(qGameName);
       const transcript = consumeVoiceTranscriptPrefill();
       if (transcript) setVoiceNote(transcript);
+      let initStart: string;
+      let initEnd = '';
       if (qStart) {
+        initStart = qStart;
         setStartTime(qStart);
-        if (qEnd) setEndTime(qEnd);
+        if (qEnd) {
+          initEnd = qEnd;
+          setEndTime(qEnd);
+        }
       } else {
         const range = legalCreateRange(new Date(), toLocalDatetime);
+        initStart = range.start;
+        initEnd = range.end;
         setStartTime(range.start);
         setEndTime(range.end);
       }
+      setInitialValues({ gameId: initGameId, startTime: initStart, endTime: initEnd });
       setInitialized(true);
     }
   }, [session, isEditing, initialized, searchParams]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   const clearConflict = () => setDismissedConflict(true);
+
+  const isDirty = Boolean(
+    initialValues &&
+      (gameId !== initialValues.gameId ||
+        startTime !== initialValues.startTime ||
+        endTime !== initialValues.endTime),
+  );
+
+  useEffect(() => {
+    if (!isDirty) return;
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isDirty]);
+
+  const handleCancel = () => {
+    const target: string | -1 = isEditing && session ? `/library/${session.game_id}` : -1;
+    if (isDirty) {
+      setDiscardTarget(target);
+      setDiscardConfirmOpen(true);
+    } else if (target === -1) {
+      navigate(-1);
+    } else {
+      navigate(target);
+    }
+  };
+
+  const handleBackLinkClick = (e: MouseEvent) => {
+    if (isDirty && session) {
+      e.preventDefault();
+      setDiscardTarget(`/library/${session.game_id}`);
+      setDiscardConfirmOpen(true);
+    }
+  };
+
+  const onConfirmDiscard = () => {
+    const target = discardTarget;
+    setDiscardConfirmOpen(false);
+    setDiscardTarget(null);
+    if (target === -1) {
+      navigate(-1);
+    } else if (target) {
+      navigate(target);
+    }
+  };
+
+  const onCancelDiscard = () => {
+    setDiscardConfirmOpen(false);
+    setDiscardTarget(null);
+  };
 
   if (isEditing && isLoading) return <SessionFormSkeleton />;
 
@@ -179,7 +259,11 @@ export function SessionFormPage() {
       <SectionHeader title={isEditing ? t('title.edit') : t('title.add')} />
 
       {isEditing && session && (
-        <Link to={`/library/${session.game_id}`} className={styles.backLink}>
+        <Link
+          to={`/library/${session.game_id}`}
+          className={styles.backLink}
+          onClick={handleBackLinkClick}
+        >
           {t('ongoing.back')}
         </Link>
       )}
@@ -302,13 +386,7 @@ export function SessionFormPage() {
             type="button"
             variant="secondary"
             disabled={pending}
-            onClick={() => {
-              if (isEditing && session) {
-                navigate(`/library/${session.game_id}`);
-              } else {
-                navigate(-1);
-              }
-            }}
+            onClick={handleCancel}
           >
             {t('actions.cancel')}
           </Button>
@@ -339,6 +417,16 @@ export function SessionFormPage() {
           )}
         </div>
       </form>
+
+      <ConfirmDialog
+        open={discardConfirmOpen}
+        title={t('discardConfirm.title')}
+        message={t('discardConfirm.message')}
+        confirmLabel={t('discardConfirm.confirm')}
+        cancelLabel={t('discardConfirm.cancel')}
+        onConfirm={onConfirmDiscard}
+        onCancel={onCancelDiscard}
+      />
 
       <ConfirmDialog
         open={deleteConfirmOpen}

@@ -590,4 +590,173 @@ test('SessionFormPage add mode shows Cancel button', async () => {
   expect(screen.getByRole('button', { name: /Anuluj/i })).toBeInTheDocument();
 });
 
+test('SessionFormPage edit mode dirty Cancel shows discard dialog, cancelling stays and confirming navigates', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/library/:id" element={<div>Game Detail Screen</div>} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+
+  setTime('session-end', localInput(new Date(FROZEN.getTime() + 60 * 60 * 1000)));
+
+  const cancelBtn = screen.getByRole('button', { name: /Anuluj/i });
+  await user.click(cancelBtn);
+
+  expect(screen.getByText('PORZUCIĆ ZMIANY?')).toBeInTheDocument();
+  expect(screen.getByText('Zmiany w tej sesji nie zostały zapisane.')).toBeInTheDocument();
+  expect(screen.queryByText('Game Detail Screen')).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /Edytuj dalej/i }));
+  expect(screen.queryByText('PORZUCIĆ ZMIANY?')).not.toBeInTheDocument();
+  expect(screen.queryByText('Game Detail Screen')).not.toBeInTheDocument();
+
+  await user.click(cancelBtn);
+  expect(screen.getByText('PORZUCIĆ ZMIANY?')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /^Porzuć$/i }));
+  expect(await screen.findByText('Game Detail Screen')).toBeInTheDocument();
+});
+
+test('SessionFormPage edit mode dirty back link shows discard dialog and confirm navigates', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/library/:id" element={<div>Game Detail Screen</div>} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+
+  setTime('session-end', localInput(new Date(FROZEN.getTime() + 60 * 60 * 1000)));
+
+  const backLink = screen.getByRole('link', { name: /Wróć do gry/i });
+  await user.click(backLink);
+
+  expect(screen.getByText('PORZUCIĆ ZMIANY?')).toBeInTheDocument();
+  expect(screen.queryByText('Game Detail Screen')).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /^Porzuć$/i }));
+  expect(await screen.findByText('Game Detail Screen')).toBeInTheDocument();
+});
+
+test('SessionFormPage edit mode not dirty back link navigates directly', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/library/:id" element={<div>Game Detail Screen</div>} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+
+  const backLink = screen.getByRole('link', { name: /Wróć do gry/i });
+  await user.click(backLink);
+
+  expect(screen.queryByText('PORZUCIĆ ZMIANY?')).not.toBeInTheDocument();
+  expect(await screen.findByText('Game Detail Screen')).toBeInTheDocument();
+});
+
+test('SessionFormPage add mode dirty Cancel shows discard dialog and confirming navigates', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/dashboard" element={<div>Dashboard Screen</div>} />
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/new' },
+  );
+
+  await screen.findByText('Dodaj sesję');
+  await pickFirstGame(user);
+
+  const cancelBtn = screen.getByRole('button', { name: /Anuluj/i });
+  await user.click(cancelBtn);
+
+  expect(screen.getByText('PORZUCIĆ ZMIANY?')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /Edytuj dalej/i }));
+  expect(screen.queryByText('PORZUCIĆ ZMIANY?')).not.toBeInTheDocument();
+  expect(screen.getByText('Dodaj sesję')).toBeInTheDocument();
+
+  await user.click(cancelBtn);
+  expect(screen.getByText('PORZUCIĆ ZMIANY?')).toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: /^Porzuć$/i }));
+  expect(screen.queryByText('PORZUCIĆ ZMIANY?')).not.toBeInTheDocument();
+});
+
+test('SessionFormPage discard dialog shows English strings when language is en', async () => {
+  await i18n.changeLanguage('en');
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/library/:id" element={<div>Game Detail Screen</div>} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edit session')).toBeInTheDocument();
+
+  setTime('session-end', localInput(new Date(FROZEN.getTime() + 60 * 60 * 1000)));
+
+  const cancelBtn = screen.getByRole('button', { name: /Cancel/i });
+  await user.click(cancelBtn);
+
+  expect(screen.getByText('DISCARD CHANGES?')).toBeInTheDocument();
+  expect(screen.getByText('Your changes to this session are not saved.')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'DISCARD' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'KEEP EDITING' })).toBeInTheDocument();
+});
+
+test('SessionFormPage registers beforeunload listener when dirty and removes on clean', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+  );
+
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+
+  const cleanEvent = new Event('beforeunload', { cancelable: true });
+  window.dispatchEvent(cleanEvent);
+  expect(cleanEvent.defaultPrevented).toBe(false);
+
+  setTime('session-end', localInput(new Date(FROZEN.getTime() + 60 * 60 * 1000)));
+
+  const dirtyEvent = new Event('beforeunload', { cancelable: true });
+  window.dispatchEvent(dirtyEvent);
+  expect(dirtyEvent.defaultPrevented).toBe(true);
+});
+
+
 
