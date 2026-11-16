@@ -586,3 +586,17 @@ test('does not scroll when the highlight lands on a footer action button', async
     delete Element.prototype.scrollIntoView;
   }
 });
+
+test('a disabled chip does not show the dead change action', async () => {
+  const client = createTestQueryClient();
+  render(
+    <QueryClientProvider client={client}>
+      <GameSelect id="session-game" value={2} onChange={vi.fn()} aria-label="Gra" disabled />
+    </QueryClientProvider>,
+  );
+
+  const chip = await screen.findByRole('button', { name: 'Gra' });
+  await waitFor(() => expect(chip).toHaveTextContent('Cyberpunk 2077'));
+  expect(chip).toBeDisabled();
+  expect(chip).not.toHaveTextContent('zmień');
+});

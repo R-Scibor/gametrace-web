@@ -223,7 +223,7 @@ export function GameSelect({
         >
           <span className={styles.chipRule} aria-hidden />
           <span className={styles.chipName}>{selectedName}</span>
-          <span className={styles.chipAction}>{t('select.change')}</span>
+          {!disabled && <span className={styles.chipAction}>{t('select.change')}</span>}
         </button>
       </div>
     );
