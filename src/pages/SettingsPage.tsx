@@ -4,7 +4,7 @@ import { useProfile, useUpdateSettings } from '../hooks/useProfile';
 import { useHealth } from '../hooks/useHealth';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAuthStore } from '../store/authStore';
-import { SectionHeader, Skeleton } from '../components/ui';
+import { Skeleton } from '../components/ui';
 import { Switch } from '../components/ui/Switch';
 import { TimezoneSelect } from '../components/ui/TimezoneSelect';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
@@ -34,7 +34,6 @@ function LockedToggle({ label }: { label: string }) {
 
 export function SettingsPage() {
   const { t } = useTranslation('settings');
-  const { t: tCommon } = useTranslation('common');
   const { user } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const { data: health } = useHealth();
@@ -52,7 +51,6 @@ export function SettingsPage() {
   if (profileLoading) {
     return (
       <div className={styles.container}>
-        <SectionHeader title={t('title')} />
         <Skeleton height={300} />
       </div>
     );
@@ -63,8 +61,6 @@ export function SettingsPage() {
 
   return (
     <div className={styles.container}>
-      <SectionHeader title={t('title')} />
-
       <div className={styles.panel}>
         <h3 className={styles.sectionTitle}>{t('sections.account')}</h3>
         <SettingsRow
@@ -91,10 +87,7 @@ export function SettingsPage() {
 
       <div className={styles.panel}>
         <h3 className={styles.sectionTitle}>{t('sections.preferences')}</h3>
-        <SettingsRow
-          label={t('preferences.language')}
-          subtext={language === 'pl' ? tCommon('language.pl') : tCommon('language.en')}
-        >
+        <SettingsRow label={t('preferences.language')}>
           <LanguageSelect
             value={language}
             onChange={selectLanguage}

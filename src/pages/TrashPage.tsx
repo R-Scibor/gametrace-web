@@ -7,7 +7,7 @@ import { useHardDeleteSession } from '../hooks/useHardDeleteSession';
 import { useRestoreSession } from '../hooks/useSessions';
 import { ConflictNotice } from '../components/ConflictNotice';
 import { Cover } from '../components/Cover';
-import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
+import { Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
 import { parseConflict } from '../lib/conflict';
 import { SESSION_SOURCE_LABEL, SESSION_STATUS_LABEL } from '../lib/sessionLabels';
 import { useFormat } from '../hooks/useFormat';
@@ -54,8 +54,6 @@ export function TrashPage() {
 
   return (
     <div className={styles.container}>
-      <SectionHeader title={t('title')} />
-
       {restoreConflict && <ConflictNotice conflict={restoreConflict} kind="overlap" />}
 
       {isLoading && <TrashSkeleton />}

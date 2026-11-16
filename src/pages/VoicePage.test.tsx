@@ -55,8 +55,7 @@ function renderVoice() {
 test('VoicePage renders recording UI', async () => {
   renderVoice();
 
-  expect(await screen.findByText('Sesja głosowa')).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' })).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' })).toBeInTheDocument();
 });
 
 test('VoicePage shows permission error when mic is blocked', async () => {
@@ -64,8 +63,8 @@ test('VoicePage shows permission error when mic is blocked', async () => {
   const user = userEvent.setup();
   renderVoice();
 
-  await screen.findByText('Sesja głosowa');
-  await user.click(screen.getByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' }));
+  const startBtn = await screen.findByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' });
+  await user.click(startBtn);
 
   expect(await screen.findByText('Zezwól na mikrofon w ustawieniach przeglądarki.')).toBeInTheDocument();
 });
@@ -74,8 +73,8 @@ test('VoicePage record flow transcribes and navigates to session form', async ()
   const user = userEvent.setup();
   renderVoice();
 
-  await screen.findByText('Sesja głosowa');
-  await user.click(screen.getByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' }));
+  const startBtn = await screen.findByRole('button', { name: 'ROZPOCZNIJ NAGRYWANIE' });
+  await user.click(startBtn);
   await user.click(screen.getByRole('button', { name: 'ZAKOŃCZ I PRZETWÓRZ' }));
 
   expect(await screen.findByTestId('session-form')).toBeInTheDocument();

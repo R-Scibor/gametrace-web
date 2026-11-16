@@ -14,7 +14,6 @@ beforeEach(() => {
 test('TrashPage renders trashed sessions', async () => {
   renderPage(<TrashPage />, { route: '/trash' });
 
-  expect(await screen.findByText('Kosz')).toBeInTheDocument();
   expect(await screen.findByText('Wiedźmin 3')).toBeInTheDocument();
   expect(screen.getByText(/2h 0m/)).toBeInTheDocument();
   expect(screen.getByText('Test session')).toBeInTheDocument();

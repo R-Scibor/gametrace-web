@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { SectionHeader, Button, ErrorBanner } from '../components/ui';
+import { Button, ErrorBanner } from '../components/ui';
 import { useTranscribeVoice } from '../hooks/useTranscribeVoice';
 import { useVoiceRecord, VoicePermissionError } from '../hooks/useVoiceRecord';
 import styles from './VoicePage.module.css';
@@ -70,8 +70,6 @@ export function VoicePage() {
 
   return (
     <div className={styles.container}>
-      <SectionHeader title={t('title')} />
-
       <div className={styles.panel}>
         <div className={styles.statusStrip}>
           <span

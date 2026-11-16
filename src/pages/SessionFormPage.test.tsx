@@ -56,7 +56,7 @@ test('SessionFormPage create shows 409 ConflictNotice', async () => {
     { route: '/sessions/new' },
   );
 
-  await screen.findByText('Dodaj sesję');
+  await screen.findByText('Gra');
 
   await pickFirstGame(user);
   setTime('session-start', localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000)));
@@ -94,7 +94,7 @@ test('SessionFormPage create 409 with ongoing conflicting session links to libra
     { route: '/sessions/new' },
   );
 
-  await screen.findByText('Dodaj sesję');
+  await screen.findByText('Gra');
   await pickFirstGame(user);
   setTime('session-start', localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000)));
   setTime('session-end', localInput(FROZEN));
@@ -124,7 +124,7 @@ test('SessionFormPage edit PATCH 409 with writer conflict shows writer notice an
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
   await screen.findByText('Test session');
   await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
 
@@ -153,7 +153,7 @@ test('SessionFormPage edit PATCH 409 with writer ongoing conflict links to libra
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
   await screen.findByText('Test session');
   await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
 
@@ -179,7 +179,7 @@ test('SessionFormPage edit PATCH 409 with writer trashed conflict shows trashed 
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
   await screen.findByText('Test session');
   await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
 
@@ -198,7 +198,7 @@ test('SessionFormPage edit prefills session data', async () => {
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
   await waitFor(() => {
     expect(screen.getByText('Test session')).toBeInTheDocument();
   });
@@ -214,8 +214,7 @@ test('SessionFormPage ERROR session hides trash delete button', async () => {
     { route: '/sessions/2/edit' },
   );
 
-  await screen.findByText('Edytuj sesję');
-  expect(screen.getByRole('button', { name: /Odrzuć sesję/i })).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Odrzuć sesję/i })).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /Usuń sesję/i })).not.toBeInTheDocument();
 });
 
@@ -259,7 +258,6 @@ test('SessionFormPage discard sends DELETE not PATCH', async () => {
     { route: '/sessions/2/edit' },
   );
 
-  await screen.findByText('Edytuj sesję');
   await user.click(await screen.findByRole('button', { name: /Odrzuć sesję/i }));
 
   await waitFor(() => {
@@ -388,8 +386,8 @@ test('ERROR with an empty end does not patch and asks for an end', async () => {
   );
   const user = userEvent.setup();
   renderAppRoutes(<Route path="/sessions/:id/edit" element={<SessionFormPage />} />, { route: '/sessions/2/edit' });
-  await screen.findByText('Edytuj sesję');
-  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+  const saveBtn = await screen.findByRole('button', { name: /Zapisz zmiany/i });
+  await user.click(saveBtn);
   expect(await screen.findByText('Podaj zakończenie albo odrzuć sesję.')).toBeInTheDocument();
   expect(patched).toBe(false);
   expect(useToastStore.getState().toasts).toHaveLength(0);
@@ -417,9 +415,9 @@ test('ERROR older than 30 days with a one hour end still patches', async () => {
     </>,
     { route: '/sessions/2/edit' },
   );
-  await screen.findByText('Edytuj sesję');
+  const saveBtn = await screen.findByRole('button', { name: /Zapisz zmiany/i });
   setTime('session-end', localInput(new Date(start.getTime() + 60 * 60 * 1000)));
-  await user.click(screen.getByRole('button', { name: /Zapisz zmiany/i }));
+  await user.click(saveBtn);
   await waitFor(() => expect(body).not.toBeNull());
   expect(body).not.toHaveProperty('start_time');
   expect(String(body!.end_time)).toMatch(/Z$/);
@@ -498,8 +496,7 @@ test('no game selected disables save button and shows hint, selecting game enabl
     { route: '/sessions/new' },
   );
 
-  await screen.findByText('Dodaj sesję');
-  const saveBtn = screen.getByRole('button', { name: /Zapisz sesję/i });
+  const saveBtn = await screen.findByRole('button', { name: /Zapisz sesję/i });
   expect(saveBtn).toBeDisabled();
   expect(saveBtn).toHaveAttribute('aria-describedby', 'session-game-hint');
   expect(screen.getByText('Najpierw wybierz grę')).toBeInTheDocument();
@@ -520,8 +517,7 @@ test('no game selected shows English hint when language is en', async () => {
     { route: '/sessions/new' },
   );
 
-  await screen.findByText('Add session');
-  const saveBtn = screen.getByRole('button', { name: /Save session/i });
+  const saveBtn = await screen.findByRole('button', { name: /Save session/i });
   expect(saveBtn).toBeDisabled();
   expect(saveBtn).toHaveAttribute('aria-describedby', 'session-game-hint');
   expect(screen.getByText('Choose a game first')).toBeInTheDocument();
@@ -541,7 +537,7 @@ test('SessionFormPage edit mode shows Cancel and back link pointing to the game 
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
 
   const backLink = screen.getByRole('link', { name: /Wróć do gry/i });
   expect(backLink).toBeInTheDocument();
@@ -568,7 +564,7 @@ test('SessionFormPage edit mode shows Cancel and back link in English', async ()
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edit session')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Save changes/i })).toBeInTheDocument();
 
   const backLink = screen.getByRole('link', { name: /Back to game/i });
   expect(backLink).toBeInTheDocument();
@@ -586,8 +582,7 @@ test('SessionFormPage add mode shows Cancel button', async () => {
     { route: '/sessions/new' },
   );
 
-  await screen.findByText('Dodaj sesję');
-  expect(screen.getByRole('button', { name: /Anuluj/i })).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Anuluj/i })).toBeInTheDocument();
 });
 
 test('SessionFormPage edit mode dirty Cancel shows discard dialog, cancelling stays and confirming navigates', async () => {
@@ -604,7 +599,7 @@ test('SessionFormPage edit mode dirty Cancel shows discard dialog, cancelling st
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
 
   setTime('session-end', localInput(new Date(FROZEN.getTime() + 60 * 60 * 1000)));
 
@@ -640,7 +635,7 @@ test('SessionFormPage edit mode dirty back link shows discard dialog and confirm
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
 
   setTime('session-end', localInput(new Date(FROZEN.getTime() + 60 * 60 * 1000)));
 
@@ -668,7 +663,7 @@ test('SessionFormPage edit mode not dirty back link navigates directly', async (
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
 
   const backLink = screen.getByRole('link', { name: /Wróć do gry/i });
   await user.click(backLink);
@@ -687,17 +682,16 @@ test('SessionFormPage add mode dirty Cancel shows discard dialog and confirming 
     { route: '/sessions/new' },
   );
 
-  await screen.findByText('Dodaj sesję');
+  const cancelBtn = await screen.findByRole('button', { name: /Anuluj/i });
   await pickFirstGame(user);
 
-  const cancelBtn = screen.getByRole('button', { name: /Anuluj/i });
   await user.click(cancelBtn);
 
   expect(screen.getByText('PORZUCIĆ ZMIANY?')).toBeInTheDocument();
 
   await user.click(screen.getByRole('button', { name: /Edytuj dalej/i }));
   expect(screen.queryByText('PORZUCIĆ ZMIANY?')).not.toBeInTheDocument();
-  expect(screen.getByText('Dodaj sesję')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Anuluj/i })).toBeInTheDocument();
 
   await user.click(cancelBtn);
   expect(screen.getByText('PORZUCIĆ ZMIANY?')).toBeInTheDocument();
@@ -720,7 +714,7 @@ test('SessionFormPage discard dialog shows English strings when language is en',
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edit session')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Save changes/i })).toBeInTheDocument();
 
   setTime('session-end', localInput(new Date(FROZEN.getTime() + 60 * 60 * 1000)));
 
@@ -745,7 +739,7 @@ test('SessionFormPage registers beforeunload listener when dirty and removes on 
     { route: '/sessions/1/edit' },
   );
 
-  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /Zapisz zmiany/i })).toBeInTheDocument();
 
   const cleanEvent = new Event('beforeunload', { cancelable: true });
   window.dispatchEvent(cleanEvent);
@@ -756,6 +750,28 @@ test('SessionFormPage registers beforeunload listener when dirty and removes on 
   const dirtyEvent = new Event('beforeunload', { cancelable: true });
   window.dispatchEvent(dirtyEvent);
   expect(dirtyEvent.defaultPrevented).toBe(true);
+});
+
+test('SessionFormPage edit mode with ONGOING session renders ongoing message without duplicate title', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () =>
+      HttpResponse.json({ ...fixtures.session, status: 'ONGOING' }),
+    ),
+  );
+
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Nie można edytować aktywnej sesji.')).toBeInTheDocument();
+  expect(screen.queryByText('Edytuj sesję')).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Wróć do gry/i })).toHaveAttribute(
+    'href',
+    `/library/${fixtures.session.game_id}`,
+  );
 });
 
 

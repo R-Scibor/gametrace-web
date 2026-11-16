@@ -4,7 +4,7 @@ import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import { useSession } from '../hooks/useSession';
 import { ConflictNotice } from '../components/ConflictNotice';
-import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog, FieldError } from '../components/ui';
+import { Button, EmptyState, Skeleton, ConfirmDialog, FieldError } from '../components/ui';
 import { GameSelect } from '../components/games/GameSelect';
 import {
   useCreateSession,
@@ -40,7 +40,6 @@ interface InitialValues {
 function SessionFormSkeleton() {
   return (
     <div className={styles.container}>
-      <Skeleton height={20} width={200} />
       <Skeleton height={400} />
     </div>
   );
@@ -186,7 +185,6 @@ export function SessionFormPage() {
   if (isEditing && session?.status === 'ONGOING') {
     return (
       <div className={styles.container}>
-        <SectionHeader title={t('title.edit')} />
         <EmptyState message={t('ongoing.message')} />
         <Link to={`/library/${session.game_id}`} className={styles.backLink}>
           {t('ongoing.back')}
@@ -256,8 +254,6 @@ export function SessionFormPage() {
 
   return (
     <div className={styles.container}>
-      <SectionHeader title={isEditing ? t('title.edit') : t('title.add')} />
-
       {isEditing && session && (
         <Link
           to={`/library/${session.game_id}`}

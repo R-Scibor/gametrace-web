@@ -12,7 +12,6 @@ describe('English rendering', () => {
 
   it('renders the settings screen in English', async () => {
     renderPage(<SettingsPage />, { route: '/settings' });
-    expect(await screen.findByText('Settings')).toBeInTheDocument();
     expect(await screen.findByText('Preferences')).toBeInTheDocument();
     expect(screen.getByText('Language')).toBeInTheDocument();
     expect(screen.getByText('Timezone')).toBeInTheDocument();
@@ -20,7 +19,8 @@ describe('English rendering', () => {
 
   it('does not show the Polish title in English mode', async () => {
     renderPage(<SettingsPage />, { route: '/settings' });
-    await screen.findByText('Settings');
+    await screen.findByText('Preferences');
+    expect(screen.queryByText('Preferencje')).not.toBeInTheDocument();
     expect(screen.queryByText('Ustawienia')).not.toBeInTheDocument();
   });
 });
