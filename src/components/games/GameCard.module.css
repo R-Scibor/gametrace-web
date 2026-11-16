@@ -90,6 +90,17 @@
   line-height: 1.25;
 }
 
+.reviewText {
+  font-family: var(--display);
+  font-size: 11px;
+  color: var(--warn);
+  letter-spacing: 0.5px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .meta {
   font-size: 11px;
   color: var(--text3);

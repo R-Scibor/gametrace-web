@@ -160,6 +160,16 @@
   color: var(--text3);
   margin: 0;
 }
+.reviewDescription {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin: 0;
+}
+.reviewLink {
+  color: var(--orange);
+  text-decoration: underline;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));

@@ -32,3 +32,34 @@ test('GameCard with coversOnly hides title text but keeps link accessible', () =
   expect(screen.queryByText("Baldur's Gate 3")).not.toBeInTheDocument();
   expect(screen.getByRole('link', { name: /baldur/i })).toHaveAttribute('href', '/library/-1');
 });
+
+test('GameCard shows visible review text for a NEEDS_REVIEW game and not for others', () => {
+  const needsReviewGame: Game = {
+    ...game,
+    id: -2,
+    primary_name: 'Hades II',
+    enrichment_status: 'NEEDS_REVIEW',
+    is_accepted: false,
+  };
+
+  const { unmount } = renderWithProviders(<GameCard game={needsReviewGame} />);
+  expect(screen.getByText('Do sprawdzenia')).toBeInTheDocument();
+
+  unmount();
+  renderWithProviders(<GameCard game={game} />);
+  expect(screen.queryByText('Do sprawdzenia')).not.toBeInTheDocument();
+});
+
+test('GameCard with coversOnly hides the review text line but keeps icon badge', () => {
+  const needsReviewGame: Game = {
+    ...game,
+    id: -2,
+    primary_name: 'Hades II',
+    enrichment_status: 'NEEDS_REVIEW',
+    is_accepted: false,
+  };
+
+  renderWithProviders(<GameCard game={needsReviewGame} coversOnly />);
+  expect(screen.queryByText('Do sprawdzenia')).not.toBeInTheDocument();
+  expect(screen.getByLabelText('Do sprawdzenia')).toBeInTheDocument();
+});

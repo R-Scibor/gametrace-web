@@ -262,3 +262,31 @@ test('LibraryPage sort pills show sort direction indicator and reverse direction
     expect(lastUrl.searchParams.get('order')).toBe('asc');
   });
 });
+
+test('LibraryPage shows the description with the FAQ link only on the review tab', async () => {
+  const user = userEvent.setup();
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  await screen.findByText('Wiedźmin 3');
+  expect(
+    screen.queryByText('Te gry zostały dopasowane automatycznie. Ich czas wlicza się do statystyk dopiero po akceptacji.'),
+  ).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Jak to działa' })).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'Do sprawdzenia' }));
+
+  expect(
+    await screen.findByText('Te gry zostały dopasowane automatycznie. Ich czas wlicza się do statystyk dopiero po akceptacji.'),
+  ).toBeInTheDocument();
+  const faqLink = screen.getByRole('link', { name: 'Jak to działa' });
+  expect(faqLink).toBeInTheDocument();
+  expect(faqLink).toHaveAttribute('href', '/faq#q-needs-review-status');
+
+  await user.click(screen.getByRole('button', { name: 'Inne' }));
+
+  await screen.findByText('Stara Gra');
+  expect(
+    screen.queryByText('Te gry zostały dopasowane automatycznie. Ich czas wlicza się do statystyk dopiero po akceptacji.'),
+  ).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Jak to działa' })).not.toBeInTheDocument();
+});

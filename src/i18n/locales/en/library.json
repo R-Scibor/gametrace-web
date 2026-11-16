@@ -6,6 +6,8 @@
     "review": "Needs review",
     "other": "Other"
   },
+  "reviewDescription": "These games were matched automatically. Their playtime counts in your stats once you accept them.",
+  "reviewHowItWorks": "How it works",
   "search": {
     "placeholder": "Search game...",
     "ariaLabel": "Search game"

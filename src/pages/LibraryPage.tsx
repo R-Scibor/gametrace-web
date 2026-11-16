@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useGamesPaginated } from '../hooks/useGames';
 import { EmptyState, ErrorBanner, Skeleton, Button, SampleDataBanner, Switch, SortIndicator } from '../components/ui';
@@ -277,6 +277,14 @@ export function LibraryPage() {
 
       {!isLoading && games.length > 0 && (
         <>
+          {activeTab === 'review' && (
+            <p className={styles.reviewDescription}>
+              {t('reviewDescription')}{' '}
+              <Link to="/faq#q-needs-review-status" className={styles.reviewLink}>
+                {t('reviewHowItWorks')}
+              </Link>
+            </p>
+          )}
           <p className={styles.count}>
             {count}
             {hasNextPage ? '+' : ''} {t('count', { count })}

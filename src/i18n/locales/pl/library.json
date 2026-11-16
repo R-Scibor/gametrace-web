@@ -6,6 +6,8 @@
     "review": "Do sprawdzenia",
     "other": "Inne"
   },
+  "reviewDescription": "Te gry zostały dopasowane automatycznie. Ich czas wlicza się do statystyk dopiero po akceptacji.",
+  "reviewHowItWorks": "Jak to działa",
   "search": {
     "placeholder": "Szukaj gry...",
     "ariaLabel": "Szukaj gry"

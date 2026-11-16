@@ -71,6 +71,7 @@ export function GameCard({ game, sort = 'name', disabled, coversOnly = false }: 
           <div className={styles.title} title={game.primary_name}>
             {game.primary_name}
           </div>
+          {needsReview && <div className={styles.reviewText}>{t('card.needsReviewAria')}</div>}
           {meta && <div className={styles.meta}>{meta}</div>}
         </div>
       )}
