@@ -63,8 +63,14 @@ describe('shipped theme contrast', () => {
     expect(colors.orange).toBe(tokens.orange);
     expect(colors.orangeDim).toBe(tokens['orange-dim']);
     expect(colors.buttonTextOnOrange).toBe(tokens['button-text-on-orange']);
+    expect(colors.error).toBe(tokens.error);
     expect(colors.borderControl).toBe(tokens['border-control']);
     expect(colors.chart4).toBe(tokens.chart4);
+  });
+
+  it('clears 4.5:1 for error text on bg and bg2', () => {
+    expect(contrastRatio(tokens.error, tokens.bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(tokens.error, tokens.bg2)).toBeGreaterThanOrEqual(4.5);
   });
 
   it('clears 4.5:1 for muted text on soot, raised, and field', () => {

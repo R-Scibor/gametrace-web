@@ -15,6 +15,7 @@ export const colors = {
   warn:         '#dcb95c',
   warnTint:     'rgba(220, 185, 92, 0.10)',
   warnBorder:   'rgba(220, 185, 92, 0.40)',
+  error:        '#ff6b6b',
   chart1:       '#ff7a1a',
   chart2:       '#dcb95c',
   chart3:       '#9a8c7a',

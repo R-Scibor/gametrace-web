@@ -1,0 +1,12 @@
+.fieldError {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--error);
+  font-size: 14px;
+  margin: 6px 0 0;
+}
+
+.icon {
+  flex-shrink: 0;
+}

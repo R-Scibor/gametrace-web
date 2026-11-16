@@ -341,22 +341,6 @@
   box-shadow: 0 0 12px rgba(255, 122, 26, 0.35);
 }
 
-/* Error banner slot */
-.errorSlot {
-  min-height: 24px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.error {
-  color: #ff5555;
-  font-size: 12.5px;
-  margin: 0;
-  text-align: center;
-}
-
 /* Form */
 .form {
   width: 100%;

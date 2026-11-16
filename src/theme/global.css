@@ -10,6 +10,7 @@
   --orange:#ff7a1a; --orange-dim:#c86a1c; --orange-glow:rgba(255,122,26,.25);
   --button-text-on-orange:#1a1410;
   --warn:#dcb95c; --warn-tint:rgba(220,185,92,.10); --warn-border:rgba(220,185,92,.40);
+  --error:#ff6b6b;
   --border-control:#73695e;
   --chart1:#ff7a1a; --chart2:#dcb95c; --chart3:#9a8c7a; --chart4:#7a5f4b; --chart5:#c86a1c;
   --display:'Space Grotesk',sans-serif; --body:'DM Sans',sans-serif;

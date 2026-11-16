@@ -4,7 +4,7 @@ import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import { useSession } from '../hooks/useSession';
 import { ConflictNotice } from '../components/ConflictNotice';
-import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
+import { SectionHeader, Button, EmptyState, Skeleton, ConfirmDialog, FieldError } from '../components/ui';
 import { GameSelect } from '../components/games/GameSelect';
 import {
   useCreateSession,
@@ -287,7 +287,7 @@ export function SessionFormPage() {
             initialQuery={gameName || undefined}
           />
           {noGame && (
-            <p id="session-game-hint" className={styles.fieldError}>
+            <p id="session-game-hint" className={styles.fieldHint}>
               {t('fields.gameRequired')}
             </p>
           )}
@@ -313,9 +313,9 @@ export function SessionFormPage() {
             aria-describedby={isStartError ? 'session-start-error' : undefined}
           />
           {isStartError && (
-            <p id="session-start-error" className={styles.fieldError} role="alert">
+            <FieldError id="session-start-error">
               {shown && t(`bounds.${shown}`)}
-            </p>
+            </FieldError>
           )}
         </div>
 
@@ -343,9 +343,9 @@ export function SessionFormPage() {
             }
           />
           {isEndError && (
-            <p id="session-end-error" className={styles.fieldError} role="alert">
+            <FieldError id="session-end-error">
               {shown && t(`bounds.${shown}`)}
-            </p>
+            </FieldError>
           )}
           {isLongOpen && (
             <p id="session-long-open" className={styles.fieldHint}>

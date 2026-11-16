@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useHealth } from '../hooks/useHealth';
-import { Button } from '../components/ui';
+import { Button, FieldError } from '../components/ui';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
@@ -139,11 +139,6 @@ export function LoginPage() {
             <div className={styles.brandRule} />
           </div>
 
-          {/* Dynamic Error Feedback */}
-          <div className={styles.errorSlot}>
-            {error && <p className={styles.error}>{error}</p>}
-          </div>
-
           {/* Primary PIN Form */}
           <form className={styles.form} onSubmit={onSubmit}>
             <div className={styles.fieldLabelRow}>
@@ -166,8 +161,11 @@ export function LoginPage() {
                 autoFocus
                 autoComplete="one-time-code"
                 maxLength={7}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? 'link-code-error' : undefined}
               />
             </div>
+            {error && <FieldError id="link-code-error">{error}</FieldError>}
             <Button
               type="submit"
               disabled={!canSubmit}

@@ -51,11 +51,6 @@
 .textarea {
   resize: vertical;
 }
-.fieldError {
-  color: var(--warn);
-  font-size: 14px;
-  margin: 0;
-}
 .fieldHint {
   color: var(--text2);
   font-size: 14px;

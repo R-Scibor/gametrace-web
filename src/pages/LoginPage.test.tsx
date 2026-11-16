@@ -178,3 +178,26 @@ test('language switcher changes interface language to English and Polish', async
   expect(screen.getByText('/login')).toBeInTheDocument();
 });
 
+test('LoginPage displays FieldError under the input when link login fails', async () => {
+  server.use(
+    http.post('/api/v1/auth/link', () =>
+      HttpResponse.json({ detail: 'Invalid code' }, { status: 401 }),
+    ),
+  );
+
+  renderLogin();
+
+  const input = screen.getByLabelText(/Kod logowania/i);
+  expect(input).not.toHaveAttribute('aria-invalid');
+  expect(input).not.toHaveAttribute('aria-describedby');
+
+  await userEvent.type(input, '123456');
+  await userEvent.click(screen.getByRole('button', { name: /^ZALOGUJ SIĘ$/i }));
+
+  const alert = await screen.findByRole('alert');
+  expect(alert).toHaveAttribute('id', 'link-code-error');
+  expect(input).toHaveAttribute('aria-invalid', 'true');
+  expect(input).toHaveAttribute('aria-describedby', 'link-code-error');
+  expect(alert.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+});
+
