@@ -1,4 +1,7 @@
 {
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
   "language": {
     "label": "Language",
     "pl": "Polski",
