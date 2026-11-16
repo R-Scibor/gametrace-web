@@ -13,6 +13,8 @@ interface Selected {
   hour: number;
 }
 
+const SWATCH_OPACITIES = [0.08, 0.25, 0.5, 0.75, 1];
+
 export function Heatmap({ data }: HeatmapProps) {
   const { t } = useTranslation('analytics');
   const [selected, setSelected] = useState<Selected | null>(null);
@@ -73,6 +75,28 @@ export function Heatmap({ data }: HeatmapProps) {
             })}
           </div>
         ))}
+      </div>
+
+      <div
+        className={styles.legend}
+        role="img"
+        aria-label={t('heatmap.legendAria', { duration: formatDuration(max) })}
+      >
+        <span>{t('heatmap.legendLess')}</span>
+        {SWATCH_OPACITIES.map((opacity) => (
+          <span
+            key={opacity}
+            className={styles.legendSwatch}
+            style={{ backgroundColor: `rgba(255, 122, 26, ${opacity})` }}
+            aria-hidden
+          />
+        ))}
+        <span>{t('heatmap.legendMore')}</span>
+        {max > 1 && (
+          <span className={styles.legendMax}>
+            {t('heatmap.legendMax', { duration: formatDuration(max) })}
+          </span>
+        )}
       </div>
 
       <div className={styles.readout} data-active={selected ? 'true' : 'false'} aria-live="polite">

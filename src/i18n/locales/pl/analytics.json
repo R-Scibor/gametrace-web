@@ -51,7 +51,11 @@
     "selectedField": "Wybrane pole",
     "noActivity": "Brak aktywności",
     "hint": "Wybierz pole na mapie, aby zobaczyć szczegóły",
-    "tooltip": "{{day}} {{hour}}:00 — {{duration}}"
+    "tooltip": "{{day}} {{hour}}:00 — {{duration}}",
+    "legendLess": "Mniej",
+    "legendMore": "Więcej",
+    "legendMax": "Najwięcej {{duration}}",
+    "legendAria": "Skala kolorów od braku gry do {{duration}} na godzinę"
   },
   "ranking": {
     "empty": "Brak danych.",

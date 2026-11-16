@@ -50,7 +50,11 @@
     "selectedField": "Selected cell",
     "noActivity": "No activity",
     "hint": "Select a cell on the map to see details",
-    "tooltip": "{{day}} {{hour}}:00 — {{duration}}"
+    "tooltip": "{{day}} {{hour}}:00 — {{duration}}",
+    "legendLess": "Less",
+    "legendMore": "More",
+    "legendMax": "Top cell {{duration}}",
+    "legendAria": "Color scale from no play to {{duration}} per hour"
   },
   "ranking": {
     "empty": "No data.",
