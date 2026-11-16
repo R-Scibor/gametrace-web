@@ -30,6 +30,11 @@ export function formatDurationOrZero(seconds: number | null | undefined): string
   return `${m}m`;
 }
 
+/** Chart axis tick for values already in hours, e.g. the analytics trend Y axis. */
+export function formatHourTick(value: number | string): string {
+  return `${value}h`;
+}
+
 export function formatHours(seconds: number): string {
   return (seconds / 3600).toFixed(1);
 }

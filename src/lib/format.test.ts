@@ -4,6 +4,7 @@ import {
   formatDuration,
   formatDurationOrZero,
   formatHours,
+  formatHourTick,
   formatDate,
   formatTimeShort,
   formatDateShort,
@@ -89,4 +90,8 @@ test('relative labels follow the active language', async () => {
   await i18n.changeLanguage('en');
   expect(formatDaysUntil('2026-06-18T12:00:00Z')).toBe('3 days');
   expect(formatRecency('2026-06-15T08:00:00Z')).toBe('played today');
+});
+test('formatHourTick adds the hour unit to chart ticks', () => {
+  expect(formatHourTick(0)).toBe('0h');
+  expect(formatHourTick(2.5)).toBe('2.5h');
 });

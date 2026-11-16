@@ -1,5 +1,6 @@
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
+import { formatHourTick } from '../../lib/format';
 
 interface TrendChartProps {
   data: { label: string; value: number }[];
@@ -21,7 +22,11 @@ export function TrendChart({ data }: TrendChartProps) {
             </linearGradient>
           </defs>
           <XAxis dataKey="label" stroke="var(--border-bright)" tick={{ fill: 'var(--text3)', fontSize: 12 }} />
-          <YAxis stroke="var(--border-bright)" tick={{ fill: 'var(--text3)', fontSize: 12 }} />
+          <YAxis
+            stroke="var(--border-bright)"
+            tick={{ fill: 'var(--text3)', fontSize: 12 }}
+            tickFormatter={formatHourTick}
+          />
           <Tooltip 
             contentStyle={{ backgroundColor: 'var(--bg2)', border: '1px solid var(--border)' }}
             itemStyle={{ color: 'var(--orange)' }}
