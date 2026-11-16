@@ -1,6 +1,9 @@
 .container {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   background-color: var(--warn-tint);
   border: 1px solid var(--warn-border);
 }
@@ -8,9 +11,11 @@
   width: 2px;
   background-color: var(--warn);
   flex-shrink: 0;
+  align-self: stretch;
 }
 .body {
   flex: 1;
+  min-width: 0;
   padding: 10px 14px;
 }
 .label {
@@ -28,4 +33,26 @@
   color: var(--text2);
   line-height: 1.4;
   margin: 0;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  padding-right: 14px;
+  flex-shrink: 0;
+}
+.retryButton {
+  width: auto;
+  padding: 8px 14px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .container {
+    flex-wrap: wrap;
+  }
+  .actions {
+    padding: 0 14px 10px 14px;
+    width: 100%;
+  }
 }

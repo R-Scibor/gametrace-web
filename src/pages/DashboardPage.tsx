@@ -67,10 +67,7 @@ export function DashboardPage() {
   if (isError || !data) {
     return (
       <div className={styles.container}>
-        <ErrorBanner message={t('error.load')} />
-        <button type="button" onClick={() => refetch()} className={styles.retry}>
-          {t('error.retry')}
-        </button>
+        <ErrorBanner message={t('error.load')} onRetry={() => refetch()} />
       </div>
     );
   }

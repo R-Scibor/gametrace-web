@@ -28,7 +28,7 @@ interface StatsOverviewProps {
 
 export function StatsOverview({ days, className, sampleData }: StatsOverviewProps) {
   const { t } = useTranslation('analytics');
-  const { data: liveData, isLoading, isError } = useStatsSummary(days, {
+  const { data: liveData, isLoading, isError, refetch } = useStatsSummary(days, {
     enabled: sampleData == null,
   });
 
@@ -49,7 +49,7 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
     if (isError || !liveData) {
       return (
         <div className={rootClass}>
-          <ErrorBanner />
+          <ErrorBanner onRetry={() => refetch()} />
         </div>
       );
     }

@@ -7,7 +7,7 @@ import { useHardDeleteSession } from '../hooks/useHardDeleteSession';
 import { useRestoreSession } from '../hooks/useSessions';
 import { ConflictNotice } from '../components/ConflictNotice';
 import { Cover } from '../components/Cover';
-import { Button, EmptyState, Skeleton, ConfirmDialog } from '../components/ui';
+import { Button, EmptyState, Skeleton, ConfirmDialog, ErrorBanner } from '../components/ui';
 import { parseConflict } from '../lib/conflict';
 import { SESSION_SOURCE_LABEL, SESSION_STATUS_LABEL } from '../lib/sessionLabels';
 import { useFormat } from '../hooks/useFormat';
@@ -33,7 +33,7 @@ function sessionSummary(session: TrashSession, formatDuration: (s: number | null
 export function TrashPage() {
   const { t } = useTranslation('trash');
   const { formatDate, formatDaysUntil, formatDuration, formatSessionWindow } = useFormat();
-  const { data: trash, isLoading } = useTrash();
+  const { data: trash, isLoading, isError, refetch } = useTrash();
   const [restoreConflict, setRestoreConflict] = useState<ConflictResponse | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
 
@@ -58,11 +58,15 @@ export function TrashPage() {
 
       {isLoading && <TrashSkeleton />}
 
-      {!isLoading && (!trash || trash.length === 0) && (
+      {!isLoading && isError && (
+        <ErrorBanner onRetry={() => refetch()} />
+      )}
+
+      {!isLoading && !isError && (!trash || trash.length === 0) && (
         <EmptyState message={t('empty')} />
       )}
 
-      {!isLoading && trash && trash.length > 0 && (
+      {!isLoading && !isError && trash && trash.length > 0 && (
         <div className={styles.table}>
           <div className={styles.tableHeader}>
             <span>{t('columns.game')}</span>

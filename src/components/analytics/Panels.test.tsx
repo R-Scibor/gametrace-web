@@ -1,7 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import { test, expect, vi } from 'vitest';
+import { http, HttpResponse } from 'msw';
 import { RankingPanel, HeatmapPanel, TrendPanel, GenresPanel, CompaniesPanel } from './Panels';
 import { renderWithProviders } from '../../../test/utils';
+import { server } from '../../../test/server';
 import {
   SAMPLE_STATS_SUMMARY,
   SAMPLE_HEATMAP,
@@ -138,4 +140,17 @@ test('CompaniesPanel renders publisher sampleData rows as non-interactive', asyn
   expect(
     screen.queryByRole('button', { name: SAMPLE_COMPANIES_PUBLISHER.items[0].name }),
   ).not.toBeInTheDocument();
+});
+
+test('RankingPanel renders ErrorBanner with retry on failure', async () => {
+  server.use(
+    http.get('/api/v1/stats/summary', () =>
+      HttpResponse.json({ detail: 'fail' }, { status: 500 }),
+    ),
+  );
+
+  renderWithProviders(<RankingPanel days={30} />);
+
+  expect(await screen.findByRole('alert')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /spróbuj ponownie/i })).toBeInTheDocument();
 });

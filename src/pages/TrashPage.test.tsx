@@ -96,3 +96,17 @@ test('TrashPage hard-delete confirms and removes session', async () => {
     expect(screen.getByText('Kosz jest pusty.')).toBeInTheDocument();
   });
 });
+
+test('TrashPage shows error banner with retry on query failure', async () => {
+  server.use(
+    http.get('/api/v1/sessions/trash', () =>
+      HttpResponse.json({ detail: 'fail' }, { status: 500 }),
+    ),
+  );
+
+  renderPage(<TrashPage />, { route: '/trash' });
+
+  expect(await screen.findByRole('alert')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /spróbuj ponownie/i })).toBeInTheDocument();
+  expect(screen.queryByText('Kosz jest pusty.')).not.toBeInTheDocument();
+});

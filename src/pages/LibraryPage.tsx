@@ -252,12 +252,7 @@ export function LibraryPage() {
       {isLoading && <LibrarySkeleton />}
 
       {!isLoading && (isError || !data) && (
-        <div className={styles.errorWrap}>
-          <ErrorBanner message={t('error.load')} />
-          <Button variant="secondary" onClick={() => refetch()}>
-            {t('error.retry')}
-          </Button>
-        </div>
+        <ErrorBanner message={t('error.load')} onRetry={() => refetch()} />
       )}
 
       {!isLoading && !isError && games.length === 0 && !showPreview && (

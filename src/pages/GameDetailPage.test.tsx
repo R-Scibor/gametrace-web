@@ -72,6 +72,26 @@ test('GameDetailPage redirects to library on 404 game', async () => {
   expect(await screen.findByTestId('library')).toBeInTheDocument();
 });
 
+test('GameDetailPage shows error banner with retry on 500 game', async () => {
+  server.use(
+    http.get('/api/v1/games/:id', () =>
+      HttpResponse.json({ detail: 'Internal error' }, { status: 500 }),
+    ),
+  );
+
+  renderAppRoutes(
+    <>
+      <Route path="/library" element={<div data-testid="library">Biblioteka</div>} />
+      <Route path="/library/:gameId" element={<GameDetailPage />} />
+    </>,
+    { route: '/library/999' },
+  );
+
+  expect(await screen.findByRole('alert')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /spróbuj ponownie/i })).toBeInTheDocument();
+  expect(screen.queryByTestId('library')).not.toBeInTheDocument();
+});
+
 test('GameDetailPage renders game stats and session history', async () => {
   renderGameDetail();
 

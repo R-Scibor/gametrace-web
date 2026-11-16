@@ -47,7 +47,7 @@ export function RankingPanel({
   sampleData?: GameStatEntry[];
 }) {
   const { t } = useTranslation('analytics');
-  const { data, isLoading, isError } = useStatsSummary(days, { enabled: sampleData == null });
+  const { data, isLoading, isError, refetch } = useStatsSummary(days, { enabled: sampleData == null });
   if (sampleData != null) {
     return (
       <Panel title={t('panels.ranking')} className={className}>
@@ -58,7 +58,7 @@ export function RankingPanel({
     );
   }
   if (isLoading) return <Panel title={t('panels.ranking')} className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title={t('panels.ranking')} className={className}><ErrorBanner /></Panel>;
+  if (isError || !data) return <Panel title={t('panels.ranking')} className={className}><ErrorBanner onRetry={() => refetch()} /></Panel>;
   return (
     <Panel title={t('panels.ranking')} className={className}>
       <div className={panelStyles.rankScroll}>
@@ -78,7 +78,7 @@ export function HeatmapPanel({
   sampleData?: HeatmapCell[];
 }) {
   const { t } = useTranslation('analytics');
-  const { data, isLoading, isError } = useHeatmap(days, { enabled: sampleData == null });
+  const { data, isLoading, isError, refetch } = useHeatmap(days, { enabled: sampleData == null });
   if (sampleData != null) {
     return (
       <Panel title={t('panels.heatmap')} className={className}>
@@ -87,7 +87,7 @@ export function HeatmapPanel({
     );
   }
   if (isLoading) return <Panel title={t('panels.heatmap')} className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title={t('panels.heatmap')} className={className}><ErrorBanner /></Panel>;
+  if (isError || !data) return <Panel title={t('panels.heatmap')} className={className}><ErrorBanner onRetry={() => refetch()} /></Panel>;
   return (
     <Panel title={t('panels.heatmap')} className={className}>
       <Heatmap data={data.cells} />
@@ -123,7 +123,7 @@ export function TrendPanel({
   sampleData?: TrendResponse;
 }) {
   const { t } = useTranslation('analytics');
-  const { data, isLoading, isError } = useTrend(days, { enabled: sampleData == null });
+  const { data, isLoading, isError, refetch } = useTrend(days, { enabled: sampleData == null });
   if (sampleData != null) {
     return (
       <Panel title={trendPanelTitle(sampleData.granularity)} className={className}>
@@ -133,7 +133,7 @@ export function TrendPanel({
   }
   const title = trendPanelTitle(data?.granularity);
   if (isLoading) return <Panel title={t('panels.trend')} className={className}><Skeleton height={200} /></Panel>;
-  if (isError || !data) return <Panel title={t('panels.trend')} className={className}><ErrorBanner /></Panel>;
+  if (isError || !data) return <Panel title={t('panels.trend')} className={className}><ErrorBanner onRetry={() => refetch()} /></Panel>;
   return (
     <Panel title={title} className={className}>
       <TrendChart data={trendChartData(data)} />
@@ -152,11 +152,11 @@ export function GenresPanel({
 }) {
   const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
-  const { data: liveData, isLoading, isError } = useGenres(days, { enabled: sampleData == null });
+  const { data: liveData, isLoading, isError, refetch } = useGenres(days, { enabled: sampleData == null });
 
   if (sampleData == null) {
     if (isLoading) return <Panel title={t('panels.genres')} className={className}><Skeleton height={200} /></Panel>;
-    if (isError || !liveData) return <Panel title={t('panels.genres')} className={className}><ErrorBanner /></Panel>;
+    if (isError || !liveData) return <Panel title={t('panels.genres')} className={className}><ErrorBanner onRetry={() => refetch()} /></Panel>;
   }
 
   const data = sampleData ?? liveData!;
@@ -185,11 +185,11 @@ export function ThemesPanel({
 }) {
   const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
-  const { data: liveData, isLoading, isError } = useThemes(days, { enabled: sampleData == null });
+  const { data: liveData, isLoading, isError, refetch } = useThemes(days, { enabled: sampleData == null });
 
   if (sampleData == null) {
     if (isLoading) return <Panel title={t('panels.themes')} className={className}><Skeleton height={200} /></Panel>;
-    if (isError || !liveData) return <Panel title={t('panels.themes')} className={className}><ErrorBanner /></Panel>;
+    if (isError || !liveData) return <Panel title={t('panels.themes')} className={className}><ErrorBanner onRetry={() => refetch()} /></Panel>;
   }
 
   const data = sampleData ?? liveData!;
@@ -220,7 +220,7 @@ export function CompaniesPanel({
 }) {
   const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
-  const { data: liveData, isLoading, isError } = useCompanies(role, 10, days, { enabled: sampleData == null });
+  const { data: liveData, isLoading, isError, refetch } = useCompanies(role, 10, days, { enabled: sampleData == null });
 
   const title = role === 'developer' ? t('panels.developers') : t('panels.publishers');
 
@@ -235,7 +235,7 @@ export function CompaniesPanel({
     if (isError || !liveData) {
       return (
         <Panel title={title} className={className}>
-          <ErrorBanner />
+          <ErrorBanner onRetry={() => refetch()} />
         </Panel>
       );
     }
@@ -269,11 +269,11 @@ export function ReleaseYearsPanel({
 }) {
   const { t } = useTranslation('analytics');
   const drill = useLibraryDrill();
-  const { data: liveData, isLoading, isError } = useReleaseYears(days, { enabled: sampleData == null });
+  const { data: liveData, isLoading, isError, refetch } = useReleaseYears(days, { enabled: sampleData == null });
 
   if (sampleData == null) {
     if (isLoading) return <Panel title={t('panels.decades')} className={className}><Skeleton height={200} /></Panel>;
-    if (isError || !liveData) return <Panel title={t('panels.decades')} className={className}><ErrorBanner /></Panel>;
+    if (isError || !liveData) return <Panel title={t('panels.decades')} className={className}><ErrorBanner onRetry={() => refetch()} /></Panel>;
   }
 
   const data = sampleData ?? liveData!;

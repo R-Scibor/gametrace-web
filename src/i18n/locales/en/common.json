@@ -48,7 +48,8 @@
   },
   "errors": {
     "connectionLabel": "CONNECTION ERROR",
-    "connectionMessage": "Couldn't load data. Check your connection."
+    "connectionMessage": "Couldn't load data. Check your connection.",
+    "retry": "TRY AGAIN"
   },
   "cover": {
     "alt": "Cover"

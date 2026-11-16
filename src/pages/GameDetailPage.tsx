@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import { useGame, useUpdateGamePreference } from '../hooks/useGames';
 import { useGameSessions } from '../hooks/useGameSessions';
 import { useGameStats } from '../hooks/useGameStats';
@@ -9,7 +10,7 @@ import { Cover } from '../components/Cover';
 import { GameActionsMenu } from '../components/games/GameActionsMenu';
 import { CoverDialog } from '../components/games/CoverDialog';
 import { ReportDuplicateDialog } from '../components/games/ReportDuplicateDialog';
-import { SectionHeader, Skeleton, Button } from '../components/ui';
+import { ErrorBanner, SectionHeader, Skeleton, Button } from '../components/ui';
 import { SessionList } from '../components/games/SessionList';
 import type { Game } from '../types/api';
 import styles from './GameDetailPage.module.css';
@@ -44,20 +45,50 @@ export function GameDetailPage() {
   const location = useLocation();
   const gameFromNav = (location.state as { game?: Game } | null)?.game;
 
-  const { data: game, isLoading: gameLoading } = useGame(id, gameFromNav);
-  const { data: stats, isLoading: statsLoading } = useGameStats(id);
+  const {
+    data: game,
+    isLoading: gameLoading,
+    isError: isGameError,
+    error: gameError,
+    refetch: refetchGame,
+  } = useGame(id, gameFromNav);
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    isError: isStatsError,
+    refetch: refetchStats,
+  } = useGameStats(id);
   const {
     data: sessionPages,
     isLoading: sessionsLoading,
+    isError: isSessionsError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch: refetchSessions,
   } = useGameSessions(id);
   const prefMut = useUpdateGamePreference(id);
   const [coverDialogOpen, setCoverDialogOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
 
   const sessions = useMemo(() => sessionPages?.pages.flat() ?? [], [sessionPages]);
+
+  const is404 =
+    (axios.isAxiosError(gameError) && gameError.response?.status === 404) ||
+    (!gameLoading && !isGameError && game === null);
+
+  if (is404) return <Navigate to="/library" replace />;
+
+  if (isGameError) {
+    return (
+      <div className={styles.container}>
+        <Link to="/library" className={styles.backLink}>
+          {t('back')}
+        </Link>
+        <ErrorBanner onRetry={() => refetchGame()} />
+      </div>
+    );
+  }
 
   if (gameLoading || statsLoading || sessionsLoading) return <GameDetailSkeleton />;
   if (!game) return <Navigate to="/library" replace />;
@@ -126,40 +157,50 @@ export function GameDetailPage() {
                 {game.is_ignored && <span className={styles.ignoredBadge}>{t('badges.ignored')}</span>}
               </div>
             )}
-            <div className={styles.metrics}>
-              {metrics.map((m) => (
-                <div key={m.label} className={styles.metric}>
-                  <span
-                    className={[
-                      styles.metricValue,
-                      m.value === EMPTY_VALUE && styles.metricValueEmpty,
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
-                  >
-                    {m.value}
-                  </span>
-                  <span className={styles.metricLabel}>{m.label}</span>
-                </div>
-              ))}
-            </div>
+            {isStatsError ? (
+              <ErrorBanner onRetry={() => refetchStats()} />
+            ) : (
+              <div className={styles.metrics}>
+                {metrics.map((m) => (
+                  <div key={m.label} className={styles.metric}>
+                    <span
+                      className={[
+                        styles.metricValue,
+                        m.value === EMPTY_VALUE && styles.metricValueEmpty,
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                    >
+                      {m.value}
+                    </span>
+                    <span className={styles.metricLabel}>{m.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       <div>
         <SectionHeader title={t('history.title')} />
-        <SessionList sessions={sessions} />
-        {hasNextPage && (
-          <div className={styles.loadMore}>
-            <Button
-              variant="secondary"
-              loading={isFetchingNextPage}
-              onClick={() => fetchNextPage()}
-            >
-              {t('history.loadMore')}
-            </Button>
-          </div>
+        {isSessionsError ? (
+          <ErrorBanner onRetry={() => refetchSessions()} />
+        ) : (
+          <>
+            <SessionList sessions={sessions} />
+            {hasNextPage && (
+              <div className={styles.loadMore}>
+                <Button
+                  variant="secondary"
+                  loading={isFetchingNextPage}
+                  onClick={() => fetchNextPage()}
+                >
+                  {t('history.loadMore')}
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
 

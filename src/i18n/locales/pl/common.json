@@ -48,7 +48,8 @@
   },
   "errors": {
     "connectionLabel": "BŁĄD POŁĄCZENIA",
-    "connectionMessage": "Nie udało się pobrać danych. Sprawdź połączenie."
+    "connectionMessage": "Nie udało się pobrać danych. Sprawdź połączenie.",
+    "retry": "SPRÓBUJ PONOWNIE"
   },
   "cover": {
     "alt": "Okładka"

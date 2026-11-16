@@ -71,6 +71,19 @@ test('DashboardPage shows pending errors banner', async () => {
   expect(screen.getByText('NAPRAW')).toBeInTheDocument();
 });
 
+test('DashboardPage shows error banner with retry on fetch failure', async () => {
+  server.use(
+    http.get('/api/v1/stats/dashboard', () =>
+      HttpResponse.json({ detail: 'fail' }, { status: 500 }),
+    ),
+  );
+
+  renderPage(<DashboardPage />, { route: '/' });
+
+  expect(await screen.findByRole('alert')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /spróbuj ponownie/i })).toBeInTheDocument();
+});
+
 test('DashboardPage shows the sample preview for a brand-new empty account', async () => {
   server.use(
     http.get('/api/v1/stats/dashboard', () => HttpResponse.json(fixtures.dashboardNoActive)),
