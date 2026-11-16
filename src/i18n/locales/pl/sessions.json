@@ -9,6 +9,7 @@
   },
   "fields": {
     "game": "Gra",
+    "gameRequired": "Najpierw wybierz grę",
     "start": "Rozpoczęcie",
     "end": "Zakończenie",
     "systemNote": "Notatka systemowa",

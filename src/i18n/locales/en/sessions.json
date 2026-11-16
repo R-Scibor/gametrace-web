@@ -9,6 +9,7 @@
   },
   "fields": {
     "game": "Game",
+    "gameRequired": "Choose a game first",
     "start": "Start",
     "end": "End",
     "systemNote": "System note",

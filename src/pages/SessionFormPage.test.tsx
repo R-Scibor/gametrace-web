@@ -10,6 +10,7 @@ import { fixtures } from '../../test/fixtures';
 import { setVoiceTranscriptPrefill } from '../lib/voicePrefill';
 import { useToastStore } from '../store/toastStore';
 import { SESSION_MAX_DURATION_MS } from '../lib/sessionBounds';
+import i18n from '../i18n';
 
 const FROZEN = new Date('2026-06-15T12:00:00.000Z');
 
@@ -486,5 +487,43 @@ test('a pydantic list 422 toasts the generic save failure', async () => {
   });
   expect(screen.queryByText(/Value error/)).not.toBeInTheDocument();
   expect(screen.queryByText('Sesja nie może trwać dłużej niż 48 godzin.')).not.toBeInTheDocument();
+});
+
+test('no game selected disables save button and shows hint, selecting game enables it', async () => {
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/new' },
+  );
+
+  await screen.findByText('Dodaj sesję');
+  const saveBtn = screen.getByRole('button', { name: /Zapisz sesję/i });
+  expect(saveBtn).toBeDisabled();
+  expect(saveBtn).toHaveAttribute('aria-describedby', 'session-game-hint');
+  expect(screen.getByText('Najpierw wybierz grę')).toBeInTheDocument();
+
+  await pickFirstGame(user);
+
+  expect(saveBtn).toBeEnabled();
+  expect(saveBtn).not.toHaveAttribute('aria-describedby');
+  expect(screen.queryByText('Najpierw wybierz grę')).not.toBeInTheDocument();
+});
+
+test('no game selected shows English hint when language is en', async () => {
+  await i18n.changeLanguage('en');
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/new' },
+  );
+
+  await screen.findByText('Add session');
+  const saveBtn = screen.getByRole('button', { name: /Save session/i });
+  expect(saveBtn).toBeDisabled();
+  expect(saveBtn).toHaveAttribute('aria-describedby', 'session-game-hint');
+  expect(screen.getByText('Choose a game first')).toBeInTheDocument();
 });
 

@@ -172,6 +172,8 @@ export function SessionFormPage() {
     // eslint-disable-next-line react-hooks/purity -- advisory evaluated at render from stored start
     Date.now() - new Date(session.start_time).getTime() > SESSION_MAX_DURATION_MS;
 
+  const noGame = !isEditing && !gameId;
+
   return (
     <div className={styles.container}>
       <SectionHeader title={isEditing ? t('title.edit') : t('title.add')} />
@@ -194,6 +196,11 @@ export function SessionFormPage() {
             aria-label={t('fields.game')}
             initialQuery={gameName || undefined}
           />
+          {noGame && (
+            <p id="session-game-hint" className={styles.fieldError}>
+              {t('fields.gameRequired')}
+            </p>
+          )}
         </div>
 
         <div className={styles.inputGroup}>
@@ -273,7 +280,12 @@ export function SessionFormPage() {
         )}
 
         <div className={styles.actions}>
-          <Button type="submit" variant="primary" disabled={pending}>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={pending || noGame}
+            aria-describedby={noGame ? 'session-game-hint' : undefined}
+          >
             {pending
               ? t('actions.saving')
               : isEditing
