@@ -55,7 +55,8 @@
     "retry": "TRY AGAIN"
   },
   "cover": {
-    "alt": "Cover"
+    "alt": "Cover",
+    "altNamed": "Cover: {{name}}"
   },
   "timezone": {
     "ariaLabel": "Timezone"

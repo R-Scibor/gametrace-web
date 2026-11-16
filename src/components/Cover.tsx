@@ -13,12 +13,16 @@ export function Cover({ gameId, coverImageUrl, placeholderChar = '?', className 
   const { t } = useTranslation('common');
   const localUri = useLocalCoversStore((s) => (gameId != null ? s.covers[gameId] : undefined));
   const src = localUri ?? coverImageUrl ?? null;
+  // Every caller passes the full game name as placeholderChar, so it doubles as the alt text.
+  const alt = placeholderChar && placeholderChar !== '?'
+    ? t('cover.altNamed', { name: placeholderChar })
+    : t('cover.alt');
 
   if (src) {
     return (
       <img
         src={src}
-        alt={t('cover.alt')}
+        alt={alt}
         className={[styles.cover, className].filter(Boolean).join(' ')}
       />
     );

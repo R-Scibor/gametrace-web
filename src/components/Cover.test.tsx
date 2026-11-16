@@ -25,3 +25,7 @@ test('Cover prefers local override when gameId is set', () => {
   render(<Cover gameId={1} coverImageUrl="/covers/server.jpg" />);
   expect(screen.getByRole('img')).toHaveAttribute('src', 'data:image/png;base64,local');
 });
+test('Cover alt text names the game', () => {
+  render(<Cover coverImageUrl="/covers/test.jpg" placeholderChar="Wiedźmin 3" />);
+  expect(screen.getByRole('img')).toHaveAttribute('alt', 'Okładka: Wiedźmin 3');
+});

@@ -55,7 +55,8 @@
     "retry": "SPRÓBUJ PONOWNIE"
   },
   "cover": {
-    "alt": "Okładka"
+    "alt": "Okładka",
+    "altNamed": "Okładka: {{name}}"
   },
   "timezone": {
     "ariaLabel": "Strefa czasowa"
