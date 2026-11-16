@@ -76,7 +76,7 @@ export function GameDetailPage() {
       label: t('metrics.firstPlayed'),
       value: stats?.first_played ? formatDateShort(stats.first_played) : EMPTY_VALUE,
     },
-    { label: t('metrics.lastPlayed'), value: lastPlayed ? formatDateShort(lastPlayed) : EMPTY_VALUE },
+    // Last played is not repeated here: the hero eyebrow already shows it.
   ];
 
   return (

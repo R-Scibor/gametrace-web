@@ -80,6 +80,13 @@ test('GameDetailPage renders game stats and session history', async () => {
   expect(screen.getByText('SESJE')).toBeInTheDocument();
 });
 
+test('GameDetailPage shows the last played date only once, in the hero', async () => {
+  renderGameDetail();
+
+  expect(await screen.findByText(/^OSTATNIO GRANE:/)).toBeInTheDocument();
+  expect(screen.queryByText('OSTATNIO')).not.toBeInTheDocument();
+});
+
 test('menu opens/closes with Esc and returns focus', async () => {
   const user = userEvent.setup();
   renderGameDetail();

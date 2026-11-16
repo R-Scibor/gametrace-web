@@ -12,8 +12,7 @@
     "sessions": "SESJE",
     "total": "ŁĄCZNIE",
     "avg": "ŚREDNIO",
-    "firstPlayed": "PIERWSZY RAZ",
-    "lastPlayed": "OSTATNIO"
+    "firstPlayed": "PIERWSZY RAZ"
   },
   "menu": {
     "trigger": "Opcje gry",
