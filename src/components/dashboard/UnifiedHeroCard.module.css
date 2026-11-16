@@ -305,3 +305,9 @@
     display: none;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .liveDot {
+    animation: none;
+  }
+}

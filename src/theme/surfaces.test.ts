@@ -116,7 +116,7 @@ function mentionsSelector(block: string, selector: string): boolean {
 }
 
 describe('shipped surface constraints', () => {
-  it('stops voice, skeleton, privacy, and toast motion under reduced motion', () => {
+  it('stops voice, skeleton, privacy, toast, welcome, and live dot motion under reduced motion', () => {
     const voice = reducedMotionBlocks(readCss('pages/VoicePage.module.css')).join('\n');
     expect(voice).toMatch(/\.statusDotActive/);
     expect(voice).toMatch(/\.barActive/);
@@ -135,6 +135,16 @@ describe('shipped surface constraints', () => {
     const toast = reducedMotionBlocks(readCss('components/ui/Toast.module.css')).join('\n');
     expect(toast).toMatch(/\.toast/);
     expect(toast).toMatch(/animation:\s*none/);
+
+    const welcome = reducedMotionBlocks(readCss('components/welcome/WelcomeOnboarding.module.css')).join('\n');
+    expect(welcome).toMatch(/\.discordNoticeBox/);
+    expect(welcome).toMatch(/\.phoneStage/);
+    expect(welcome).toMatch(/\.qrStage/);
+    expect(welcome).toMatch(/animation:\s*none/);
+
+    const hero = reducedMotionBlocks(readCss('components/dashboard/UnifiedHeroCard.module.css')).join('\n');
+    expect(hero).toMatch(/\.liveDot/);
+    expect(hero).toMatch(/animation:\s*none/);
   });
 
   it('resets an opacity-0 entrance when reduced motion cancels the animation', () => {

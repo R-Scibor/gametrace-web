@@ -695,3 +695,11 @@
     width: 140px;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .discordNoticeBox,
+  .phoneStage,
+  .qrStage {
+    animation: none;
+  }
+}
