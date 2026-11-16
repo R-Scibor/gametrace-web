@@ -28,20 +28,21 @@ export function DashboardStatTiles({
   layout = 'rail',
 }: DashboardStatTilesProps) {
   const { t } = useTranslation('dashboard');
-  const { formatHours } = useFormat();
+  const { formatDurationOrZero } = useFormat();
 
   const avgValue =
-    avgLoading || avgSessionSeconds == null ? EMPTY_VALUE : formatHours(avgSessionSeconds);
+    avgLoading || avgSessionSeconds == null
+      ? EMPTY_VALUE
+      : formatDurationOrZero(avgSessionSeconds);
   const streakValue = streakDays == null ? EMPTY_VALUE : String(streakDays);
 
   const tiles: Tile[] = [
-    { key: 'today', label: t('tiles.today'), value: formatHours(todaySeconds), unit: 'h' },
-    { key: 'week', label: t('tiles.week'), value: formatHours(weekSeconds), unit: 'h' },
+    { key: 'today', label: t('tiles.today'), value: formatDurationOrZero(todaySeconds) },
+    { key: 'week', label: t('tiles.week'), value: formatDurationOrZero(weekSeconds) },
     {
       key: 'avg',
       label: t('tiles.avgSession'),
       value: avgValue,
-      unit: avgValue === EMPTY_VALUE ? undefined : 'h',
     },
     {
       key: 'streak',

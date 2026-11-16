@@ -101,9 +101,9 @@ test('AnalyticsPage supports all-time window', async () => {
 test('AnalyticsPage shows mobile parity insight tiles', async () => {
   renderPage(<AnalyticsPage />, { route: '/analytics' });
 
-  expect(await screen.findByText('ŚR. SESJA')).toBeInTheDocument();
+  const avgTile = (await screen.findByText('ŚR. SESJA')).closest('div');
+  expect(avgTile).toHaveTextContent('1h 0m');
   expect(screen.getByText('NOWE GRY')).toBeInTheDocument();
-  expect(screen.getByText('1.0')).toBeInTheDocument();
   expect(screen.getByText('2')).toBeInTheDocument();
 });
 

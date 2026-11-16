@@ -7,7 +7,7 @@ import { ErrorBanner, Skeleton } from '../ui';
 import {
   formatAnalyticsPeriodSubtitle,
   formatDuration,
-  formatHours,
+  formatDurationOrZero,
   formatPeriodDelta,
 } from '../../lib/format';
 import styles from './StatsOverview.module.css';
@@ -80,8 +80,7 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
           <span className={styles.accent} aria-hidden />
           <span className={styles.label}>{t('overview.avgSession')}</span>
           <span className={styles.value}>
-            {formatHours(data.avg_session_seconds)}
-            <span className={styles.unit}>h</span>
+            {formatDurationOrZero(data.avg_session_seconds)}
           </span>
         </div>
 
@@ -112,8 +111,7 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
                 <span className={styles.recordGame}>{data.longest_session_game_name}</span>
               )}
               <span className={styles.value}>
-                {formatHours(data.longest_session_seconds)}
-                <span className={styles.unit}>h</span>
+                {formatDurationOrZero(data.longest_session_seconds)}
               </span>
             </div>
           </Link>
@@ -136,8 +134,7 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
                 <span className={styles.recordGame}>{data.longest_session_game_name}</span>
               )}
               <span className={styles.value}>
-                {formatHours(data.longest_session_seconds)}
-                <span className={styles.unit}>h</span>
+                {formatDurationOrZero(data.longest_session_seconds)}
               </span>
             </div>
           </div>

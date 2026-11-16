@@ -2,6 +2,7 @@ import { test, expect, vi, afterEach } from 'vitest';
 import {
   EMPTY_VALUE,
   formatDuration,
+  formatDurationOrZero,
   formatHours,
   formatDate,
   formatTimeShort,
@@ -20,6 +21,16 @@ test('formatDuration formats hours and minutes', () => {
   expect(formatDuration(null)).toBe(EMPTY_VALUE);
   expect(formatDuration(45 * 60)).toBe('45m');
   expect(formatDuration(2 * 3600 + 30 * 60)).toBe('2h 30m');
+});
+
+test('formatDurationOrZero formats 0 as 0m and missing as placeholder', () => {
+  expect(formatDurationOrZero(0)).toBe('0m');
+  expect(formatDurationOrZero(null)).toBe(EMPTY_VALUE);
+  expect(formatDurationOrZero(undefined)).toBe(EMPTY_VALUE);
+  expect(formatDurationOrZero(NaN)).toBe(EMPTY_VALUE);
+  expect(formatDurationOrZero(45 * 60)).toBe('45m');
+  expect(formatDurationOrZero(3600)).toBe('1h 0m');
+  expect(formatDurationOrZero(2 * 3600 + 30 * 60)).toBe('2h 30m');
 });
 
 test('formatHours converts seconds to one decimal hour', () => {

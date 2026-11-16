@@ -35,3 +35,16 @@ test('HeroSpotlight disabled renders no link', () => {
   expect(screen.queryByRole('link')).not.toBeInTheDocument();
   expect(screen.getByText(/baldur/i)).toBeInTheDocument();
 });
+
+test('HeroSpotlight formats total and average duration as Xh Ym without standalone h unit', () => {
+  renderWithProviders(<HeroSpotlight session={session} stats={stats} />);
+  expect(screen.getByText('10h 0m')).toBeInTheDocument();
+  expect(screen.getByText('2h 0m')).toBeInTheDocument();
+  expect(screen.queryByText(/^h$/)).not.toBeInTheDocument();
+});
+
+test('HeroSpotlight formats zero total seconds as 0m', () => {
+  const zeroStats: GameStats = { ...stats, total_seconds: 0, session_count: 0 };
+  renderWithProviders(<HeroSpotlight session={session} stats={zeroStats} />);
+  expect(screen.getByText('0m')).toBeInTheDocument();
+});

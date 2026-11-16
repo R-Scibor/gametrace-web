@@ -18,6 +18,7 @@ export function useFormat() {
       formatDateShort: (iso: string) => format.formatDateShort(iso, { timeZone }),
       formatHeaderDate: () => format.formatHeaderDate({ timeZone }),
       formatDuration: format.formatDuration,
+      formatDurationOrZero: format.formatDurationOrZero,
       formatHours: format.formatHours,
       formatDaysUntil: format.formatDaysUntil,
       formatRecency: format.formatRecency,

@@ -31,7 +31,7 @@ export function UnifiedHeroCard({
   disabled,
 }: UnifiedHeroCardProps) {
   const { t } = useTranslation('dashboard');
-  const { formatHours, formatRecency, formatTimeShort } = useFormat();
+  const { formatDurationOrZero, formatRecency, formatTimeShort } = useFormat();
   const isLive = mode === 'live';
 
   // Stats calculation for idle mode
@@ -39,9 +39,9 @@ export function UnifiedHeroCard({
     idleStats && idleStats.session_count > 0
       ? idleStats.total_seconds / idleStats.session_count
       : null;
-  const totalHours = idleStats ? formatHours(idleStats.total_seconds) : EMPTY_VALUE;
+  const totalDuration = idleStats ? formatDurationOrZero(idleStats.total_seconds) : EMPTY_VALUE;
   const sessionCount = idleStats ? String(idleStats.session_count) : EMPTY_VALUE;
-  const avgHours = avgSeconds != null ? `${formatHours(avgSeconds)}h` : EMPTY_VALUE;
+  const avgDuration = formatDurationOrZero(avgSeconds);
 
   const recency = idleSession
     ? formatRecency(idleSession.end_time ?? idleSession.start_time)
@@ -100,8 +100,7 @@ export function UnifiedHeroCard({
                 <LiveTimer startIso={liveSession.start_time} className={styles.timer} />
               ) : (
                 <div className={styles.hoursWrap}>
-                  <span className={styles.hours}>{totalHours}</span>
-                  <span className={styles.hoursUnit}>h</span>
+                  <span className={styles.hours}>{totalDuration}</span>
                 </div>
               )}
             </div>
@@ -132,7 +131,7 @@ export function UnifiedHeroCard({
                 </div>
                 <div className={styles.subStat}>
                   <span className={styles.subStatLabel}>{t('hero.avgSession')}</span>
-                  <span className={styles.subStatValue}>{avgHours}</span>
+                  <span className={styles.subStatValue}>{avgDuration}</span>
                 </div>
               </>
             )}

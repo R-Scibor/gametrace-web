@@ -21,6 +21,15 @@ export function formatDuration(seconds: number | null | undefined): string {
   return `${m}m`;
 }
 
+export function formatDurationOrZero(seconds: number | null | undefined): string {
+  if (seconds == null || Number.isNaN(seconds)) return EMPTY_VALUE;
+  const s = Math.max(0, Math.floor(seconds));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
+}
+
 export function formatHours(seconds: number): string {
   return (seconds / 3600).toFixed(1);
 }
