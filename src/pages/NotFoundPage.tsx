@@ -8,7 +8,7 @@ export function NotFoundPage() {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = t('notFound.title');
+    document.title = `${t('notFound.title')} | GameTrace`;
     return () => {
       document.title = prev;
     };

@@ -17,3 +17,9 @@ test('the page heading follows a language switch without a route change', async 
   expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument();
   expect(screen.queryByRole('heading', { name: 'Ustawienia' })).not.toBeInTheDocument();
 });
+
+test('the browser tab title names the current view', async () => {
+  renderPage(<TopBar />, { route: '/library' });
+  await screen.findByRole('heading', { name: 'Biblioteka' });
+  expect(document.title).toBe('Biblioteka | GameTrace');
+});

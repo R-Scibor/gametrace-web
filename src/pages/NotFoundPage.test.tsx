@@ -18,7 +18,7 @@ describe('NotFoundPage', () => {
     const link = screen.getByRole('link', { name: 'Przejdź do Dashboardu' });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/');
-    expect(document.title).toBe('Nie znaleziono strony');
+    expect(document.title).toBe('Nie znaleziono strony | GameTrace');
   });
 
   it('renders copy in EN when language is switched', async () => {
@@ -30,6 +30,6 @@ describe('NotFoundPage', () => {
     const link = screen.getByRole('link', { name: 'Go to dashboard' });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/');
-    expect(document.title).toBe('Page not found');
+    expect(document.title).toBe('Page not found | GameTrace');
   });
 });
