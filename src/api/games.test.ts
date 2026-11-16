@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { createGame, matchGames, suggestGames } from './games';
+import { http, HttpResponse } from 'msw';
+import { createGame, getGames, matchGames, suggestGames } from './games';
+import { server } from '../../test/server';
 
 describe('games ladder API', () => {
   it('suggestGames returns catalog items for a query', async () => {
@@ -24,5 +26,20 @@ describe('games ladder API', () => {
     const created = await createGame({ name: 'My Tiny Jam Game', unrecognized: true });
     expect(created.primary_name).toBe('My Tiny Jam Game');
     expect(created.enrichment_status).toBe('NEEDS_REVIEW');
+  });
+
+  it('getGames passes order param only when provided', async () => {
+    let capturedOrder: string | null = null;
+    server.use(
+      http.get('/api/v1/games', ({ request }) => {
+        capturedOrder = new URL(request.url).searchParams.get('order');
+        return HttpResponse.json({ total: 0, items: [] });
+      }),
+    );
+    await getGames({ sort: 'playtime', order: 'asc' });
+    expect(capturedOrder).toBe('asc');
+
+    await getGames({ sort: 'playtime' });
+    expect(capturedOrder).toBeNull();
   });
 });

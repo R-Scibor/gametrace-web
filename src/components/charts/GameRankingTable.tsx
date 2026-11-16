@@ -4,34 +4,14 @@ import { useTranslation } from 'react-i18next';
 import type { GameStatEntry } from '../../types/api';
 import { formatDuration } from '../../lib/format';
 import { intlLocale } from '../../i18n/resolve';
+import { SortIndicator, type SortDir } from '../ui';
 import styles from './GameRankingTable.module.css';
 
 type SortKey = 'name' | 'time';
-type SortDir = 'asc' | 'desc';
 
 interface GameRankingTableProps {
   games: GameStatEntry[];
   disabled?: boolean;
-}
-
-function SortIndicator({ active, dir }: { active: boolean; dir: SortDir }) {
-  if (!active) return null;
-  return (
-    <svg
-      width="10"
-      height="10"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ marginLeft: 5, verticalAlign: 'middle', display: 'inline-block' }}
-      aria-hidden
-    >
-      {dir === 'asc' ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
-    </svg>
-  );
 }
 
 export function GameRankingTable({ games, disabled }: GameRankingTableProps) {

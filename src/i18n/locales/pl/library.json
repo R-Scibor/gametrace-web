@@ -25,6 +25,10 @@
     "playtime": "CZAS GRY",
     "last_played": "OSTATNIO GRANE"
   },
+  "order": {
+    "asc": "rosnąco",
+    "desc": "malejąco"
+  },
   "empty": {
     "review": "Brak gier wymagających sprawdzenia.",
     "other": "Brak gier poza biblioteką.",

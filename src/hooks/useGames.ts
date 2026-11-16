@@ -21,6 +21,7 @@ import type {
   GamePreferenceUpdate,
   GameSort,
   LibraryFilter,
+  SortOrder,
 } from '../types/api';
 
 function applyGamePref(game: Game, pref: GamePreferenceUpdate): Game {
@@ -38,6 +39,7 @@ export type GamesLibraryFilter = {
   inLibrary?: boolean;
   q?: string;
   sort?: GameSort;
+  order?: SortOrder;
   facet?: LibraryFilter | null;
 };
 
@@ -134,6 +136,7 @@ export function useGamesPaginated(filter: GamesLibraryFilter) {
         inLibrary: filter.inLibrary,
         q: filter.q,
         sort: filter.sort,
+        order: filter.order,
         filter: filter.facet ?? undefined,
       }),
     initialPageParam: 0,

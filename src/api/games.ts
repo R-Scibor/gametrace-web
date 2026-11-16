@@ -12,6 +12,7 @@ import type {
   IGDBCandidate,
   LibraryFilter,
   Session,
+  SortOrder,
 } from '../types/api';
 
 export interface GetGamesOptions {
@@ -21,11 +22,12 @@ export interface GetGamesOptions {
   q?: string;
   inLibrary?: boolean;
   sort?: GameSort;
+  order?: SortOrder;
   filter?: LibraryFilter;
 }
 
 export const getGames = async (opts: GetGamesOptions = {}): Promise<GameListResponse> => {
-  const { skip = 0, limit = 20, status, q, inLibrary, sort, filter } = opts;
+  const { skip = 0, limit = 20, status, q, inLibrary, sort, order, filter } = opts;
   const params: Record<string, unknown> = {
     skip,
     limit,
@@ -34,6 +36,7 @@ export const getGames = async (opts: GetGamesOptions = {}): Promise<GameListResp
     in_library: inLibrary,
     sort,
   };
+  if (order) params.order = order;
   if (filter) params[filter.type] = filter.value;
   const response = await client.get<GameListResponse>('/games', { params });
   return response.data;

@@ -68,7 +68,7 @@ test('AnalyticsPage genre bar drills into filtered library', async () => {
   await user.click(screen.getByRole('button', { name: /Adventure/i }));
 
   expect(await screen.findByText('Gatunek: Adventure')).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: 'CZAS GRY' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /^CZAS GRY/ })).toBeInTheDocument();
 });
 
 test('AnalyticsPage facet panels refetch when window changes', async () => {

@@ -3,20 +3,23 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useGamesPaginated } from '../hooks/useGames';
-import { EmptyState, ErrorBanner, Skeleton, Button, SampleDataBanner, Switch } from '../components/ui';
+import { EmptyState, ErrorBanner, Skeleton, Button, SampleDataBanner, Switch, SortIndicator } from '../components/ui';
 import { GameCard } from '../components/games/GameCard';
 import { useGamesStore } from '../store/gamesStore';
 import { useAuthStore } from '../store/authStore';
 import { SAMPLE_GAMES } from '../lib/sampleData';
 import {
   clearFacetParams,
+  getDefaultSortOrder,
   getFilterPrefix,
   getGameSorts,
   parseFacetFilter,
   parseLibraryCoversOnly,
+  parseLibraryOrder,
   parseLibrarySort,
   persistLibraryCoversOnly,
   persistLibrarySort,
+  type SortOrder,
 } from '../lib/libraryParams';
 import type { EnrichmentStatus, GameSort } from '../types/api';
 import styles from './LibraryPage.module.css';
@@ -50,12 +53,18 @@ function LibrarySkeleton() {
   );
 }
 
-function tabToFilter(tab: LibraryTab, q?: string, sort?: GameSort, facet?: ReturnType<typeof parseFacetFilter>) {
+function tabToFilter(
+  tab: LibraryTab,
+  q?: string,
+  sort?: GameSort,
+  facet?: ReturnType<typeof parseFacetFilter>,
+  order?: SortOrder,
+) {
   if (tab === 'review') {
-    return { status: 'NEEDS_REVIEW' as EnrichmentStatus, q, sort, facet: facet ?? null };
+    return { status: 'NEEDS_REVIEW' as EnrichmentStatus, q, sort, order, facet: facet ?? null };
   }
-  if (tab === 'other') return { inLibrary: false, q, sort, facet: facet ?? null };
-  return { q, sort, facet: facet ?? null };
+  if (tab === 'other') return { inLibrary: false, q, sort, order, facet: facet ?? null };
+  return { q, sort, order, facet: facet ?? null };
 }
 
 export function LibraryPage() {
@@ -71,6 +80,8 @@ export function LibraryPage() {
 
   const facet = useMemo(() => parseFacetFilter(searchParams), [searchParams]);
   const sort = useMemo(() => parseLibrarySort(searchParams), [searchParams]);
+  const order = useMemo(() => parseLibraryOrder(searchParams), [searchParams]);
+  const effectiveOrder = order ?? getDefaultSortOrder(sort);
   const activeTab: LibraryTab = facet ? 'all' : tab;
   const gameSorts = getGameSorts();
 
@@ -91,10 +102,23 @@ export function LibraryPage() {
   }, [gamesStale, markFresh, queryClient]);
 
   const setSort = (next: GameSort) => {
-    persistLibrarySort(next);
     const params = new URLSearchParams(searchParams);
-    if (next === 'name') params.delete('sort');
-    else params.set('sort', next);
+    if (next === sort) {
+      const nextOrder = effectiveOrder === 'asc' ? 'desc' : 'asc';
+      if (nextOrder === getDefaultSortOrder(next)) {
+        params.delete('order');
+      } else {
+        params.set('order', nextOrder);
+      }
+      if (next !== 'name') {
+        params.set('sort', next);
+      }
+    } else {
+      persistLibrarySort(next);
+      if (next === 'name') params.delete('sort');
+      else params.set('sort', next);
+      params.delete('order');
+    }
     setSearchParams(params, { replace: true });
   };
 
@@ -110,8 +134,8 @@ export function LibraryPage() {
   };
 
   const filter = useMemo(
-    () => tabToFilter(activeTab, debouncedQuery || undefined, sort, facet),
-    [activeTab, debouncedQuery, sort, facet],
+    () => tabToFilter(activeTab, debouncedQuery || undefined, sort, facet, order),
+    [activeTab, debouncedQuery, sort, facet, order],
   );
   const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGamesPaginated(filter);
@@ -207,16 +231,22 @@ export function LibraryPage() {
       )}
 
       <div className={styles.sortRow}>
-        {gameSorts.map(({ key, label }) => (
-          <button
-            key={key}
-            type="button"
-            className={[styles.sortPill, sort === key ? styles.sortPillActive : ''].filter(Boolean).join(' ')}
-            onClick={() => setSort(key)}
-          >
-            {label}
-          </button>
-        ))}
+        {gameSorts.map(({ key, label }) => {
+          const isActive = sort === key;
+          return (
+            <button
+              key={key}
+              type="button"
+              className={[styles.sortPill, isActive ? styles.sortPillActive : ''].filter(Boolean).join(' ')}
+              onClick={() => setSort(key)}
+              aria-pressed={isActive}
+              aria-label={isActive ? `${label} ${t(`order.${effectiveOrder}`)}` : undefined}
+            >
+              {label}
+              {isActive && <SortIndicator dir={effectiveOrder} />}
+            </button>
+          );
+        })}
       </div>
 
       {isLoading && <LibrarySkeleton />}

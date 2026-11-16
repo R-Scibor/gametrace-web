@@ -131,6 +131,8 @@
   gap: 8px;
 }
 .sortPill {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--display);
   font-size: 12px;
   font-weight: 700;

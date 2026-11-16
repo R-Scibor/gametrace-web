@@ -1,5 +1,7 @@
-import type { GameSort, LibraryFilter } from '../types/api';
+import type { GameSort, LibraryFilter, SortOrder } from '../types/api';
 import i18n from '../i18n';
+
+export type { SortOrder };
 
 export const LIBRARY_SORT_KEY = 'library-sort';
 export const LIBRARY_COVERS_ONLY_KEY = 'library-covers-only';
@@ -64,6 +66,18 @@ export function parseLibrarySort(params: URLSearchParams): GameSort {
     // sessionStorage unavailable
   }
   return 'name';
+}
+
+export function getDefaultSortOrder(sort: GameSort): SortOrder {
+  return sort === 'name' ? 'asc' : 'desc';
+}
+
+export function parseLibraryOrder(params: URLSearchParams): SortOrder | undefined {
+  const fromUrl = params.get('order');
+  if (fromUrl === 'asc' || fromUrl === 'desc') {
+    return fromUrl;
+  }
+  return undefined;
 }
 
 export function persistLibrarySort(sort: GameSort) {

@@ -1,9 +1,11 @@
 import { test, expect, beforeEach } from 'vitest';
 import {
   clearFacetParams,
+  getDefaultSortOrder,
   libraryDrillUrl,
   parseFacetFilter,
   parseLibraryCoversOnly,
+  parseLibraryOrder,
   parseLibrarySort,
   persistLibraryCoversOnly,
 } from './libraryParams';
@@ -41,4 +43,17 @@ test('parseLibraryCoversOnly reads from localStorage and falls back to false', (
   expect(parseLibraryCoversOnly()).toBe(true);
   persistLibraryCoversOnly(false);
   expect(parseLibraryCoversOnly()).toBe(false);
+});
+
+test('getDefaultSortOrder returns asc for name and desc for playtime and last_played', () => {
+  expect(getDefaultSortOrder('name')).toBe('asc');
+  expect(getDefaultSortOrder('playtime')).toBe('desc');
+  expect(getDefaultSortOrder('last_played')).toBe('desc');
+});
+
+test('parseLibraryOrder extracts order param from URL when valid', () => {
+  expect(parseLibraryOrder(new URLSearchParams('order=asc'))).toBe('asc');
+  expect(parseLibraryOrder(new URLSearchParams('order=desc'))).toBe('desc');
+  expect(parseLibraryOrder(new URLSearchParams('order=other'))).toBeUndefined();
+  expect(parseLibraryOrder(new URLSearchParams())).toBeUndefined();
 });

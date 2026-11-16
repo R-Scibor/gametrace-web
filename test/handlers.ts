@@ -117,6 +117,7 @@ export const handlers = [
     const inLibrary = url.searchParams.get('in_library');
     const q = url.searchParams.get('q')?.toLowerCase();
     const sort = url.searchParams.get('sort') ?? 'name';
+    const order = url.searchParams.get('order');
     const genre = url.searchParams.get('genre');
     const theme = url.searchParams.get('theme');
     const developer = url.searchParams.get('developer');
@@ -156,16 +157,19 @@ export const handlers = [
       items = items.filter((g) => fixtures.gameFacets[g.id]?.release_decade === releaseDecade);
     }
 
+    const effectiveOrder = order ?? (sort === 'name' ? 'asc' : 'desc');
+    const mult = effectiveOrder === 'desc' ? -1 : 1;
+
     if (sort === 'playtime') {
-      items.sort((a, b) => b.total_seconds - a.total_seconds);
+      items.sort((a, b) => mult * (a.total_seconds - b.total_seconds));
     } else if (sort === 'last_played') {
       items.sort((a, b) => {
         const aTs = a.last_played ? Date.parse(a.last_played) : 0;
         const bTs = b.last_played ? Date.parse(b.last_played) : 0;
-        return bTs - aTs;
+        return mult * (aTs - bTs);
       });
     } else {
-      items.sort((a, b) => a.primary_name.localeCompare(b.primary_name));
+      items.sort((a, b) => mult * a.primary_name.localeCompare(b.primary_name));
     }
 
     return HttpResponse.json({ total: items.length, items: items.slice(skip, skip + limit) });

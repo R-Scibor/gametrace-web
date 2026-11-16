@@ -25,6 +25,10 @@
     "playtime": "PLAYTIME",
     "last_played": "LAST PLAYED"
   },
+  "order": {
+    "asc": "ascending",
+    "desc": "descending"
+  },
   "empty": {
     "review": "No games need review.",
     "other": "No games outside your library.",

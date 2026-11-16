@@ -40,6 +40,7 @@ export interface Game {
 }
 
 export type GameSort = 'name' | 'playtime' | 'last_played';
+export type SortOrder = 'asc' | 'desc';
 
 export type LibraryFilter = {
   type: 'genre' | 'theme' | 'developer' | 'publisher' | 'release_decade';

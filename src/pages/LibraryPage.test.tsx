@@ -10,6 +10,8 @@ import { server } from '../../test/server';
 import { SAMPLE_GAMES } from '../lib/sampleData';
 
 beforeEach(() => {
+  sessionStorage.clear();
+  localStorage.clear();
   resetStores();
 });
 
@@ -189,4 +191,74 @@ test('LibraryPage keeps the plain empty state for a filtered search with no resu
 
   expect(await screen.findByText(/brak wyników dla/i)).toBeInTheDocument();
   expect(screen.queryByText(/to są przykładowe dane/i)).not.toBeInTheDocument();
+});
+
+test('LibraryPage sort pills show sort direction indicator and reverse direction on click', async () => {
+  const user = userEvent.setup();
+  const capturedUrls: string[] = [];
+
+  server.use(
+    http.get('/api/v1/games', ({ request }) => {
+      capturedUrls.push(request.url);
+      return HttpResponse.json({ total: 1, items: [SAMPLE_GAMES[0]] });
+    }),
+  );
+
+  renderPage(<LibraryPage />, { route: '/library' });
+
+  const namePill = await screen.findByRole('button', { name: /NAZWA/i });
+  expect(namePill).toHaveAttribute('aria-pressed', 'true');
+  expect(namePill).toHaveAccessibleName(/rosnąco/i);
+  const indicator = screen.getByTestId('sort-indicator');
+  expect(indicator).toHaveAttribute('data-dir', 'asc');
+
+  await waitFor(() => expect(capturedUrls.length).toBeGreaterThan(0));
+  expect(new URL(capturedUrls[0]).searchParams.get('order')).toBeNull();
+
+  capturedUrls.length = 0;
+  await user.click(namePill);
+
+  expect(namePill).toHaveAccessibleName(/malejąco/i);
+  expect(screen.getByTestId('sort-indicator')).toHaveAttribute('data-dir', 'desc');
+
+  await waitFor(() => {
+    const lastUrl = new URL(capturedUrls[capturedUrls.length - 1]);
+    expect(lastUrl.searchParams.get('order')).toBe('desc');
+  });
+
+  capturedUrls.length = 0;
+  await user.click(namePill);
+
+  expect(namePill).toHaveAccessibleName(/rosnąco/i);
+  expect(screen.getByTestId('sort-indicator')).toHaveAttribute('data-dir', 'asc');
+
+  await waitFor(() => {
+    const lastUrl = new URL(capturedUrls[capturedUrls.length - 1]);
+    expect(lastUrl.searchParams.get('order')).toBeNull();
+  });
+
+  capturedUrls.length = 0;
+  const playtimePill = screen.getByRole('button', { name: 'CZAS GRY' });
+  expect(playtimePill).toHaveAttribute('aria-pressed', 'false');
+  await user.click(playtimePill);
+
+  expect(playtimePill).toHaveAttribute('aria-pressed', 'true');
+  expect(playtimePill).toHaveAccessibleName(/malejąco/i);
+  expect(screen.getByTestId('sort-indicator')).toHaveAttribute('data-dir', 'desc');
+  await waitFor(() => {
+    const lastUrl = new URL(capturedUrls[capturedUrls.length - 1]);
+    expect(lastUrl.searchParams.get('sort')).toBe('playtime');
+    expect(lastUrl.searchParams.get('order')).toBeNull();
+  });
+
+  capturedUrls.length = 0;
+  await user.click(playtimePill);
+
+  expect(playtimePill).toHaveAccessibleName(/rosnąco/i);
+  expect(screen.getByTestId('sort-indicator')).toHaveAttribute('data-dir', 'asc');
+  await waitFor(() => {
+    const lastUrl = new URL(capturedUrls[capturedUrls.length - 1]);
+    expect(lastUrl.searchParams.get('sort')).toBe('playtime');
+    expect(lastUrl.searchParams.get('order')).toBe('asc');
+  });
 });
