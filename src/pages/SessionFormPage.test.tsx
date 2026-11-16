@@ -527,3 +527,67 @@ test('no game selected shows English hint when language is en', async () => {
   expect(screen.getByText('Choose a game first')).toBeInTheDocument();
 });
 
+test('SessionFormPage edit mode shows Cancel and back link pointing to the game page; clicking Cancel navigates to the game page', async () => {
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/library/:id" element={<div>Game Detail Screen</div>} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edytuj sesję')).toBeInTheDocument();
+
+  const backLink = screen.getByRole('link', { name: /Wróć do gry/i });
+  expect(backLink).toBeInTheDocument();
+  expect(backLink).toHaveAttribute('href', `/library/${fixtures.session.game_id}`);
+
+  const cancelBtn = screen.getByRole('button', { name: /Anuluj/i });
+  expect(cancelBtn).toBeInTheDocument();
+
+  await user.click(cancelBtn);
+  expect(await screen.findByText('Game Detail Screen')).toBeInTheDocument();
+});
+
+test('SessionFormPage edit mode shows Cancel and back link in English', async () => {
+  await i18n.changeLanguage('en');
+  server.use(
+    http.get('/api/v1/sessions/1', () => HttpResponse.json(fixtures.session)),
+  );
+
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+      <Route path="/library/:id" element={<div>Game Detail Screen</div>} />
+    </>,
+    { route: '/sessions/1/edit' },
+  );
+
+  expect(await screen.findByText('Edit session')).toBeInTheDocument();
+
+  const backLink = screen.getByRole('link', { name: /Back to game/i });
+  expect(backLink).toBeInTheDocument();
+  expect(backLink).toHaveAttribute('href', `/library/${fixtures.session.game_id}`);
+
+  const cancelBtn = screen.getByRole('button', { name: /Cancel/i });
+  expect(cancelBtn).toBeInTheDocument();
+});
+
+test('SessionFormPage add mode shows Cancel button', async () => {
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/new' },
+  );
+
+  await screen.findByText('Dodaj sesję');
+  expect(screen.getByRole('button', { name: /Anuluj/i })).toBeInTheDocument();
+});
+
+

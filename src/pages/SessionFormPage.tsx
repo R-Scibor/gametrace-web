@@ -178,6 +178,12 @@ export function SessionFormPage() {
     <div className={styles.container}>
       <SectionHeader title={isEditing ? t('title.edit') : t('title.add')} />
 
+      {isEditing && session && (
+        <Link to={`/library/${session.game_id}`} className={styles.backLink}>
+          {t('ongoing.back')}
+        </Link>
+      )}
+
       {conflict && (
         <ConflictNotice
           conflict={conflict}
@@ -291,6 +297,20 @@ export function SessionFormPage() {
               : isEditing
                 ? t('actions.saveChanges')
                 : t('actions.saveSession')}
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            disabled={pending}
+            onClick={() => {
+              if (isEditing && session) {
+                navigate(`/library/${session.game_id}`);
+              } else {
+                navigate(-1);
+              }
+            }}
+          >
+            {t('actions.cancel')}
           </Button>
           {!isEditing && (
             <Button type="button" variant="secondary" disabled={pending} onClick={() => navigate('/voice')}>

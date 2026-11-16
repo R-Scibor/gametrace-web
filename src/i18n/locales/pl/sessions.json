@@ -31,7 +31,8 @@
     "saveSession": "ZAPISZ SESJĘ",
     "recordVoice": "NAGRAJ GŁOSOWO",
     "discard": "ODRZUĆ SESJĘ",
-    "delete": "USUŃ SESJĘ"
+    "delete": "USUŃ SESJĘ",
+    "cancel": "ANULUJ"
   },
   "deleteConfirm": {
     "title": "USUŃ SESJĘ",

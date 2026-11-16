@@ -31,7 +31,8 @@
     "saveSession": "SAVE SESSION",
     "recordVoice": "RECORD VOICE",
     "discard": "DISCARD SESSION",
-    "delete": "DELETE SESSION"
+    "delete": "DELETE SESSION",
+    "cancel": "CANCEL"
   },
   "deleteConfirm": {
     "title": "DELETE SESSION",
