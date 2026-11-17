@@ -274,13 +274,6 @@ function SessionForm() {
         </Link>
       )}
 
-      {conflict && (
-        <ConflictNotice
-          conflict={conflict}
-          kind={classifyConflict(conflict, isEditing ? sessionId : undefined)}
-        />
-      )}
-
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.inputGroup}>
           <label htmlFor="session-game" className={styles.label}>{t('fields.game')}</label>
@@ -423,6 +416,14 @@ function SessionForm() {
           )}
         </div>
       </form>
+
+      {/* Below the form so a conflict does not push the fields down */}
+      {conflict && (
+        <ConflictNotice
+          conflict={conflict}
+          kind={classifyConflict(conflict, isEditing ? sessionId : undefined)}
+        />
+      )}
 
       <ConfirmDialog
         open={discardConfirmOpen}

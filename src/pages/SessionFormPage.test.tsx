@@ -67,6 +67,10 @@ test('SessionFormPage create shows 409 ConflictNotice', async () => {
   expect(screen.getByText('Ten przedział nachodzi na inną sesję.')).toBeInTheDocument();
   expect(screen.queryByText('Session overlaps with an existing session')).not.toBeInTheDocument();
   expect(screen.getByRole('link', { name: /Edytuj/i })).toHaveAttribute('href', '/sessions/42/edit');
+  const form = document.querySelector('form') as HTMLFormElement;
+  const notice = screen.getByText('Nakładające się sesje');
+  expect(form.compareDocumentPosition(notice) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(form).not.toContainElement(notice);
 });
 
 test('SessionFormPage create 409 with ongoing conflicting session links to library', async () => {
