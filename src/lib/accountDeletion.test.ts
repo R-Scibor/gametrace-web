@@ -4,6 +4,7 @@ import i18n from '../i18n';
 import {
   ACCOUNT_DELETION_GRACE_DAYS,
   daysLeftUntil,
+  graceDaysFrom,
   isScheduledDeletionConsumed,
   markScheduledDeletionConsumed,
   isDeletionStatus,
@@ -149,5 +150,13 @@ describe('scheduled-deletion consumed flag', () => {
     markScheduledDeletionConsumed();
     clearScheduledDeletion();
     expect(isScheduledDeletionConsumed()).toBe(false);
+  });
+});
+
+describe('graceDaysFrom', () => {
+  it('uses the API value and falls back while it is missing', () => {
+    expect(graceDaysFrom({ grace_days: 12 })).toBe(12);
+    expect(graceDaysFrom({ grace_days: null })).toBe(ACCOUNT_DELETION_GRACE_DAYS);
+    expect(graceDaysFrom(undefined)).toBe(ACCOUNT_DELETION_GRACE_DAYS);
   });
 });

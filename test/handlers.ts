@@ -64,6 +64,7 @@ export const handlers = [
       build_time: '2026-01-01T00:00:00Z',
       api: { uptime_seconds: 3600 },
       bot: { status: 'online', uptime_seconds: 1800, last_heartbeat_seconds_ago: 5 },
+      grace_days: 7,
     });
   }),
 

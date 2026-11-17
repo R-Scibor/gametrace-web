@@ -3,12 +3,18 @@ import { daysUntil } from './format';
 import type { DeletionStatus, PendingDeletion } from '../types/api';
 
 /**
- * Mirrors the backend setting `account_deletion_grace_days` (default 7), which
- * is not exposed over the API — there is no deletion-status GET, and nothing is
- * scheduled yet at the moment the confirm dialog needs this number. The
- * authoritative date arrives in `purge_at` on the 202 response.
+ * Fallback for the backend setting `account_deletion_grace_days` (default 7),
+ * used only until `/health` answers or when it does not carry `grace_days`.
+ * The real value comes from `useGraceDays`. The authoritative date for a
+ * scheduled deletion still arrives in `purge_at` on the 202 response.
  */
 export const ACCOUNT_DELETION_GRACE_DAYS = 7;
+
+/** The grace period from a `/health` payload, or the fallback when it is missing. */
+export function graceDaysFrom(health: { grace_days?: number | null } | null | undefined): number {
+  const days = health?.grace_days;
+  return typeof days === 'number' && Number.isFinite(days) ? days : ACCOUNT_DELETION_GRACE_DAYS;
+}
 
 const STORAGE_KEY = 'gt.deletionScheduled';
 const CONSUMED_KEY = 'gt.deletionScheduled.consumed';
