@@ -167,7 +167,11 @@ export function LoginPage() {
                 aria-describedby={error ? 'link-code-error' : undefined}
               />
             </div>
-            {error && <FieldError id="link-code-error">{error}</FieldError>}
+            {error && (
+              <FieldError id="link-code-error" className={styles.codeError}>
+                {error}
+              </FieldError>
+            )}
             <Button
               type="submit"
               disabled={!canSubmit}
