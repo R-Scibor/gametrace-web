@@ -45,7 +45,17 @@ function SessionFormSkeleton() {
   );
 }
 
+/**
+ * Keyed by the route id so moving from add to edit (for example via the overlap
+ * notice link) mounts a fresh form instead of keeping the typed values and the
+ * failed create error, which then looked like a writer conflict on that session.
+ */
 export function SessionFormPage() {
+  const { id } = useParams();
+  return <SessionForm key={id ?? 'new'} />;
+}
+
+function SessionForm() {
   const { t } = useTranslation('sessions');
   const { id } = useParams();
   const navigate = useNavigate();

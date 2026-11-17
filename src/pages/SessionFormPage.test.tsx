@@ -776,3 +776,48 @@ test('SessionFormPage edit mode with ONGOING session renders ongoing message wit
 
 
 
+
+test('opening the overlapping session from the notice loads it fresh without a writer notice', async () => {
+  const target = fixtures.sessions[0];
+  server.use(
+    http.post('/api/v1/sessions', () =>
+      HttpResponse.json(
+        {
+          detail: {
+            ...fixtures.conflictResponse,
+            conflicting_session: { ...fixtures.conflictResponse.conflicting_session, id: target.id },
+          },
+        },
+        { status: 409 },
+      ),
+    ),
+  );
+
+  const user = userEvent.setup();
+  renderAppRoutes(
+    <>
+      <Route path="/sessions/new" element={<SessionFormPage />} />
+      <Route path="/sessions/:id/edit" element={<SessionFormPage />} />
+    </>,
+    { route: '/sessions/new' },
+  );
+
+  await screen.findByText('Gra');
+  await pickFirstGame(user);
+  const typedStart = localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000));
+  setTime('session-start', typedStart);
+  setTime('session-end', localInput(FROZEN));
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+
+  await user.click(await screen.findByRole('link', { name: /Edytuj/i }));
+
+  expect(await screen.findByRole('link', { name: 'Wróć do gry' })).toBeInTheDocument();
+  await waitFor(() =>
+    expect(document.getElementById('session-start')).toHaveValue(
+      localInput(new Date(target.start_time)),
+    ),
+  );
+  expect(document.getElementById('session-start')).not.toHaveValue(typedStart);
+  expect(screen.queryByText('Sesja zmieniona')).not.toBeInTheDocument();
+  expect(screen.queryByText('Nakładające się sesje')).not.toBeInTheDocument();
+});
