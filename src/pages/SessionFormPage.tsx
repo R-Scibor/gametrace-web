@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { FormEvent, MouseEvent } from 'react';
-import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSession } from '../hooks/useSession';
 import { ConflictNotice } from '../components/ConflictNotice';
-import { Button, EmptyState, Skeleton, ConfirmDialog, FieldError } from '../components/ui';
+import { BackLink, Button, EmptyState, Skeleton, ConfirmDialog, FieldError } from '../components/ui';
 import { GameSelect } from '../components/games/GameSelect';
 import {
   useCreateSession,
@@ -194,12 +194,12 @@ function SessionForm() {
 
   if (isEditing && session?.status === 'ONGOING') {
     return (
-      <div className={styles.container}>
-        <EmptyState message={t('ongoing.message')} />
-        <Link to={`/library/${session.game_id}`} className={styles.backLink}>
-          {t('ongoing.back')}
-        </Link>
-      </div>
+      <>
+        <BackLink to={`/library/${session.game_id}`}>{t('ongoing.back')}</BackLink>
+        <div className={styles.container}>
+          <EmptyState message={t('ongoing.message')} />
+        </div>
+      </>
     );
   }
 
@@ -263,195 +263,192 @@ function SessionForm() {
   const noGame = !isEditing && !gameId;
 
   return (
-    <div className={styles.container}>
+    <>
       {isEditing && session && (
-        <Link
-          to={`/library/${session.game_id}`}
-          className={styles.backLink}
-          onClick={handleBackLinkClick}
-        >
+        <BackLink to={`/library/${session.game_id}`} onClick={handleBackLinkClick}>
           {t('ongoing.back')}
-        </Link>
+        </BackLink>
       )}
-
-      <form className={styles.form} onSubmit={onSubmit}>
-        <div className={styles.inputGroup}>
-          <label htmlFor="session-game" className={styles.label}>{t('fields.game')}</label>
-          <GameSelect
-            id="session-game"
-            value={gameId}
-            onChange={(v) => { setGameId(v); clearConflict(); }}
-            disabled={isEditing || pending}
-            aria-label={t('fields.game')}
-            initialQuery={gameName || undefined}
-          />
-          {noGame && (
-            <p id="session-game-hint" className={styles.fieldHint}>
-              {t('fields.gameRequired')}
-            </p>
-          )}
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label htmlFor="session-start" className={styles.label}>{t('fields.start')}</label>
-          <input
-            id="session-start"
-            type="datetime-local"
-            value={startTime}
-            onChange={(e) => {
-              setStartTime(e.target.value);
-              setBoundCode(null);
-              createMut.reset();
-              updateMut.reset();
-              clearConflict();
-            }}
-            className={styles.input}
-            disabled={isEditing || pending}
-            required
-            aria-invalid={isStartError ? true : undefined}
-            aria-describedby={isStartError ? 'session-start-error' : undefined}
-          />
-          {isStartError && (
-            <FieldError id="session-start-error">
-              {shown && t(`bounds.${shown}`)}
-            </FieldError>
-          )}
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label htmlFor="session-end" className={styles.label}>{t('fields.end')}</label>
-          <input
-            id="session-end"
-            type="datetime-local"
-            value={endTime}
-            onChange={(e) => {
-              setEndTime(e.target.value);
-              setBoundCode(null);
-              createMut.reset();
-              updateMut.reset();
-              clearConflict();
-            }}
-            className={styles.input}
-            disabled={pending}
-            required={!isEditing}
-            aria-invalid={isEndError ? true : undefined}
-            aria-describedby={
-              [isEndError && 'session-end-error', isLongOpen && 'session-long-open']
-                .filter(Boolean)
-                .join(' ') || undefined
-            }
-          />
-          {isEndError && (
-            <FieldError id="session-end-error">
-              {shown && t(`bounds.${shown}`)}
-            </FieldError>
-          )}
-          {isLongOpen && (
-            <p id="session-long-open" className={styles.fieldHint}>
-              {t('bounds.errorTooLong')}
-            </p>
-          )}
-        </div>
-
-        {isEditing && session?.notes && (
+      <div className={styles.container}>
+        <form className={styles.form} onSubmit={onSubmit}>
           <div className={styles.inputGroup}>
-            <span className={styles.label}>{t('fields.systemNote')}</span>
-            <p className={styles.notesReadonly}>{session.notes}</p>
+            <label htmlFor="session-game" className={styles.label}>{t('fields.game')}</label>
+            <GameSelect
+              id="session-game"
+              value={gameId}
+              onChange={(v) => { setGameId(v); clearConflict(); }}
+              disabled={isEditing || pending}
+              aria-label={t('fields.game')}
+              initialQuery={gameName || undefined}
+            />
+            {noGame && (
+              <p id="session-game-hint" className={styles.fieldHint}>
+                {t('fields.gameRequired')}
+              </p>
+            )}
           </div>
-        )}
 
-        {!isEditing && voiceNote && (
           <div className={styles.inputGroup}>
-            <span className={styles.label}>{t('fields.transcriptPreview')}</span>
-            <p className={styles.notesHint}>{t('fields.transcriptHint')}</p>
-            <p className={styles.notesReadonly}>{voiceNote}</p>
+            <label htmlFor="session-start" className={styles.label}>{t('fields.start')}</label>
+            <input
+              id="session-start"
+              type="datetime-local"
+              value={startTime}
+              onChange={(e) => {
+                setStartTime(e.target.value);
+                setBoundCode(null);
+                createMut.reset();
+                updateMut.reset();
+                clearConflict();
+              }}
+              className={styles.input}
+              disabled={isEditing || pending}
+              required
+              aria-invalid={isStartError ? true : undefined}
+              aria-describedby={isStartError ? 'session-start-error' : undefined}
+            />
+            {isStartError && (
+              <FieldError id="session-start-error">
+                {shown && t(`bounds.${shown}`)}
+              </FieldError>
+            )}
           </div>
-        )}
 
-        <div className={styles.actions}>
-          <Button
-            type="submit"
-            variant="primary"
-            disabled={pending || noGame}
-            aria-describedby={noGame ? 'session-game-hint' : undefined}
-          >
-            {pending
-              ? t('actions.saving')
-              : isEditing
-                ? t('actions.saveChanges')
-                : t('actions.saveSession')}
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={pending}
-            onClick={handleCancel}
-          >
-            {t('actions.cancel')}
-          </Button>
-          {!isEditing && (
-            <Button type="button" variant="secondary" disabled={pending} onClick={() => navigate('/voice')}>
-              {t('actions.recordVoice')}
+          <div className={styles.inputGroup}>
+            <label htmlFor="session-end" className={styles.label}>{t('fields.end')}</label>
+            <input
+              id="session-end"
+              type="datetime-local"
+              value={endTime}
+              onChange={(e) => {
+                setEndTime(e.target.value);
+                setBoundCode(null);
+                createMut.reset();
+                updateMut.reset();
+                clearConflict();
+              }}
+              className={styles.input}
+              disabled={pending}
+              required={!isEditing}
+              aria-invalid={isEndError ? true : undefined}
+              aria-describedby={
+                [isEndError && 'session-end-error', isLongOpen && 'session-long-open']
+                  .filter(Boolean)
+                  .join(' ') || undefined
+              }
+            />
+            {isEndError && (
+              <FieldError id="session-end-error">
+                {shown && t(`bounds.${shown}`)}
+              </FieldError>
+            )}
+            {isLongOpen && (
+              <p id="session-long-open" className={styles.fieldHint}>
+                {t('bounds.errorTooLong')}
+              </p>
+            )}
+          </div>
+
+          {isEditing && session?.notes && (
+            <div className={styles.inputGroup}>
+              <span className={styles.label}>{t('fields.systemNote')}</span>
+              <p className={styles.notesReadonly}>{session.notes}</p>
+            </div>
+          )}
+
+          {!isEditing && voiceNote && (
+            <div className={styles.inputGroup}>
+              <span className={styles.label}>{t('fields.transcriptPreview')}</span>
+              <p className={styles.notesHint}>{t('fields.transcriptHint')}</p>
+              <p className={styles.notesReadonly}>{voiceNote}</p>
+            </div>
+          )}
+
+          <div className={styles.actions}>
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={pending || noGame}
+              aria-describedby={noGame ? 'session-game-hint' : undefined}
+            >
+              {pending
+                ? t('actions.saving')
+                : isEditing
+                  ? t('actions.saveChanges')
+                  : t('actions.saveSession')}
             </Button>
-          )}
-          {isEditing && session?.status === 'ERROR' && (
             <Button
               type="button"
               variant="secondary"
               disabled={pending}
-              onClick={() => discardMut.mutate(undefined, { onSuccess: () => navigate(-1) })}
+              onClick={handleCancel}
             >
-              {t('actions.discard')}
+              {t('actions.cancel')}
             </Button>
-          )}
-          {isEditing && session?.status === 'COMPLETED' && (
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={pending}
-              onClick={() => setDeleteConfirmOpen(true)}
-            >
-              {t('actions.delete')}
-            </Button>
-          )}
-        </div>
-      </form>
+            {!isEditing && (
+              <Button type="button" variant="secondary" disabled={pending} onClick={() => navigate('/voice')}>
+                {t('actions.recordVoice')}
+              </Button>
+            )}
+            {isEditing && session?.status === 'ERROR' && (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={pending}
+                onClick={() => discardMut.mutate(undefined, { onSuccess: () => navigate(-1) })}
+              >
+                {t('actions.discard')}
+              </Button>
+            )}
+            {isEditing && session?.status === 'COMPLETED' && (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={pending}
+                onClick={() => setDeleteConfirmOpen(true)}
+              >
+                {t('actions.delete')}
+              </Button>
+            )}
+          </div>
+        </form>
 
-      {/* Below the form so a conflict does not push the fields down */}
-      {conflict && (
-        <ConflictNotice
-          conflict={conflict}
-          kind={classifyConflict(conflict, isEditing ? sessionId : undefined)}
+        {/* Below the form so a conflict does not push the fields down */}
+        {conflict && (
+          <ConflictNotice
+            conflict={conflict}
+            kind={classifyConflict(conflict, isEditing ? sessionId : undefined)}
+          />
+        )}
+
+        <ConfirmDialog
+          open={discardConfirmOpen}
+          title={t('discardConfirm.title')}
+          message={t('discardConfirm.message')}
+          confirmLabel={t('discardConfirm.confirm')}
+          cancelLabel={t('discardConfirm.cancel')}
+          onConfirm={onConfirmDiscard}
+          onCancel={onCancelDiscard}
         />
-      )}
 
-      <ConfirmDialog
-        open={discardConfirmOpen}
-        title={t('discardConfirm.title')}
-        message={t('discardConfirm.message')}
-        confirmLabel={t('discardConfirm.confirm')}
-        cancelLabel={t('discardConfirm.cancel')}
-        onConfirm={onConfirmDiscard}
-        onCancel={onCancelDiscard}
-      />
-
-      <ConfirmDialog
-        open={deleteConfirmOpen}
-        title={t('deleteConfirm.title')}
-        message={t('deleteConfirm.message')}
-        confirmLabel={t('deleteConfirm.confirm')}
-        variant="danger"
-        loading={deleteMut.isPending}
-        onConfirm={() =>
-          deleteMut.mutate(sessionId, {
-            onSuccess: () => {
-              setDeleteConfirmOpen(false);
-              navigate('/');
-            },
-          })
-        }
-        onCancel={() => setDeleteConfirmOpen(false)}
-      />
-    </div>
+        <ConfirmDialog
+          open={deleteConfirmOpen}
+          title={t('deleteConfirm.title')}
+          message={t('deleteConfirm.message')}
+          confirmLabel={t('deleteConfirm.confirm')}
+          variant="danger"
+          loading={deleteMut.isPending}
+          onConfirm={() =>
+            deleteMut.mutate(sessionId, {
+              onSuccess: () => {
+                setDeleteConfirmOpen(false);
+                navigate('/');
+              },
+            })
+          }
+          onCancel={() => setDeleteConfirmOpen(false)}
+        />
+      </div>
+    </>
   );
 }

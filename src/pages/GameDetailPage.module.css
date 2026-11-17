@@ -7,20 +7,6 @@
   margin: 0 auto;
 }
 
-.backLink {
-  align-self: flex-start;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: var(--text3);
-  text-decoration: none;
-  transition: color 0.2s, transform 0.2s;
-}
-.backLink:hover {
-  color: var(--orange);
-  transform: translateX(-3px);
-}
-
 /* ---------- CINEMATIC HERO ---------- */
 
 .hero {

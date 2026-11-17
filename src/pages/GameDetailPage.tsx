@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation, useParams, Navigate } from 'react-router-dom';
+import { useLocation, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useGame, useUpdateGamePreference } from '../hooks/useGames';
@@ -10,7 +10,7 @@ import { Cover } from '../components/Cover';
 import { GameActionsMenu } from '../components/games/GameActionsMenu';
 import { CoverDialog } from '../components/games/CoverDialog';
 import { ReportDuplicateDialog } from '../components/games/ReportDuplicateDialog';
-import { ErrorBanner, SectionHeader, Skeleton, Button } from '../components/ui';
+import { BackLink, ErrorBanner, SectionHeader, Skeleton, Button } from '../components/ui';
 import { SessionList } from '../components/games/SessionList';
 import type { Game } from '../types/api';
 import styles from './GameDetailPage.module.css';
@@ -81,12 +81,12 @@ export function GameDetailPage() {
 
   if (isGameError) {
     return (
-      <div className={styles.container}>
-        <Link to="/library" className={styles.backLink}>
-          {t('back')}
-        </Link>
-        <ErrorBanner onRetry={() => refetchGame()} />
-      </div>
+      <>
+        <BackLink to="/library">{t('back')}</BackLink>
+        <div className={styles.container}>
+          <ErrorBanner onRetry={() => refetchGame()} />
+        </div>
+      </>
     );
   }
 
@@ -111,109 +111,109 @@ export function GameDetailPage() {
   ];
 
   return (
-    <div className={styles.container}>
-      <Link to="/library" className={styles.backLink}>
-        {t('back')}
-      </Link>
+    <>
+      <BackLink to="/library">{t('back')}</BackLink>
+      <div className={styles.container}>
 
-      <section className={styles.hero}>
-        <div className={styles.backdropWrapper} aria-hidden>
-          {game.cover_image_url && (
-            <div
-              className={styles.backdrop}
-              style={{ backgroundImage: `url(${game.cover_image_url})` }}
-            />
+        <section className={styles.hero}>
+          <div className={styles.backdropWrapper} aria-hidden>
+            {game.cover_image_url && (
+              <div
+                className={styles.backdrop}
+                style={{ backgroundImage: `url(${game.cover_image_url})` }}
+              />
+            )}
+            <div className={styles.heroScrim} />
+          </div>
+
+          <GameActionsMenu
+            game={game}
+            canAccept={canAccept}
+            onOpenCoverDialog={() => setCoverDialogOpen(true)}
+            onOpenReportDuplicate={() => setReportOpen(true)}
+            prefMut={prefMut}
+          />
+
+          <div className={styles.heroContent}>
+            <div className={styles.coverWrapper}>
+              <Cover
+                gameId={id}
+                coverImageUrl={game.cover_image_url}
+                placeholderChar={game.primary_name}
+                className={styles.cover}
+              />
+            </div>
+            <div className={styles.info}>
+              <span className={styles.eyebrow}>
+                {lastPlayed
+                  ? t('eyebrow.lastPlayed', { recency: formatRecency(lastPlayed) })
+                  : t('eyebrow.inLibrary')}
+              </span>
+              <h1 className={styles.title}>{game.primary_name}</h1>
+              {(canAccept || game.is_ignored) && (
+                <div className={styles.badges}>
+                  {canAccept && <span className={styles.reviewBadge}>{t('badges.needsReview')}</span>}
+                  {game.is_ignored && <span className={styles.ignoredBadge}>{t('badges.ignored')}</span>}
+                </div>
+              )}
+              {isStatsError ? (
+                <ErrorBanner onRetry={() => refetchStats()} />
+              ) : (
+                <div className={styles.metrics}>
+                  {metrics.map((m) => (
+                    <div key={m.label} className={styles.metric}>
+                      <span
+                        className={[
+                          styles.metricValue,
+                          m.value === EMPTY_VALUE && styles.metricValueEmpty,
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                      >
+                        {m.value}
+                      </span>
+                      <span className={styles.metricLabel}>{m.label}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <div>
+          <SectionHeader title={t('history.title')} />
+          {isSessionsError ? (
+            <ErrorBanner onRetry={() => refetchSessions()} />
+          ) : (
+            <>
+              <SessionList sessions={sessions} />
+              {hasNextPage && (
+                <div className={styles.loadMore}>
+                  <Button
+                    variant="secondary"
+                    loading={isFetchingNextPage}
+                    onClick={() => fetchNextPage()}
+                  >
+                    {t('history.loadMore')}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
-          <div className={styles.heroScrim} />
         </div>
 
-        <GameActionsMenu
+        <CoverDialog
           game={game}
-          canAccept={canAccept}
-          onOpenCoverDialog={() => setCoverDialogOpen(true)}
-          onOpenReportDuplicate={() => setReportOpen(true)}
-          prefMut={prefMut}
+          open={coverDialogOpen}
+          onClose={() => setCoverDialogOpen(false)}
         />
-
-        <div className={styles.heroContent}>
-          <div className={styles.coverWrapper}>
-            <Cover
-              gameId={id}
-              coverImageUrl={game.cover_image_url}
-              placeholderChar={game.primary_name}
-              className={styles.cover}
-            />
-          </div>
-          <div className={styles.info}>
-            <span className={styles.eyebrow}>
-              {lastPlayed
-                ? t('eyebrow.lastPlayed', { recency: formatRecency(lastPlayed) })
-                : t('eyebrow.inLibrary')}
-            </span>
-            <h1 className={styles.title}>{game.primary_name}</h1>
-            {(canAccept || game.is_ignored) && (
-              <div className={styles.badges}>
-                {canAccept && <span className={styles.reviewBadge}>{t('badges.needsReview')}</span>}
-                {game.is_ignored && <span className={styles.ignoredBadge}>{t('badges.ignored')}</span>}
-              </div>
-            )}
-            {isStatsError ? (
-              <ErrorBanner onRetry={() => refetchStats()} />
-            ) : (
-              <div className={styles.metrics}>
-                {metrics.map((m) => (
-                  <div key={m.label} className={styles.metric}>
-                    <span
-                      className={[
-                        styles.metricValue,
-                        m.value === EMPTY_VALUE && styles.metricValueEmpty,
-                      ]
-                        .filter(Boolean)
-                        .join(' ')}
-                    >
-                      {m.value}
-                    </span>
-                    <span className={styles.metricLabel}>{m.label}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <div>
-        <SectionHeader title={t('history.title')} />
-        {isSessionsError ? (
-          <ErrorBanner onRetry={() => refetchSessions()} />
-        ) : (
-          <>
-            <SessionList sessions={sessions} />
-            {hasNextPage && (
-              <div className={styles.loadMore}>
-                <Button
-                  variant="secondary"
-                  loading={isFetchingNextPage}
-                  onClick={() => fetchNextPage()}
-                >
-                  {t('history.loadMore')}
-                </Button>
-              </div>
-            )}
-          </>
-        )}
+        <ReportDuplicateDialog
+          open={reportOpen}
+          onClose={() => setReportOpen(false)}
+          source={{ id: game.id, name: game.primary_name }}
+        />
       </div>
-
-      <CoverDialog
-        game={game}
-        open={coverDialogOpen}
-        onClose={() => setCoverDialogOpen(false)}
-      />
-      <ReportDuplicateDialog
-        open={reportOpen}
-        onClose={() => setReportOpen(false)}
-        source={{ id: game.id, name: game.primary_name }}
-      />
-    </div>
+    </>
   );
 }
