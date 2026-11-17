@@ -15,3 +15,4 @@ export * from './SampleDataBanner';
 export * from './EmptyValue';
 export * from './FieldError';
 export * from './SortIndicator';
+export * from './DurationValue';

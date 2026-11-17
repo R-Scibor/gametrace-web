@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { test, expect } from 'vitest';
 import { HeroSpotlight } from './HeroSpotlight';
-import { renderWithProviders } from '../../../test/utils';
+import { renderWithProviders, splitText } from '../../../test/utils';
 import type { Session, GameStats } from '../../types/api';
 
 const session: Session = {
@@ -36,15 +36,16 @@ test('HeroSpotlight disabled renders no link', () => {
   expect(screen.getByText(/baldur/i)).toBeInTheDocument();
 });
 
-test('HeroSpotlight formats total and average duration as Xh Ym without standalone h unit', () => {
+test('HeroSpotlight formats total and average duration as Xh Ym with small h and m units', () => {
   renderWithProviders(<HeroSpotlight session={session} stats={stats} />);
-  expect(screen.getByText('10h 0m')).toBeInTheDocument();
-  expect(screen.getByText('2h 0m')).toBeInTheDocument();
-  expect(screen.queryByText(/^h$/)).not.toBeInTheDocument();
+  expect(screen.getByText(splitText('10h 0m'))).toBeInTheDocument();
+  expect(screen.getByText(splitText('2h 0m'))).toBeInTheDocument();
+  expect(screen.getAllByText('h').length).toBeGreaterThan(0);
+  expect(screen.getAllByText('m').length).toBeGreaterThan(0);
 });
 
 test('HeroSpotlight formats zero total seconds as 0m', () => {
   const zeroStats: GameStats = { ...stats, total_seconds: 0, session_count: 0 };
   renderWithProviders(<HeroSpotlight session={session} stats={zeroStats} />);
-  expect(screen.getByText('0m')).toBeInTheDocument();
+  expect(screen.getByText(splitText('0m'))).toBeInTheDocument();
 });

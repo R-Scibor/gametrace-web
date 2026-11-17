@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useStatsSummary } from '../../hooks/useStats';
 import type { StatsSummary } from '../../types/api';
 import { Cover } from '../Cover';
-import { ErrorBanner, Skeleton } from '../ui';
+import { DurationValue, ErrorBanner, Skeleton } from '../ui';
 import {
   formatAnalyticsPeriodSubtitle,
   formatDuration,
-  formatDurationOrZero,
   formatPeriodDelta,
 } from '../../lib/format';
 import styles from './StatsOverview.module.css';
@@ -80,7 +79,7 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
           <span className={styles.accent} aria-hidden />
           <span className={styles.label}>{t('overview.avgSession')}</span>
           <span className={styles.value}>
-            {formatDurationOrZero(data.avg_session_seconds)}
+            <DurationValue seconds={data.avg_session_seconds} unitClassName={styles.unit} />
           </span>
         </div>
 
@@ -111,7 +110,10 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
                 <span className={styles.recordGame}>{data.longest_session_game_name}</span>
               )}
               <span className={styles.value}>
-                {formatDurationOrZero(data.longest_session_seconds)}
+                <DurationValue
+                  seconds={data.longest_session_seconds}
+                  unitClassName={styles.unit}
+                />
               </span>
             </div>
           </Link>
@@ -134,7 +136,10 @@ export function StatsOverview({ days, className, sampleData }: StatsOverviewProp
                 <span className={styles.recordGame}>{data.longest_session_game_name}</span>
               )}
               <span className={styles.value}>
-                {formatDurationOrZero(data.longest_session_seconds)}
+                <DurationValue
+                  seconds={data.longest_session_seconds}
+                  unitClassName={styles.unit}
+                />
               </span>
             </div>
           </div>

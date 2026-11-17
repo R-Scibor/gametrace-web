@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Cover } from '../Cover';
 import { LiveTimer } from '../LiveTimer';
+import { DurationValue } from '../ui';
 import { useFormat } from '../../hooks/useFormat';
 import { EMPTY_VALUE } from '../../lib/format';
 import type { GameStats, Session, ActiveSessionBrief } from '../../types/api';
@@ -100,7 +101,16 @@ export function UnifiedHeroCard({
                 <LiveTimer startIso={liveSession.start_time} className={styles.timer} />
               ) : (
                 <div className={styles.hoursWrap}>
-                  <span className={styles.hours}>{totalDuration}</span>
+                  <span className={styles.hours}>
+                    {idleStats ? (
+                      <DurationValue
+                        seconds={idleStats.total_seconds}
+                        unitClassName={styles.hoursUnit}
+                      />
+                    ) : (
+                      totalDuration
+                    )}
+                  </span>
                 </div>
               )}
             </div>

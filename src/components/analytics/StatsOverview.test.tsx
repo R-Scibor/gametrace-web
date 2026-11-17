@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { test, expect } from 'vitest';
 import { StatsOverview } from './StatsOverview';
-import { renderWithProviders } from '../../../test/utils';
+import { renderWithProviders, splitText } from '../../../test/utils';
 import { SAMPLE_STATS_SUMMARY } from '../../lib/sampleData';
 import type { StatsSummary } from '../../types/api';
 
@@ -19,7 +19,7 @@ test('StatsOverview uses sampleData.days for the period subtitle, not the live d
   expect(screen.queryByText(/365/)).not.toBeInTheDocument();
 });
 
-test('StatsOverview formats durations with formatDurationOrZero and no standalone h unit', () => {
+test('StatsOverview formats durations as Xh Ym with small h and m units', () => {
   const customData: StatsSummary = {
     ...SAMPLE_STATS_SUMMARY,
     avg_session_seconds: 5400,
@@ -28,7 +28,8 @@ test('StatsOverview formats durations with formatDurationOrZero and no standalon
     longest_session_game_name: "Baldur's Gate 3",
   };
   renderWithProviders(<StatsOverview days={30} sampleData={customData} />);
-  expect(screen.getByText('1h 30m')).toBeInTheDocument();
-  expect(screen.getByText('2h 0m')).toBeInTheDocument();
-  expect(screen.queryByText(/^h$/)).not.toBeInTheDocument();
+  expect(screen.getByText(splitText('1h 30m'))).toBeInTheDocument();
+  expect(screen.getByText(splitText('2h 0m'))).toBeInTheDocument();
+  expect(screen.getAllByText('h').length).toBeGreaterThan(0);
+  expect(screen.getAllByText('m').length).toBeGreaterThan(0);
 });

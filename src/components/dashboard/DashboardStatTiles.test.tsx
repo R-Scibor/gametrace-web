@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { test, expect } from 'vitest';
 import { DashboardStatTiles } from './DashboardStatTiles';
-import { renderWithProviders } from '../../../test/utils';
+import { renderWithProviders, splitText } from '../../../test/utils';
 import { EMPTY_VALUE } from '../../lib/format';
 
 test('DashboardStatTiles formats zero seconds as 0m', () => {
@@ -13,11 +13,11 @@ test('DashboardStatTiles formats zero seconds as 0m', () => {
       streakDays={0}
     />,
   );
-  expect(screen.getAllByText('0m')).toHaveLength(3);
+  expect(screen.getAllByText(splitText('0m'))).toHaveLength(3);
   expect(screen.queryByText(/^h$/)).not.toBeInTheDocument();
 });
 
-test('DashboardStatTiles formats durations as Xh Ym without separate h unit', () => {
+test('DashboardStatTiles formats durations as Xh Ym with small h and m units', () => {
   renderWithProviders(
     <DashboardStatTiles
       todaySeconds={3600}
@@ -26,10 +26,11 @@ test('DashboardStatTiles formats durations as Xh Ym without separate h unit', ()
       streakDays={3}
     />,
   );
-  expect(screen.getByText('1h 0m')).toBeInTheDocument();
-  expect(screen.getByText('1h 30m')).toBeInTheDocument();
-  expect(screen.getByText('2h 0m')).toBeInTheDocument();
-  expect(screen.queryByText(/^h$/)).not.toBeInTheDocument();
+  expect(screen.getByText(splitText('1h 0m'))).toBeInTheDocument();
+  expect(screen.getByText(splitText('1h 30m'))).toBeInTheDocument();
+  expect(screen.getByText(splitText('2h 0m'))).toBeInTheDocument();
+  expect(screen.getAllByText('h').length).toBeGreaterThan(0);
+  expect(screen.getAllByText('m').length).toBeGreaterThan(0);
   expect(screen.getByText('3')).toBeInTheDocument();
 });
 

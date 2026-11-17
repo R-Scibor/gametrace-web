@@ -103,8 +103,7 @@ test('AnalyticsPage shows mobile parity insight tiles', async () => {
 
   const avgTile = (await screen.findByText('ŚR. SESJA')).closest('div');
   expect(avgTile).toHaveTextContent('1h 0m');
-  expect(screen.getByText('NOWE GRY')).toBeInTheDocument();
-  expect(screen.getByText('2')).toBeInTheDocument();
+  expect(screen.getByText('NOWE GRY').closest('div')).toHaveTextContent('2');
 });
 
 test('AnalyticsPage shows comparison delta and longest session link', async () => {

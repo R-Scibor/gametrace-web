@@ -104,3 +104,13 @@ export function renderAppRoutes(
     ),
   };
 }
+/**
+ * Matches the innermost element whose full text is `text`, for values split
+ * across spans like a duration with separately styled h and m units.
+ */
+export function splitText(text: string) {
+  return (_content: string, el: Element | null) =>
+    el != null &&
+    el.textContent === text &&
+    !Array.from(el.children).some((child) => child.textContent === text);
+}

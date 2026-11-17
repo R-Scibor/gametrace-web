@@ -1,5 +1,6 @@
 import { test, expect, vi, afterEach } from 'vitest';
 import {
+  durationParts,
   EMPTY_VALUE,
   formatDuration,
   formatDurationOrZero,
@@ -94,4 +95,13 @@ test('relative labels follow the active language', async () => {
 test('formatHourTick adds the hour unit to chart ticks', () => {
   expect(formatHourTick(0)).toBe('0h');
   expect(formatHourTick(2.5)).toBe('2.5h');
+});
+
+test('durationParts splits hours and minutes', () => {
+  expect(durationParts(5400)).toEqual([
+    { value: 1, unit: 'h' },
+    { value: 30, unit: 'm' },
+  ]);
+  expect(durationParts(59)).toEqual([{ value: 0, unit: 'm' }]);
+  expect(durationParts(null)).toBeNull();
 });

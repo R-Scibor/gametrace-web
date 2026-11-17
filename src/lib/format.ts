@@ -21,13 +21,29 @@ export function formatDuration(seconds: number | null | undefined): string {
   return `${m}m`;
 }
 
-export function formatDurationOrZero(seconds: number | null | undefined): string {
-  if (seconds == null || Number.isNaN(seconds)) return EMPTY_VALUE;
+export interface DurationPart {
+  value: number;
+  unit: 'h' | 'm';
+}
+
+/** Hours and minutes as separate parts, so big figures can render the units smaller. */
+export function durationParts(seconds: number | null | undefined): DurationPart[] | null {
+  if (seconds == null || Number.isNaN(seconds)) return null;
   const s = Math.max(0, Math.floor(seconds));
   const h = Math.floor(s / 3600);
   const m = Math.floor((s % 3600) / 60);
-  if (h > 0) return `${h}h ${m}m`;
-  return `${m}m`;
+  return h > 0
+    ? [
+        { value: h, unit: 'h' },
+        { value: m, unit: 'm' },
+      ]
+    : [{ value: m, unit: 'm' }];
+}
+
+export function formatDurationOrZero(seconds: number | null | undefined): string {
+  const parts = durationParts(seconds);
+  if (!parts) return EMPTY_VALUE;
+  return parts.map((p) => `${p.value}${p.unit}`).join(' ');
 }
 
 /** Chart axis tick for values already in hours, e.g. the analytics trend Y axis. */
