@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import { test, expect } from 'vitest';
+import { UnifiedHeroCard } from './UnifiedHeroCard';
 import { HeroSpotlight } from './HeroSpotlight';
 import { renderWithProviders, splitText } from '../../../test/utils';
 import type { Session, GameStats } from '../../types/api';
@@ -48,4 +49,23 @@ test('HeroSpotlight formats zero total seconds as 0m', () => {
   const zeroStats: GameStats = { ...stats, total_seconds: 0, session_count: 0 };
   renderWithProviders(<HeroSpotlight session={session} stats={zeroStats} />);
   expect(screen.getByText(splitText('0m'))).toBeInTheDocument();
+});
+
+test('UnifiedHeroCard live shows details in the corner without a navigation label', () => {
+  renderWithProviders(
+    <UnifiedHeroCard
+      mode="live"
+      gameId={-1}
+      gameName="Baldur's Gate 3"
+      liveSession={{
+        id: 1,
+        game_id: -1,
+        game_name: "Baldur's Gate 3",
+        cover_image_url: null,
+        start_time: new Date().toISOString(),
+      }}
+    />,
+  );
+  expect(screen.queryByText(/nawigacja/i)).not.toBeInTheDocument();
+  expect(screen.getByText('szczegóły')).toBeInTheDocument();
 });

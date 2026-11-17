@@ -128,10 +128,6 @@ export function UnifiedHeroCard({
                     {formatTimeShort(liveSession.start_time)}
                   </span>
                 </div>
-                <div className={styles.subStat}>
-                  <span className={styles.subStatLabel}>NAWIGACJA</span>
-                  <span className={styles.actionPrompt}>{t('active.details')}</span>
-                </div>
               </>
             ) : (
               <>
@@ -147,6 +143,25 @@ export function UnifiedHeroCard({
             )}
           </div>
         </div>
+
+        {isLive && !disabled && (
+          <span className={styles.actionPrompt}>
+            {t('active.details')}
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        )}
       </div>
     </>
   );

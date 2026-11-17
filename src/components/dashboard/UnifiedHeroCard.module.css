@@ -269,22 +269,38 @@
 }
 
 .actionPrompt {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--orange);
-  line-height: 1;
-  padding-bottom: 5px;
-  transition: color 0.15s ease, transform 0.15s ease;
+  position: absolute;
+  right: 24px;
+  bottom: 18px;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.actionPrompt svg {
+  transition: transform 0.15s ease;
 }
 
 .card:hover .actionPrompt {
-  color: var(--orange);
+  color: var(--text);
+}
+
+.card:hover .actionPrompt svg {
   transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover .actionPrompt svg {
+    transform: none;
+  }
 }
 
 @keyframes pulse {
@@ -295,6 +311,11 @@
 @media (max-width: 620px) {
   .card {
     grid-template-columns: 110px minmax(0, 1fr);
+  }
+  .actionPrompt {
+    position: static;
+    align-self: flex-end;
+    margin-top: 12px;
   }
   .metricsRow {
     flex-direction: column;
