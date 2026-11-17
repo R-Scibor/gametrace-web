@@ -128,7 +128,7 @@ cache.
 | `/library`          | Library          | Cover grid; tabs **Wszystkie / Do sprawdzenia / Inne**; server-side search; pagination; click → detail. |
 | `/library/:gameId`  | Game detail      | Header (cover, name, enrichment status) · total time · paginated sessions · **local cover** (everyone) · **ignore toggle**. No admin controls here — merge and global cover live only in the admin catalog. |
 | `/analytics`        | Analytics        | The powerhouse — see §8. |
-| `/sessions/new`     | Add session      | Game search/resolve, start/end datetime, notes. **409 conflict** rendered inline with the conflicting session. Prefill via query params (from Voice). |
+| `/sessions/new`     | Add session      | Game search/resolve, start/end via `DateTimePicker`, notes. **409 conflict** rendered inline with the conflicting session. Prefill via query params (from Voice). |
 | `/sessions/:id/edit`| Edit session     | Edit `end_time` only (`PATCH`); **discard ERROR** → `DELETE` (soft-delete to trash). ONGOING is read-only. System notes displayed read-only when present. |
 | `/voice`            | Voice            | Browser `MediaRecorder` capture → `POST /voice/transcribe` → resolve game → redirect to `/sessions/new` prefilled. |
 | `/trash`            | Trash            | Trashed sessions, **`purges_at` countdown**, **restore** (re-validates conflict), **hard-delete**. |
@@ -199,6 +199,13 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 
 - All timestamps are rendered in the **user's timezone** (from `/profile/me`), using
   `Intl.DateTimeFormat` / `toLocaleString('pl', { timeZone })`.
+- Session start/end use `DateTimePicker` (`components/ui`), not the native `datetime-local`
+  input. The native input formats by the browser locale, so an English browser showed
+  US month-first dates with AM/PM. The picker labels the value in the app language
+  (`pl-PL` or `en-GB`, 24-hour) and mirrors the mobile `DateTimeSheet`: Monday-first month
+  grid, hour and minute columns, arrow keys on the grid and columns. It still reads and
+  writes the same `YYYY-MM-DDTHH:mm` wall-clock string (helpers in `lib/dateTime.ts`), and
+  an empty end on submit shows "Podaj zakończenie." since there is no native `required`.
 - Durations formatted as `Xh Ym` (or `Ym`); helper shared across pages.
 - Live timer ticks client-side every second from `start_time` (ported `LiveTimer`).
 
