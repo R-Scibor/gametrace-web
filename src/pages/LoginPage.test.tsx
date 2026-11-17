@@ -44,8 +44,8 @@ test('LoginPage renders link code form by default', () => {
   expect(screen.getByText(/Skąd wziąć kod/i)).toBeInTheDocument();
   expect(screen.getByText(/panelu GameTrace/i)).toBeInTheDocument();
   expect(screen.getByText('▶ START')).toBeInTheDocument();
-  expect(screen.getByText('🔑 Get a code')).toBeInTheDocument();
   expect(screen.getByText('🔑 Weź kod')).toBeInTheDocument();
+  expect(screen.queryByText('🔑 Get a code')).not.toBeInTheDocument();
   expect(screen.getByText('/login')).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /konfiguracji na stronie powitalnej/i })).toHaveAttribute(
     'href',
@@ -162,7 +162,7 @@ test('language switcher changes interface language to English and Polish', async
   expect(screen.getByText(/GameTrace panel/i)).toBeInTheDocument();
   expect(screen.getByText('▶ START')).toBeInTheDocument();
   expect(screen.getByText('🔑 Get a code')).toBeInTheDocument();
-  expect(screen.getByText('🔑 Weź kod')).toBeInTheDocument();
+  expect(screen.queryByText('🔑 Weź kod')).not.toBeInTheDocument();
   expect(screen.getByText('/login')).toBeInTheDocument();
 
   // Switch back to PL
@@ -173,8 +173,8 @@ test('language switcher changes interface language to English and Polish', async
   expect(screen.getByLabelText(/Kod logowania/i)).toBeInTheDocument();
   expect(screen.getByText(/panelu GameTrace/i)).toBeInTheDocument();
   expect(screen.getByText('▶ START')).toBeInTheDocument();
-  expect(screen.getByText('🔑 Get a code')).toBeInTheDocument();
   expect(screen.getByText('🔑 Weź kod')).toBeInTheDocument();
+  expect(screen.queryByText('🔑 Get a code')).not.toBeInTheDocument();
   expect(screen.getByText('/login')).toBeInTheDocument();
 });
 

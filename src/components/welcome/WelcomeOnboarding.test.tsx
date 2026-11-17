@@ -149,10 +149,10 @@ test('WelcomeOnboarding step 2 explains panel flow and mentions /login fallback'
 
   await user.click(screen.getByRole('button', { name: /Jestem już na serwerze z botem/i }));
 
-  // Default locale (PL): shows ▶ START, both buttons, /login fallback
+  // Default locale (PL): shows ▶ START, the Polish button, /login fallback
   expect(screen.getByText(/▶ START/)).toBeInTheDocument();
-  expect(screen.getByText(/🔑 Get a code/)).toBeInTheDocument();
   expect(screen.getByText(/🔑 Weź kod/)).toBeInTheDocument();
+  expect(screen.queryByText(/🔑 Get a code/)).not.toBeInTheDocument();
   expect(screen.getByText(/Możesz też wpisać \/login na kanale serwera\./i)).toBeInTheDocument();
 
   // have-code button still works
@@ -163,7 +163,7 @@ test('WelcomeOnboarding step 2 explains panel flow and mentions /login fallback'
 
   unmount();
 
-  // English locale: shows ▶ START, both buttons, /login fallback
+  // English locale: shows ▶ START, the Polish button, /login fallback
   await i18n.changeLanguage('en');
   try {
     renderAppRoutes(
@@ -188,7 +188,7 @@ test('WelcomeOnboarding step 2 explains panel flow and mentions /login fallback'
     await user.click(screen.getByRole('button', { name: /I am already on a server with the bot/i }));
     expect(screen.getByText(/▶ START/)).toBeInTheDocument();
     expect(screen.getByText(/🔑 Get a code/)).toBeInTheDocument();
-    expect(screen.getByText(/🔑 Weź kod/)).toBeInTheDocument();
+    expect(screen.queryByText(/🔑 Weź kod/)).not.toBeInTheDocument();
     expect(screen.getByText(/You can also type \/login on a server channel\./i)).toBeInTheDocument();
     const haveCodeBtnEn = screen.getByRole('button', { name: /I already have a code/i });
     expect(haveCodeBtnEn).toBeInTheDocument();

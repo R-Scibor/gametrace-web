@@ -168,7 +168,7 @@
       "discordButton": "Zaloguj przez Discorda",
       "or": "LUB",
       "codeTitle": "Panel na serwerze",
-      "codeBody": "Przejdź na kanał z panelem GameTrace i kliknij ▶ START. Nowe konto potwierdza informację i może wybrać polski albo angielski. Potem kliknij 🔑 Get a code albo 🔑 Weź kod i wpisz kod.",
+      "codeBody": "Przejdź na kanał z panelem GameTrace i kliknij ▶ START. Nowe konto potwierdza informację i może wybrać polski albo angielski. Potem kliknij 🔑 Weź kod i wpisz kod.",
       "codeAlternative": "Możesz też wpisać /login na kanale serwera.",
       "haveCode": "Mam już kod"
     },

@@ -164,7 +164,7 @@
       "discordButton": "Sign in with Discord",
       "or": "OR",
       "codeTitle": "Panel on the server",
-      "codeBody": "Go to the GameTrace panel channel and click ▶ START. A new account confirms the notice and can choose English or Polish. Then press 🔑 Get a code or 🔑 Weź kod and enter the code.",
+      "codeBody": "Go to the GameTrace panel channel and click ▶ START. A new account confirms the notice and can choose English or Polish. Then press 🔑 Get a code and enter the code.",
       "codeAlternative": "You can also type /login on a server channel.",
       "haveCode": "I already have a code"
     },
