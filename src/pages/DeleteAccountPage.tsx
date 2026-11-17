@@ -5,7 +5,7 @@ import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
 import { listOf } from '../lib/i18nList';
-import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
+import { useGraceDays } from '../hooks/useGraceDays';
 import { PRIVACY_CONTACT_EMAIL } from './PrivacyPage';
 import styles from './DeleteAccountPage.module.css';
 
@@ -23,6 +23,7 @@ export function DeleteAccountPage() {
     };
   }, [t, i18n.language]);
 
+  const graceDays = useGraceDays();
   const steps = listOf(t('public.steps', { returnObjects: true }));
   const inventory = listOf(t('public.inventory', { returnObjects: true }));
   const retained = listOf(t('public.retained', { returnObjects: true }));
@@ -63,14 +64,14 @@ export function DeleteAccountPage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>{t('public.graceTitle')}</h2>
             <p className={styles.body}>
-              {t('public.graceBody', { days: ACCOUNT_DELETION_GRACE_DAYS })}
+              {t('public.graceBody', { days: graceDays })}
             </p>
           </section>
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>{t('public.cancelTitle')}</h2>
             <p className={styles.body}>
-              {t('public.cancelBody', { days: ACCOUNT_DELETION_GRACE_DAYS })}
+              {t('public.cancelBody', { days: graceDays })}
             </p>
           </section>
 

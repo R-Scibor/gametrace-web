@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui';
-import { ACCOUNT_DELETION_GRACE_DAYS } from '../../lib/accountDeletion';
+import { useGraceDays } from '../../hooks/useGraceDays';
 import { DeleteAccountDialog } from './DeleteAccountDialog';
 import { SettingsRow } from './SettingsRow';
 import styles from './DeleteAccountRow.module.css';
@@ -19,6 +19,7 @@ interface DeleteAccountRowProps {
 export function DeleteAccountRow({ username, isAdmin }: DeleteAccountRowProps) {
   const { t } = useTranslation('settings');
   const [open, setOpen] = useState(false);
+  const graceDays = useGraceDays();
 
   return (
     <>
@@ -28,7 +29,7 @@ export function DeleteAccountRow({ username, isAdmin }: DeleteAccountRowProps) {
         subtext={
           isAdmin
             ? t('account.deleteAdmin')
-            : t('account.deleteSub', { days: ACCOUNT_DELETION_GRACE_DAYS })
+            : t('account.deleteSub', { days: graceDays })
         }
       >
         <Button

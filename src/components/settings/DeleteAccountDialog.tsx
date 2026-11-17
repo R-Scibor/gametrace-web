@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from '@tanstack/react-query';
 import { requestDeletion } from '../../api/profile';
-import { ACCOUNT_DELETION_GRACE_DAYS, saveScheduledDeletion } from '../../lib/accountDeletion';
+import { saveScheduledDeletion } from '../../lib/accountDeletion';
+import { useGraceDays } from '../../hooks/useGraceDays';
 import { resumeAuthTeardown, suspendAuthTeardown } from '../../lib/authTeardown';
 import { listOf } from '../../lib/i18nList';
 import { Button, Input, Modal } from '../ui';
@@ -24,6 +25,7 @@ const matches = (typed: string, username: string) =>
  */
 export function DeleteAccountDialog({ username, onClose }: DeleteAccountDialogProps) {
   const { t } = useTranslation('account');
+  const graceDays = useGraceDays();
   const navigate = useNavigate();
   const [typed, setTyped] = useState('');
   const handedOff = useRef(false);
@@ -75,7 +77,7 @@ export function DeleteAccountDialog({ username, onClose }: DeleteAccountDialogPr
   const confirmLabel = t('dialog.confirmLabel', { username });
   const inventory = listOf(t('public.inventory', { returnObjects: true }));
   const consequences = listOf(
-    t('dialog.consequences', { returnObjects: true, days: ACCOUNT_DELETION_GRACE_DAYS }),
+    t('dialog.consequences', { returnObjects: true, days: graceDays }),
   );
 
   return (

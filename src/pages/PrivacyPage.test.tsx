@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route } from 'react-router-dom';
 import { beforeEach, expect, test, vi } from 'vitest';
@@ -9,7 +9,8 @@ import {
   PRIVACY_POLICY_VERSION,
   REQUIRED_SECTION_IDS,
 } from '../lib/privacyPolicy';
-import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
+import { http, HttpResponse } from 'msw';
+import { server } from '../../test/server';
 import { renderAppRoutes, renderWithProviders, resetStores } from '../../test/utils';
 
 beforeEach(() => {
@@ -71,11 +72,25 @@ test('the table of contents lists every section', () => {
   expect(hrefs).toEqual(REQUIRED_SECTION_IDS.map((id) => `#${id}`));
 });
 
-test('the grace period comes from the shared constant, not a literal', () => {
+test('the grace period comes from the API, not a literal', async () => {
+  server.use(
+    http.get('/api/v1/health', () =>
+      HttpResponse.json({
+        status: 'ok',
+        version: '1.0.0-test',
+        commit_sha: 'abc123',
+        build_time: '2026-01-01T00:00:00Z',
+        api: { uptime_seconds: 3600 },
+        bot: { status: 'online', uptime_seconds: 1800, last_heartbeat_seconds_ago: 5 },
+        grace_days: 12,
+      }),
+    ),
+  );
   const { container } = renderWithProviders(<PrivacyPage />, { authenticated: false });
-  const deletion = container.querySelector('#account-deletion');
-  expect(deletion?.textContent).toContain(String(ACCOUNT_DELETION_GRACE_DAYS));
-  expect(deletion?.textContent).not.toContain('{{days}}');
+  await waitFor(() =>
+    expect(container.querySelector('#account-deletion')?.textContent).toContain('12 dni'),
+  );
+  expect(container.querySelector('#account-deletion')?.textContent).not.toContain('{{days}}');
 });
 
 test('the contact email renders as a mailto link', () => {

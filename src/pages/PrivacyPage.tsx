@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { setActiveLanguage } from '../i18n';
 import type { Language } from '../i18n/resolve';
 import { LanguageSelect } from '../components/ui/LanguageSelect';
-import { ACCOUNT_DELETION_GRACE_DAYS } from '../lib/accountDeletion';
+import { useGraceDays } from '../hooks/useGraceDays';
 import {
   parsePolicySections,
   PRIVACY_CONTACT_EMAIL,
@@ -31,14 +31,15 @@ export function PrivacyPage() {
     };
   }, [t, i18n.language]);
 
+  const graceDays = useGraceDays();
   const sections = useMemo(
     () =>
       parsePolicySections(t('sections', { returnObjects: true }), {
-        days: ACCOUNT_DELETION_GRACE_DAYS,
+        days: graceDays,
         email: PRIVACY_CONTACT_EMAIL,
         version: PRIVACY_POLICY_VERSION,
       }),
-    [t, i18n.language],
+    [t, i18n.language, graceDays],
   );
 
   return (
