@@ -167,7 +167,7 @@ export function LoginPage() {
                 aria-describedby={error ? 'link-code-error' : undefined}
               />
             </div>
-            {/* Fixed one line slot so the buttons below do not jump when an error shows */}
+            {/* Fixed two line slot so the buttons below do not jump when an error shows */}
             <div className={styles.codeErrorSlot}>
               {error && (
                 <FieldError id="link-code-error" className={styles.codeError}>
