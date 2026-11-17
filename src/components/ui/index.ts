@@ -17,3 +17,4 @@ export * from './FieldError';
 export * from './SortIndicator';
 export * from './DurationValue';
 export * from './BackLink';
+export * from './DateTimePicker';

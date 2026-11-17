@@ -1,0 +1,176 @@
+.trigger {
+  background-color: var(--bg3);
+  border: 1px solid var(--border-control);
+  border-left: 2px solid var(--orange);
+  border-radius: 2px;
+  padding: 12px;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.trigger:hover:not(:disabled),
+.trigger:focus-visible {
+  outline: none;
+  border-color: var(--orange);
+}
+.trigger[aria-invalid='true'] {
+  border-color: var(--warn);
+}
+.trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.placeholder {
+  color: var(--text3);
+}
+
+.dialog {
+  max-width: 360px;
+  gap: 12px;
+}
+.title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text2);
+}
+
+.monthNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navButton {
+  background: none;
+  border: none;
+  color: var(--orange);
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  padding: 0 10px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.navButton:focus-visible {
+  outline: 1px solid var(--orange);
+}
+.monthLabel {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.weekday {
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text3);
+  padding: 6px 0;
+}
+.day {
+  height: 38px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  cursor: pointer;
+}
+.day:hover {
+  background-color: var(--bg4);
+}
+.day:focus-visible {
+  outline: 1px solid var(--orange);
+  outline-offset: 1px;
+}
+.dayToday {
+  border-color: var(--border-bright);
+}
+.daySelected,
+.daySelected:hover {
+  background-color: var(--orange);
+  color: var(--button-text-on-orange);
+  font-weight: 500;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--border);
+}
+.sectionLabel {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text3);
+}
+
+.timeRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.colon {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text2);
+  margin: 0 14px;
+}
+.column {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 70px;
+  height: 120px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  position: relative;
+  border-radius: 2px;
+}
+.column::-webkit-scrollbar {
+  display: none;
+}
+.column:focus-visible {
+  outline: 1px solid var(--orange);
+}
+.option {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--body);
+  font-size: 20px;
+  color: var(--text3);
+  cursor: pointer;
+  border-radius: 2px;
+}
+.option:hover {
+  color: var(--text);
+}
+.optionSelected {
+  background-color: var(--orange-glow);
+  color: var(--text);
+  font-family: var(--display);
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
