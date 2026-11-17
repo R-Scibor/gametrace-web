@@ -425,8 +425,13 @@
     inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
+.codeErrorSlot {
+  min-height: 22px;
+  margin: -6px 0 8px;
+}
+
 .codeError {
-  margin: -6px 0 14px;
+  margin: 0;
 }
 
 .submitBtn {
