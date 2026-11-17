@@ -23,7 +23,8 @@
     "futureStart": "Start can be at most 5 minutes in the future.",
     "futureEnd": "End can be at most 5 minutes in the future.",
     "errorTooLong": "This session has already run past 48 hours. It can't be closed at the current time — set an end within 48 hours of the start, or discard it.",
-    "errorNeedsEnd": "Set an end time, or discard the session."
+    "errorNeedsEnd": "Set an end time, or discard the session.",
+    "endRequired": "Enter an end time."
   },
   "actions": {
     "saving": "SAVING...",
