@@ -107,7 +107,8 @@ export function useAuth() {
     setLoading(true);
     setError(null);
     try {
-      commitLogin(await discordLoginApi(code, codeVerifier, redirectUri));
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      commitLogin(await discordLoginApi(code, codeVerifier, redirectUri, tz));
       return true;
     } catch (err: unknown) {
       setError(discordErrorMessage(err));

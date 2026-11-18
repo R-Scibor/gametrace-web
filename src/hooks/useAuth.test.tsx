@@ -107,6 +107,7 @@ test('useAuth stores token on successful Discord login', async () => {
     code: 'auth-code',
     code_verifier: 'verifier',
     redirect_uri: 'https://x/cb',
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
   await waitFor(() => {
     expect(useAuthStore.getState().token).toBe('discord-token');
