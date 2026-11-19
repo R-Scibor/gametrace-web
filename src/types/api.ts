@@ -230,6 +230,8 @@ export interface HealthResponse {
   status: string; version: string; commit_sha: string; build_time: string;
   api: { uptime_seconds: number };
   bot: { status: BotStatus; uptime_seconds: number | null; last_heartbeat_seconds_ago: number | null; };
+  /** Account deletion grace period from the backend setting, public so logged out pages can show it. */
+  grace_days?: number | null;
 }
 
 // Voice

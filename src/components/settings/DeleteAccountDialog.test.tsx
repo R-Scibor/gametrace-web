@@ -12,6 +12,10 @@ import { fixtures } from '../../../test/fixtures';
 import { renderWithProviders, resetStores } from '../../../test/utils';
 import i18n from '../../i18n';
 
+vi.mock('../../hooks/useGraceDays', () => ({
+  useGraceDays: () => 7,
+}));
+
 const onClose = vi.fn();
 
 beforeEach(async () => {
