@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { AxiosError, AxiosHeaders } from 'axios';
 import i18n from '../i18n';
 import {
-  ACCOUNT_DELETION_GRACE_DAYS,
   daysLeftUntil,
   graceDaysFrom,
   isScheduledDeletionConsumed,
@@ -32,14 +31,14 @@ beforeEach(() => {
   clearScheduledDeletion();
 });
 
-describe('grace constant', () => {
+describe('grace copy interpolation', () => {
   it('drives the interpolated copy actually shown to the user', async () => {
     await i18n.changeLanguage('pl');
     const consequences = i18n.t('account:dialog.consequences', {
       returnObjects: true,
-      days: ACCOUNT_DELETION_GRACE_DAYS,
+      days: 14,
     }) as string[];
-    expect(consequences[1]).toContain(`${ACCOUNT_DELETION_GRACE_DAYS} dniach`);
+    expect(consequences[1]).toContain('14 dniach');
   });
 });
 
@@ -154,9 +153,9 @@ describe('scheduled-deletion consumed flag', () => {
 });
 
 describe('graceDaysFrom', () => {
-  it('uses the API value and falls back while it is missing', () => {
+  it('uses the API value and falls back to "-" while it is missing', () => {
     expect(graceDaysFrom({ grace_days: 12 })).toBe(12);
-    expect(graceDaysFrom({ grace_days: null })).toBe(ACCOUNT_DELETION_GRACE_DAYS);
-    expect(graceDaysFrom(undefined)).toBe(ACCOUNT_DELETION_GRACE_DAYS);
+    expect(graceDaysFrom({ grace_days: null })).toBe('-');
+    expect(graceDaysFrom(undefined)).toBe('-');
   });
 });

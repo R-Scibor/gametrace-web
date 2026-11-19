@@ -39,7 +39,7 @@ export function PrivacyPage() {
         email: PRIVACY_CONTACT_EMAIL,
         version: PRIVACY_POLICY_VERSION,
       }),
-    [t, i18n.language, graceDays],
+    [t, graceDays],
   );
 
   return (

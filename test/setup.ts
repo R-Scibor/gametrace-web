@@ -4,6 +4,11 @@ import { server } from './server';
 import { resetStores } from './utils';
 import i18n from '../src/i18n';
 
+// Ensure MSW XMLHttpRequest interceptor always finds ProgressEvent on globalThis
+if (typeof globalThis.ProgressEvent === 'undefined' && typeof window !== 'undefined' && window.ProgressEvent) {
+  globalThis.ProgressEvent = window.ProgressEvent;
+}
+
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 beforeEach(() => {
   resetStores();
