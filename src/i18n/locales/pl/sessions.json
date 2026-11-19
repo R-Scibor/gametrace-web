@@ -23,7 +23,8 @@
     "futureStart": "Rozpoczęcie może być najwyżej 5 minut w przyszłości.",
     "futureEnd": "Zakończenie może być najwyżej 5 minut w przyszłości.",
     "errorTooLong": "Ta sesja trwa już ponad 48 godzin. Nie da się zamknąć jej na teraz — podaj zakończenie w ciągu 48 godzin od startu albo odrzuć sesję.",
-    "errorNeedsEnd": "Podaj zakończenie albo odrzuć sesję."
+    "errorNeedsEnd": "Podaj zakończenie albo odrzuć sesję.",
+    "endRequired": "Podaj zakończenie."
   },
   "actions": {
     "saving": "ZAPISYWANIE...",

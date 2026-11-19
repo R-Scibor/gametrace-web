@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route } from 'react-router-dom';
 import { http, HttpResponse } from 'msw';
@@ -37,8 +37,23 @@ function localInput(date: Date) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
+// Drives the DateTimePicker the way a user would: open it, page to the month,
+// pick the day, hour and minute, confirm.
 function setTime(id: string, value: string) {
-  fireEvent.change(document.getElementById(id) as HTMLInputElement, { target: { value } });
+  const [date, time] = value.split('T');
+  const [hh, mm] = time.split(':');
+  fireEvent.click(document.getElementById(id) as HTMLElement);
+  const dialog = screen.getByRole('dialog');
+  const target = date.slice(0, 7);
+  for (let i = 0; i < 24 && !dialog.querySelector(`[data-date="${date}"]`); i++) {
+    const shown = dialog.querySelector('[data-date]')?.getAttribute('data-date')?.slice(0, 7) ?? '';
+    fireEvent.click(within(dialog).getByRole('button', { name: i18n.t(shown < target ? 'datetime:nextMonth' : 'datetime:prevMonth') }));
+  }
+  fireEvent.click(dialog.querySelector(`[data-date="${date}"]`) as HTMLElement);
+  const [hours, minutes] = within(dialog).getAllByRole('listbox');
+  fireEvent.click(within(hours).getByRole('option', { name: hh }));
+  fireEvent.click(within(minutes).getByRole('option', { name: mm }));
+  fireEvent.click(within(dialog).getByRole('button', { name: i18n.t('datetime:confirm') }));
 }
 
 test('SessionFormPage create shows 409 ConflictNotice', async () => {
@@ -316,6 +331,28 @@ test('create with end equal to start shows endBeforeStart and does not post', as
   await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
   expect(await screen.findByText('Zakończenie musi być późniejsze niż rozpoczęcie.')).toBeInTheDocument();
   expect(posted).toBe(false);
+});
+
+test('voice prefill without an end asks for it and does not post', async () => {
+  let posted = false;
+  server.use(http.post('/api/v1/sessions', () => {
+    posted = true;
+    return HttpResponse.json(fixtures.session, { status: 201 });
+  }));
+  const user = userEvent.setup();
+  const start = localInput(new Date(FROZEN.getTime() - 60 * 60 * 1000));
+  renderAppRoutes(<Route path="/sessions/new" element={<SessionFormPage />} />, {
+    route: `/sessions/new?startTime=${start}`,
+  });
+  await pickFirstGame(user);
+  expect(document.getElementById('session-end')).toHaveTextContent('Wybierz...');
+  await user.click(screen.getByRole('button', { name: /Zapisz sesję/i }));
+  expect(await screen.findByText('Podaj zakończenie.')).toBeInTheDocument();
+  expect(document.getElementById('session-end')).toHaveAttribute('aria-invalid', 'true');
+  expect(posted).toBe(false);
+
+  setTime('session-end', localInput(FROZEN));
+  expect(screen.queryByText('Podaj zakończenie.')).not.toBeInTheDocument();
 });
 
 test('create longer than 48 hours shows the duration message and does not post', async () => {
@@ -817,11 +854,12 @@ test('opening the overlapping session from the notice loads it fresh without a w
 
   expect(await screen.findByRole('link', { name: 'Wróć do gry' })).toBeInTheDocument();
   await waitFor(() =>
-    expect(document.getElementById('session-start')).toHaveValue(
+    expect(document.getElementById('session-start')).toHaveAttribute(
+      'data-value',
       localInput(new Date(target.start_time)),
     ),
   );
-  expect(document.getElementById('session-start')).not.toHaveValue(typedStart);
+  expect(document.getElementById('session-start')).not.toHaveAttribute('data-value', typedStart);
   expect(screen.queryByText('Sesja zmieniona')).not.toBeInTheDocument();
   expect(screen.queryByText('Nakładające się sesje')).not.toBeInTheDocument();
 });

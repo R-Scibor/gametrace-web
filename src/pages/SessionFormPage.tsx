@@ -4,7 +4,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSession } from '../hooks/useSession';
 import { ConflictNotice } from '../components/ConflictNotice';
-import { BackLink, Button, EmptyState, Skeleton, ConfirmDialog, FieldError } from '../components/ui';
+import { BackLink, Button, EmptyState, Skeleton, ConfirmDialog, FieldError, DateTimePicker } from '../components/ui';
 import { GameSelect } from '../components/games/GameSelect';
 import {
   useCreateSession,
@@ -74,7 +74,7 @@ function SessionForm() {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [discardConfirmOpen, setDiscardConfirmOpen] = useState(false);
   const [discardTarget, setDiscardTarget] = useState<string | -1 | null>(null);
-  const [boundCode, setBoundCode] = useState<SessionBoundCode | 'errorNeedsEnd' | null>(null);
+  const [boundCode, setBoundCode] = useState<SessionBoundCode | 'errorNeedsEnd' | 'endRequired' | null>(null);
 
   const { data: session, isLoading } = useSession(sessionId, isEditing);
 
@@ -214,7 +214,10 @@ function SessionForm() {
       setBoundCode('errorNeedsEnd');
       return;
     }
-    if (!endTime) return;
+    if (!endTime) {
+      setBoundCode('endRequired');
+      return;
+    }
     const startInstant = isEditing && session
       ? new Date(session.start_time)
       : new Date(startTime);
@@ -290,22 +293,19 @@ function SessionForm() {
 
           <div className={styles.inputGroup}>
             <label htmlFor="session-start" className={styles.label}>{t('fields.start')}</label>
-            <input
+            <DateTimePicker
               id="session-start"
-              type="datetime-local"
               value={startTime}
-              onChange={(e) => {
-                setStartTime(e.target.value);
+              onChange={(next) => {
+                setStartTime(next);
                 setBoundCode(null);
                 createMut.reset();
                 updateMut.reset();
                 clearConflict();
               }}
-              className={styles.input}
               disabled={isEditing || pending}
-              required
-              aria-invalid={isStartError ? true : undefined}
-              aria-describedby={isStartError ? 'session-start-error' : undefined}
+              invalid={isStartError}
+              describedBy={isStartError ? 'session-start-error' : undefined}
             />
             {isStartError && (
               <FieldError id="session-start-error">
@@ -316,22 +316,19 @@ function SessionForm() {
 
           <div className={styles.inputGroup}>
             <label htmlFor="session-end" className={styles.label}>{t('fields.end')}</label>
-            <input
+            <DateTimePicker
               id="session-end"
-              type="datetime-local"
               value={endTime}
-              onChange={(e) => {
-                setEndTime(e.target.value);
+              onChange={(next) => {
+                setEndTime(next);
                 setBoundCode(null);
                 createMut.reset();
                 updateMut.reset();
                 clearConflict();
               }}
-              className={styles.input}
               disabled={pending}
-              required={!isEditing}
-              aria-invalid={isEndError ? true : undefined}
-              aria-describedby={
+              invalid={isEndError}
+              describedBy={
                 [isEndError && 'session-end-error', isLongOpen && 'session-long-open']
                   .filter(Boolean)
                   .join(' ') || undefined
