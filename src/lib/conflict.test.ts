@@ -27,6 +27,23 @@ test('parseConflict returns null for non-409 errors', () => {
   expect(parseConflict(error)).toBeNull();
 });
 
+function conflictError(detail: unknown) {
+  return new AxiosError('Conflict', '409', undefined, undefined, {
+    status: 409,
+    statusText: 'Conflict',
+    headers: {},
+    config: { headers: new AxiosHeaders() },
+    data: { detail },
+  });
+}
+
+test('parseConflict returns null for a 409 without a usable conflicting_session', () => {
+  expect(parseConflict(conflictError('Session overlaps with an existing session'))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'Session overlaps with an existing session' }))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'x', conflicting_session: null }))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'x', conflicting_session: 'nope' }))).toBeNull();
+});
+
 test('parseConflict returns null for non-axios errors', () => {
   expect(parseConflict(new Error('nope'))).toBeNull();
 });
