@@ -56,6 +56,7 @@
     "restored": "Sesja przywrócona.",
     "restoreFailed": "Nie udało się przywrócić sesji.",
     "movedToTrash": "Sesja przeniesiona do kosza.",
-    "deleteFailed": "Nie udało się usunąć sesji."
+    "deleteFailed": "Nie udało się usunąć sesji.",
+    "conflictUnknown": "Ta sesja koliduje z inną albo zmieniła się w międzyczasie. Odśwież stronę i spróbuj ponownie."
   }
 }

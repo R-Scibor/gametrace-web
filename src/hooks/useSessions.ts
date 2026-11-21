@@ -8,9 +8,10 @@ import {
   restoreSession,
 } from '../api/sessions';
 import i18n from '../i18n';
+import { parseConflict } from '../lib/conflict';
 import { qk } from '../lib/queryKeys';
 import { parseSessionBound } from '../lib/sessionBounds';
-import { useToastStore } from '../store/toastStore';
+import { useToastStore, type ToastMessage } from '../store/toastStore';
 import type { SessionCreate, SessionPatch } from '../types/api';
 
 const RECENT_LIMIT = 8;
@@ -26,6 +27,19 @@ function invalidateAfterSessionChange(queryClient: ReturnType<typeof useQueryCli
   if (gameId != null) {
     queryClient.invalidateQueries({ queryKey: qk.gameSessions(gameId) });
   }
+}
+
+/**
+ * A 409 with a parsable conflicting_session is shown inline by the page (ConflictNotice),
+ * so it must not toast. A 409 without one has no inline UI, so it gets a generic
+ * conflict toast instead of failing silently. Returns true when the error was a 409.
+ */
+function handleConflictError(err: unknown, pushToast: (toast: Omit<ToastMessage, 'id'>) => void): boolean {
+  if (!axios.isAxiosError(err) || err.response?.status !== 409) return false;
+  if (!parseConflict(err)) {
+    pushToast({ type: 'error', message: i18n.t('sessions:toast.conflictUnknown') });
+  }
+  return true;
 }
 
 export function useRecentSessions(activeSessionId?: number | null) {
@@ -47,7 +61,7 @@ export function useCreateSession() {
       pushToast({ type: 'success', message: i18n.t('sessions:toast.saved') });
     },
     onError: (err) => {
-      if (axios.isAxiosError(err) && err.response?.status === 409) return;
+      if (handleConflictError(err, pushToast)) return;
       if (parseSessionBound(err)) return;
       pushToast({ type: 'error', message: i18n.t('sessions:toast.saveFailed') });
     },
@@ -66,7 +80,7 @@ export function usePatchSession(sessionId: number, gameId?: number) {
       pushToast({ type: 'success', message: i18n.t('sessions:toast.changesSaved') });
     },
     onError: (err) => {
-      if (axios.isAxiosError(err) && err.response?.status === 409) return;
+      if (handleConflictError(err, pushToast)) return;
       if (parseSessionBound(err)) return;
       pushToast({ type: 'error', message: i18n.t('sessions:toast.changesFailed') });
     },
@@ -103,7 +117,7 @@ export function useRestoreSession() {
       pushToast({ type: 'success', message: i18n.t('sessions:toast.restored') });
     },
     onError: (err) => {
-      if (axios.isAxiosError(err) && err.response?.status === 409) return;
+      if (handleConflictError(err, pushToast)) return;
       pushToast({ type: 'error', message: i18n.t('sessions:toast.restoreFailed') });
     },
   });
