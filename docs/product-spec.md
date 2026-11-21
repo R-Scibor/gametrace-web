@@ -191,6 +191,9 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 - Per-panel/query error UI (ported `ErrorBanner`), never a full-page blank for one failure.
 - **409 conflict** on session create/restore: parse `ConflictResponse`
   (`detail.detail` + `detail.conflicting_session`) and render the conflicting session inline.
+  A 409 whose body has no usable `conflicting_session` (missing, null or not an object) is not
+  parsed as a conflict. `useSessions` then shows the generic `sessions:toast.conflictUnknown`
+  toast instead of failing silently. A parsed 409 never toasts, the page shows it inline.
 - Mutation feedback via toasts (success/failure).
 - Voice flow explicit state machine: `idle → recording → processing → (prefill | error)`,
   including a `PERMISSION_DENIED` path when the mic is blocked.
