@@ -57,6 +57,6 @@
     "restoreFailed": "Couldn't restore the session.",
     "movedToTrash": "Session moved to trash.",
     "deleteFailed": "Couldn't delete the session.",
-    "conflictUnknown": "This session clashes with another one or changed in the meantime. Refresh the page and try again."
+    "conflictUnknown": "This session clashes with another one or changed in the meantime. Check the times or refresh the page and try again."
   }
 }

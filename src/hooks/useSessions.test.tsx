@@ -64,7 +64,7 @@ test('usePatchSession does not toast on 409', async () => {
 });
 
 const CONFLICT_UNKNOWN =
-  'Ta sesja koliduje z inną albo zmieniła się w międzyczasie. Odśwież stronę i spróbuj ponownie.';
+  'Ta sesja koliduje z inną albo zmieniła się w międzyczasie. Sprawdź godziny lub odśwież stronę i spróbuj ponownie.';
 
 test('useCreateSession toasts a generic conflict on a 409 without conflicting_session', async () => {
   server.use(
