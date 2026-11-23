@@ -96,19 +96,43 @@ Setup lives in `test/setup.ts` (global store reset), `test/handlers.ts` (MSW han
 
 ## Deployment
 
-Deploy using Docker Compose:
+Deploy using Docker Compose with the prebuilt GHCR image:
+
+```bash
+docker compose pull && docker compose up -d
+```
+
+For local builds from source:
 
 ```bash
 docker compose up -d --build
 ```
 
-- **URL:** `http://localhost:8020`
+- **Image:** `ghcr.io/r-scibor/gametrace-web:${IMAGE_TAG:-latest}`
+- **URL:** `http://localhost:8020` (host port `8020` mapped to internal unprivileged port `8080`)
 - **API proxy:** `/api` and `/covers` → `gametrace_api:8010` (via `gametrace-backend_default` Docker network)
 - **Homelab hostname:** `gametrace.home` (Nginx Proxy Manager → `:8020`)
 
 The backend has no CORS middleware — all browser traffic must be same-origin through this nginx proxy.
 
-`nginx.conf` resolves `gametrace_api` via Docker DNS on each request (avoids 502 after the API container is recreated without restarting web). If API calls still return **502** while `curl :8010/api/v1/health` is OK, reload web nginx: `docker exec gametrace-web nginx -s reload`.
+### Runtime Configuration & Reloads
+
+- **Environment variables (`VITE_DISCORD_*`):** Passed into the container at startup via Compose `environment:` and generated into `/env-config.js` by `/docker-entrypoint.d/40-env-config.sh`. Changing values in `.env` only requires recreating the container:
+  ```bash
+  docker compose up -d
+  ```
+  No image rebuild is necessary.
+- **Proxy / DNS reloads:** `nginx.conf` resolves `gametrace_api` via Docker DNS on each request (avoids 502 after the API container is recreated without restarting web). If API calls still return **502** while `curl :8010/api/v1/health` is OK, reload web nginx without restarting the container:
+  ```bash
+  docker exec gametrace-web nginx -s reload
+  ```
+
+### Permissions & Static Downloads
+
+The container runs as unprivileged Nginx (`nginxinc/nginx-unprivileged:alpine`, `UID 101`) listening on internal port `8080`.
+Mounted volumes such as `./downloads` must have read and execute permissions for other users:
+- `./downloads` directory: `0755` (`chmod o+rx ./downloads`)
+- Files within (e.g., `gametrace.apk`): `0644` (`chmod o+r ./downloads/gametrace.apk`)
 
 ### Nginx Proxy Manager (homelab)
 
@@ -119,7 +143,7 @@ The backend has no CORS middleware — all browser traffic must be same-origin t
 
 ### Docker network
 
-`docker-compose.yml` attaches `gametrace-web` to the external network `gametrace-backend_default`. That network is created by the backend stack — start the API (`gametrace_api`) before building the web container, or Compose will fail to find the network.
+`docker-compose.yml` attaches `gametrace-web` to the external network `gametrace-backend_default`. That network is created by the backend stack — start the API (`gametrace_api`) before starting the web container, or Compose will fail to find the network.
 
 ### Health monitoring
 
