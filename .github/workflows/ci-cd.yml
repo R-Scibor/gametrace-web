@@ -148,8 +148,11 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Pull Latest Image and Restart Stack
+      - uses: actions/checkout@v6
+
+      - name: Sync Runtime Config, Pull Latest Image, and Restart Stack
         run: |
+          cp docker-compose.yml /home/endmin/homelab/gametrace-web/docker-compose.yml
           cd /home/endmin/homelab/gametrace-web
           docker compose pull
           docker compose up -d --remove-orphans
