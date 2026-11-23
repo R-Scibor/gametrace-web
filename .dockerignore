@@ -1,4 +1,11 @@
 node_modules
 dist
+coverage
 .git
+.env
+.env.*
+.internal
+.superpowers
+docs
+downloads/*.apk
 *.log
