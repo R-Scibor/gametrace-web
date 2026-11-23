@@ -12,7 +12,18 @@ describe('discordOAuth', () => {
     sessionStorage.clear();
     vi.stubEnv('VITE_DISCORD_CLIENT_ID', '123456789');
   });
-  afterEach(() => vi.unstubAllEnvs());
+  afterEach(() => {
+    delete window.__RUNTIME_CONFIG__;
+    vi.unstubAllEnvs();
+  });
+
+  it('prefers window.__RUNTIME_CONFIG__ over import.meta.env for Discord client id', () => {
+    window.__RUNTIME_CONFIG__ = { VITE_DISCORD_CLIENT_ID: '' };
+    expect(isDiscordLoginEnabled()).toBe(false);
+
+    window.__RUNTIME_CONFIG__ = { VITE_DISCORD_CLIENT_ID: 'runtime-client-id' };
+    expect(isDiscordLoginEnabled()).toBe(true);
+  });
 
   it('is enabled only when a client id is configured', () => {
     expect(isDiscordLoginEnabled()).toBe(true);
