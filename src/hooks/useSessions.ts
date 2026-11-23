@@ -1,5 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import {
   listSessions,
   createSession,
@@ -8,7 +7,7 @@ import {
   restoreSession,
 } from '../api/sessions';
 import i18n from '../i18n';
-import { parseConflict } from '../lib/conflict';
+import { isConflictStatus, parseConflict } from '../lib/conflict';
 import { qk } from '../lib/queryKeys';
 import { parseSessionBound } from '../lib/sessionBounds';
 import { useToastStore, type ToastMessage } from '../store/toastStore';
@@ -35,7 +34,7 @@ function invalidateAfterSessionChange(queryClient: ReturnType<typeof useQueryCli
  * conflict toast instead of failing silently. Returns true when the error was a 409.
  */
 function handleConflictError(err: unknown, pushToast: (toast: Omit<ToastMessage, 'id'>) => void): boolean {
-  if (!axios.isAxiosError(err) || err.response?.status !== 409) return false;
+  if (!isConflictStatus(err)) return false;
   if (!parseConflict(err)) {
     pushToast({ type: 'error', message: i18n.t('sessions:toast.conflictUnknown') });
   }
