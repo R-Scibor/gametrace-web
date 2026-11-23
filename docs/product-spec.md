@@ -189,8 +189,12 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 
 - Global axios 401 interceptor → `teardownAuth()` (clear token + query cache). Route guard sends unauthenticated users to `/welcome`.
 - Per-panel/query error UI (ported `ErrorBanner`), never a full-page blank for one failure.
-- **409 conflict** on session create/restore: parse `ConflictResponse`
+- **409 conflict** on session create/edit/restore: parse `ConflictResponse`
   (`detail.detail` + `detail.conflicting_session`) and render the conflicting session inline.
+  A 409 whose body has no renderable `conflicting_session` (missing, null, array, or partial
+  object without session/game fields) is not parsed as a conflict. `useSessions` then shows
+  the generic `sessions:toast.conflictUnknown` toast instead of failing silently. A parsed 409
+  never toasts, the page shows it inline.
 - Mutation feedback via toasts (success/failure).
 - Voice flow explicit state machine: `idle → recording → processing → (prefill | error)`,
   including a `PERMISSION_DENIED` path when the mic is blocked.

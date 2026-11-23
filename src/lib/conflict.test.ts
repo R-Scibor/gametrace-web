@@ -1,6 +1,6 @@
 import { AxiosError, AxiosHeaders } from 'axios';
 import { test, expect } from 'vitest';
-import { classifyConflict, parseConflict } from './conflict';
+import { classifyConflict, isConflictStatus, parseConflict } from './conflict';
 import { fixtures } from '../../test/fixtures';
 
 test('parseConflict returns conflict body on 409', () => {
@@ -25,6 +25,33 @@ test('parseConflict returns null for non-409 errors', () => {
   });
 
   expect(parseConflict(error)).toBeNull();
+});
+
+function conflictError(detail: unknown) {
+  return new AxiosError('Conflict', '409', undefined, undefined, {
+    status: 409,
+    statusText: 'Conflict',
+    headers: {},
+    config: { headers: new AxiosHeaders() },
+    data: { detail },
+  });
+}
+
+test('parseConflict returns null for a 409 without a usable conflicting_session', () => {
+  expect(parseConflict(conflictError('Session overlaps with an existing session'))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'Session overlaps with an existing session' }))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'x', conflicting_session: null }))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'x', conflicting_session: 'nope' }))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'x', conflicting_session: [] }))).toBeNull();
+  expect(parseConflict(conflictError({ detail: 'x', conflicting_session: { id: 1 } }))).toBeNull();
+  expect(
+    parseConflict(conflictError({ detail: 123, conflicting_session: fixtures.session })),
+  ).toBeNull();
+});
+
+test('isConflictStatus distinguishes 409 axios errors from other errors', () => {
+  expect(isConflictStatus(conflictError('Conflict'))).toBe(true);
+  expect(isConflictStatus(new Error('nope'))).toBe(false);
 });
 
 test('parseConflict returns null for non-axios errors', () => {

@@ -63,6 +63,64 @@ test('usePatchSession does not toast on 409', async () => {
   expect(useToastStore.getState().toasts).toHaveLength(0);
 });
 
+const CONFLICT_UNKNOWN =
+  'Ta sesja koliduje z inną albo zmieniła się w międzyczasie. Sprawdź godziny lub odśwież stronę i spróbuj ponownie.';
+
+test('useCreateSession toasts a generic conflict on a 409 without conflicting_session', async () => {
+  server.use(
+    http.post('/api/v1/sessions', () =>
+      HttpResponse.json({ detail: 'Session overlaps with an existing session' }, { status: 409 }),
+    ),
+  );
+  const { result } = renderHookWithProviders(() => useCreateSession());
+  await act(async () => {
+    result.current.mutate({
+      game_id: 1,
+      start_time: '2026-06-15T18:00:00Z',
+      end_time: '2026-06-15T20:00:00Z',
+    });
+  });
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  const toasts = useToastStore.getState().toasts;
+  expect(toasts).toHaveLength(1);
+  expect(toasts[0]).toMatchObject({ type: 'error', message: CONFLICT_UNKNOWN });
+});
+
+test('usePatchSession toasts a generic conflict when conflicting_session is null', async () => {
+  server.use(http.patch('/api/v1/sessions/7', () =>
+    HttpResponse.json(
+      { detail: { detail: 'Session was updated by another writer', conflicting_session: null } },
+      { status: 409 },
+    )));
+  const { result } = renderHookWithProviders(() => usePatchSession(7, 1));
+  await act(async () => {
+    result.current.mutate({ end_time: '2026-06-15T12:00:00.000Z' });
+  });
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  const toasts = useToastStore.getState().toasts;
+  expect(toasts).toHaveLength(1);
+  expect(toasts[0].message).toBe(CONFLICT_UNKNOWN);
+});
+
+test('useRestoreSession stays silent on a full 409 and toasts on a bare one', async () => {
+  server.use(http.post('/api/v1/sessions/:id/restore', () =>
+    HttpResponse.json({ detail: fixtures.conflictResponse }, { status: 409 })));
+  const { result } = renderHookWithProviders(() => useRestoreSession());
+  await act(async () => {
+    result.current.mutate(7);
+  });
+  await waitFor(() => expect(result.current.isError).toBe(true));
+  expect(useToastStore.getState().toasts).toHaveLength(0);
+
+  server.use(http.post('/api/v1/sessions/:id/restore', () =>
+    HttpResponse.json({ detail: 'Conflict' }, { status: 409 })));
+  await act(async () => {
+    result.current.mutate(7);
+  });
+  await waitFor(() => expect(useToastStore.getState().toasts).toHaveLength(1));
+  expect(useToastStore.getState().toasts[0].message).toBe(CONFLICT_UNKNOWN);
+});
+
 test('useRecentSessions fetches COMPLETED and ERROR sessions', async () => {
   let capturedUrl = '';
   server.use(
