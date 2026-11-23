@@ -1,0 +1,163 @@
+name: CI/CD
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - 'public/**'
+      - 'index.html'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'tsconfig.app.json'
+      - 'tsconfig.node.json'
+      - 'vite.config.ts'
+      - 'eslint.config.js'
+      - 'nginx.conf'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'docker-compose.yml'
+      - 'docker-entrypoint.d/**'
+      - '.github/workflows/ci-cd.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - 'public/**'
+      - 'index.html'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'tsconfig.app.json'
+      - 'tsconfig.node.json'
+      - 'vite.config.ts'
+      - 'eslint.config.js'
+      - 'nginx.conf'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'docker-compose.yml'
+      - 'docker-entrypoint.d/**'
+      - '.github/workflows/ci-cd.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test:run
+
+      - name: Build
+        run: npm run build
+
+  build-and-publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Dynamic Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          load: true
+          tags: gametrace-web:local-scan
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            APP_VERSION=${{ steps.meta.outputs.version || 'prod' }}
+
+      - name: Run Trivy Vulnerability Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: gametrace-web:local-scan
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+
+      - name: Build and Push Image to GHCR
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            APP_VERSION=${{ steps.meta.outputs.version || 'prod' }}
+
+  deploy:
+    name: Deploy to Homelab
+    needs: build-and-publish
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull Latest Image and Restart Stack
+        run: |
+          cd /home/endmin/homelab/gametrace-web
+          docker compose pull
+          docker compose up -d --remove-orphans
+
+      - name: Notify failure
+        if: failure()
+        run: |
+          if [ -x /home/endmin/homelab/ntfy/notify.sh ]; then
+            /home/endmin/homelab/ntfy/notify.sh --fail --title "CI fail gametrace-web" "Job 'deploy' failed on ${{ github.ref_name }}" --click "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+            python3 /home/endmin/homelab/ntfy/hooks/watch.py --mark-seen R-Scibor/gametrace-web "${{ github.run_id }}" || true
+          fi
