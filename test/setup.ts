@@ -11,6 +11,7 @@ if (typeof globalThis.ProgressEvent === 'undefined' && typeof window !== 'undefi
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 beforeEach(() => {
+  delete window.__RUNTIME_CONFIG__;
   resetStores();
   localStorage.clear();
   void i18n.changeLanguage('pl');

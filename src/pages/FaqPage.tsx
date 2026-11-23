@@ -13,8 +13,6 @@ import type { FaqSectionData, FaqQuestionData } from '../types/faq';
 import { getDiscordServerJoinUrl } from '../lib/discordInvites';
 import styles from './FaqPage.module.css';
 
-const SERVER_JOIN_URL = getDiscordServerJoinUrl();
-
 function matchesQuestion(q: FaqQuestionData, qLower: string): boolean {
   if (q.question.toLowerCase().includes(qLower)) return true;
   if (q.answer.some((p) => p.toLowerCase().includes(qLower))) return true;
@@ -26,6 +24,7 @@ function matchesQuestion(q: FaqQuestionData, qLower: string): boolean {
 }
 
 export function FaqPage() {
+  const serverJoinUrl = getDiscordServerJoinUrl();
   const { t, i18n } = useTranslation('faq');
   const location = useLocation();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -305,10 +304,10 @@ export function FaqPage() {
             <p className={styles.supportText}>{t('supportBannerText')}</p>
           </div>
           <div className={styles.supportActions}>
-            {SERVER_JOIN_URL && (
+            {serverJoinUrl && (
               <Button
                 className={styles.discordBtn}
-                onClick={() => window.open(SERVER_JOIN_URL, '_blank', 'noopener,noreferrer')}
+                onClick={() => window.open(serverJoinUrl, '_blank', 'noopener,noreferrer')}
               >
                 <svg
                   viewBox="0 0 24 24"

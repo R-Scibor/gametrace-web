@@ -1,15 +1,19 @@
 services:
   gametrace-web:
+    image: ghcr.io/r-scibor/gametrace-web:${IMAGE_TAG:-latest}
     build:
       context: .
       args:
-        VITE_DISCORD_CLIENT_ID: ${VITE_DISCORD_CLIENT_ID:-}
-        VITE_DISCORD_SERVER_INVITE_URL: ${VITE_DISCORD_SERVER_INVITE_URL:-}
-        VITE_DISCORD_BOT_INVITE_URL: ${VITE_DISCORD_BOT_INVITE_URL:-}
+        GIT_SHA: ${GIT_SHA:-dev}
+        APP_VERSION: ${APP_VERSION:-dev}
     container_name: gametrace-web
     restart: unless-stopped
     ports:
-      - "8020:80"
+      - "8020:8080"
+    environment:
+      VITE_DISCORD_CLIENT_ID: ${VITE_DISCORD_CLIENT_ID:-}
+      VITE_DISCORD_SERVER_INVITE_URL: ${VITE_DISCORD_SERVER_INVITE_URL:-}
+      VITE_DISCORD_BOT_INVITE_URL: ${VITE_DISCORD_BOT_INVITE_URL:-}
     volumes:
       - ./downloads:/var/downloads:ro
     networks:

@@ -11,9 +11,6 @@ import { APK_DOWNLOAD_PATH, isApkDownloadReady } from '../lib/apkDownload';
 import { getDiscordBotInviteUrl, getDiscordServerJoinUrl } from '../lib/discordInvites';
 import styles from './LandingPage.module.css';
 
-const BOT_INVITE_URL = getDiscordBotInviteUrl();
-const SERVER_JOIN_URL = getDiscordServerJoinUrl();
-
 /** Example journals for the hero. Not a live account. */
 const SPECIMENS = [
   {
@@ -85,6 +82,8 @@ const HEATMAP_LEVELS = [
 ];
 
 export function LandingPage() {
+  const botInviteUrl = getDiscordBotInviteUrl();
+  const serverJoinUrl = getDiscordServerJoinUrl();
   const { t, i18n } = useTranslation('welcome');
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -535,20 +534,20 @@ export function LandingPage() {
               <p className={styles.startBody}>{t('start.body')}</p>
             </div>
             <div className={styles.startActions}>
-              {SERVER_JOIN_URL ? (
+              {serverJoinUrl ? (
                 <Button
                   className={styles.startBtn}
-                  onClick={() => openExternal(SERVER_JOIN_URL)}
+                  onClick={() => openExternal(serverJoinUrl)}
                 >
                   <DiscordIcon />
                   {t('start.joinServer')}
                 </Button>
               ) : null}
-              {BOT_INVITE_URL ? (
+              {botInviteUrl ? (
                 <Button
                   variant="secondary"
                   className={styles.startBtn}
-                  onClick={() => openExternal(BOT_INVITE_URL)}
+                  onClick={() => openExternal(botInviteUrl)}
                 >
                   <DiscordIcon />
                   {t('start.addBot')}
@@ -673,10 +672,10 @@ export function LandingPage() {
               {isAuthenticated ? t('topBar.dashboard') : t('footer.login')}
             </Link>
           </nav>
-          {SERVER_JOIN_URL ? (
+          {serverJoinUrl ? (
             <nav className={styles.footerCol} aria-label={t('footer.community')}>
               <h4>{t('footer.community')}</h4>
-              <a href={SERVER_JOIN_URL} className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+              <a href={serverJoinUrl} className={styles.footerLink} target="_blank" rel="noopener noreferrer">
                 {t('footer.discord')}
               </a>
             </nav>

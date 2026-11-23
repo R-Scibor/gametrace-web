@@ -7,6 +7,7 @@
  * redirect to Discord and back to /auth/discord/callback.
  */
 import { createPkcePair, isPkceSupported, randomState } from './pkce';
+import { getRuntimeEnv } from './runtimeConfig';
 
 const AUTHORIZE_URL = 'https://discord.com/oauth2/authorize';
 const SCOPES = 'identify guilds';
@@ -15,7 +16,7 @@ const HANDOFF_KEY = 'gametrace.discord-oauth';
 type Handoff = { state: string; verifier: string; redirectUri: string };
 
 export function getDiscordClientId(): string {
-  return String(import.meta.env.VITE_DISCORD_CLIENT_ID ?? '').trim();
+  return getRuntimeEnv('VITE_DISCORD_CLIENT_ID').trim();
 }
 
 /** Must match an entry in the backend's DISCORD_OAUTH_REDIRECT_URIS allowlist. */

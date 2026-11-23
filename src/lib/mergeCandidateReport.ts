@@ -1,5 +1,6 @@
 import type { ReportContext } from '../types/api';
 import { EMPTY_VALUE } from './format';
+import { getRuntimeEnv } from './runtimeConfig';
 
 export type MergeCandidateGameRef = { id: number; name: string };
 
@@ -49,6 +50,6 @@ export function buildWebReportContext(screen: string): ReportContext {
     screen,
     platform: 'web',
     osVersion: typeof navigator !== 'undefined' ? navigator.userAgent.slice(0, 200) : 'unknown',
-    appVersion: import.meta.env.VITE_APP_VERSION ?? 'web',
+    appVersion: getRuntimeEnv('VITE_APP_VERSION').trim() || 'web',
   };
 }

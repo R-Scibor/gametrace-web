@@ -12,9 +12,6 @@ import {
 } from '../../lib/discordOAuth';
 import styles from './WelcomeOnboarding.module.css';
 
-const BOT_INVITE_URL = getDiscordBotInviteUrl();
-const SERVER_JOIN_URL = getDiscordServerJoinUrl();
-
 type StepId = 1 | 2 | 3;
 type Step2Mode = 'choose' | 'code' | 'discord';
 
@@ -130,6 +127,8 @@ export function WelcomeOnboarding({
   isAuthenticated,
   onApkUnavailable,
 }: WelcomeOnboardingProps) {
+  const botInviteUrl = getDiscordBotInviteUrl();
+  const serverJoinUrl = getDiscordServerJoinUrl();
   const { t, i18n } = useTranslation('welcome');
   const { t: tAuth } = useTranslation('auth');
   const navigate = useNavigate();
@@ -171,14 +170,14 @@ export function WelcomeOnboarding({
   };
 
   const openBotInvite = () => {
-    if (!BOT_INVITE_URL) return;
-    window.open(BOT_INVITE_URL, '_blank', 'noopener,noreferrer');
+    if (!botInviteUrl) return;
+    window.open(botInviteUrl, '_blank', 'noopener,noreferrer');
     setBotInviteOpened(true);
   };
 
   const openServerJoin = () => {
-    if (!SERVER_JOIN_URL) return;
-    window.open(SERVER_JOIN_URL, '_blank', 'noopener,noreferrer');
+    if (!serverJoinUrl) return;
+    window.open(serverJoinUrl, '_blank', 'noopener,noreferrer');
     setServerJoinOpened(true);
   };
 
@@ -279,7 +278,7 @@ export function WelcomeOnboarding({
             <p className={styles.lead}>{t('onboarding.step1.body')}</p>
 
             <div className={styles.step1Actions}>
-              {SERVER_JOIN_URL ? (
+              {serverJoinUrl ? (
                 <Button
                   className={styles.startBtn}
                   variant={serverJoinOpened ? 'secondary' : 'primary'}
@@ -289,7 +288,7 @@ export function WelcomeOnboarding({
                   {t('onboarding.step1.joinServer')}
                 </Button>
               ) : null}
-              {BOT_INVITE_URL ? (
+              {botInviteUrl ? (
                 <Button
                   className={styles.startBtn}
                   variant={botInviteOpened ? 'secondary' : 'primary'}
