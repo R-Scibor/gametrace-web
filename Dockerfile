@@ -18,6 +18,9 @@ RUN npm run build
 
 # serve
 FROM nginxinc/nginx-unprivileged:alpine
+USER 0
+RUN apk upgrade --no-cache
+USER 101
 ARG GIT_SHA=dev
 ARG APP_VERSION=dev
 ENV GIT_SHA=$GIT_SHA \
