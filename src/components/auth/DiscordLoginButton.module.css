@@ -21,8 +21,8 @@
 }
 .dividerLabel {
   font-family: var(--display);
-  font-size: 10px;
-  letter-spacing: 2px;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
 }
 .button {

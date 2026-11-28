@@ -84,7 +84,7 @@
 
 .statusBadge {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--orange);
   background-color: rgba(255, 122, 26, 0.08);
   border: 1px solid rgba(255, 122, 26, 0.2);

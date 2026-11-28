@@ -62,7 +62,7 @@
   align-items: center;
   gap: 9px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -120,7 +120,7 @@
 
 .secondaryLink {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 1px;
   color: var(--text3);
@@ -175,14 +175,14 @@
 
 .handoffTitle {
   flex: 1;
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 1.2px;
   color: var(--text2);
 }
 
 .handoffStatus {
-  font-size: 10px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   color: var(--text3);
   white-space: nowrap;
@@ -217,7 +217,7 @@
   gap: 12px;
   padding: 11px 14px;
   border-top: 1px solid var(--border);
-  font-size: 9.5px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   color: var(--text3);
   background: rgba(0, 0, 0, 0.15);
@@ -247,7 +247,7 @@
   cursor: pointer;
   padding: 16px 18px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -306,7 +306,7 @@
 
 .installNum {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   color: var(--orange);
   padding-top: 2px;
@@ -344,7 +344,7 @@
   align-items: center;
   gap: 16px;
   font-family: var(--display);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--text3);
@@ -366,7 +366,7 @@
 
 .footerMeta {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 1px;
 }

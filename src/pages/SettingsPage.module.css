@@ -17,9 +17,9 @@
 .sectionTitle {
   margin: 0 0 12px;
   font-family: var(--display);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: var(--ls-caps);
   color: var(--orange);
   text-transform: uppercase;
   padding-bottom: 8px;
@@ -85,7 +85,7 @@
 }
 .version {
   font-family: var(--display);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 2px;
   color: var(--text3);
 }

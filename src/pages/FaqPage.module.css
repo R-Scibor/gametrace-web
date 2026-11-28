@@ -68,7 +68,7 @@
 
 .backLink {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 0.6px;
   color: var(--text2);
@@ -97,7 +97,7 @@
   align-items: center;
   gap: 9px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -143,7 +143,7 @@
 
 .summaryCount {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text3);
   letter-spacing: 0.3px;
 }
@@ -261,7 +261,7 @@
 
 .privacyLink {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text3);
   text-decoration: none;
   transition: color 0.15s ease;
@@ -293,7 +293,7 @@
   justify-content: space-between;
   align-items: center;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.6px;
   color: var(--text3);
 }
