@@ -2,7 +2,7 @@
   "eyebrow": "GAMETRACE / ANDROID APP",
   "titleLine1": "Download the app",
   "titleLine2": "The same journal, in your pocket",
-  "lead": "The official GameTrace APK — sessions, library, and stats just like in the browser. You create your account through Discord.",
+  "lead": "The official GameTrace APK: sessions, library, and stats just like in the browser. You create your account through Discord.",
   "unavailable": "The APK file is temporarily unavailable. Try again later or use the browser version.",
   "primary": {
     "checking": "CHECKING…",
@@ -19,7 +19,7 @@
   "handoff": {
     "ariaLabel": "Send the link to your phone",
     "title": "SEND TO PHONE",
-    "hint": "Scanning opens this page on your phone — then tap Download APK."
+    "hint": "Scanning opens this page on your phone. Then tap Download APK."
   },
   "install": {
     "summary": "How to install",

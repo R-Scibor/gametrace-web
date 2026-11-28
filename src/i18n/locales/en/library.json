@@ -50,7 +50,7 @@
     "ignored": "HIDDEN"
   },
   "select": {
-    "changeAria": "Selected game — change",
+    "changeAria": "Selected game: change",
     "change": "change",
     "placeholder": "Search game...",
     "noResults": "No results",
