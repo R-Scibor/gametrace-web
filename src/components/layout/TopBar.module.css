@@ -42,3 +42,38 @@
   gap: 12px;
   flex-shrink: 0;
 }
+.menuBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--bg2);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.menuBtn:hover {
+  background: var(--bg3);
+  border-color: var(--border-bright);
+}
+.menuBtn:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+/* The permanent sidebar is visible from here up, so no burger. */
+@media (min-width: 769px) {
+  .menuBtn { display: none; }
+}
+@media (max-width: 768px) {
+  .topbar { padding: 12px 16px; gap: 12px; }
+  .titleBlock { flex: 1; }
+}
+/* Burger + title on the first row, status pills below, so none of them get clipped. */
+@media (max-width: 560px) {
+  .topbar { flex-wrap: wrap; row-gap: 10px; }
+  .right { flex: 1 1 100%; min-width: 0; gap: 8px; }
+}

@@ -12,6 +12,8 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text2);
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .dot {
   width: 6px;
