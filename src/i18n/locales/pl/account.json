@@ -24,7 +24,7 @@
     "daysLeft_many": "{{count}} dni"
   },
   "scheduled": {
-    "documentTitle": "Konto zaplanowane do usunięcia — GameTrace",
+    "documentTitle": "Konto zaplanowane do usunięcia | GameTrace",
     "eyebrow": "Konto zaplanowane do usunięcia",
     "title": "Twoje konto zostanie usunięte",
     "lead": "Dostęp został wyłączony. Zostałeś wylogowany na wszystkich urządzeniach.",
@@ -34,7 +34,7 @@
     "homeCta": "Strona główna"
   },
   "pending": {
-    "documentTitle": "Konto oczekuje na usunięcie — GameTrace",
+    "documentTitle": "Konto oczekuje na usunięcie | GameTrace",
     "eyebrow": "Konto oczekuje na usunięcie",
     "title": "Konto zostanie usunięte",
     "lead": "Aplikacja jest niedostępna do czasu anulowania usunięcia.",
@@ -51,7 +51,7 @@
     "cancelFailed": "Nie udało się anulować usunięcia. Spróbuj ponownie."
   },
   "public": {
-    "documentTitle": "Usuwanie konta — GameTrace",
+    "documentTitle": "Usuwanie konta | GameTrace",
     "eyebrow": "GameTrace",
     "title": "Usuwanie konta i danych",
     "intro": "Konto GameTrace i jego dane można usunąć w każdej chwili, można też usunąć część danych bez zamykania konta. Poniżej opisane jest, jak to zrobić, co zostaje usunięte i co jest zachowywane.",

@@ -23,7 +23,7 @@
     "daysLeft_other": "{{count}} days"
   },
   "scheduled": {
-    "documentTitle": "Account scheduled for deletion — GameTrace",
+    "documentTitle": "Account scheduled for deletion | GameTrace",
     "eyebrow": "Account scheduled for deletion",
     "title": "Your account will be deleted",
     "lead": "Access has been disabled. You have been signed out on every device.",
@@ -33,7 +33,7 @@
     "homeCta": "Home"
   },
   "pending": {
-    "documentTitle": "Account pending deletion — GameTrace",
+    "documentTitle": "Account pending deletion | GameTrace",
     "eyebrow": "Account pending deletion",
     "title": "Your account will be deleted",
     "lead": "The app stays unavailable until you cancel the deletion.",
@@ -50,7 +50,7 @@
     "cancelFailed": "Could not cancel the deletion. Please try again."
   },
   "public": {
-    "documentTitle": "Account deletion — GameTrace",
+    "documentTitle": "Account deletion | GameTrace",
     "eyebrow": "GameTrace",
     "title": "Account and data deletion",
     "intro": "You can delete your GameTrace account and its data at any time, or delete parts of your data without closing your account. Here is how, what is removed, and what is kept.",
