@@ -20,11 +20,36 @@
   width: 100vw;
   overflow: hidden;
 }
+@media (max-width: 768px) {
+  .layout { height: 100dvh; }
+  .content { padding: 16px; }
+}
 .main {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+}
+.mainLocked {
+  overflow: hidden;
+}
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(10, 8, 6, 0.7);
+  animation: backdropIn 0.2s ease;
+}
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (min-width: 769px) {
+  .backdrop { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .backdrop { animation: none; }
 }
 .content {
   position: relative;
