@@ -31,7 +31,7 @@ weekly trend, genres, themes, companies, release-years, trash/restore, game igno
 - No multi-tenant operator console. A thin **homelab admin panel** exists for `is_admin` users (catalog review, merge, global covers); regular users see one library per session.
 - No offline mode / PWA / service worker.
 - No SSR. Plain client-rendered SPA.
-- ~~No i18n~~ — **superseded**: UI uses `react-i18next` (PL default + EN). Product copy remains Polish-first; legal pages (e.g. `/privacy`) ship PL+EN.
+- ~~No i18n~~ — **superseded**: UI uses `react-i18next` (PL default + EN). Product copy remains Polish-first; legal pages (e.g. `/privacy`) ship PL+EN. See **UI copy** under §10 for punctuation rules.
 
 ## 3. Users & Auth
 
@@ -184,6 +184,17 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 - Desktop affordances: hover/focus states, denser tables, skeleton loaders, a toast system.
 - Reusable primitives: `Button`, `StatTile`, `SectionHeader`, `Cover`, `LiveTimer`,
   `ErrorBanner`, `Toast`, `Skeleton`, `Panel`.
+
+**UI copy.** User-visible strings (locale JSON and hardcoded UI text) follow a
+fixed punctuation rule:
+
+- No em dashes (`—`), en dashes (`–`), semicolons, middle dots, or arrows.
+- Inside a sentence, a dash becomes a comma. If the next clause explains the
+  first, use a colon. If a new thought starts, end the sentence with a period.
+- Document and page titles use ` | `, for example `Usuwanie konta | GameTrace`.
+- Empty-value placeholders and date or time ranges use a plain hyphen (`-`).
+- Polish copy must read naturally and stay grammatically correct. The same
+  rule applies to the English locale.
 
 ## 11. Error Handling
 

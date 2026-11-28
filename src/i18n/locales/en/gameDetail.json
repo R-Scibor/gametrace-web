@@ -68,7 +68,7 @@
   },
   "report": {
     "title": "Report duplicate",
-    "explainer": "Pick the other game that looks like the same one. An admin will review it — nothing is merged right away.",
+    "explainer": "Pick the other game that looks like the same one. An admin will review it. Nothing is merged right away.",
     "source": "This game",
     "otherGame": "Other game",
     "searchPlaceholder": "Search games...",

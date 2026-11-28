@@ -4,8 +4,8 @@
     "retry": "TRY AGAIN"
   },
   "status": {
-    "active": "SYSTEM ACTIVE — SESSION IN PROGRESS",
-    "idle": "SYSTEM READY — NO ACTIVE SESSION"
+    "active": "SYSTEM ACTIVE: SESSION IN PROGRESS",
+    "idle": "SYSTEM READY: NO ACTIVE SESSION"
   },
   "header": {
     "thisWeek": "THIS WEEK"

@@ -314,7 +314,7 @@ export function WelcomeOnboarding({
               onClick={goToStep2}
             >
               {discordPathOpened
-                ? `${t('onboarding.step1.alreadyHaveBot')} — ${t('onboarding.step1.nextStep')}`
+                ? `${t('onboarding.step1.alreadyHaveBot')}: ${t('onboarding.step1.nextStep')}`
                 : t('onboarding.step1.alreadyHaveBot')}
               <ArrowRightIcon />
             </Button>

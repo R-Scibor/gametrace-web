@@ -5,7 +5,7 @@
     "inventoryLabel": "Zostanie usunięte",
     "consequencesLabel": "Co się stanie",
     "consequences": [
-      "Dostęp zostanie wyłączony natychmiast — zostaniesz wylogowany na wszystkich urządzeniach, a trwająca sesja gry zakończy się błędem.",
+      "Dostęp zostanie wyłączony natychmiast. Zostaniesz wylogowany na wszystkich urządzeniach, a trwająca sesja gry zakończy się błędem.",
       "Dane zostaną trwale usunięte po {{days}} dniach lub wkrótce po tym terminie.",
       "Możesz anulować usunięcie przed tym terminem, logując się ponownie kodem z Discorda."
     ],
@@ -24,17 +24,17 @@
     "daysLeft_many": "{{count}} dni"
   },
   "scheduled": {
-    "documentTitle": "Konto zaplanowane do usunięcia — GameTrace",
+    "documentTitle": "Konto zaplanowane do usunięcia | GameTrace",
     "eyebrow": "Konto zaplanowane do usunięcia",
     "title": "Twoje konto zostanie usunięte",
     "lead": "Dostęp został wyłączony. Zostałeś wylogowany na wszystkich urządzeniach.",
     "cancelTitle": "Zmieniłeś zdanie?",
-    "cancelBody": "Zaloguj się ponownie kodem z Discorda przed tą datą — usunięcie zostanie anulowane. Na tej stronie nie ma przycisku anulowania, bo nie jesteś już zalogowany.",
+    "cancelBody": "Zaloguj się ponownie kodem z Discorda przed tą datą, a usunięcie zostanie anulowane. Na tej stronie nie ma przycisku anulowania, bo nie jesteś już zalogowany.",
     "loginCta": "Zaloguj się, aby anulować",
     "homeCta": "Strona główna"
   },
   "pending": {
-    "documentTitle": "Konto oczekuje na usunięcie — GameTrace",
+    "documentTitle": "Konto oczekuje na usunięcie | GameTrace",
     "eyebrow": "Konto oczekuje na usunięcie",
     "title": "Konto zostanie usunięte",
     "lead": "Aplikacja jest niedostępna do czasu anulowania usunięcia.",
@@ -51,7 +51,7 @@
     "cancelFailed": "Nie udało się anulować usunięcia. Spróbuj ponownie."
   },
   "public": {
-    "documentTitle": "Usuwanie konta — GameTrace",
+    "documentTitle": "Usuwanie konta | GameTrace",
     "eyebrow": "GameTrace",
     "title": "Usuwanie konta i danych",
     "intro": "Konto GameTrace i jego dane można usunąć w każdej chwili, można też usunąć część danych bez zamykania konta. Poniżej opisane jest, jak to zrobić, co zostaje usunięte i co jest zachowywane.",
@@ -59,12 +59,12 @@
     "steps": [
       "Zaloguj się w aplikacji web lub w aplikacji na Androida (kod z panelu na Discordzie przez 🔑 Weź kod, lub komendę /login, albo logowanie przez Discord).",
       "Przejdź do Ustawienia / Konto.",
-      "Wybierz „Usuń konto” i potwierdź zgodnie z komunikatem (w aplikacji web — wpisując nazwę użytkownika)."
+      "Wybierz „Usuń konto” i potwierdź zgodnie z komunikatem (w aplikacji web: wpisując nazwę użytkownika)."
     ],
     "graceTitle": "Co się dzieje potem",
-    "graceBody": "Konto jest wyłączane natychmiast — zostajesz wylogowany na wszystkich urządzeniach. Dane są trwale usuwane po {{days}} dniach; usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby po tej dacie.",
+    "graceBody": "Konto jest wyłączane natychmiast. Zostajesz wylogowany na wszystkich urządzeniach. Dane są trwale usuwane po {{days}} dniach. Usuwanie uruchamiane jest raz na dobę, więc może nastąpić do doby po tej dacie.",
     "cancelTitle": "Anulowanie",
-    "cancelBody": "W ciągu {{days}} dni możesz anulować usunięcie, logując się ponownie — zobaczysz wtedy ekran z przyciskiem anulowania. Po tym czasie danych nie da się odzyskać.",
+    "cancelBody": "W ciągu {{days}} dni możesz anulować usunięcie, logując się ponownie. Zobaczysz wtedy ekran z przyciskiem anulowania. Po tym czasie danych nie da się odzyskać.",
     "inventoryTitle": "Co zostaje usunięte",
     "inventory": [
       "Sesje gry i cała historia grania",
@@ -88,7 +88,7 @@
     ],
     "partialContact": "W pozostałych sprawach, w tym po kopię danych lub usunięcie konkretnych wpisów, napisz na adres poniżej. Odpowiedź powinna nastąpić w ciągu miesiąca.",
     "noAccessTitle": "Nie możesz się zalogować?",
-    "noAccessBody": "Napisz na adres poniżej z konta Discord powiązanego z GameTrace — usuniemy konto ręcznie.",
+    "noAccessBody": "Napisz na adres poniżej z konta Discord powiązanego z GameTrace. Usuniemy konto ręcznie.",
     "backHome": "Strona główna",
     "privacyLink": "Polityka prywatności",
     "languageLabel": "Język"

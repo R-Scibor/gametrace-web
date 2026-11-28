@@ -68,7 +68,7 @@
   },
   "report": {
     "title": "Zgłoś duplikat",
-    "explainer": "Wybierz drugą grę, która wygląda na tę samą. Administrator sprawdzi zgłoszenie — nic nie zostanie scalone od razu.",
+    "explainer": "Wybierz drugą grę, która wygląda na tę samą. Administrator sprawdzi zgłoszenie. Nic nie zostanie scalone od razu.",
     "source": "Ta gra",
     "otherGame": "Druga gra",
     "searchPlaceholder": "Szukaj gry...",

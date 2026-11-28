@@ -25,7 +25,7 @@
     "autoDetect": {
       "tag": "DISCORD BOT",
       "title": "Auto-Detect",
-      "body": "The bot captures real-time activity from Discord Rich Presence. Launch a game on PC and sessions log automatically — no timers or manual clicks."
+      "body": "The bot captures real-time activity from Discord Rich Presence. Launch a game on PC and sessions log automatically, with no timers or manual clicks."
     },
     "voice": {
       "tag": "VOICE & QUICK LOG",
@@ -40,7 +40,7 @@
     "heatmap": {
       "tag": "ANALYTICS & TRENDS",
       "title": "Activity Map",
-      "body": "GitHub-style interactive activity map. Track day streaks, record sessions, and weekly play patterns — without filling out spreadsheets."
+      "body": "GitHub-style interactive activity map. Track day streaks, record sessions, and weekly play patterns, without filling out spreadsheets."
     },
     "trends": {
       "title": "Streaks and trends",
@@ -92,7 +92,7 @@
   },
   "start": {
     "title": "Add the bot or join the server",
-    "body": "GameTrace logs your playtime automatically through Discord Rich Presence — zero timers, zero PC software, and zero performance impact. Simply join the server or add the bot.",
+    "body": "GameTrace logs your playtime automatically through Discord Rich Presence, with zero timers, zero PC software, and zero performance impact. Simply join the server or add the bot.",
     "joinServer": "Join the GameTrace server",
     "addBot": "Add the bot to your server",
     "benefit1": "Works with any game Discord can see",
@@ -113,8 +113,8 @@
     "app": {
       "eyebrow": "Android",
       "title": "Android app",
-      "body": "Your recent sessions, always at hand. Played away from your PC? Add a session by voice — just say what and for how long.",
-      "feature1": "Quick voice logging — just speak title and hours",
+      "body": "Your recent sessions, always at hand. Played away from your PC? Add a session by voice: just say what and for how long.",
+      "feature1": "Quick voice logging: just speak title and hours",
       "feature2": "Your library and session history in your pocket",
       "feature3": "Instant real-time sync with your account",
       "download": "Download APK",
@@ -139,7 +139,7 @@
     "step1": {
       "eyebrow": "Start / Discord bot",
       "title": "Add the bot or join a server",
-      "body": "GameTrace tracks your playtime in the background through Discord Rich Presence. You don’t install anything on your computer and you don’t lose a single FPS. You can join the public server where the bot is already present, or add it to your own — both work the same way.",
+      "body": "GameTrace tracks your playtime in the background through Discord Rich Presence. You don’t install anything on your computer and you don’t lose a single FPS. You can join the public server where the bot is already present, or add it to your own. Both work the same way.",
       "joinServer": "Join the GameTrace server",
       "addBot": "Add the bot to your server",
       "alreadyHaveBot": "I am already on a server with the bot",
@@ -157,8 +157,8 @@
       "option1": "Option 1: Direct",
       "option2": "Option 2: Panel on the server",
       "discordTitle": "With Discord",
-      "discordBody": "Quick sign-in through official Discord authorization (OAuth2) — no manual codes needed.",
-      "oauthPoint1": "You sign in directly on discord.com — GameTrace never sees or stores your password.",
+      "discordBody": "Quick sign-in through official Discord authorization (OAuth2), with no manual codes needed.",
+      "oauthPoint1": "You sign in directly on discord.com. GameTrace never sees or stores your password.",
       "oauthPoint2": "We only receive your Discord ID, username, avatar, and server list (to verify bot presence).",
       "oauthPoint3": "Zero access to your email, private messages (DMs), or ability to post from your account.",
       "discordButton": "Sign in with Discord",
@@ -185,7 +185,7 @@
       "downloadApk": "Download APK",
       "qrButton": "QR Code",
       "qrButtonHide": "Preview",
-      "apkUnavailableNote": "Mobile app coming soon — sign in via browser"
+      "apkUnavailableNote": "Mobile app coming soon: sign in via browser"
     }
   },
   "footer": {

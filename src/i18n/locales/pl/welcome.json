@@ -25,7 +25,7 @@
     "autoDetect": {
       "tag": "DISCORD BOT",
       "title": "Auto-wykrywanie",
-      "body": "Bot rejestruje aktywność z Discord Rich Presence w czasie rzeczywistym. Odpalasz grę na PC, a sesja zapisuje się automatycznie — bez stoperów i ręcznego klikania."
+      "body": "Bot rejestruje aktywność z Discord Rich Presence w czasie rzeczywistym. Odpalasz grę na PC, a sesja zapisuje się automatycznie, bez stoperów i ręcznego klikania."
     },
     "voice": {
       "tag": "GŁOS & SZYBKI ZAPIS",
@@ -35,12 +35,12 @@
     "library": {
       "tag": "KATALOG IGDB",
       "title": "Biblioteka gier",
-      "body": "Pełna integracja z bazą IGDB — oficjalne okładki, gatunki, studia i daty premier. Łącz duplikaty, zarządzaj kolekcją i miej całą historię w jednym miejscu."
+      "body": "Pełna integracja z bazą IGDB: oficjalne okładki, gatunki, studia i daty premier. Łącz duplikaty, zarządzaj kolekcją i miej całą historię w jednym miejscu."
     },
     "heatmap": {
       "tag": "ANALITYKA & TRENDY",
       "title": "Mapa aktywności",
-      "body": "Interaktywna mapa aktywności w stylu GitHuba. Śledź dzienne serie, rekordy maratonów i rozkład godzin w tygodniu — bez wypełniania tabelek."
+      "body": "Interaktywna mapa aktywności w stylu GitHuba. Śledź dzienne serie, rekordy maratonów i rozkład godzin w tygodniu, bez wypełniania tabelek."
     },
     "trends": {
       "title": "Passy i trendy",
@@ -96,7 +96,7 @@
   },
   "start": {
     "title": "Dodaj bota lub dołącz do serwera",
-    "body": "GameTrace rejestruje Twój czas gry automatycznie przez status Discord Rich Presence — bez stoperów, instalacji na PC i spadku wydajności. Wystarczy dołączyć do serwera lub dodać bota.",
+    "body": "GameTrace rejestruje Twój czas gry automatycznie przez status Discord Rich Presence, bez stoperów, instalacji na PC i spadku wydajności. Wystarczy dołączyć do serwera lub dodać bota.",
     "joinServer": "Dołącz do serwera GameTrace",
     "addBot": "Dodaj bota do swojego serwera",
     "benefit1": "Działa z każdą grą widoczną na Discordzie",
@@ -117,8 +117,8 @@
     "app": {
       "eyebrow": "Android",
       "title": "Aplikacja na Androida",
-      "body": "Ostatnie sesje zawsze pod ręką. Grałeś poza PC? Dodaj sesję głosem — powiedz, w co i jak długo.",
-      "feature1": "Szybki zapis głosem — podyktuj grę i czas",
+      "body": "Ostatnie sesje zawsze pod ręką. Grałeś poza PC? Dodaj sesję głosem: powiedz, w co i jak długo.",
+      "feature1": "Szybki zapis głosem: podyktuj grę i czas",
       "feature2": "Biblioteka i historia sesji zawsze w kieszeni",
       "feature3": "Błyskawiczna synchronizacja z kontem",
       "download": "Pobierz APK",
@@ -143,7 +143,7 @@
     "step1": {
       "eyebrow": "Start / Bot na Discordzie",
       "title": "Dodaj bota lub dołącz do serwera",
-      "body": "GameTrace rejestruje Twój czas gry w tle przez status Discord Rich Presence. Nic nie instalujesz na komputerze i nie tracisz ani jednego FPS. Możesz dołączyć do publicznego serwera, na którym bot już jest, albo dodać go do własnego — oba sposoby działają tak samo.",
+      "body": "GameTrace rejestruje Twój czas gry w tle przez status Discord Rich Presence. Nic nie instalujesz na komputerze i nie tracisz ani jednego FPS. Możesz dołączyć do publicznego serwera, na którym bot już jest, albo dodać go do własnego. Oba sposoby działają tak samo.",
       "joinServer": "Dołącz do serwera GameTrace",
       "addBot": "Dodaj bota do swojego serwera",
       "alreadyHaveBot": "Jestem już na serwerze z botem",
@@ -161,8 +161,8 @@
       "option1": "Opcja 1: Bezpośrednio",
       "option2": "Opcja 2: Panel na serwerze",
       "discordTitle": "Przez Discorda",
-      "discordBody": "Szybkie logowanie przez oficjalną autoryzację Discord (OAuth2) — bez przepisywania kodów.",
-      "oauthPoint1": "Logujesz się na oficjalnej stronie discord.com — GameTrace nigdy nie widzi ani nie zapisuje Twojego hasła.",
+      "discordBody": "Szybkie logowanie przez oficjalną autoryzację Discord (OAuth2), bez przepisywania kodów.",
+      "oauthPoint1": "Logujesz się na oficjalnej stronie discord.com. GameTrace nigdy nie widzi ani nie zapisuje Twojego hasła.",
       "oauthPoint2": "Otrzymujemy jedynie Twój identyfikator (ID), nazwę, awatar oraz listę serwerów (by potwierdzić obecność bota).",
       "oauthPoint3": "Zero dostępu do Twojego e-maila, prywatnych wiadomości (DM) czy możliwości pisania w Twoim imieniu.",
       "discordButton": "Zaloguj przez Discorda",
@@ -189,7 +189,7 @@
       "downloadApk": "Pobierz APK",
       "qrButton": "Kod QR",
       "qrButtonHide": "Podgląd",
-      "apkUnavailableNote": "Wersja mobilna w przygotowaniu — zaloguj się w przeglądarce"
+      "apkUnavailableNote": "Wersja mobilna w przygotowaniu: zaloguj się w przeglądarce"
     }
   },
   "footer": {

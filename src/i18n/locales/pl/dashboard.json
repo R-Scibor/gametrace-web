@@ -4,8 +4,8 @@
     "retry": "SPRÓBUJ PONOWNIE"
   },
   "status": {
-    "active": "SYSTEM AKTYWNY — SESJA W TOKU",
-    "idle": "SYSTEM GOTOWY — BRAK AKTYWNEJ SESJI"
+    "active": "SYSTEM AKTYWNY: SESJA W TOKU",
+    "idle": "SYSTEM GOTOWY: BRAK AKTYWNEJ SESJI"
   },
   "header": {
     "thisWeek": "TEN TYDZIEŃ"

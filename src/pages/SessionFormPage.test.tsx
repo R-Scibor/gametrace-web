@@ -248,7 +248,7 @@ test('SessionFormPage create shows voice transcript preview from sessionStorage'
   );
 
   expect(await screen.findByText('Podgląd transkrypcji')).toBeInTheDocument();
-  expect(screen.getByText('Tylko podgląd — nie zapisuje się w sesji.')).toBeInTheDocument();
+  expect(screen.getByText('Tylko podgląd: nie zapisuje się w sesji.')).toBeInTheDocument();
   expect(screen.getByText('grałem dwa godziny w cyberpunka')).toBeInTheDocument();
 });
 
