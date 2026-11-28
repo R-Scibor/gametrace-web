@@ -23,7 +23,7 @@
 .roleBtn {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   color: var(--text3);
   background: none;

@@ -145,7 +145,7 @@
   font-family: var(--display);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--text2);
   white-space: nowrap;
@@ -187,7 +187,7 @@
   }
   .periodPill {
     padding: 6px 8px;
-    font-size: 12px;
+    font-size: var(--fs-xs);
   }
 }
 

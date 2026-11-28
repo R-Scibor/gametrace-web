@@ -44,7 +44,7 @@
 }
 .secondary {
   color: var(--text3);
-  font-size: 12px;
+  font-size: var(--fs-xs);
 }
 .track {
   height: 6px;
