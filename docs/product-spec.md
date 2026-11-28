@@ -135,7 +135,7 @@ cache.
 | `/settings`         | Settings         | Profile · timezone · `weekly_report_enabled` + `push_enabled` toggles · bot/health/version · logout. |
 | `/admin`            | Przegląd         | **Admin only.** Overview hub (`GET /admin/stats/overview`). Passive context tiles (users, sessions, hours, games) plus attention tiles (do sprawdzenia, w kolejce, otwarte zgłoszenia) that link into the other two surfaces pre-filtered. Tiles at zero render inert. |
 | `/admin/reports`    | Zgłoszenia       | **Admin only.** User report inbox — status filter, list + inspector, triage to `triaged`/`closed`. |
-| `/admin/catalog`    | Katalog          | **Admin only.** Master-detail catalog surface. Filter/search/sort/paginate state lives entirely in the URL query string. Selecting a row opens an inspector with re-queue enrich, IGDB link, add alias, merge, and global cover upload. The merge target picker searches the **global** admin catalog (not the admin's personal library), so games the admin never played are still mergeable. Honours an incoming `?status=` from the overview tiles. |
+| `/admin/catalog`    | Katalog          | **Admin only.** Master-detail catalog surface. Filter/search/sort/paginate state lives entirely in the URL query string. Selecting a row opens an inspector with re-queue enrich, IGDB link, add alias, merge, and global cover upload. The merge target picker searches the **global** admin catalog (not the admin's personal library), so games the admin never played are still mergeable. Honours an incoming `?status=` from the overview tiles. On narrow screens the catalog table scrolls horizontally inside the list pane (edge fade and a visible scrollbar). Pagination stays outside the scroller. User-facing lists such as session history and trash already stack into cards, so they do not use this pattern. |
 
 ## 8. Analytics Page (the differentiator)
 
@@ -187,6 +187,8 @@ letter-spaced labels, orange accent bars — but refine for desktop:
   `letter-spacing: var(--ls-caps)` (`0.12em`) instead of wide px values such as `2px` or `3px`.
 - Sizes of icons, borders and gaps are not part of the type scale. When a bigger label breaks a tight layout
   (badges, stat tiles, table headers, period pills), fix the layout and keep the 12px floor.
+- Dense admin tables that cannot stack keep a readable column width and scroll horizontally
+  inside a wrapper, with an edge fade and a visible scrollbar. Do not clip columns with `overflow: hidden`.
 - Add a small **chart color ramp** derived from orange/warn for multi-series charts.
 - Desktop affordances: hover/focus states, denser tables, skeleton loaders, a toast system.
 - Reusable primitives: `Button`, `StatTile`, `SectionHeader`, `Cover`, `LiveTimer`,
