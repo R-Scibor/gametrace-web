@@ -110,9 +110,9 @@
   padding: 10px 16px;
   cursor: pointer;
   font-family: var(--display);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--text2);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
@@ -316,7 +316,7 @@
 .specimenWhen {
   margin: 6px 0 0;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.04em;
   color: var(--text3);
 }
@@ -340,7 +340,7 @@
 .specimenBlock dt {
   margin: 0;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text3);
@@ -378,7 +378,7 @@
   font-family: var(--display);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--text);
   white-space: nowrap;
@@ -427,7 +427,7 @@
 .storyEyebrow {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--orange);
@@ -525,7 +525,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   color: var(--text2);
 }
@@ -544,7 +544,7 @@
   gap: 5px;
   padding: 3px 8px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.8px;
   border-radius: 2px;
@@ -590,7 +590,7 @@
 
 .visualGameMeta {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text3);
 }
 
@@ -614,7 +614,7 @@
 
 .visualTimerLabel {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 1.2px;
   color: var(--text3);
 }
@@ -625,7 +625,7 @@
   border: 1px solid rgba(255, 122, 26, 0.18);
   border-radius: 2px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   color: var(--text2);
   display: flex;
   align-items: center;
@@ -655,7 +655,7 @@
   gap: 5px;
   padding: 3px 8px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.8px;
   border-radius: 2px;
@@ -712,7 +712,7 @@
   align-items: center;
   gap: 10px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   color: var(--text3);
   text-transform: uppercase;
@@ -769,7 +769,7 @@
 
 .voiceTimeBadge {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   color: var(--orange);
   background: rgba(255, 122, 26, 0.1);
@@ -779,7 +779,7 @@
 
 .voiceNoteTag {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text2);
   display: flex;
   align-items: center;
@@ -788,7 +788,7 @@
 
 .voiceNoteTag strong {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   color: var(--text3);
   letter-spacing: 0.5px;
 }
@@ -820,7 +820,7 @@
 
 .libraryStatLabel {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.6px;
   color: var(--text3);
 }
@@ -875,7 +875,7 @@
 
 .libraryMiniMeta {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   color: var(--text3);
 }
 
@@ -900,7 +900,7 @@
 
 .uiMetaTag {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 1px;
   color: var(--text3);
@@ -911,12 +911,12 @@
   align-items: center;
   gap: 4px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   color: var(--text3);
 }
 
 .uiHeatLegend span:not([class*="heatL"]) {
-  font-size: 11px;
+  font-size: var(--fs-xs);
 }
 
 .uiHeatLegend span[class*="heatL"] {
@@ -934,7 +934,7 @@
 
 .uiHeatHoverReadout {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   color: var(--orange);
   letter-spacing: 0.5px;
 }
@@ -995,7 +995,7 @@
 
 .metricLabel {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   color: var(--text3);
 }
@@ -1005,7 +1005,7 @@
 .eyebrow {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--orange);
@@ -1222,7 +1222,7 @@
   border-radius: 2px;
   background: var(--warn-tint, rgba(220, 185, 92, 0.1));
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--warn, #dcb95c);
@@ -1277,9 +1277,9 @@
 .footerCol h4 {
   margin: 0 0 14px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 500;
-  letter-spacing: 2px;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--text3);
 }
@@ -1313,7 +1313,7 @@
 .footerBottom small {
   display: block;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text3);
 }
 
@@ -1330,7 +1330,7 @@
   .startActions .startBtn {
     padding-left: 12px;
     padding-right: 12px;
-    font-size: 12px;
+    font-size: var(--fs-xs);
     letter-spacing: 1.2px;
   }
 
