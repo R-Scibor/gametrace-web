@@ -153,7 +153,7 @@
             "W menu po lewej stronie przejdź do zakładki „Prywatność aktywności” (Activity Privacy).",
             "Włącz opcję: „Wyświetlaj bieżącą aktywność jako status” (Display current activity as a status message).",
             "Upewnij się, że opcja udostępniania statusu aktywności jest włączona również dla serwera, na którym znajduje się bot GameTrace.",
-            "Twój profil w Discordzie nie może mieć ustawionego statusu „Niewidoczny” (Invisible) — Discord w trybie niewidocznym ukrywa wszelkie gry."
+            "Twój profil w Discordzie nie może mieć ustawionego statusu „Niewidoczny” (Invisible). Discord w trybie niewidocznym ukrywa wszelkie gry."
           ],
           "callout": {
             "type": "warning",
@@ -254,7 +254,7 @@
           "badge": "IGDB",
           "question": "Skąd pochodzą okładki, opisy, gatunki i informacje o twórcach gier?",
           "answer": [
-            "Gdy nowa gra pojawia się na Twoim koncie, asynchroniczny proces serwerowy czyści nazwę procesu i przeszukuje bazę IGDB (Internet Game Database) — oficjalnego katalogu gier należącego do Twitcha.",
+            "Gdy nowa gra pojawia się na Twoim koncie, asynchroniczny proces serwerowy czyści nazwę procesu i przeszukuje bazę IGDB (Internet Game Database), oficjalnego katalogu gier należącego do Twitcha.",
             "Pobierana jest oficjalna pionowa okładka w wysokiej rozdzielczości, lista gatunków, motywy, studia deweloperskie, wydawcy oraz rok premiery. W przypadku braku gry w IGDB system posiada zapasowe źródło w postaci oficjalnego katalogu Steam."
           ],
           "keywords": ["igdb", "okładki", "metadane", "gatunki", "studia", "steam"]
@@ -265,7 +265,7 @@
           "question": "Co oznacza status „Do sprawdzenia” w bibliotece i dlaczego gra tam trafia?",
           "answer": [
             "Jeśli gra na PC miała nietypową nazwę procesu (np. wersja beta, modyfikacja) lub w bazie IGDB istniały dwie identycznie nazwane gry (np. remake z 2023 r. i oryginał z 2014 r.), algorytm celowo nie zgaduje na ślepo.",
-            "Gra otrzymuje status 'Do sprawdzenia' i trafia do dedykowanej zakładki w bibliotece. Dopóki jej nie zaakceptujesz, jej czas nie wlicza się do Twoich statystyk i wykresów — dzięki temu przypadkowe programy użytkowe nie zanieczyszczają Twojej analityki. Wystarczy jedno kliknięcie, aby potwierdzić właściwy tytuł."
+            "Gra otrzymuje status 'Do sprawdzenia' i trafia do dedykowanej zakładki w bibliotece. Dopóki jej nie zaakceptujesz, jej czas nie wlicza się do Twoich statystyk i wykresów. Dzięki temu przypadkowe programy użytkowe nie zanieczyszczają Twojej analityki. Wystarczy jedno kliknięcie, aby potwierdzić właściwy tytuł."
           ],
           "callout": {
             "type": "info",
@@ -295,7 +295,7 @@
           "question": "Co daje funkcja „Ignoruj grę” i jak wpływa na statystyki?",
           "answer": [
             "Jeśli grałeś w grę, której z jakiegoś powodu nie chcesz widzieć w swoich podsumowaniach (np. gra uruchomiona do testów sprzętu lub program użytkowy wykryty omyłkowo jako gra), możesz włączyć opcję „Ignoruj grę” na karcie szczegółów gry.",
-            "Po włączeniu ignorowania: cały czas spędzony w tej grze zostaje natychmiast wyłączony ze wszystkich wykresów, rankingów, map aktywności i passy. Gra znika z głównej biblioteki i trafia do zakładki 'Inne / Ukryte'. Twoje surowe sesje nie są jednak kasowane — wyłączenie ignorowania w dowolnej chwili przywraca pełne statystyki."
+            "Po włączeniu ignorowania: cały czas spędzony w tej grze zostaje natychmiast wyłączony ze wszystkich wykresów, rankingów, map aktywności i passy. Gra znika z głównej biblioteki i trafia do zakładki 'Inne / Ukryte'. Twoje surowe sesje nie są jednak kasowane. Wyłączenie ignorowania w dowolnej chwili przywraca pełne statystyki."
           ],
           "keywords": ["ignoruj", "ukryj", "usuń z wykresów", "wykluczenie", "filtr"]
         }
@@ -315,7 +315,7 @@
             "Błąd 409 pojawia się, gdy próbujesz dodać ręcznie sesję lub przywrócić sesję z kosza w godzinach, w których istnieje już zarejestrowana inna sesja zakończona sukcesem (COMPLETED) lub trwająca w tle (ONGOING)."
           ],
           "steps": [
-            "Gdy pojawi się błąd 409, aplikacja wyświetli baner z dokładnymi informacjami o kolidującej sesji (tytuł gry oraz przedział czasowy, np. 14:00 – 16:30).",
+            "Gdy pojawi się błąd 409, aplikacja wyświetli baner z dokładnymi informacjami o kolidującej sesji (tytuł gry oraz przedział czasowy, np. 14:00 - 16:30).",
             "Skoryguj godzinę rozpoczęcia lub zakończenia nowo dodawanej sesji tak, aby nie zachodziła na istniejącą.",
             "Alternatywnie: przejdź do widoku kolidującej sesji i skróć jej czas trwania lub przenieś ją do kosza, jeśli została zarejestrowana omyłkowo."
           ],
@@ -331,14 +331,14 @@
           "badge": "SESJA ERROR",
           "question": "Dlaczego moja sesja ma status ERROR i jak mogę ją naprawić?",
           "answer": [
-            "Status ERROR otrzymują sesje przerwane w sposób niejednoznaczny — najczęściej wtedy, gdy nastąpił nagły restart bota na serwerze podczas Twojej rozgrywki lub Discord nie przekazał zdarzenia wyłączenia gry przed zmianą na inny tytuł.",
+            "Status ERROR otrzymują sesje przerwane w sposób niejednoznaczny: najczęściej wtedy, gdy nastąpił nagły restart bota na serwerze podczas Twojej rozgrywki lub Discord nie przekazał zdarzenia wyłączenia gry przed zmianą na inny tytuł.",
             "Sesje z błędem ERROR posiadają pustą godzinę zakończenia i nie wliczają się do czasu gry, dopóki ich nie zweryfikujesz. W nagłówku aplikacji zobaczysz wtedy żółty wskaźnik informujący o oczekujących problemach."
           ],
           "steps": [
             "Kliknij powiadomienie o błędzie na pulpicie lub wejdź w edycję sesji oznaczonej statusem ERROR.",
             "W polu notatki przeczytasz dokładną przyczynę zarejestrowaną przez system (np. 'Self-Healing: bot restarted, player is no longer in-game').",
-            "Opcja A (Naprawa): Wpisz przybliżoną godzinę zakończenia gry i kliknij 'Zapisz' — sesja natychmiast zmieni status na COMPLETED i zasili statystyki.",
-            "Opcja B (Odrzucenie): Jeśli wpis był pomyłką, kliknij 'Odrzuć' — sesja trafi prosto do kosza."
+            "Opcja A (Naprawa): Wpisz przybliżoną godzinę zakończenia gry i kliknij 'Zapisz'. Sesja natychmiast zmieni status na COMPLETED i zasili statystyki.",
+            "Opcja B (Odrzucenie): Jeśli wpis był pomyłką, kliknij 'Odrzuć'. Sesja trafi prosto do kosza."
           ],
           "keywords": ["error", "błąd sesji", "naprawa", "niedokończona", "odrzuć", "self healing"]
         },
@@ -489,14 +489,14 @@
         {
           "id": "troubleshoot-502-bad-gateway",
           "badge": "DIAGNOSTYKA",
-          "question": "Bot ma status OFFLINE lub strona pokazuje błąd połączenia (502 Bad Gateway) — co robić?",
+          "question": "Bot ma status OFFLINE lub strona pokazuje błąd połączenia (502 Bad Gateway). Co robić?",
           "answer": [
             "Błąd 502 Bad Gateway w środowisku homelab pojawia się najczęściej tuż po aktualizacji kontenera backendu API. Serwer proxy Nginx w kontenerze webowym potrafi zapamiętać stary, wewnętrzny adres IP z mostka sieciowego Dockera.",
             "Zwykle problem rozwiązuje się samoczynnie w ciągu kilkudziesięciu sekund dzięki wbudowanemu mechanizmowi re-rozwiązywania DNS (Docker Embedded DNS z 30-sekundowym TTL)."
           ],
           "steps": [
             "Odczekaj 30 sekund i odśwież stronę w przeglądarce (Ctrl+F5).",
-            "Sprawdź w menu Ustawienia (/settings) kafelek 'Status bota' — jeśli ma kolor pomarańczowy, połączenie zostało w pełni przywrócone.",
+            "Sprawdź w menu Ustawienia (/settings) kafelek 'Status bota'. Jeśli ma kolor pomarańczowy, połączenie zostało w pełni przywrócone.",
             "Jeśli błąd nie ustępuje, a jesteś administratorem homelabu, wykonaj przeładowanie proxy poleceniem: `docker exec gametrace-web nginx -s reload`."
           ],
           "callout": {
@@ -509,23 +509,23 @@
         {
           "id": "troubleshoot-pc-game-not-detected",
           "badge": "CHECKLISTA",
-          "question": "Gram w grę na PC, ale bot nie rejestruje sesji — lista kontrolna krok po kroku.",
+          "question": "Gram w grę na PC, ale bot nie rejestruje sesji: lista kontrolna krok po kroku.",
           "answer": [
             "Jeśli uruchomiłeś grę na PC, ale na górnym pasku aplikacji nie pojawia się stoper aktywnej sesji, wykonaj poniższe kroki weryfikacyjne:"
           ],
           "steps": [
-            "Krok 1: Sprawdź swój status na Discordzie — upewnij się, że nie masz ustawionego statusu 'Niewidoczny' (musi być Dostępny, Zaraz wracam lub Nie przeszkadzać).",
-            "Krok 2: Sprawdź Ustawienia Discorda / Prywatność aktywności — upewnij się, że opcja 'Wyświetlaj bieżącą aktywność jako status' jest WŁĄCZONA.",
-            "Krok 3: Sprawdź, czy Discord w ogóle widzi grę — otwórz Discorda na PC i spójrz w lewy dolny róg nad swoim awatarem. Jeśli gra nie jest widoczna, wejdź w Ustawienia / Zarejestrowane gry i kliknij 'Dodaj ją!' wskazując proces gry.",
-            "Krok 4: Sprawdź wspólny serwer — czy jesteś na oficjalnym serwerze GameTrace lub serwerze, na którym obecny jest bot?",
-            "Krok 5: Sprawdź uprawnienia administratora — niektóre gry sieciowe z silnymi anty-cheatami (np. Vanguard, Easy Anti-Cheat) wymagają uruchomienia aplikacji Discord w trybie administratora, aby Discord mógł odczytać nazwę ich procesu."
+            "Krok 1: Sprawdź swój status na Discordzie. Upewnij się, że nie masz ustawionego statusu 'Niewidoczny' (musi być Dostępny, Zaraz wracam lub Nie przeszkadzać).",
+            "Krok 2: Sprawdź Ustawienia Discorda / Prywatność aktywności. Upewnij się, że opcja 'Wyświetlaj bieżącą aktywność jako status' jest WŁĄCZONA.",
+            "Krok 3: Sprawdź, czy Discord w ogóle widzi grę. Otwórz Discorda na PC i spójrz w lewy dolny róg nad swoim awatarem. Jeśli gra nie jest widoczna, wejdź w Ustawienia / Zarejestrowane gry i kliknij 'Dodaj ją!' wskazując proces gry.",
+            "Krok 4: Sprawdź wspólny serwer. Czy jesteś na oficjalnym serwerze GameTrace lub serwerze, na którym obecny jest bot?",
+            "Krok 5: Sprawdź uprawnienia administratora. Niektóre gry sieciowe z silnymi anty-cheatami (np. Vanguard, Easy Anti-Cheat) wymagają uruchomienia aplikacji Discord w trybie administratora, aby Discord mógł odczytać nazwę ich procesu."
           ],
           "keywords": ["nie wykrywa", "brak sesji", "gra nie działa", "czemu nie zapisuje", "anticheat"]
         },
         {
           "id": "troubleshoot-mic-permission-denied",
           "badge": "MIKROFON",
-          "question": "W sekcji Voice pojawia się komunikat o braku dostępu do mikrofonu — jak odblokować uprawnienie?",
+          "question": "W sekcji Voice pojawia się komunikat o braku dostępu do mikrofonu. Jak odblokować uprawnienie?",
           "answer": [
             "Przeglądarki internetowe wymagają bezpiecznego połączenia (HTTPS lub localhost) oraz jawnej zgody użytkownika na dostęp do Web Audio API.",
             "Jeśli przypadkowo kliknąłeś 'Zablokuj' przy pytaniu o mikrofon, przeglądarka permanentnie blokuje nagrywanie dla tej domeny."
@@ -541,7 +541,7 @@
         {
           "id": "troubleshoot-login-code-expired",
           "badge": "KOD WYGASŁ",
-          "question": "Kod logowania wygasł lub pojawia się błąd „Invalid or expired code” — co zrobić?",
+          "question": "Kod logowania wygasł lub pojawia się błąd „Invalid or expired code”. Co zrobić?",
           "answer": [
             "Kod logowania z Discorda ma ścisły limit ważności wynoszący dokładnie 5 minut (300 sekund) i jest jednorazowy. Po jednokrotnym użyciu lub po wygenerowaniu nowego kodu poprzedni klucz ulega unieważnieniu.",
             "Jeśli widzisz błąd autoryzacji, wróć na Discorda, kliknij 🔑 Weź kod w panelu (albo wpisz ponownie /login), skopiuj nowy 6-cyfrowy kod i natychmiast wprowadź go na stronie logowania.",
@@ -556,8 +556,8 @@
           "answer": [
             "GameTrace wyposażony jest w automatyczną procedurę samonaprawiania (Self-Healing Engine). Bot celowo nie przerywa sesji w momencie zamykania kontenera, licząc na szybkie wdrożenie nowej wersji.",
             "Zaraz po restarcie bot bada aktualny stan graczy na Discordzie:",
-            "1. Jeśli po restarcie bota nadal grasz w tę samą grę — Twoja sesja pozostaje aktywna (ONGOING) bez żadnej przerwy.",
-            "2. Jeśli wyłączyłeś grę w trakcie restartu serwera — sesja zostanie bezpiecznie oznaczona statusem ERROR z notatką techniczną, umożliwiając Ci podanie godziny zakończenia lub zatwierdzenie czasu.",
+            "1. Jeśli po restarcie bota nadal grasz w tę samą grę, Twoja sesja pozostaje aktywna (ONGOING) bez żadnej przerwy.",
+            "2. Jeśli wyłączyłeś grę w trakcie restartu serwera, sesja zostanie bezpiecznie oznaczona statusem ERROR z notatką techniczną, umożliwiając Ci podanie godziny zakończenia lub zatwierdzenie czasu.",
             "3. Sesje starsze niż 12 godzin bez kontaktu z graczem są automatycznie zamykane, aby zapobiec sztucznemu nabijaniu setek godzin w przypadku awarii zasilania."
           ],
           "keywords": ["restart", "awaria", "self healing", "zerwanie połączenia", "utrata sesji"]

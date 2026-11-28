@@ -149,7 +149,7 @@
             "Navigate to 'Activity Privacy' in the left sidebar.",
             "Enable 'Display current activity as a status message'.",
             "Ensure activity sharing is permitted on the specific server where the GameTrace bot resides.",
-            "Make sure your profile status is NOT set to 'Invisible' — Discord completely hides game presence while invisible."
+            "Make sure your profile status is NOT set to 'Invisible'. Discord completely hides game presence while invisible."
           ],
           "callout": {
             "type": "warning",
@@ -164,7 +164,7 @@
           "question": "What happens if a game crashes, minimizes, or is restarted shortly after?",
           "answer": [
             "GameTrace incorporates an intelligent session stabilization engine to prevent fragmented records:",
-            "1. Flicker Suppression: If a game opens and closes within 3 minutes (180 seconds)—such as an instant crash on launch—the session is marked as flicker and excluded from your library and analytics.",
+            "1. Flicker Suppression: If a game opens and closes within 3 minutes (180 seconds), such as an instant crash on launch, the session is marked as flicker and excluded from your library and analytics.",
             "2. Stitch-on-Resume: If you exit a game and relaunch it within 3 minutes (e.g. changing graphics settings or rebooting after a crash), the bot does not create a disjointed second entry. It seamlessly resumes and stitches the previous session."
           ],
           "keywords": ["crash", "restart", "stitch", "flicker", "minimize", "pause"]
@@ -311,7 +311,7 @@
             "A 409 Conflict occurs when you manually create a session, edit an end time, or restore a session from trash that overlaps with an already existing COMPLETED or ONGOING session."
           ],
           "steps": [
-            "When a 409 Conflict occurs, the notice displays the conflicting game title and its exact recorded time range (e.g. 2:00 PM – 4:30 PM).",
+            "When a 409 Conflict occurs, the notice displays the conflicting game title and its exact recorded time range (e.g. 2:00 PM - 4:30 PM).",
             "Adjust the start or end time of the new session so it does not intersect with the existing range.",
             "Alternatively, navigate to the conflicting session and trim its duration or move it to trash if it was recorded in error."
           ],
@@ -327,13 +327,13 @@
           "badge": "ERROR STATUS",
           "question": "Why does a session have status ERROR and how can I repair it?",
           "answer": [
-            "The ERROR status is assigned to sessions that were interrupted unexpectedly—most commonly when the bot container was restarted during gameplay or Discord missed an exit event before switching games.",
+            "The ERROR status is assigned to sessions that were interrupted unexpectedly: most commonly when the bot container was restarted during gameplay or Discord missed an exit event before switching games.",
             "ERROR sessions have an empty end time and do not count toward your playtime until resolved. An amber notification pill will appear in the top bar to alert you."
           ],
           "steps": [
             "Click the pending error pill on the dashboard or edit the session marked ERROR.",
             "Inspect the technical reason in the notes field (e.g. 'Self-Healing: bot restarted, player is no longer in-game').",
-            "Option A (Repair): Enter an approximate end time and click 'Save' — the session transitions to COMPLETED and counts toward your stats.",
+            "Option A (Repair): Enter an approximate end time and click 'Save'. The session transitions to COMPLETED and counts toward your stats.",
             "Option B (Discard): Click 'Discard' to move the incomplete session to trash."
           ],
           "keywords": ["error", "repair", "incomplete", "discard", "self healing"]
@@ -485,14 +485,14 @@
         {
           "id": "troubleshoot-502-bad-gateway",
           "badge": "DIAGNOSTIC",
-          "question": "The bot shows OFFLINE or the app displays a 502 Bad Gateway error — what should I do?",
+          "question": "The bot shows OFFLINE or the app displays a 502 Bad Gateway error. What should I do?",
           "answer": [
             "A 502 Bad Gateway error in our homelab setup typically happens right after a backend container update, when the Nginx web proxy temporarily caches a previous internal Docker IP address.",
             "In most cases, this self-resolves within 30 seconds as Nginx uses Docker's embedded DNS with short TTL."
           ],
           "steps": [
             "Wait 30 seconds and refresh the browser tab (Ctrl+F5).",
-            "Check the 'Bot status' tile in Settings (/settings) — an orange indicator confirms the proxy has reconnected.",
+            "Check the 'Bot status' tile in Settings (/settings). An orange indicator confirms the proxy has reconnected.",
             "If you manage the homelab server and the issue persists, execute: `docker exec gametrace-web nginx -s reload`."
           ],
           "callout": {
@@ -505,23 +505,23 @@
         {
           "id": "troubleshoot-pc-game-not-detected",
           "badge": "CHECKLIST",
-          "question": "I am playing on PC, but the bot is not recording my session — troubleshooting checklist.",
+          "question": "I am playing on PC, but the bot is not recording my session: troubleshooting checklist.",
           "answer": [
             "If you are playing on PC but no active session timer appears in the app header, check the following:"
           ],
           "steps": [
-            "Step 1: Check your Discord presence — ensure your status is NOT 'Invisible' (must be Online, Idle, or Do Not Disturb).",
-            "Step 2: Check Discord User Settings / Activity Privacy — ensure 'Display current activity as a status message' is ENABLED.",
-            "Step 3: Check if Discord sees the executable — look at the status above your avatar in Discord. If missing, go to Settings / Registered Games and click 'Add it!'.",
-            "Step 4: Check server membership — confirm you share at least one Discord server with the GameTrace bot.",
-            "Step 5: Check admin permissions — certain games with aggressive anti-cheat engines (e.g. Vanguard, Easy Anti-Cheat) require running Discord as Administrator to read process names."
+            "Step 1: Check your Discord presence. Ensure your status is NOT 'Invisible' (must be Online, Idle, or Do Not Disturb).",
+            "Step 2: Check Discord User Settings / Activity Privacy. Ensure 'Display current activity as a status message' is ENABLED.",
+            "Step 3: Check if Discord sees the executable. Look at the status above your avatar in Discord. If missing, go to Settings / Registered Games and click 'Add it!'.",
+            "Step 4: Check server membership. Confirm you share at least one Discord server with the GameTrace bot.",
+            "Step 5: Check admin permissions. Certain games with aggressive anti-cheat engines (e.g. Vanguard, Easy Anti-Cheat) require running Discord as Administrator to read process names."
           ],
           "keywords": ["not detecting", "missing session", "game not tracking", "anticheat"]
         },
         {
           "id": "troubleshoot-mic-permission-denied",
           "badge": "MICROPHONE",
-          "question": "The Voice page displays a microphone permission error — how do I re-enable it?",
+          "question": "The Voice page displays a microphone permission error. How do I re-enable it?",
           "answer": [
             "Modern browsers mandate a secure context (HTTPS or localhost) and explicit user approval before granting access to the Web Audio API.",
             "If you accidentally clicked 'Block' on the microphone prompt, the browser permanently remembers that rejection."
@@ -537,7 +537,7 @@
         {
           "id": "troubleshoot-login-code-expired",
           "badge": "EXPIRED CODE",
-          "question": "My link code expired or shows „Invalid or expired code” — what do I do?",
+          "question": "My link code expired or shows „Invalid or expired code”. What do I do?",
           "answer": [
             "Link codes issued via Discord have a strict 5-minute (300-second) TTL and are single-use. Generating a new code immediately voids previous ones.",
             "If you receive an authorization error, return to Discord, press 🔑 Get a code in the panel (or run /login again), copy the fresh code, and submit it on the login page.",
