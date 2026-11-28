@@ -170,4 +170,24 @@ describe('CatalogTable', () => {
 
     expect(screen.getByText('Brak gier dla wybranego filtra.')).toBeInTheDocument();
   });
+
+  it('puts the table in a labelled scroll region and keeps pagination outside it', () => {
+    renderWithProviders(
+      <CatalogTable
+        items={items}
+        total={items.length}
+        skip={0}
+        limit={50}
+        selectedId={null}
+        onSelect={vi.fn()}
+        onPage={vi.fn()}
+      />,
+    );
+
+    const region = screen.getByRole('region', { name: 'Tabela katalogu' });
+    expect(region).toContainElement(screen.getByRole('table'));
+    expect(getComputedStyle(region).overflowX).toBe('auto');
+    expect(region).not.toContainElement(screen.getByRole('button', { name: 'Poprzednia' }));
+    expect(region).not.toContainElement(screen.getByRole('button', { name: 'Następna' }));
+  });
 });

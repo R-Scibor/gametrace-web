@@ -82,6 +82,7 @@
   "catalog": {
     "errorLoad": "Nie udało się wczytać katalogu.",
     "selectPrompt": "Wybierz grę z tabeli.",
+    "tableRegion": "Tabela katalogu",
     "missingFiltered": "Gra #{{id}} nie jest widoczna przy tym filtrze.",
     "showAll": "Pokaż wszystkie",
     "searchAria": "Szukaj gry",
