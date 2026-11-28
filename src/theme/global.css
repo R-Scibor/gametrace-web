@@ -15,6 +15,10 @@
   --chart1:#ff7a1a; --chart2:#dcb95c; --chart3:#9a8c7a; --chart4:#7a5f4b; --chart5:#c86a1c;
   --display:'Space Grotesk',sans-serif; --body:'DM Sans',sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  /* Type scale floor: no user-visible text below --fs-xs (12px). Small caps
+     labels use --ls-caps, so tracking stays modest at 12px. */
+  --fs-xs:0.75rem;
+  --ls-caps:0.12em;
 }
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--text); font-family:var(--body); }

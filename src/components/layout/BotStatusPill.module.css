@@ -8,7 +8,7 @@
   border-radius: 2px;
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text2);

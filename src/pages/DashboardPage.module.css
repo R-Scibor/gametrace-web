@@ -61,7 +61,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 1.5px;
   color: var(--text3);
   text-transform: uppercase;

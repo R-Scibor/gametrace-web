@@ -42,7 +42,7 @@
 }
 
 .meta {
-  font-size: 10px;
+  font-size: var(--fs-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text3);

@@ -58,7 +58,7 @@
 
 .backLink {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 0.6px;
   color: var(--text2);
@@ -87,7 +87,7 @@
   align-items: center;
   gap: 9px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 1.5px;
   color: var(--text3);
@@ -111,7 +111,7 @@
 .meta {
   margin: 12px 0 0;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.8px;
   color: var(--text3);
 }
@@ -170,7 +170,7 @@
   align-items: center;
   gap: 16px;
   font-family: var(--display);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--text3);
@@ -209,7 +209,7 @@
 .footerVersion {
   color: var(--text3);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
 }
 
 @media (max-width: 899px) {

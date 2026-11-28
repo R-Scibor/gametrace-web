@@ -7,12 +7,12 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--fs-xs);
 }
 
 .table th {
   text-align: left;
-  font-size: 10px;
+  font-size: var(--fs-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text3);
@@ -67,11 +67,17 @@
   justify-content: space-between;
   padding: 8px 10px;
   gap: 8px;
-  font-size: 11px;
+  flex-wrap: wrap;
+  font-size: var(--fs-xs);
   color: var(--text3);
+}
+
+.pagination > span {
+  white-space: nowrap;
 }
 
 .pageButton {
   width: auto;
-  padding: 6px 14px;
+  padding: 6px 10px;
+  font-size: var(--fs-xs);
 }
