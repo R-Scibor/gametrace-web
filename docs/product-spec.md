@@ -180,6 +180,13 @@ letter-spaced labels, orange accent bars — but refine for desktop:
 
 - Port the mobile palette (`theme/colors.ts`) verbatim into CSS custom properties.
 - Type pairing: **Space Grotesk** (display/labels) + **DM Sans** (body), via `@fontsource`.
+- Type scale: no user-visible text is smaller than **12px**. The floor lives in `theme/global.css` as
+  `--fs-xs: 0.75rem`, and small text uses `font-size: var(--fs-xs)` instead of a hard-coded px value.
+  Do not add `10px`, `11px` or other sub-12px sizes to text, including badges, table headers, legends and captions.
+- Uppercase labels may stay uppercase, but only at `--fs-xs` or larger, with modest tracking. Use
+  `letter-spacing: var(--ls-caps)` (`0.12em`) instead of wide px values such as `2px` or `3px`.
+- Sizes of icons, borders and gaps are not part of the type scale. When a bigger label breaks a tight layout
+  (badges, stat tiles, table headers, period pills), fix the layout and keep the 12px floor.
 - Add a small **chart color ramp** derived from orange/warn for multi-series charts.
 - Desktop affordances: hover/focus states, denser tables, skeleton loaders, a toast system.
 - Reusable primitives: `Button`, `StatTile`, `SectionHeader`, `Cover`, `LiveTimer`,
