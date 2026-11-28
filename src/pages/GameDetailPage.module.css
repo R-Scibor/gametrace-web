@@ -175,8 +175,18 @@
   .info {
     align-items: center;
   }
+  .eyebrow {
+    text-wrap: balance;
+  }
+  /* Keep the four metrics in a 2x2 grid now that labels are 12px. */
   .metrics {
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .metricLabel {
+    letter-spacing: 0.5px;
   }
 }
 
