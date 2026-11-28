@@ -44,7 +44,7 @@ test('LandingPage renders ecosystem gateway sections', async () => {
     expect(screen.getAllByRole('button', { name: /pobierz apk/i }).length).toBeGreaterThanOrEqual(1);
   });
   expect(screen.getByText('Szczegółowa analityka tygodni, miesięcy i pass')).toBeInTheDocument();
-  expect(screen.getByText('Szybki zapis głosem — podyktuj grę i czas')).toBeInTheDocument();
+  expect(screen.getByText('Szybki zapis głosem: podyktuj grę i czas')).toBeInTheDocument();
   expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   expect(screen.getByText(/© 2026 Rafał Ścibor/)).toBeInTheDocument();
   expect(screen.getByText('Dane i okładki gier: IGDB')).toBeInTheDocument();
