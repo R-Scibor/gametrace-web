@@ -204,7 +204,7 @@
 .hours {
   font-family: var(--display);
   font-weight: 700;
-  font-size: clamp(18px, 15cqi, 46px);
+  font-size: clamp(24px, 20cqi, 46px);
   letter-spacing: -1px;
   line-height: 0.95;
   color: var(--orange);
@@ -222,7 +222,7 @@
 .timer {
   font-family: var(--display);
   font-weight: 700;
-  font-size: clamp(18px, 15cqi, 46px);
+  font-size: clamp(24px, 20cqi, 46px);
   letter-spacing: -0.5px;
   line-height: 0.95;
   color: var(--orange);
