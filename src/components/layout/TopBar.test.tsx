@@ -23,3 +23,15 @@ test('the browser tab title names the current view', async () => {
   await screen.findByRole('heading', { name: 'Biblioteka' });
   expect(document.title).toBe('Biblioteka | GameTrace');
 });
+
+test('the burger is only rendered when the layout supplies a menu handler', async () => {
+  const { unmount } = renderPage(<TopBar />, { route: '/library' });
+  await screen.findByRole('heading', { name: 'Biblioteka' });
+  expect(screen.queryByRole('button', { name: 'Otwórz menu' })).not.toBeInTheDocument();
+  unmount();
+
+  renderPage(<TopBar onMenuClick={() => {}} menuOpen menuControls="nav-id" />, { route: '/library' });
+  const button = await screen.findByRole('button', { name: 'Otwórz menu' });
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+  expect(button).toHaveAttribute('aria-controls', 'nav-id');
+});
