@@ -51,7 +51,7 @@ test('HeroSpotlight formats zero total seconds as 0m', () => {
   expect(screen.getByText(splitText('0m'))).toBeInTheDocument();
 });
 
-test('UnifiedHeroCard live shows details in the corner without a navigation label', () => {
+test('UnifiedHeroCard live shows details without a navigation label', () => {
   renderWithProviders(
     <UnifiedHeroCard
       mode="live"
@@ -68,4 +68,25 @@ test('UnifiedHeroCard live shows details in the corner without a navigation labe
   );
   expect(screen.queryByText(/nawigacja/i)).not.toBeInTheDocument();
   expect(screen.getByText('szczegóły')).toBeInTheDocument();
+});
+
+test('UnifiedHeroCard live keeps the details prompt in document flow', () => {
+  renderWithProviders(
+    <UnifiedHeroCard
+      mode="live"
+      gameId={-1}
+      gameName="Baldur's Gate 3"
+      liveSession={{
+        id: 1,
+        game_id: -1,
+        game_name: "Baldur's Gate 3",
+        cover_image_url: null,
+        start_time: '2026-06-15T11:00:00Z',
+      }}
+    />,
+  );
+
+  expect(screen.getByText('ROZPOCZĘTO')).toBeInTheDocument();
+  const prompt = screen.getByText('szczegóły');
+  expect(getComputedStyle(prompt).position).not.toBe('absolute');
 });

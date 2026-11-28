@@ -23,7 +23,9 @@
     "preview": "Podgląd przykładowy",
     "review": "Przegląd",
     "capture": "Zapis",
-    "tools": "Narzędzia"
+    "tools": "Narzędzia",
+    "openMenu": "Otwórz menu",
+    "closeMenu": "Zamknij menu"
   },
   "pageTitle": {
     "dashboard": "Dashboard",

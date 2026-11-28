@@ -8,12 +8,39 @@
   padding: 20px 0;
   transition: width 0.2s;
 }
+.brandRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.closeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: none;
+  color: var(--text2);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+.closeBtn:hover {
+  background-color: var(--bg3);
+  color: var(--text);
+}
+.closeBtn:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
 .brand {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 0 16px;
-  margin-bottom: 24px;
   text-decoration: none;
   border-radius: 2px;
   transition: color 0.15s;
@@ -179,6 +206,10 @@
 .active .icon {
   color: var(--orange);
 }
+/* The close button only exists for the drawer. */
+@media (min-width: 769px) {
+  .closeBtn { display: none; }
+}
 @media (max-width: 1100px) {
   .sidebar { width: 64px; }
   .brand { justify-content: center; padding: 0; }
@@ -191,4 +222,49 @@
   .active::before { left: -12px; top: 6px; bottom: 6px; }
   .previewRow .label { display: none; }
   .previewRow { justify-content: center; padding: 8px 0 10px; }
+}
+
+/* Narrow screens: the sidebar becomes an off-canvas drawer. It slides in from
+   the left over a dimmed backdrop (rendered by AppLayout) and shows full labels. */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 60;
+    width: min(300px, 85vw);
+    height: 100dvh;
+    transform: translateX(-100%);
+    visibility: hidden;
+    box-shadow: none;
+    transition:
+      transform 0.22s ease,
+      visibility 0s linear 0.22s;
+  }
+  .sidebarOpen {
+    transform: none;
+    visibility: visible;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5);
+    transition:
+      transform 0.22s ease,
+      visibility 0s;
+  }
+  .brandRow { justify-content: space-between; }
+  .brand { justify-content: flex-start; padding: 0 16px; }
+  .wordmark { display: block; }
+  .label,
+  .previewRow .label { display: inline; }
+  .groupLabel { display: flex; }
+  .nav { gap: 16px; }
+  .link { padding: 10px 12px; justify-content: flex-start; }
+  .logoutBtn { padding: 10px 12px; justify-content: flex-start; }
+  .active::before { left: -12px; top: 5px; bottom: 5px; }
+  .previewRow { justify-content: space-between; padding: 8px 12px 10px; }
+}
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebarOpen {
+    transition: none;
+  }
 }

@@ -1,4 +1,4 @@
-import { useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
@@ -144,8 +144,37 @@ function NavItem({ path, label, icon }: { path: string; label: string; icon: Rea
   );
 }
 
-export function Sidebar() {
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+interface SidebarProps {
+  /** Id of the sidebar element, so the burger can point at it with aria-controls. */
+  id?: string;
+  /** Drawer state on narrow screens. On wide screens the sidebar is always visible. */
+  open?: boolean;
+  onClose?: () => void;
+}
+
+const CloseIcon = (
+  <svg
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    aria-hidden
+  >
+    <line x1="5" y1="5" x2="19" y2="19" />
+    <line x1="19" y1="5" x2="5" y2="19" />
+  </svg>
+);
+
+export function Sidebar({ id, open = false, onClose }: SidebarProps = {}) {
   const { t } = useTranslation('common');
+  const asideRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const isAdmin = useAuthStore((s) => s.isAdmin);
   const previewDismissed = useAuthStore((s) => s.previewDismissed);
   const setPreviewDismissed = useAuthStore((s) => s.setPreviewDismissed);
@@ -154,6 +183,32 @@ export function Sidebar() {
   const navigate = useNavigate();
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
+
+  // Move focus into the drawer when it opens. Handing focus back to the burger
+  // on close is done by AppLayout, which owns the burger.
+  useEffect(() => {
+    if (open) closeRef.current?.focus();
+  }, [open]);
+
+  // Keep Tab inside the drawer while it is open. Events from the logout dialog
+  // portal bubble through here too, so only handle keys that start in the aside.
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (!open || event.key !== 'Tab') return;
+    const aside = asideRef.current;
+    if (!aside || !aside.contains(event.target as Node)) return;
+    const items = Array.from(aside.querySelectorAll<HTMLElement>(FOCUSABLE));
+    if (items.length === 0) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    const active = document.activeElement;
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
 
   const handleLogoutConfirm = async () => {
     setLogoutLoading(true);
@@ -167,11 +222,28 @@ export function Sidebar() {
   };
 
   return (
-    <aside className={styles.sidebar}>
-      <Link to="/welcome" className={styles.brand} aria-label={t('nav.homeAria')}>
-        <img src="/splash-icon.png" alt="" className={styles.logoMark} width={64} height={64} />
-        <span className={styles.wordmark}>GAMETRACE</span>
-      </Link>
+    <aside
+      id={id}
+      ref={asideRef}
+      className={open ? `${styles.sidebar} ${styles.sidebarOpen}` : styles.sidebar}
+      data-open={open ? 'true' : 'false'}
+      onKeyDown={handleKeyDown}
+    >
+      <div className={styles.brandRow}>
+        <Link to="/welcome" className={styles.brand} aria-label={t('nav.homeAria')}>
+          <img src="/splash-icon.png" alt="" className={styles.logoMark} width={64} height={64} />
+          <span className={styles.wordmark}>GAMETRACE</span>
+        </Link>
+        <button
+          type="button"
+          ref={closeRef}
+          className={styles.closeBtn}
+          onClick={onClose}
+          aria-label={t('nav.closeMenu')}
+        >
+          {CloseIcon}
+        </button>
+      </div>
       <nav className={styles.nav}>
         <NavGroup label={t('nav.review')}>
           {reviewNav.map((item) => (

@@ -101,6 +101,24 @@ Persistent **left sidebar** (collapses to icons under ~1100px):
 ◆ Administracja  (Admin hub, /admin — **admins only**)
 ```
 
+### Responsive navigation
+
+- **769px and wider:** the sidebar is persistent. Between 769px and 1100px it collapses to the 64px icon rail.
+- **768px and narrower:** the sidebar is hidden and the top bar shows a **burger button** on its left. The
+  burger carries `aria-expanded`, `aria-controls` (the sidebar id) and a translated `aria-label`
+  (`nav.openMenu`, PL and EN).
+- The burger opens the sidebar as an **off-canvas drawer** (up to 300px, at most 85% of the viewport width)
+  over a dimmed backdrop. The drawer shows full labels, a close button and the usual footer actions.
+- The drawer closes on backdrop click, on the close button, on `Escape`, on any route change and when the
+  viewport grows past 768px. `Escape` is ignored while a dialog such as logout confirmation is open, so the
+  dialog closes first.
+- Focus moves to the close button when the drawer opens, `Tab` and `Shift+Tab` wrap inside it, the page
+  behind it is `inert`, and focus returns to the burger on close.
+- The page behind the drawer cannot scroll while it is open. The slide and fade transitions are dropped under
+  `prefers-reduced-motion: reduce`.
+- Below 560px the top bar wraps onto two rows so the title, the active session pill and the bot status
+  stay readable.
+
 The sidebar has a single admin entry point. It lands on `/admin`, an internal three-tab
 shell (**Przegląd · Zgłoszenia · Katalog**) — see §7. Admin actions (enrich, IGDB link,
 alias, merge, global cover) live only inside this panel; game detail exposes no admin
@@ -135,7 +153,7 @@ cache.
 | `/settings`         | Settings         | Profile · timezone · `weekly_report_enabled` + `push_enabled` toggles · bot/health/version · logout. |
 | `/admin`            | Przegląd         | **Admin only.** Overview hub (`GET /admin/stats/overview`). Passive context tiles (users, sessions, hours, games) plus attention tiles (do sprawdzenia, w kolejce, otwarte zgłoszenia) that link into the other two surfaces pre-filtered. Tiles at zero render inert. |
 | `/admin/reports`    | Zgłoszenia       | **Admin only.** User report inbox — status filter, list + inspector, triage to `triaged`/`closed`. |
-| `/admin/catalog`    | Katalog          | **Admin only.** Master-detail catalog surface. Filter/search/sort/paginate state lives entirely in the URL query string. Selecting a row opens an inspector with re-queue enrich, IGDB link, add alias, merge, and global cover upload. The merge target picker searches the **global** admin catalog (not the admin's personal library), so games the admin never played are still mergeable. Honours an incoming `?status=` from the overview tiles. |
+| `/admin/catalog`    | Katalog          | **Admin only.** Master-detail catalog surface. Filter/search/sort/paginate state lives entirely in the URL query string. Selecting a row opens an inspector with re-queue enrich, IGDB link, add alias, merge, and global cover upload. The merge target picker searches the **global** admin catalog (not the admin's personal library), so games the admin never played are still mergeable. Honours an incoming `?status=` from the overview tiles. On narrow screens the catalog table scrolls horizontally inside the list pane (edge fade and a visible scrollbar). Pagination stays outside the scroller. User-facing lists such as session history and trash already stack into cards, so they do not use this pattern. |
 
 ## 8. Analytics Page (the differentiator)
 
@@ -187,6 +205,10 @@ letter-spaced labels, orange accent bars — but refine for desktop:
   `letter-spacing: var(--ls-caps)` (`0.12em`) instead of wide px values such as `2px` or `3px`.
 - Sizes of icons, borders and gaps are not part of the type scale. When a bigger label breaks a tight layout
   (badges, stat tiles, table headers, period pills), fix the layout and keep the 12px floor.
+- Dense admin tables that cannot stack keep a readable column width and scroll horizontally
+  inside a wrapper, with an edge fade and a visible scrollbar. Do not clip columns with `overflow: hidden`.
+  This still applies at 390px with the sidebar hidden, because the catalog table needs about 520px of width
+  and the content area is about 340px.
 - Add a small **chart color ramp** derived from orange/warn for multi-series charts.
 - Desktop affordances: hover/focus states, denser tables, skeleton loaders, a toast system.
 - Reusable primitives: `Button`, `StatTile`, `SectionHeader`, `Cover`, `LiveTimer`,

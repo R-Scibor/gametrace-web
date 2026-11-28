@@ -82,6 +82,7 @@
   "catalog": {
     "errorLoad": "Couldn't load the catalog.",
     "selectPrompt": "Select a game from the table.",
+    "tableRegion": "Catalog table",
     "missingFiltered": "Game #{{id}} isn't visible with this filter.",
     "showAll": "Show all",
     "searchAria": "Search game",

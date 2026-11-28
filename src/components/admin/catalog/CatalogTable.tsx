@@ -37,45 +37,52 @@ export function CatalogTable({
 
   return (
     <div className={styles.wrapper}>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th scope="col">{t('catalog.columns.cover')}</th>
-            <th scope="col">{t('catalog.columns.name')}</th>
-            <th scope="col">{t('catalog.columns.id')}</th>
-            <th scope="col">{t('catalog.columns.status')}</th>
-            <th scope="col">{t('catalog.columns.sessions')}</th>
-            <th scope="col">{t('catalog.columns.aliases')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr
-              key={item.id}
-              tabIndex={0}
-              className={
-                item.id === selectedId ? `${styles.row} ${styles.selected}` : styles.row
-              }
-              aria-current={item.id === selectedId ? 'true' : undefined}
-              onClick={() => onSelect(item.id)}
-              onKeyDown={(event) => handleRowKeyDown(event, item.id)}
-            >
-              <td>
-                {item.cover_image_url ? (
-                  <img className={styles.cover} src={item.cover_image_url} alt="" />
-                ) : (
-                  <div className={styles.cover} />
-                )}
-              </td>
-              <td>{item.primary_name}</td>
-              <td>#{item.id}</td>
-              <td>{ENRICHMENT_STATUS_LABELS[item.enrichment_status] ?? item.enrichment_status}</td>
-              <td>{item.session_count}</td>
-              <td>{item.aliases.length}</td>
+      <div
+        className={styles.scroller}
+        tabIndex={0}
+        role="region"
+        aria-label={t('catalog.tableRegion')}
+      >
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th scope="col">{t('catalog.columns.cover')}</th>
+              <th scope="col">{t('catalog.columns.name')}</th>
+              <th scope="col">{t('catalog.columns.id')}</th>
+              <th scope="col">{t('catalog.columns.status')}</th>
+              <th scope="col">{t('catalog.columns.sessions')}</th>
+              <th scope="col">{t('catalog.columns.aliases')}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr
+                key={item.id}
+                tabIndex={0}
+                className={
+                  item.id === selectedId ? `${styles.row} ${styles.selected}` : styles.row
+                }
+                aria-current={item.id === selectedId ? 'true' : undefined}
+                onClick={() => onSelect(item.id)}
+                onKeyDown={(event) => handleRowKeyDown(event, item.id)}
+              >
+                <td>
+                  {item.cover_image_url ? (
+                    <img className={styles.cover} src={item.cover_image_url} alt="" />
+                  ) : (
+                    <div className={styles.cover} />
+                  )}
+                </td>
+                <td>{item.primary_name}</td>
+                <td>#{item.id}</td>
+                <td>{ENRICHMENT_STATUS_LABELS[item.enrichment_status] ?? item.enrichment_status}</td>
+                <td>{item.session_count}</td>
+                <td>{item.aliases.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {items.length === 0 && <EmptyState message={t('catalog.emptyFilter')} />}
 

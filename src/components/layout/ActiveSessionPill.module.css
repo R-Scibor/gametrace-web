@@ -17,3 +17,13 @@
 .pill:hover {
   background-color: rgba(255,122,26,0.35);
 }
+/* Long game names are cut with an ellipsis so the pill never pushes past the bar. */
+.pill {
+  min-width: 0;
+}
+.pill > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

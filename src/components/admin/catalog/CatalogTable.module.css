@@ -2,12 +2,50 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   overflow: hidden;
+  background: var(--bg2);
+}
+
+/* Horizontal scroll on narrow screens, with an edge fade so overflow is visible. */
+.scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text3) var(--bg3);
+  background:
+    linear-gradient(to right, var(--bg2) 40%, transparent) 0 0 / 24px 100% no-repeat local,
+    linear-gradient(to left, var(--bg2) 40%, transparent) 100% 0 / 24px 100% no-repeat local,
+    linear-gradient(to right, rgba(0, 0, 0, 0.55), transparent) 0 0 / 20px 100% no-repeat scroll,
+    linear-gradient(to left, rgba(0, 0, 0, 0.55), transparent) 100% 0 / 20px 100% no-repeat scroll;
+}
+
+.scroller:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -2px;
+}
+
+.scroller::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scroller::-webkit-scrollbar-track {
+  background: var(--bg3);
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background: var(--text3);
+  border-radius: 4px;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--fs-xs);
+}
+
+@media (max-width: 720px) {
+  .table {
+    min-width: 36rem;
+  }
 }
 
 .table th {
@@ -18,6 +56,7 @@
   color: var(--text3);
   padding: 8px 10px;
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 
 .row {
@@ -38,6 +77,12 @@
 .row td {
   padding: 7px 10px;
   border-left: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.row td:nth-child(2) {
+  white-space: normal;
+  min-width: 10rem;
 }
 
 .row td:not(:first-child) {

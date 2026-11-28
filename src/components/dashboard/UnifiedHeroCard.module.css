@@ -81,6 +81,7 @@
   padding: 20px 24px 18px;
   min-width: 0;
   gap: 12px;
+  container-type: inline-size;
 }
 
 /* Row 1: Header / Eyebrow */
@@ -164,8 +165,9 @@
 /* Row 3: Prominent Metrics Layout */
 .metricsRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
-  gap: 28px;
+  gap: 16px 28px;
   margin-top: auto;
   padding-top: 4px;
 }
@@ -175,7 +177,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 175px;
+  min-width: min(175px, 100%);
 }
 
 .metricLabel {
@@ -202,11 +204,12 @@
 .hours {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 46px;
+  font-size: clamp(24px, 20cqi, 46px);
   letter-spacing: -1px;
   line-height: 0.95;
   color: var(--orange);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .hoursUnit {
@@ -219,11 +222,12 @@
 .timer {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 46px;
+  font-size: clamp(24px, 20cqi, 46px);
   letter-spacing: -0.5px;
   line-height: 0.95;
   color: var(--orange);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
   text-shadow: 0 0 24px rgba(255, 122, 26, 0.3);
 }
 
@@ -269,9 +273,9 @@
 }
 
 .actionPrompt {
-  position: absolute;
-  right: 24px;
-  bottom: 18px;
+  /* Keep the CTA in normal flow so it cannot sit on top of ROZPOCZĘTO. */
+  align-self: flex-end;
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -311,11 +315,6 @@
 @media (max-width: 620px) {
   .card {
     grid-template-columns: 110px minmax(0, 1fr);
-  }
-  .actionPrompt {
-    position: static;
-    align-self: flex-end;
-    margin-top: 12px;
   }
   .metricsRow {
     flex-direction: column;
