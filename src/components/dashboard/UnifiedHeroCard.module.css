@@ -100,8 +100,8 @@
 .eyebrowIdle {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--text3);
 }
@@ -109,8 +109,8 @@
 .eyebrowLive {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--orange);
 }
@@ -138,7 +138,7 @@
 .liveBadge {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 2px;
   color: var(--orange);
 }
@@ -181,7 +181,7 @@
 .metricLabel {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text3);
@@ -253,7 +253,7 @@
 .subStatLabel {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text3);
@@ -277,7 +277,7 @@
   gap: 6px;
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text3);

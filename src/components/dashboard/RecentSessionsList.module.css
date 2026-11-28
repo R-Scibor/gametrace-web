@@ -91,7 +91,7 @@
 
 .date {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.5px;
   color: var(--text3);
   display: flex;
@@ -122,7 +122,7 @@
 .errorBadge {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 2px;
   color: var(--warn);
   flex-shrink: 0;
