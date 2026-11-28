@@ -20,8 +20,8 @@
 .label {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-caps);
   color: var(--text3);
   text-transform: uppercase;
 }
@@ -35,7 +35,7 @@
   gap: 4px;
 }
 .unit {
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text2);
 }
 

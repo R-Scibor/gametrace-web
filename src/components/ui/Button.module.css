@@ -10,7 +10,7 @@
   font-family: var(--display);
   font-weight: 700;
   font-size: 13px;
-  letter-spacing: 2px;
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   transition:
     transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),

@@ -8,7 +8,7 @@
   font-family: var(--display);
   font-weight: 700;
   font-size: 14px;
-  letter-spacing: 2px;
+  letter-spacing: var(--ls-caps);
   color: var(--text2);
   text-transform: uppercase;
   white-space: nowrap;
