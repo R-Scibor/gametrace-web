@@ -11,7 +11,7 @@ export interface FormatOptions {
  */
 const locale = () => intlLocale(i18n.language);
 
-export const EMPTY_VALUE = '–';
+export const EMPTY_VALUE = '-';
 
 export function formatDuration(seconds: number | null | undefined): string {
   if (!seconds) return EMPTY_VALUE;
