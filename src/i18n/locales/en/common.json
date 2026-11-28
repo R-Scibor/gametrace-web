@@ -63,7 +63,7 @@
   },
   "sampleData": {
     "tag": "PREVIEW",
-    "text": "This is sample data — add a session to see your own stats.",
+    "text": "This is sample data. Add a session to see your own stats.",
     "cta": "Add session",
     "dismiss": "Hide sample"
   },

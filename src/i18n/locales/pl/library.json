@@ -51,7 +51,7 @@
     "ignored": "UKRYTE"
   },
   "select": {
-    "changeAria": "Wybrana gra — zmień",
+    "changeAria": "Wybrana gra: zmień",
     "change": "zmień",
     "placeholder": "Szukaj gry...",
     "noResults": "Brak wyników",
