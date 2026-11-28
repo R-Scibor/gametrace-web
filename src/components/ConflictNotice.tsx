@@ -40,7 +40,7 @@ export function ConflictNotice({ conflict, kind }: ConflictNoticeProps) {
 
   const range =
     session.end_time
-      ? `${formatDate(session.start_time)} – ${formatDate(session.end_time)}`
+      ? `${formatDate(session.start_time)} - ${formatDate(session.end_time)}`
       : formatDate(session.start_time);
 
   return (

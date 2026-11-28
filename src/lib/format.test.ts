@@ -18,6 +18,10 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
+test('EMPTY_VALUE is a plain hyphen', () => {
+  expect(EMPTY_VALUE).toBe('-');
+});
+
 test('formatDuration formats hours and minutes', () => {
   expect(formatDuration(0)).toBe(EMPTY_VALUE);
   expect(formatDuration(null)).toBe(EMPTY_VALUE);
