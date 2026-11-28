@@ -1439,12 +1439,24 @@
     width: auto;
   }
 
+  /* The 144px min-width pushed the login button past the viewport. */
   .topBarLogin {
-    padding: 9px 13px;
+    min-width: 0;
+    padding: 9px 12px;
+  }
+
+  .topBarLoginArrow {
+    display: none;
+  }
+
+  .topBar {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .topBarActions {
     gap: 8px;
+    margin-left: auto;
   }
 
   .specimen {
