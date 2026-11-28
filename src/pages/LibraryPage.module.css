@@ -51,7 +51,7 @@
 .toggleLabel {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text3);
@@ -101,7 +101,7 @@
   background-color: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 2px;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--text2);
 }
 .chipText {
@@ -118,7 +118,7 @@
   border: none;
   padding: 0;
   color: var(--text3);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   cursor: pointer;
   line-height: 1;
 }
@@ -134,7 +134,7 @@
   display: inline-flex;
   align-items: center;
   font-family: var(--display);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
